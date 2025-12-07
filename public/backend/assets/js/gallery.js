@@ -1,24 +1,25 @@
 (function () {
     "use strict";
 
-    const lightboxVideo1 = GLightbox({
+    var lightboxVideo = GLightbox({
         selector: '.glightbox'
     });
+    lightboxVideo.on('slide_changed', ({ prev, current }) => {
+        console.log('Prev slide', prev);
+        console.log('Current slide', current);
 
-    lightboxVideo1.on('slide_changed', ({ prev, current }) => {
         const { slideIndex, slideNode, slideConfig, player } = current;
-        // You can use these variables if needed
     });
 
-    const lightboxDescription = GLightbox({
+    var lightboxDescription = GLightbox({
         selector: '.glightbox2'
     });
 
-    const lightboxVideo2 = GLightbox({
+    var lightboxVideo = GLightbox({
         selector: '.glightbox3'
     });
 
-    const lightboxInlineIframe = GLightbox({
+    var lightboxInlineIframe = GLightbox({
         selector: '.glightbox4'
     });
 

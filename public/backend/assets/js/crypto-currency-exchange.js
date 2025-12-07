@@ -1,28 +1,10 @@
 (function () {
   "use strict";
 
-  const randomizeArray = (arg) => {
-    const array = arg.slice(); // Clone the array
-    let currentIndex = array.length;
-  
-    while (currentIndex !== 0) {
-      const randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-  
-      // Swap elements
-      [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
-    }
-  
-    return array;
-  };
-
-  // data for the main cards sparklines
-  let sparklineData = [47, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53, 61, 27, 54, 43, 19, 46];
-
   /* BTC Chart */
-  const btctotal = {
+  var total = {
     chart: {
-      type: "area",
+      type: "line",
       height: 60,
       sparkline: {
         enabled: true,
@@ -42,7 +24,7 @@
       curve: "smooth",
       lineCap: "butt",
       colors: undefined,
-      width: 1,
+      width: 1.5,
       dashArray: 0,
     },
     fill: {
@@ -53,34 +35,40 @@
     series: [
       {
         name: "Value",
-        data: randomizeArray(sparklineData)
+        data: [54, 38, 56, 35, 65, 43, 53, 45, 62, 80, 35, 48,34,78,34,45,67,87],
       },
     ],
     yaxis: {
       min: 0,
       show: false,
-      axisBorder: {
-        show: false,
-      },
     },
     xaxis: {
       axisBorder: {
         show: false,
       },
     },
-    colors: ["rgba(152, 95, 253, 0.5)"],
+    yaxis: {
+      axisBorder: {
+        show: false,
+      },
+    },
+    colors: ["rgba(3, 181, 98,0.8)"],
     tooltip: {
       enabled: false,
     },
   };
-  const btctotalchart = new ApexCharts(document.querySelector("#btc-currency-chart"),btctotal );
-  if(btctotalchart) btctotalchart.render();
+  document.getElementById("btc-currency-chart").innerHTML = "";
+  var total = new ApexCharts(
+    document.querySelector("#btc-currency-chart"),
+    total
+  );
+  total.render();
   /* BTC Chart */
 
   /* ETH Chart */
-  const ETHtotal = {
+  var total = {
     chart: {
-      type: "area",
+      type: "line",
       height: 60,
       sparkline: {
         enabled: true,
@@ -100,7 +88,7 @@
       curve: "smooth",
       lineCap: "butt",
       colors: undefined,
-      width: 1,
+      width: 1.5,
       dashArray: 0,
     },
     fill: {
@@ -111,37 +99,40 @@
     series: [
       {
         name: "Value",
-        data: randomizeArray(sparklineData)
+        data: [54, 38, 56, 35, 65, 43, 53, 45, 62, 80, 35, 48,34,78,34,45,67,87],
       },
     ],
     yaxis: {
       min: 0,
       show: false,
-      axisBorder: {
-        show: false,
-      },
     },
     xaxis: {
       axisBorder: {
         show: false,
       },
     },
-    colors: ["rgba(255, 73, 205,0.5)"],
+    yaxis: {
+      axisBorder: {
+        show: false,
+      },
+    },
+    colors: ["rgba(127, 103, 257,0.8)"],
     tooltip: {
       enabled: false,
     },
   };
-  const ETHtotalchart = new ApexCharts(
+  document.getElementById("eth-currency-chart").innerHTML = "";
+  var total = new ApexCharts(
     document.querySelector("#eth-currency-chart"),
-    ETHtotal
+    total
   );
-  if(ETHtotalchart) ETHtotalchart.render();
+  total.render();
   /* ETH Chart */
 
   /* Dash Chart */
-  const Dashtotal = {
+  var total = {
     chart: {
-      type: "area",
+      type: "line",
       height: 60,
       sparkline: {
         enabled: true,
@@ -161,7 +152,7 @@
       curve: "smooth",
       lineCap: "butt",
       colors: undefined,
-      width: 1,
+      width: 1.5,
       dashArray: 0,
     },
     fill: {
@@ -172,37 +163,40 @@
     series: [
       {
         name: "Value",
-        data: randomizeArray(sparklineData)
+        data: [54, 38, 56, 35, 65, 43, 53, 45, 62, 80, 35, 48,34,78,34,45,67,87],
       },
     ],
     yaxis: {
       min: 0,
       show: false,
-      axisBorder: {
-        show: false,
-      },
     },
     xaxis: {
       axisBorder: {
         show: false,
       },
     },
-    colors: ["rgba(253, 175, 34,0.5)"],
+    yaxis: {
+      axisBorder: {
+        show: false,
+      },
+    },
+    colors: ["rgba(255, 169, 9,0.8)"],
     tooltip: {
       enabled: false,
     },
   };
-  const Dashtotalchart = new ApexCharts(
+  document.getElementById("dash-currency-chart").innerHTML = "";
+  var total = new ApexCharts(
     document.querySelector("#dash-currency-chart"),
-    Dashtotal
+    total
   );
-  if(Dashtotalchart) Dashtotalchart.render();
+  total.render();
   /* Dash Chart */
 
   /* LTC Chart */
-  const LTCtotal = {
+  var total = {
     chart: {
-      type: "area",
+      type: "line",
       height: 60,
       sparkline: {
         enabled: true,
@@ -222,7 +216,7 @@
       curve: "smooth",
       lineCap: "butt",
       colors: undefined,
-      width: 1,
+      width: 1.5,
       ltcArray: 0,
     },
     fill: {
@@ -233,37 +227,40 @@
     series: [
       {
         name: "Value",
-        data: randomizeArray(sparklineData)
+        data: [54, 38, 56, 35, 65, 43, 53, 45, 62, 80, 35, 48,34,78,34,45,67,87],
       },
     ],
     yaxis: {
       min: 0,
       show: false,
-      axisBorder: {
-        show: false,
-      },
     },
     xaxis: {
       axisBorder: {
         show: false,
       },
     },
-    colors: ["rgba(0, 201, 255, 0.5)"],
+    yaxis: {
+      axisBorder: {
+        show: false,
+      },
+    },
+    colors: ["rgba(253, 73, 99,0.8)"],
     tooltip: {
       enabled: false,
     },
   };
-  const LTCtotalchart = new ApexCharts(
+  document.getElementById("ltc-currency-chart").innerHTML = "";
+  var total = new ApexCharts(
     document.querySelector("#ltc-currency-chart"),
-    LTCtotal
+    total
   );
-  if(LTCtotalchart) LTCtotalchart.render();
+  total.render();
   /* LTC Chart */
 
   /* XRS Chart */
-  const XRStotal = {
+  var total = {
     chart: {
-      type: "area",
+      type: "line",
       height: 60,
       sparkline: {
         enabled: true,
@@ -283,7 +280,7 @@
       curve: "smooth",
       lineCap: "butt",
       colors: undefined,
-      width: 1,
+      width: 1.5,
       ltcArray: 0,
     },
     fill: {
@@ -294,37 +291,40 @@
     series: [
       {
         name: "Value",
-        data: randomizeArray(sparklineData)
+        data: [54, 38, 56, 35, 65, 43, 53, 45, 62, 80, 35, 48,34,78,34,45,67,87],
       },
     ],
     yaxis: {
       min: 0,
       show: false,
-      axisBorder: {
-        show: false,
-      },
     },
     xaxis: {
       axisBorder: {
         show: false,
       },
     },
-    colors: ["rgba(50, 212, 132, 0.5)"],
+    yaxis: {
+      axisBorder: {
+        show: false,
+      },
+    },
+    colors: ["rgba(15, 188, 249,0.8)"],
     tooltip: {
       enabled: false,
     },
   };
-  const XRStotalchart = new ApexCharts(
+  document.getElementById("xrs-currency-chart").innerHTML = "";
+  var total = new ApexCharts(
     document.querySelector("#xrs-currency-chart"),
-    XRStotal
+    total
   );
-  if(XRStotalchart) XRStotalchart.render();
+  total.render();
   /* XRS Chart */
 
   /* GLM Chart */
-  const GLMtotal = {
+  var total = {
     chart: {
-      type: "area",
+      type: "line",
       height: 60,
       sparkline: {
         enabled: true,
@@ -344,7 +344,7 @@
       curve: "smooth",
       lineCap: "butt",
       colors: undefined,
-      width: 1,
+      width: 1.5,
       ltcArray: 0,
     },
     fill: {
@@ -355,37 +355,40 @@
     series: [
       {
         name: "Value",
-        data: randomizeArray(sparklineData)
+        data: [54, 38, 56, 35, 65, 43, 53, 45, 62, 80, 35, 48,34,78,34,45,67,87],
       },
     ],
     yaxis: {
       min: 0,
       show: false,
-      axisBorder: {
-        show: false,
-      },
     },
     xaxis: {
       axisBorder: {
         show: false,
       },
     },
-    colors: ["rgba(255, 103, 87, 0.5)"],
+    yaxis: {
+      axisBorder: {
+        show: false,
+      },
+    },
+    colors: ["rgba(254, 124, 88,0.8)"],
     tooltip: {
       enabled: false,
     },
   };
-  const GLMtotalchart = new ApexCharts(
+  document.getElementById("glm-currency-chart").innerHTML = "";
+  var total = new ApexCharts(
     document.querySelector("#glm-currency-chart"),
-    GLMtotal
+    total
   );
-  if(GLMtotalchart) GLMtotalchart.render();
+  total.render();
   /* GLM Chart */
 
   /* Monero Chart */
-  const Monerototal = {
+  var total = {
     chart: {
-      type: "area",
+      type: "line",
       height: 60,
       sparkline: {
         enabled: true,
@@ -405,7 +408,7 @@
       curve: "smooth",
       lineCap: "butt",
       colors: undefined,
-      width: 1,
+      width: 1.5,
       ltcArray: 0,
     },
     fill: {
@@ -416,37 +419,40 @@
     series: [
       {
         name: "Value",
-        data: randomizeArray(sparklineData)
+        data: [54, 38, 56, 35, 65, 43, 53, 45, 62, 80, 35, 48,34,78,34,45,67,87],
       },
     ],
     yaxis: {
       min: 0,
       show: false,
-      axisBorder: {
-        show: false,
-      },
     },
     xaxis: {
       axisBorder: {
         show: false,
       },
     },
-    colors: ["rgba(53, 181, 170, 0.5)"],
+    yaxis: {
+      axisBorder: {
+        show: false,
+      },
+    },
+    colors: ["rgba(0, 216, 216,0.8)"],
     tooltip: {
       enabled: false,
     },
   };
-  const Monerototalchart = new ApexCharts(
+  document.getElementById("monero-currency-chart").innerHTML = "";
+  var total = new ApexCharts(
     document.querySelector("#monero-currency-chart"),
-    Monerototal
+    total
   );
-  if(Monerototalchart) Monerototalchart.render();
+  total.render();
   /* Monero Chart */
 
   /* Eos Chart */
-  const Eostotal = {
+  var total = {
     chart: {
-      type: "area",
+      type: "line",
       height: 60,
       sparkline: {
         enabled: true,
@@ -466,7 +472,7 @@
       curve: "smooth",
       lineCap: "butt",
       colors: undefined,
-      width: 1,
+      width: 1.5,
       ltcArray: 0,
     },
     fill: {
@@ -477,31 +483,34 @@
     series: [
       {
         name: "Value",
-        data: randomizeArray(sparklineData)
+        data: [54, 38, 56, 35, 65, 43, 53, 45, 62, 80, 35, 48,34,78,34,45,67,87],
       },
     ],
     yaxis: {
       min: 0,
       show: false,
-      axisBorder: {
-        show: false,
-      },
     },
     xaxis: {
       axisBorder: {
         show: false,
       },
     },
-    colors: ["rgba(190, 43, 235, 0.5)"],
+    yaxis: {
+      axisBorder: {
+        show: false,
+      },
+    },
+    colors: ["rgba(254, 84, 155,0.8)"],
     tooltip: {
       enabled: false,
     },
   };
-  const Eostotalchart = new ApexCharts(
+  document.getElementById("eos-currency-chart").innerHTML = "";
+  var total = new ApexCharts(
     document.querySelector("#eos-currency-chart"),
-    Eostotal
+    total
   );
-  if(Eostotalchart) Eostotalchart.render();
+  total.render();
   /* Eos Chart */
 
 })();

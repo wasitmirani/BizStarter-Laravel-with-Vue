@@ -25,5 +25,13 @@
     styleLoadIndicatorPosition: "center bottom",
     styleButtonRemoveItemPosition: "center bottom",
   });
+
+  /* passing unique values */
+  var textUniqueVals = new Choices('#nft-tags', {
+    allowHTML: true,
+    paste: false,
+    duplicateItemsAllowed: false,
+    editItems: true,
+  });
   
 })();

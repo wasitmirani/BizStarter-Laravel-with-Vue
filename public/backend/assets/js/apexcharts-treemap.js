@@ -2,7 +2,7 @@
     "use strict";
 
     /* basic treemap chart */
-    const basicoptions = {
+    var options = {
         series: [
             {
                 data: [
@@ -68,7 +68,7 @@
             height: 350,
             type: 'treemap'
         },
-        colors: ["#985ffd"],
+        colors: ["#03b562"],
         title: {
             text: 'Basic Treemap',
             align: 'left',
@@ -79,11 +79,11 @@
             },
         },
     };
-    const basicchart = new ApexCharts(document.querySelector("#treemap-basic"), basicoptions);
-    if(basicchart) basicchart.render();
+    var chart = new ApexCharts(document.querySelector("#treemap-basic"), options);
+    chart.render();
 
     /* multi dimensional treemap chart */
-    const dimensionaloptions = {
+    var options = {
         series: [
             {
                 name: 'Desktops',
@@ -132,7 +132,7 @@
                 ]
             }
         ],
-        colors: ["#985ffd", "#ff49cd"],
+        colors: ["#03b562", "#7f67ff"],
         legend: {
             show: false
         },
@@ -150,11 +150,11 @@
             },
         },
     };
-    const dimensionalchart = new ApexCharts(document.querySelector("#treemap-multi"), dimensionaloptions);
-    if(dimensionalchart) dimensionalchart.render();
+    var chart = new ApexCharts(document.querySelector("#treemap-multi"), options);
+    chart.render();
 
     /* distributed treemap chart */
-    const distributedoptions = {
+    var options = {
         series: [
             {
                 data: [
@@ -230,7 +230,18 @@
             },
         },
         colors: [
-           '#985ffd', '#ff49cd', '#fdaf22', '#32d484', '#00c9ff', '#ff6757', 'rgba(53, 181, 170,1)','rgb(190, 43, 235)'
+            '#03b562',
+            '#7f67ff',
+            '#fd4963',
+            '#ffa909',
+            '#0fbcf9',
+            '#0cd7b1',
+            '#fe5454',
+            '#0ca3e7',
+            '#7b76fe',
+            '#2dce89',
+            '#EF6537',
+            '#8c9097'
         ],
         plotOptions: {
             treemap: {
@@ -239,11 +250,11 @@
             }
         }
     };
-    const distributedchart = new ApexCharts(document.querySelector("#treemap-distributed"), distributedoptions);
-    if(distributedchart) distributedchart.render();
+    var chart = new ApexCharts(document.querySelector("#treemap-distributed"), options);
+    chart.render();
 
     /* treemap chart with color ranges */
-    const treemapoptions = {
+    var options = {
         series: [
             {
                 data: [
@@ -338,19 +349,19 @@
                         {
                             from: -6,
                             to: 0,
-                            color: '#985ffd'
+                            color: '#03b562'
                         },
                         {
                             from: 0.001,
                             to: 6,
-                            color: '#ff49cd'
+                            color: '#7f67ff'
                         }
                     ]
                 }
             }
         }
     };
-    const treemapchart = new ApexCharts(document.querySelector("#treemap-colorranges"), treemapoptions);
-    if(treemapchart) treemapchart.render();
+    var chart = new ApexCharts(document.querySelector("#treemap-colorranges"), options);
+    chart.render();
 
 })();

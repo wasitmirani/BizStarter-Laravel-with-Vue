@@ -2,7 +2,7 @@
     "use strict";
 
     /* line&column chart */
-    const linecolumnoptions = {
+    var options = {
         series: [{
             name: 'Website Blog',
             type: 'column',
@@ -17,10 +17,15 @@
             type: 'line',
         },
         stroke: {
-            width: [0, 4]
+            width: [0, 2]
         },
         grid: {
             borderColor: '#f2f5f7',
+        },
+        plotOptions: {
+            bar: {
+                columnWidth: '25%',
+            }
         },
         title: {
             text: 'Traffic Sources',
@@ -35,7 +40,7 @@
             enabled: true,
             enabledOnSeries: [1]
         },
-        colors: ["#985ffd", "#ff49cd"],
+        colors: ["#03b562", "#7f67ff"],
         labels: ['01 Jan 2001', '02 Jan 2001', '03 Jan 2001', '04 Jan 2001', '05 Jan 2001', '06 Jan 2001', '07 Jan 2001', '08 Jan 2001', '09 Jan 2001', '10 Jan 2001', '11 Jan 2001', '12 Jan 2001'],
         xaxis: {
             type: 'datetime',
@@ -75,11 +80,11 @@
             }
         }]
     };
-    const linecolumnchart = new ApexCharts(document.querySelector("#mixed-linecolumn"), linecolumnoptions);
-    linecolumnchart.render();
+    var chart = new ApexCharts(document.querySelector("#mixed-linecolumn"), options);
+    chart.render();
 
     /* multiple ys-axis chart */
-    const multipleoptions = {
+    var options = {
         series: [{
             name: 'Income',
             type: 'column',
@@ -102,7 +107,12 @@
             enabled: false
         },
         stroke: {
-            width: [1, 1, 4]
+            width: [1, 1, 2]
+        },
+        plotOptions: {
+            bar: {
+                columnWidth: '35%',
+            }
         },
         title: {
             text: 'XYZ - Stock Analysis (2009 - 2016)',
@@ -117,7 +127,7 @@
         grid: {
             borderColor: '#f2f5f7',
         },
-        colors: ["#985ffd", "#ff49cd", "#fdaf22"],
+        colors: ["#03b562", "#7f67ff", "#fd4963"],
         xaxis: {
             categories: [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016],
             labels: {
@@ -137,17 +147,17 @@
                 },
                 axisBorder: {
                     show: true,
-                    color: '#985ffd'
+                    color: '#03b562'
                 },
                 labels: {
                     style: {
-                        colors: '#985ffd',
+                        colors: '#03b562',
                     }
                 },
                 title: {
                     text: "Income (thousand crores)",
                     style: {
-                        color: '#985ffd',
+                        color: '#03b562',
                     }
                 },
                 tooltip: {
@@ -162,17 +172,17 @@
                 },
                 axisBorder: {
                     show: true,
-                    color: '#ff49cd'
+                    color: '#7f67ff'
                 },
                 labels: {
                     style: {
-                        colors: '#ff49cd',
+                        colors: '#7f67ff',
                     }
                 },
                 title: {
                     text: "Operating Cashflow (thousand crores)",
                     style: {
-                        color: '#ff49cd',
+                        color: '#7f67ff',
                     }
                 },
             },
@@ -184,17 +194,17 @@
                 },
                 axisBorder: {
                     show: true,
-                    color: '#fdaf22'
+                    color: '#f4a742'
                 },
                 labels: {
                     style: {
-                        colors: '#fdaf22',
+                        colors: '#f4a742',
                     },
                 },
                 title: {
                     text: "Revenue (thousand crores)",
                     style: {
-                        color: '#fdaf22',
+                        color: '#f4a742',
                     }
                 }
             },
@@ -212,11 +222,11 @@
             offsetX: 40
         }
     };
-    const multiplechart = new ApexCharts(document.querySelector("#mixed-multiple-y"), multipleoptions);
-    if(multiplechart) multiplechart.render();
+    var chart = new ApexCharts(document.querySelector("#mixed-multiple-y"), options);
+    chart.render();
 
     /* line and area chart */
-    const lineoptions = {
+    var options = {
         series: [{
             name: 'TEAM A',
             type: 'area',
@@ -231,15 +241,16 @@
             type: 'line',
         },
         stroke: {
-            curve: 'smooth'
+            curve: 'smooth',
+            width:[2,2],
         },
-        colors: ["#985ffd", "#ff49cd"],
+        colors: ["#03b562", "#7f67ff"],
         grid: {
             borderColor: '#f2f5f7',
         },
         fill: {
             type: 'solid',
-            opacity: [0.35, 1],
+            opacity: [0.1, 1],
         },
         labels: ['Dec 01', 'Dec 02', 'Dec 03', 'Dec 04', 'Dec 05', 'Dec 06', 'Dec 07', 'Dec 08', 'Dec 09 ', 'Dec 10', 'Dec 11'],
         markers: {
@@ -306,11 +317,11 @@
             }
         }
     };
-    const linechart = new ApexCharts(document.querySelector("#mixed-linearea"), lineoptions);
-    if(linechart) linechart.render();
+    var chart = new ApexCharts(document.querySelector("#mixed-linearea"), options);
+    chart.render();
 
     /* line column and area chart */
-    const columnoptions = {
+    var options = {
         series: [{
             name: 'TEAM A',
             type: 'column',
@@ -330,20 +341,20 @@
             stacked: false,
         },
         stroke: {
-            width: [0, 2, 5],
+            width: [0, 2, 2],
             curve: 'smooth'
         },
         plotOptions: {
             bar: {
-                columnWidth: '50%'
+                columnWidth: '30%'
             }
         },
-        colors: ["#985ffd","#ff49cd","#fdaf22"],
+        colors: ["#03b562","#7f67ff","#fd4963"],
         grid: {
             borderColor: '#f2f5f7',
         },
         fill: {
-            opacity: [0.85, 0.25, 1],
+            opacity: [0.85, 0.1, 1],
             gradient: {
                 inverseColors: false,
                 shade: 'light',
@@ -403,7 +414,8 @@
             }
         }
     };
-    const columnchart = new ApexCharts(document.querySelector("#mixed-all"), columnoptions);
-    if(columnchart) columnchart.render();
+
+    var chart = new ApexCharts(document.querySelector("#mixed-all"), options);
+    chart.render();
 
 })();

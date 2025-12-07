@@ -2,7 +2,7 @@
     "use strict";
 
     /* basic scatter chart */
-    const basicoptions = {
+    var options = {
         series: [{
             name: "SAMPLE A",
             data: [
@@ -27,7 +27,7 @@
         grid: {
             borderColor: '#f2f5f7',
         },
-        colors: ['#985ffd', '#ff49cd', "#fdaf22"],
+        colors: ["#03b562", "#7f67ff", "#fd4963","#ffa909"],
         xaxis: {
             tickAmount: 10,
             labels: {
@@ -55,15 +55,15 @@
             }
         }
     };
-    const basicchart = new ApexCharts(document.querySelector("#scatter-basic"), basicoptions);
-    if(basicchart) basicchart.render();
+    var chart = new ApexCharts(document.querySelector("#scatter-basic"), options);
+    chart.render();
 
     /* datetime scatter chart */
     function generateDayWiseTimeSeries(baseval, count, yrange) {
-        let i = 0;
-        const series = [];
+        var i = 0;
+        var series = [];
         while (i < count) {
-            const y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+            var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
 
             series.push([baseval, y]);
             baseval += 86400000;
@@ -71,7 +71,7 @@
         }
         return series;
     }
-    const datetimeoptions = {
+    var options = {
         series: [{
             name: 'TEAM 1',
             data: generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
@@ -118,7 +118,7 @@
         dataLabels: {
             enabled: false
         },
-        colors: ["#985ffd", "#ff49cd", "#fdaf22", '#32d484', '#00c9ff'],
+        colors: ["#03b562", "#7f67ff", "#fd4963","#ffa909","#0fbcf9"],
         grid: {
             borderColor: '#f2f5f7',
         },
@@ -147,11 +147,11 @@
             }
         }
     };
-    const datetimechart = new ApexCharts(document.querySelector("#scatter-datetime"), datetimeoptions);
-    if(datetimechart) datetimechart.render();
+    var chart = new ApexCharts(document.querySelector("#scatter-datetime"), options);
+    chart.render();
 
     /* scatter image fill chart */
-    const scatteroptions = {
+    var options = {
         series: [{
             name: 'Messenger',
             data: [
@@ -265,7 +265,7 @@
             }
         }
     };
-    const scatterchart = new ApexCharts(document.querySelector("#scatter-image"), scatteroptions);
-    if(scatterchart) scatterchart.render();
+    var chart = new ApexCharts(document.querySelector("#scatter-image"), options);
+    chart.render();
 
 })();

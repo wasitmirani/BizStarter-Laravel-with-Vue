@@ -1,11 +1,11 @@
 (function () {
   "use strict";
-  if (localStorage.getItem("vyzordarktheme")) {
+  if (localStorage.getItem("yzendarktheme")) {
     document.querySelector("html").setAttribute("data-theme-mode", "dark");
-    document.querySelector("html").setAttribute("data-menu-styles", "transparent");
+    document.querySelector("html").setAttribute("data-menu-styles", "dark");
     document.querySelector("html").setAttribute("data-header-styles", "transparent");
   }
-  if (localStorage.vyzorrtl) {
+  if (localStorage.yzenrtl) {
     let html = document.querySelector("html");
     html.setAttribute("dir", "rtl");
     document
@@ -15,12 +15,12 @@
         "../assets/libs/bootstrap/css/bootstrap.rtl.min.css"
       );
   }
-  if (localStorage.vyzorlayout) {
+  if (localStorage.yzenlayout) {
     let html = document.querySelector("html");
     html.setAttribute("data-nav-layout", "horizontal");
-    document.querySelector("html").setAttribute("data-menu-styles", "transparent");
+    document.querySelector("html").setAttribute("data-menu-styles", "light");
   }
-  if (localStorage.getItem("vyzorlayout") == "horizontal") {
+  if (localStorage.getItem("yzenlayout") == "horizontal") {
     document
       .querySelector("html")
       .setAttribute("data-nav-layout", "horizontal");
@@ -44,6 +44,15 @@
       document
         .querySelector("html")
         .style.setProperty("--primary-rgb", localStorage.primaryRGB);
+    }
+    if (localStorage.menuRGB) {
+      if (document.querySelector(".theme-container-primary")) {
+        document.querySelector(".theme-container-primary").value =
+          localStorage.menuRGB;
+      }
+      document
+        .querySelector("html")
+        .style.setProperty("--menu-bg", localStorage.menuRGB);
     }
     if (localStorage.bodyBgRGB && localStorage.bodylightRGB) {
       if (document.querySelector(".theme-container-background")) {
@@ -76,13 +85,13 @@
       html.setAttribute("data-menu-styles", "dark");
       html.setAttribute("data-header-styles", "dark");
     }
-    if (localStorage.vyzordarktheme) {
+    if (localStorage.yzendarktheme) {
       let html = document.querySelector("html");
       html.setAttribute("data-theme-mode", "dark");
     }
-    if (localStorage.vyzorlayout) {
+    if (localStorage.yzenlayout) {
       let html = document.querySelector("html");
-      let layoutValue = localStorage.getItem("vyzorlayout");
+      let layoutValue = localStorage.getItem("yzenlayout");
       html.setAttribute("data-nav-layout", "horizontal");
       setTimeout(() => {
         clearNavDropdown();
@@ -92,33 +101,33 @@
         checkHoriMenu();
       }, 5000);
     }
-    if (localStorage.vyzorverticalstyles) {
+    if (localStorage.yzenverticalstyles) {
       let html = document.querySelector("html");
-      let verticalStyles = localStorage.getItem("vyzorverticalstyles");
+      let verticalStyles = localStorage.getItem("yzenverticalstyles");
 
       if (verticalStyles == "default") {
         html.setAttribute("data-vertical-style", "default");
-        localStorage.removeItem("vyzornavstyles");
+        localStorage.removeItem("yzennavstyles");
       }
       if (verticalStyles == "closed") {
         html.setAttribute("data-vertical-style", "closed");
-        localStorage.removeItem("vyzornavstyles");
+        localStorage.removeItem("yzennavstyles");
       }
       if (verticalStyles == "icontext") {
         html.setAttribute("data-vertical-style", "icontext");
-        localStorage.removeItem("vyzornavstyles");
+        localStorage.removeItem("yzennavstyles");
       }
       if (verticalStyles == "overlay") {
         html.setAttribute("data-vertical-style", "overlay");
-        localStorage.removeItem("vyzornavstyles");
+        localStorage.removeItem("yzennavstyles");
       }
       if (verticalStyles == "detached") {
         html.setAttribute("data-vertical-style", "detached");
-        localStorage.removeItem("vyzornavstyles");
+        localStorage.removeItem("yzennavstyles");
       }
       if (verticalStyles == "doublemenu") {
         html.setAttribute("data-vertical-style", "doublemenu");
-        localStorage.removeItem("vyzornavstyles");
+        localStorage.removeItem("yzennavstyles");
         setTimeout(() => {
           const menuSlideItem = document.querySelectorAll(
             ".main-menu > li > .side-menu__item"
@@ -129,8 +138,8 @@
           tooltip.className = "custome-tooltip";
           // Set the CSS properties of the tooltip element
           tooltip.style.setProperty("position", "fixed");
-          tooltip.style.setProperty("display", "none"); 
-          tooltip.style.setProperty("padding", "0.5rem"); 
+          tooltip.style.setProperty("display", "none");
+          tooltip.style.setProperty("padding", "0.5rem");
           tooltip.style.setProperty("font-weight", "500");
           tooltip.style.setProperty("font-size", "0.75rem");
           tooltip.style.setProperty("background-color", "rgb(15, 23 ,42)");
@@ -142,7 +151,7 @@
           menuSlideItem.forEach((e) => {
             // Add an event listener to the menu slide item to show the tooltip
             e.addEventListener("mouseenter", () => {
-              if (localStorage.vyzorverticalstyles == "doublemenu") {
+              if (localStorage.yzenverticalstyles == "doublemenu") {
                 tooltip.style.setProperty("display", "block");
                 tooltip.textContent =
                   e.querySelector(".side-menu__label").textContent;
@@ -166,93 +175,69 @@
         }, 1000);
       }
     }
-    if (localStorage.vyzornavstyles) {
+    if (localStorage.yzennavstyles) {
       let html = document.querySelector("html");
-      let navStyles = localStorage.getItem("vyzornavstyles");
+      let navStyles = localStorage.getItem("yzennavstyles");
       if (navStyles == "menu-click") {
         html.setAttribute("data-nav-style", "menu-click");
-        localStorage.removeItem("vyzorverticalstyles");
+        localStorage.removeItem("yzenverticalstyles");
         html.removeAttribute("data-vertical-style");
       }
       if (navStyles == "menu-hover") {
         html.setAttribute("data-nav-style", "menu-hover");
-        localStorage.removeItem("vyzorverticalstyles");
+        localStorage.removeItem("yzenverticalstyles");
         html.removeAttribute("data-vertical-style");
       }
       if (navStyles == "icon-click") {
         html.setAttribute("data-nav-style", "icon-click");
-        localStorage.removeItem("vyzorverticalstyles");
+        localStorage.removeItem("yzenverticalstyles");
         html.removeAttribute("data-vertical-style");
       }
       if (navStyles == "icon-hover") {
         html.setAttribute("data-nav-style", "icon-hover");
-        localStorage.removeItem("vyzorverticalstyles");
+        localStorage.removeItem("yzenverticalstyles");
         html.removeAttribute("data-vertical-style");
       }
     }
-    if (localStorage.vyzorregular) {
-      let html = document.querySelector("html");
-      html.setAttribute("data-page-style", "regular");
-      let containerDiv = document.querySelector('.page-container');
-      if (containerDiv) {
-          containerDiv.classList.remove('main-body-container');
-      }
-    }
-    if (localStorage.vyzorclassic) {
+    if (localStorage.yzenclassic) {
       let html = document.querySelector("html");
       html.setAttribute("data-page-style", "classic");
-      let containerDiv = document.querySelector('.page-container');
-      if (containerDiv) {
-          containerDiv.classList.remove('main-body-container');
-      }
     }
-    if (localStorage.vyzormodern) {
+    if (localStorage.yzenmodern) {
       let html = document.querySelector("html");
       html.setAttribute("data-page-style", "modern");
-      let containerDiv = document.querySelector('.page-container');
-      if (containerDiv) {
-          containerDiv.classList.remove('main-body-container');
-      }
     }
-    if (localStorage.vyzorflat) {
-      let html = document.querySelector("html");
-      html.setAttribute("data-page-style", "flat");
-      let containerDiv = document.querySelector('.page-container');
-      if (containerDiv) {
-          containerDiv.classList.add('main-body-container');
-      }
-    }
-    if (localStorage.vyzorboxed) {
-      let html = document.querySelector("html");
-      html.setAttribute("data-width", "boxed");
-    }
-    if (localStorage.vyzorfullwidth) {
-      let html = document.querySelector("html");
-      html.setAttribute("data-width", "fullwidth");
-    }
-    if (localStorage.vyzordefaultwidth) {
+    if (localStorage.yzendefaultwidth) {
       let html = document.querySelector("html");
       html.setAttribute("data-width", "default");
     }
-    if (localStorage.vyzorheaderfixed) {
+    if (localStorage.yzenboxed) {
+      let html = document.querySelector("html");
+      html.setAttribute("data-width", "boxed");
+    }
+    if (localStorage.yzenfullwidth) {
+      let html = document.querySelector("html");
+      html.setAttribute("data-width", "fullwidth");
+    }
+    if (localStorage.yzenheaderfixed) {
       let html = document.querySelector("html");
       html.setAttribute("data-header-position", "fixed");
     }
-    if (localStorage.vyzorheaderscrollable) {
+    if (localStorage.yzenheaderscrollable) {
       let html = document.querySelector("html");
       html.setAttribute("data-header-position", "scrollable");
     }
-    if (localStorage.vyzormenufixed) {
+    if (localStorage.yzenmenufixed) {
       let html = document.querySelector("html");
       html.setAttribute("data-menu-position", "fixed");
     }
-    if (localStorage.vyzormenuscrollable) {
+    if (localStorage.yzenmenuscrollable) {
       let html = document.querySelector("html");
       html.setAttribute("data-menu-position", "scrollable");
     }
-    if (localStorage.vyzorMenu) {
+    if (localStorage.yzenMenu) {
       let html = document.querySelector("html");
-      let menuValue = localStorage.getItem("vyzorMenu");
+      let menuValue = localStorage.getItem("yzenMenu");
       switch (menuValue) {
         case "light":
           html.setAttribute("data-menu-styles", "light");
@@ -273,9 +258,10 @@
           break;
       }
     }
-    if (localStorage.vyzorHeader) {
+    if (localStorage.yzenHeader) {
+      console.log("working 2");
       let html = document.querySelector("html");
-      let headerValue = localStorage.getItem("vyzorHeader");
+      let headerValue = localStorage.getItem("yzenHeader");
       html.setAttribute("data-header-styles", headerValue);
     }
     if (localStorage.bgimg) {

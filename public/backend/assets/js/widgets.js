@@ -1,200 +1,178 @@
 (function () {
-    "use strict";
+    'use strict';
 
-    const options5 = {
+    var options = {
         series: [{
-            data: [25, 22, 41, 55, 30, 35, 25]
+            name: "Sales",
+            data: [30, 38, 25, 42, 35, 13, 63,25,53],
+            type: 'area',
+        },
+        {
+            name: "Revenue",
+            data: [20, 38, 38, 72, 55, 63, 43,55,33],
+            type: 'line',
         }],
         chart: {
-            type: 'bar',
-            width: 70,
-            height: 40,
-            sparkline: {
-                enabled: true
-            }
-        },
-        plotOptions: {
-            bar: {
-                columnWidth: '60%',
-                borderRadius: '2'
-            }
-        },
-        labels: [1, 2, 3, 4, 5, 6, 7],
-        colors: ['var(--primary-color)'],
-        xaxis: {
-            crosshairs: {
-                width: 1
-            },
-        },
-        tooltip: {
-            fixed: {
-                enabled: false
-            },
-            x: {
-                show: false
-            },
-            y: {
-                title: {
-                    formatter: function (seriesName) {
-                        return ''
-                    }
-                }
-            },
-            marker: {
-                show: false
-            }
-        }
-    };
-    const chart5 = new ApexCharts(document.querySelector("#chart-2"), options5);
-    if(chart5) chart5.render();
-
-    const options2 = {
-        series: [{
-            data: [12, 14, 2, 47, 42, 15, 47, 75, 65, 19, 14]
-        }],
-        chart: {
-            type: 'line',
-            width: 70,
-            height: 40,
-            sparkline: {
-                enabled: true
-            }
-        },
-        stroke: {
-            curve: 'smooth',
-            width: '2',
-        },
-        colors: ['rgb(255, 73, 205)'],
-        tooltip: {
-            fixed: {
-                enabled: false
-            },
-            x: {
-                show: false
-            },
-            y: {
-                title: {
-                    formatter: function (seriesName) {
-                        return ''
-                    }
-                }
-            },
-        }
-    };
-    const chart2 = new ApexCharts(document.querySelector("#chart-3"), options2);
-    if(chart2) chart2.render();
-
-    const options1 = {
-        series: [{
-            data: [7, 2, 10, 1, 12, 44, 25, 63, 95, 41, 66, 30]
-        }],
-        chart: {
-            type: 'line',
-            width: 70,
-            height: 40,
-            sparkline: {
-                enabled: true
-            }
-        },
-        stroke: {
-            curve: 'smooth',
-            width: '2',
-        },
-        colors: ['rgb(50, 212, 132)'],
-        tooltip: {
-            fixed: {
-                enabled: false
-            },
-            x: {
-                show: false
-            },
-            y: {
-                title: {
-                    formatter: function (seriesName) {
-                        return ''
-                    }
-                }
-            },
-            marker: {
-                show: false
-            }
-        }
-    };
-    const chart1 = new ApexCharts(document.querySelector("#chart-4"), options1);
-    if(chart1) chart1.render();
-
-    const options3 = {
-        series: [80, 32],
-        chart: {
-            type: 'pie',
-            width: 40,
-            height: 40,
-            sparkline: {
-                enabled: true
-            }
-        },
-        stroke: {
-            width: 1
-        },
-        colors: ['#f4f0f6', 'rgb(0, 201, 255)'],
-        tooltip: {
-            fixed: {
-                enabled: false
-            },
-        }
-    };
-    const chart3 = new ApexCharts(document.querySelector("#chart-5"), options3);
-    if(chart3) chart3.render();
-
-    /* Top Categories */
-    const options10 = {
-        series: [
-            {
-                name: 'Electronics',
-                data: [52, 51, 56, 57, 62, 59, 56, 55, 56, 56, 58, 62, 63, 68, 65, 62, 62, 57, 60, 65, 64, 69, 70, 69, 64, 68, 66, 66, 70, 73, 78],
-            },
-            {
-                name: 'Fashion',
-                data: [28, 28, 30, 32, 33, 38, 35, 39, 41, 41, 44, 39, 39, 44, 42, 44, 39, 44, 42, 45, 46, 38, 39, 36, 41, 40, 44, 46, 43, 47, 50]
-            },
-            {
-                name: 'Furniture',
-                data: [10, 8, 12, 11, 14, 21, 17, 19, 18, 14, 10, 11, 6, 10, 13, 13, 18, 23, 22, 27, 23, 18, 19, 20, 19, 23, 20, 25, 29, 29, 28]
-            }
-        ],
-        chart: {
-            id: 'chartD',
-            type: 'line',
-            height: 155,
+            height: 290,
             zoom: {
-                autoScaleYaxis: false
+                enabled: false
             },
-            sparkline: {
-                enabled: true,
-            },
-            toolbar: {
-                show: false,
-            },
-            dropShadow: {
-                enabled: true,
-                enabledOnSeries: undefined,
-                top: 7,
-                left: 1,
-                blur: 3,
-                color: '#000',
-                opacity: 0.05
-            },
+            toolbar: { show: false }
         },
-        colors: ["var(--primary-color)", "rgb(0, 201, 255)", "rgb(255, 73, 205)"],
         dataLabels: {
             enabled: false
         },
-        markers: {
-            size: 0,
-            style: 'hollow',
+        legend: {
+            show: true,
+            position: "bottom",
+            offsetX: 0,
+            offsetY: 8,
+            markers: {
+                size: 4,
+                strokeWidth: 0,
+                strokeColor: '#fff',
+                fillColors: undefined,
+                radius: 12,
+                customHTML: undefined,
+                onClick: undefined,
+                offsetX: 0,
+                offsetY: 0
+            },
+        },
+        stroke: {
+            curve: 'smooth',
+            width: [2,2],
+            dashArray:[0,4]
+        },
+        fill: {
+            type: 'gradient',
+            gradient: {
+                shadeIntensity: 1,
+                opacityFrom: 0.4,
+                type:'vertical',
+                opacityTo: 0.1,
+                stops: [0, 90, 100],
+                colorStops: [
+                    [
+                        {
+                            offset: 0,
+                            color: "var(--primary-color)",
+                            opacity: 0.1
+                        },
+                        {
+                            offset: 50,
+                            color: "var(--primary-color)",
+                            opacity: 0.1
+                        },
+                        {
+                            offset: 100,
+                            color: "var(--primary02)",
+                            opacity: 0.1
+                        }
+                    ],
+                    [
+                        {
+                            offset: 0,
+                            color: "rgba(127, 103, 257)",
+                            opacity: 1
+                        },
+                        {
+                            offset: 75,
+                            color: "rgba(127, 103, 257)",
+                            opacity: 1
+                        },
+                        {
+                            offset: 100,
+                            color: "rgba(127, 103, 257)",
+                            opacity: 1
+                        }
+                    ],
+                   
+                ]
+            }
         },
         grid: {
-            show: true,
+            borderColor: '#f5f4f4',
+            strokeDashArray: 3
+        },
+        colors: ["var(--primary-color)","rgba(127, 103, 257)"],
+        yaxis: {
+            min:0,
+        },
+        xaxis: {
+            type: 'week',
+            categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun','sun'],
+            axisBorder: {
+                show: true,
+                color: 'rgba(119, 119, 142, 0.05)',
+                offsetX: 0,
+                offsetY: 0,
+            },
+            axisTicks: {
+                show: true,
+                borderType: 'solid',
+                color: 'rgba(119, 119, 142, 0.05)',
+                width: 6,
+                offsetX: 0,
+                offsetY: 0
+            },
+            labels: {
+                rotate: -90
+            }
+        }
+    };
+    var chart = new ApexCharts(document.querySelector("#crm-revenue-analytics"), options);
+    chart.render();
+
+    var options = {
+        series: [
+            {
+                name: "Profit",
+                data: [20, 38, 38, 72, 55, 63, 43],
+                type: "column",
+            }
+        ],
+        chart: {
+            height: 160,
+            type: "line",
+            toolbar: {
+                show: false,
+            },
+            zoom: {
+                enabled: false,
+            },
+        },
+        plotOptions: {
+            bar: {
+                columnWidth: "35%",
+                borderRadiusApplication: "end",
+                borderRadiusWhenStacked: "all",
+                borderRadius: 5,
+                colors: {
+                    ranges: [{
+                        from: 0,
+                        to: 65,
+                        color: 'var(--primary03)'
+                    }, {
+                        from: 70,
+                        to: 100,
+                        color:'var(--primary-color)'
+                    }]
+                },
+            }
+        },
+        dataLabels: {
+            enabled: false,
+        },
+        legend: {
+            position: "top",
+            horizontalAlign: "center",
+        },
+        stroke: {
+            curve: "smooth",
+            width: ["0"],
+        },
+        grid: {
             borderColor: "#f1f1f1",
             strokeDashArray: 2,
             xaxis: {
@@ -208,544 +186,9 @@
                 }
             }
         },
-        tooltip: {
-            x: {
-                format: 'dd MMM yyyy'
-            }
-        },
-        stroke: {
-            show: true,
-            curve: 'smooth',
-            lineCap: 'butt',
-            colors: undefined,
-            width: 1.5,
-            dashArray: 0,
-        },
-        fill: {
-            type: 'solid',
-        },
-        legend: {
-            position: "top",
-            show: false
-        }
-    };
-    const chart10 = new ApexCharts(document.querySelector("#top-categories"), options10);
-    if(chart10) chart10.render();
-    /* Top Categories */
-
-    /* top country sales */
-    const markers = [
-        { name: 'Argentina', coords: [-38.4161, -63.6167] },
-        { name: 'France', coords: [46.6034, 1.8883] },
-        { name: 'USA', coords: [37.0902, -95.7129] }
-    ]
-    const map = new jsVectorMap({
-        selector: "#sales-locations",
-        // -------- Labels --------
-        labels: {
-            markers: {
-                render: function (marker) {
-                    return marker.name
-                },
-                offsets: function (index) {
-                    return markers[index].offsets || [0, 0]
-                }
-            },
-            color: "#000",
-        },
-        map: "world_merc",
-        markers: markers,
-        zoomOnScroll: false,
-        zoomButtons: false,
-        markerStyle: {
-            initial: {
-                r: 5,
-                fill: 'var(--primary-color)',
-                stroke: 'rgba(255,255,255,0.1)',
-                strokeWidth: 2,
-            }
-        },
-        markerLabelStyle: {
-            initial: {
-                fontSize: 13,
-                fontWeight: 500,
-                fill: '#35373e',
-            },
-        },
-    });
-    /* top country sales */
-
-    /*  sales overview chart */
-    const optionsoverview = {
-        series: [
-            {
-                name: "Sales",
-                data: [44, 42, 57, 86, 58, 55, 70, 43, 23, 54, 77, 34],
-            },
-            {
-                name: "OPEX Ratio",
-                data: [74, 72, 87, 116, 88, 85, 100, 73, 53, 84, 107, 64],
-            },
-            {
-                name: "General & Admin",
-                data: [84, 82, 97, 126, 98, 95, 110, 83, 63, 94, 117, 74],
-            },
-            {
-                name: "Marketing",
-                data: [34, 22, 37, 56, 21, 35, 60, 34, 56, 78, 89, 53],
-            },
-        ],
-        chart: {
-            stacked: true,
-            type: "bar",
-            height: 365,
-        },
-        grid: {
-            borderColor: "#f5f4f4",
-            strokeDashArray: 5,
-            yaxis: {
-                lines: {
-                    show: true, // Ensure y-axis grids are shown
-                },
-            },
-        },
-        colors: [
-            "var(--primary-color)",
-            "var(--primary06)",
-            "var(--primary03)",
-            "var(--primary01)",
-        ],
-        plotOptions: {
-            bar: {
-                columnWidth: "70%",
-                borderRadius: 7,
-                borderRadiusApplication: 'around',
-                borderRadiusWhenStacked: 'all',
-            },
-        },
-        dataLabels: {
-            enabled: false,
-        },
-        legend: {
-            show: true,
-            position: "top",
-        },
-        yaxis: {
-            title: {
-                text: "Growth",
-                style: {
-                    color: "#adb5be",
-                    fontSize: "14px",
-                    fontFamily: "Montserrat, sans-serif",
-                    fontWeight: 600,
-                    cssClass: "apexcharts-yaxis-label",
-                },
-            },
-            axisBorder: {
-                show: true,
-                color: "rgba(119, 119, 142, 0.05)",
-                offsetX: 0,
-                offsetY: 0,
-            },
-            axisTicks: {
-                show: true,
-                borderType: "solid",
-                color: "rgba(119, 119, 142, 0.05)",
-                width: 6,
-                offsetX: 0,
-                offsetY: 0,
-            },
-            labels: {
-                formatter: function (y) {
-                    return y.toFixed(0) + "";
-                },
-            },
-        },
+        colors: ["var(--primary-color)"],
         xaxis: {
             type: "month",
-            categories: [
-                "Jan",
-                "Feb",
-                "Mar",
-                "Apr",
-                "May",
-                "Jun",
-                "Jul",
-                "Aug",
-                "sep",
-                "oct",
-                "nov",
-                "dec",
-            ],
-            axisBorder: {
-                show: false,
-                color: "rgba(119, 119, 142, 0.05)",
-                offsetX: 0,
-                offsetY: 0,
-            },
-            axisTicks: {
-                show: false,
-                borderType: "solid",
-                color: "rgba(119, 119, 142, 0.05)",
-                width: 6,
-                offsetX: 0,
-                offsetY: 0,
-            },
-            labels: {
-                rotate: -90,
-            },
-        },
-    };
-    const overviewchart = new ApexCharts(document.querySelector("#salesOverview"), optionsoverview);
-    if(overviewchart) overviewchart.render();
-    /*  sales overview chart */
-
-    /* Top Categories */
-    const Categoriesoptions = {
-        series: [3160, 2127, 1556, 1026, 2321],
-        chart: {
-            width: 275,
-            type: 'donut',
-            sparkline: {
-                enabled: true
-            }
-        },
-        legend: {
-            show: false,
-        },
-        colors: ['var(--primary-color)', 'rgb(255, 73, 205)', 'rgb(0, 201, 255)', 'rgb(253, 175, 34)', 'rgb(50, 212, 132)'],
-        labels: ['Electronics', 'Fashion', 'Furniture', 'Appliances', 'Gaming'],
-        dataLabels: {
-            enabled: false,
-        },
-        plotOptions: {
-            pie: {
-                offsetY: 10,
-                expandOnClick: false,
-                donut: {
-                    size: '80%',
-                    background: 'transparent',
-                    labels: {
-                        show: true,
-                        name: {
-                            show: true,
-                            fontSize: '20px',
-                            color: '#495057',
-                            fontFamily: "Montserrat, sans-serif",
-                            offsetY: -5
-                        },
-                        value: {
-                            show: true,
-                            fontSize: '22px',
-                            color: undefined,
-                            offsetY: 5,
-                            fontWeight: 600,
-                            fontFamily: "Montserrat, sans-serif",
-                            formatter: function (val) {
-                                return val + "%"
-                            }
-                        },
-                        total: {
-                            show: true,
-                            showAlways: true,
-                            label: 'Total Sales',
-                            fontSize: '14px',
-                            fontWeight: 400,
-                            color: '#495057',
-                        }
-                    }
-                }
-            }
-        },
-        fill: {
-            type: "gradient",
-            gradient: {
-                shadeIntensity: 1,
-                type: "vertical",
-                colorStops: [
-                    [
-                        {
-                            offset: 0,
-                            color: "var(--primary-color)",
-                            opacity: 1
-                        },
-                        {
-                            offset: 90,
-                            color: "var(--primary09)",
-                            opacity: 1
-                        },
-                        {
-                            offset: 100,
-                            color: "var(--primary08)",
-                            opacity: 1
-                        }
-                    ],
-                    [
-                        {
-                            offset: 0,
-                            color: "rgba(255, 73, 205, 1)",
-                            opacity: 1
-                        },
-                        {
-                            offset: 90,
-                            color: "rgba(255, 73, 205, 0.9)",
-                            opacity: 1
-                        },
-                        {
-                            offset: 100,
-                            color: "rgba(255, 73, 205, 0.8)",
-                            opacity: 1
-                        }
-                    ],
-                    [
-                        {
-                            offset: 0,
-                            color: "rgba(0, 201, 255, 1)",
-                            opacity: 1
-                        },
-                        {
-                            offset: 90,
-                            color: "rgba(0, 201, 255, 0.9)",
-                            opacity: 1
-                        },
-                        {
-                            offset: 100,
-                            color: "rgba(0, 201, 255, 0.8)",
-                            opacity: 1
-                        }
-                    ],
-                    [
-                        {
-                            offset: 0,
-                            color: "rgba(253, 175, 34, 1)",
-                            opacity: 1
-                        },
-                        {
-                            offset: 90,
-                            color: "rgba(253, 175, 34, 0.9)",
-                            opacity: 1
-                        },
-                        {
-                            offset: 100,
-                            color: "rgba(253, 175, 34, 0.8)",
-                            opacity: 1
-                        }
-                    ],
-                    [
-                        {
-                            offset: 0,
-                            color: "rgba(50, 212, 132, 1)",
-                            opacity: 1
-                        },
-                        {
-                            offset: 90,
-                            color: "rgba(50, 212, 132, 0.9)",
-                            opacity: 1
-                        },
-                        {
-                            offset: 100,
-                            color: "rgba(50, 212, 132, 0.8)",
-                            opacity: 1
-                        }
-                    ]
-                ]
-            }
-        },
-    };
-    const Categorieschart = new ApexCharts(document.querySelector("#top-categories1"), Categoriesoptions);
-    if(Categorieschart) Categorieschart.render();
-    /* Top Categories */
-
-    /* social visitors */
-    const visitorsoptions = {
-        series: [{
-            name: 'Visitors',
-            data: [650, 770, 840, 890, 1100, 1380, 1500]
-        }],
-        chart: {
-            height: 390,
-            type: 'bar',
-            events: {
-                click: function (chart, w, e) {
-                }
-            },
-            toolbar: {
-                show: false,
-            }
-        },
-        colors: ['var(--primary-color)', 'rgba(51, 182, 229, 1)', 'rgba(255, 117, 170, 1)', 'rgba(255, 187, 51, 1)', 'rgba(0, 200, 80, 1)', 'rgba(255, 68, 68, 0.9)', 'rgba(0, 216, 216, 1)'],
-        plotOptions: {
-            bar: {
-                barHeight: '40%',
-                distributed: true,
-                horizontal: true,
-                borderRadius: 3,
-            }
-        },
-        dataLabels: {
-            enabled: false
-        },
-        legend: {
-            show: false
-        },
-        grid: {
-            borderColor: '#f1f1f1',
-            strokeDashArray: 3
-        },
-        fill: {
-            type: 'pattern',
-            opacity: 1,
-            pattern: {
-                style: 'slantedLines', // string or array of strings
-
-            }
-        },
-        xaxis: {
-            categories: [
-                "Facebook",
-                "Instagram",
-                "Dribble",
-                "Twitter",
-                "Chrome",
-                "Pininterest",
-                "Reddit",
-            ],
-            labels: {
-                show: true,
-                style: {
-                    colors: "#adb5be",
-                    fontSize: "12px",
-                    fontWeight: 500,
-                    cssClass: "apexcharts-xaxis-label",
-                },
-            },
-        },
-        yaxis: {
-            labels: {
-                show: true,
-                style: {
-                    colors: "#adb5be",
-                    fontSize: "12px",
-                    fontWeight: 500,
-                    cssClass: "apexcharts-yaxis-label",
-                },
-            },
-        },
-        tooltip: {
-            enabled: true,
-            shared: false,
-            intersect: true,
-            x: {
-                show: false
-            },
-            theme: "dark",
-        },
-    };
-    const visitorschart2 = new ApexCharts(document.querySelector("#social-visitors"), visitorsoptions);
-    if(visitorschart2) visitorschart2.render();
-    /* social visitors */
-
-    /* Social Traffic */
-    const Trafficoptions = {
-        series: [
-            {
-                name: "Facebook",
-                data: [44, 42, 57, 86, 58, 55, 70],
-            },
-            {
-                name: "Instagram",
-                data: [74, 72, 87, 116, 88, 85, 100],
-            },
-            {
-                name: "Twitter",
-                data: [84, 82, 97, 126, 98, 95, 110],
-            },
-            {
-                name: "linkedIn",
-                data: [34, 22, 37, 56, 21, 35, 60],
-            },
-        ],
-        chart: {
-            stacked: true,
-            type: "bar",
-            height: 313,
-            toolbar: {
-                show: false
-            }
-        },
-        grid: {
-            borderColor: "#f5f4f4",
-            strokeDashArray: 5,
-            yaxis: {
-                lines: {
-                    show: true, // Ensure y-axis grids are shown
-                },
-            },
-        },
-        colors: [
-            "var(--primary-color)",
-            "rgb(0, 201, 255)",
-            "rgb(253, 175, 34)",
-            "rgb(50, 212, 132)",
-        ],
-        plotOptions: {
-            bar: {
-                columnWidth: "25%",
-                borderRadius: '3',
-                borderRadiusApplication: "around",
-                borderRadiusWhenStacked: "all",
-            },
-        },
-        stroke: {
-            show: true,
-            curve: 'smooth',
-            lineCap: 'round',
-            colors: "#fff",
-            width: 3,
-        },
-        dataLabels: {
-            enabled: false,
-        },
-        legend: {
-            show: true,
-            position: "top",
-            markers: {
-                size: 4,
-                shape: "circle"
-            },
-        },
-        yaxis: {
-            title: {
-                style: {
-                    color: "#adb5be",
-                    fontSize: "14px",
-                    fontFamily: "Poppins, sans-serif",
-                    fontWeight: 600,
-                    cssClass: "apexcharts-yaxis-label",
-                },
-            },
-            axisBorder: {
-                show: true,
-                color: "rgba(119, 119, 142, 0.05)",
-                offsetX: 0,
-                offsetY: 0,
-            },
-            axisTicks: {
-                show: true,
-                borderType: "solid",
-                color: "rgba(119, 119, 142, 0.05)",
-                width: 6,
-                offsetX: 0,
-                offsetY: 0,
-            },
-            labels: {
-                formatter: function (y) {
-                    return y.toFixed(0) + "";
-                },
-            },
-        },
-        xaxis: {
-            type: "Week",
             categories: [
                 "Mon",
                 "Tue",
@@ -753,16 +196,16 @@
                 "Thu",
                 "Fri",
                 "Sat",
-                "Sun",
+                "sun"
             ],
             axisBorder: {
-                show: false,
+                show: true,
                 color: "rgba(119, 119, 142, 0.05)",
                 offsetX: 0,
                 offsetY: 0,
             },
             axisTicks: {
-                show: false,
+                show: true,
                 borderType: "solid",
                 color: "rgba(119, 119, 142, 0.05)",
                 width: 6,
@@ -774,81 +217,286 @@
             },
         },
     };
-    const Trafficchart = new ApexCharts(document.querySelector("#social-traffic1"), Trafficoptions);
-    if(Trafficchart) Trafficchart.render();
-    /* Social Traffic */
+    var chart = new ApexCharts(document.querySelector("#widget-profit"), options);
+    chart.render();
 
-    /* Recent Orders */
-    const Ordersoptions = {
-        series: [1754, 634, 878, 470],
-        labels: ["Delivered", "Cancelled", "Pending", "Returned"],
+    var options = {
+        series: [18235, 12743, 8369, 16458],
+        labels: ["male", "Female", "Others", "Not Mentioned"],
         chart: {
-            height: 258,
-            type: 'donut',
+          height: 270,
+          type: 'donut',
+        },
+        dataLabels: { 
+          enabled: false,
+        },
+    
+        legend: {
+          show: false,
+        },
+        stroke: {
+          width: 8,
+          colors: ["rgba(244, 244, 244,1)"],
+        },
+        plotOptions: {
+          pie: {
+            startAngle: -90,
+            endAngle: 90,
+            offsetY: 10,
+            expandOnClick: false,
+            donut: {
+              size: '80%',
+              background: 'transparent',
+              labels: {
+                show: true,
+                name: {
+                  show: true,
+                  fontSize: '20px',
+                  color: '#495057',
+                  fontFamily: "Montserrat, sans-serif",
+                  offsetY: -35
+                },
+                value: {
+                  show: true,
+                  fontSize: '22px',
+                  color: undefined,
+                  offsetY: -25,
+                  fontWeight: 600,
+                  fontFamily: "Montserrat, sans-serif",
+                  formatter: function (val) {
+                    return val + "%"
+                  }
+                },
+                total: {
+                  show: true,
+                  showAlways: true,
+                  label: 'Total Candidates',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  color: '#495057',
+                }
+              }
+            }
+          }
+        },
+        grid: {
+          padding: {
+            bottom: -85
+          }
+        },
+        colors: ["var(--primary09)", "rgba(127, 103, 257, 0.9)", "rgba(253, 73, 99, 0.9)", "rgba(255, 169, 9, 0.9)"],
+      };
+      var chart = new ApexCharts(document.querySelector("#revenue-summery"), options);
+      chart.render();
+
+      var spark04 = {
+        chart: {
+          type: 'area',
+          height: 90,
+          sparkline: {
+            enabled: true
+          },
+        },
+        stroke: {
+          show: true,
+          width:[2],
+          curve: 'smooth',
+          lineCap: 'butt',
+          colors: undefined,
+          dashArray: 0,
+        },
+        tooltip: {
+          enabled: false,
+        },
+        series: [{
+          name: 'Value',
+          data: [5, 4, 3, 8, 5, 6, 3, 8, 6, 9, 5, 7, 3, 8]
+        }],
+        yaxis: {
+          min: 0,
+          show: false
+        },
+        plotOptions: {
+          bar: {
+            columnWidth: "40%",
+            borderRadiusApplication: "around",
+          },
+        },
+        fill: {
+            type: "gradient",
+            gradient: {
+                shadeIntensity: 1,
+                type: "horizontal",
+                colorStops: [
+                    [
+                        {
+                            offset: 0,
+                            color: "rgba(var(--primary-rgb), 1)",
+                            opacity: 0.03
+                        },
+                        {
+                            offset: 90,
+                            color: "rgba(var(--primary-rgb), 1)",
+                            opacity: 0.03
+                        }
+                    ]
+                ]
+            }
+        },
+        xaxis: {
+          axisBorder: {
+            show: false
+          },
+        },
+        yaxis: {
+          min:0,
+          axisBorder: {
+            show: false
+          },
+        },
+        colors: ['rgba(var(--primary-rgb), 1)'],
+      
+      }
+      document.getElementById('widget-chart-5').innerHTML = '';
+      var spark04 = new ApexCharts(document.querySelector("#widget-chart-5"), spark04);
+      spark04.render();
+
+      var spark05 = {
+        chart: {
+          type: 'area',
+          height: 90,
+          sparkline: {
+            enabled: true
+          },
+        },
+        stroke: {
+          show: true,
+          width:[2],
+          curve: 'smooth',
+          lineCap: 'butt',
+          colors: undefined,
+          dashArray: 0,
+        },
+        tooltip: {
+          enabled: false,
+        },
+        series: [{
+          name: 'Value',
+          data: [5, 4, 3, 8, 5, 6, 3, 8, 6, 9, 5, 7, 3, 8]
+        }],
+        yaxis: {
+          min: 0,
+          show: false
+        },
+        plotOptions: {
+          bar: {
+            columnWidth: "40%",
+            borderRadiusApplication: "around",
+          },
+        },
+        fill: {
+            type: "gradient",
+            gradient: {
+                shadeIntensity: 1,
+                type: "horizontal",
+                colorStops: [
+                    [
+                        {
+                            offset: 0,
+                            color: "rgba(var(--secondary-rgb), 1)",
+                            opacity: 0.03
+                        },
+                        {
+                            offset: 90,
+                            color: "rgba(var(--secondary-rgb), 1)",
+                            opacity: 0.03
+                        }
+                    ]
+                ]
+            }
+        },
+        xaxis: {
+          axisBorder: {
+            show: false
+          },
+        },
+        yaxis: {
+          min:0,
+          axisBorder: {
+            show: false
+          },
+        },
+        colors: ['rgba(var(--secondary-rgb), 1)'],
+      
+      }
+      document.getElementById('widget-chart-6').innerHTML = '';
+      var spark05 = new ApexCharts(document.querySelector("#widget-chart-6"), spark05);
+      spark05.render();
+     
+
+      var options = {
+        series: [{
+            name: 'sales',
+            type: 'column',
+            data: [200, 170, 250, 240, 220, 280, 170, 155, 130, 242],
+        }, {
+            name: 'revenue',
+            type: 'line',
+            data: [13, 15, 25, 17, 19, 22, 11, 10, 9, 22],
+            dataLabels: {
+                enabled: false,
+            },
+        }],
+        chart: {
+            height: 300,
+            type: 'line',
+            dropShadow: {
+                enabled: true,
+                enabledOnSeries: undefined,
+                top: 0,
+                left: 0,
+                blur: 4,
+                color: ["rgba(255,255,255,0)", "rgb(215, 124, 247)"],
+                opacity: 0.4,
+            },
+            toolbar: {
+                show: false,
+            }
         },
         dataLabels: {
             enabled: false,
-        },
-
-        legend: {
-            show: false,
+            enabledOnSeries: [0],
+            background: {
+                enabled: false,
+                foreColor: '#fff',
+            },
+            formatter: function (val) {
+                return val + "%";
+            },
+            offsetY: -10,
+            style: {
+                fontSize: '12px',
+                colors: ["#8c9097"]
+            }
         },
         stroke: {
-            show: true,
             curve: 'smooth',
-            lineCap: 'round',
-            colors: "#fff",
-            width: 0,
-            dashArray: 0,
+            width: [0, 2],
         },
         plotOptions: {
-            pie: {
-                startAngle: -90,
-                endAngle: 90,
-                offsetY: 10,
-                expandOnClick: false,
-                donut: {
-                    size: '80%',
-                    background: 'transparent',
-                    labels: {
-                        show: true,
-                        name: {
-                            show: true,
-                            fontSize: '20px',
-                            color: '#495057',
-                            offsetY: -25
-                        },
-                        value: {
-                            show: true,
-                            fontSize: '15px',
-                            color: undefined,
-                            offsetY: -20,
-                            formatter: function (val) {
-                                return val + "%"
-                            }
-                        },
-                        total: {
-                            show: true,
-                            showAlways: true,
-                            label: 'Total',
-                            fontSize: '22px',
-                            fontWeight: 600,
-                            color: '#495057',
-                        }
+            bar: {
+                columnWidth: "30%",
+                borderRadius: 3,
+            }
+        },
 
-                    }
-                }
-            }
-        },
-        grid: {
-            padding: {
-                bottom: -120
-            }
-        },
-        colors: ["var(--primary-color)", "rgba(50, 212, 132, 1)", "rgba(253, 175, 34, 1)", "rgba(0, 201, 255, 1)"],
+        colors: ["rgba(var(--primary-rgb),0.7)", "rgba(127, 103, 257,1)"],
+        yaxis: [{
+
+        }, {
+            opposite: true,
+        }],
     };
-    const Orderschart = new ApexCharts(document.querySelector("#recent-orders"), Ordersoptions);
-    if(Orderschart) Orderschart.render();
-    /* Recent Orders */
-
+    var chart = new ApexCharts(document.querySelector("#salerevenue"), options);
+    chart.render();
 })();

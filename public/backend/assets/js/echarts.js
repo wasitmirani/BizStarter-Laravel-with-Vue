@@ -3,13 +3,14 @@
     "use strict";
 
     /* basic line chart */
-    const basicdom = document.getElementById('echart-basic-line');
-    const basicmyChart = echarts.init(basicdom, null, {
+    var dom = document.getElementById('echart-basic-line');
+    var myChart = echarts.init(dom, null, {
         renderer: 'canvas',
         useDirtyRect: false
     });
-    const  basicapp = {};
-    const basicoption = {
+    var app = {};
+    var option;
+    option = {
         grid: {
             left: "0%",
             right: "0%",
@@ -50,21 +51,22 @@
                 type: 'line'
             }
         ],
-        color: "rgb(152, 95, 253)"
+        color: "#03b562"
     };
-    if (basicoption && typeof basicoption === 'object') {
-        basicmyChart.setOption(basicoption);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
     }
-    window.addEventListener('resize', basicmyChart.resize);
+    window.addEventListener('resize', myChart.resize);
 
     /* smooth line chart */
-    const dom1 = document.getElementById('echart-smoothed-line');
-    const myChart1 = echarts.init(dom1, null, {
+    var dom = document.getElementById('echart-smoothed-line');
+    var myChart = echarts.init(dom, null, {
         renderer: 'canvas',
         useDirtyRect: false
     });
-    const app1 = {};
-    const option1 = {
+    var app = {};
+    var option;
+    option = {
         grid: {
             left: "0%",
             right: "0%",
@@ -101,21 +103,22 @@
                 smooth: true
             }
         ],
-        color: "rgb(152, 95, 253)"
+        color: "#03b562"
     };
-    if (option1 && typeof option1 === 'object') {
-        myChart1.setOption(option1);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
     }
-    window.addEventListener('resize', myChart1.resize);
+    window.addEventListener('resize', myChart.resize);
 
     /* basic area chart */
-    const dom2 = document.getElementById('echart-basic-area');
-    const myChart2 = echarts.init(dom2, null, {
+    var dom = document.getElementById('echart-basic-area');
+    var myChart = echarts.init(dom, null, {
         renderer: 'canvas',
         useDirtyRect: false
     });
-    const app2 = {};
-    const option2 = {
+    var app = {};
+    var option;
+    option = {
         grid: {
             left: "0%",
             right: "0%",
@@ -153,21 +156,22 @@
                 areaStyle: {}
             }
         ],
-        color: "rgb(152, 95, 253)"
+        color: "#03b562"
     };
-    if (option2 && typeof option2 === 'object') {
-        myChart2.setOption(option2);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
     }
-    window.addEventListener('resize', myChart2.resize);
+    window.addEventListener('resize', myChart.resize);
 
     /* stacked line chart */
-    const dom3 = document.getElementById('echart-stacked-line');
-    const myChart3 = echarts.init(dom3, null, {
+    var dom = document.getElementById('echart-stacked-line');
+    var myChart = echarts.init(dom, null, {
         renderer: 'canvas',
         useDirtyRect: false
     });
-    const app3 = {};
-    const option3 = {
+    var app = {};
+    var option;
+    option = {
         grid: {
             left: "0%",
             right: "0%",
@@ -244,21 +248,22 @@
                 data: [820, 932, 901, 934, 1290, 1330, 1320]
             }
         ],
-        color: ['#985ffd', '#ff49cd', '#fdaf22', '#32d484', '#00c9ff', '#ff6757', 'rgba(53, 181, 170,1)',]
+        color: ["#03b562", "rgb(127, 103, 257)", "rgb(253, 73, 99)", "rgb(255, 169, 9)", "rgb(15, 188, 249)"]
     };
-    if (option3 && typeof option3 === 'object') {
-        myChart3.setOption(option3);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
     }
-    window.addEventListener('resize', myChart3.resize);
+    window.addEventListener('resize', myChart.resize);
 
     /* stacked area chart */
-    const dom4 = document.getElementById('echart-stacked-area');
-    const myChart4 = echarts.init(dom4, null, {
+    var dom = document.getElementById('echart-stacked-area');
+    var myChart = echarts.init(dom, null, {
         renderer: 'canvas',
         useDirtyRect: false
     });
-    const app4 = {};
-    const option4 = {
+    var app = {};
+    var option;
+    option = {
         tooltip: {
             trigger: 'axis',
             axisPointer: {
@@ -369,21 +374,22 @@
                 data: [820, 932, 901, 934, 1290, 1330, 1320]
             }
         ],
-        color: ['#985ffd', '#ff49cd', '#fdaf22', '#32d484', '#00c9ff', '#ff6757', 'rgba(53, 181, 170,1)',]
+        color: ["#03b562", "rgb(127, 103, 257)", "rgb(253, 73, 99)", "rgb(255, 169, 9)", "rgb(15, 188, 249)"]
     };
-    if (option4 && typeof option4 === 'object') {
-        myChart4.setOption(option4);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
     }
-    window.addEventListener('resize', myChart4.resize);
+    window.addEventListener('resize', myChart.resize);
 
     /* step line chart */
-    const dom5 = document.getElementById('echart-step-line');
-    const myChart5 = echarts.init(dom5, null, {
+    var dom = document.getElementById('echart-step-line');
+    var myChart = echarts.init(dom, null, {
         renderer: 'canvas',
         useDirtyRect: false
     });
-    const app5 = {};
-    const option5 = {
+    var app = {};
+    var option;
+    option = {
         tooltip: {
             trigger: 'axis'
         },
@@ -447,21 +453,22 @@
                 data: [450, 432, 401, 454, 590, 530, 510]
             }
         ],
-        color: ['#985ffd', '#ff49cd', '#fdaf22', '#32d484', '#00c9ff', '#ff6757', 'rgba(53, 181, 170,1)',]
+        color: ["#03b562", "rgb(127, 103, 257)", "rgb(253, 73, 99)", "rgb(12, 163, 231)", "rgb(254, 84, 84)"]
     };
-    if (option5 && typeof option5 === 'object') {
-        myChart5.setOption(option5);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
     }
-    window.addEventListener('resize', myChart5.resize);
+    window.addEventListener('resize', myChart.resize);
 
     /* basic bar chart */
-    const dom6 = document.getElementById('echart-bar-basic');
-    const myChart6 = echarts.init(dom6, null, {
+    var dom = document.getElementById('echart-bar-basic');
+    var myChart = echarts.init(dom, null, {
         renderer: 'canvas',
         useDirtyRect: false
     });
-    const app6 = {};
-    const option6 = {
+    var app = {};
+    var option;
+    option = {
         grid: {
             left: '0%',
             right: '0%',
@@ -497,21 +504,22 @@
                 type: 'bar'
             }
         ],
-        color: "rgb(152, 95, 253)"
+        color: "#03b562"
     };
-    if (option6 && typeof option6 === 'object') {
-        myChart6.setOption(option6);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
     }
-    window.addEventListener('resize', myChart6.resize);
+    window.addEventListener('resize', myChart.resize);
 
     /* bar with background chart */
-    const dom7 = document.getElementById('echart-bar-background');
-    const myChart7 = echarts.init(dom7, null, {
+    var dom = document.getElementById('echart-bar-background');
+    var myChart = echarts.init(dom, null, {
         renderer: 'canvas',
         useDirtyRect: false
     });
-    const app7 = {};
-    const option7 = {
+    var app = {};
+    var option;
+    option = {
         grid: {
             left: '0%',
             right: '0%',
@@ -551,21 +559,22 @@
                 }
             }
         ],
-        color: "rgb(152, 95, 253)"
+        color: "#03b562"
     };
-    if (option7 && typeof option7 === 'object') {
-        myChart7.setOption(option7);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
     }
-    window.addEventListener('resize', myChart7.resize);
+    window.addEventListener('resize', myChart.resize);
 
     /* single bar color chart */
-    const dom8 = document.getElementById('echart-bar-single');
-    const myChart8 = echarts.init(dom8, null, {
+    var dom = document.getElementById('echart-bar-single');
+    var myChart = echarts.init(dom, null, {
         renderer: 'canvas',
         useDirtyRect: false
     });
-    const app8 = {};
-    const option8 = {
+    var app = {};
+    var option;
+    option = {
         grid: {
             left: '0%',
             right: '0%',
@@ -602,7 +611,7 @@
                     {
                         value: 200,
                         itemStyle: {
-                            color: 'rgb(255, 73, 205)'
+                            color: 'rgb(127, 103, 257)'
                         }
                     },
                     150,
@@ -614,21 +623,22 @@
                 type: 'bar'
             }
         ],
-        color: "rgb(152, 95, 253)"
+        color: "#03b562"
     };
-    if (option8 && typeof option8 === 'object') {
-        myChart8.setOption(option8);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
     }
-    window.addEventListener('resize', myChart8.resize);
+    window.addEventListener('resize', myChart.resize);
 
     /* waterfall chart */
-    const dom9 = document.getElementById('echart-waterfall');
-    const myChart9 = echarts.init(dom9, null, {
+    var dom = document.getElementById('echart-waterfall');
+    var myChart = echarts.init(dom, null, {
         renderer: 'canvas',
         useDirtyRect: false
     });
-    const app9 = {};
-    const option9 = {
+    var app = {};
+    var option;
+    option = {
         tooltip: {
             trigger: 'axis',
             axisPointer: {
@@ -697,24 +707,25 @@
                 data: [2900, 1200, 300, 200, 900, 300]
             }
         ],
-        color: "rgb(152, 95, 253)"
+        color: "#03b562"
     };
-    if (option9 && typeof option9 === 'object') {
-        myChart9.setOption(option9);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
     }
-    window.addEventListener('resize', myChart9.resize);
+    window.addEventListener('resize', myChart.resize);
 
     /* bar chart with negative values */
-    const dom10 = document.getElementById('echart-negative-values');
-    const myChart10 = echarts.init(dom10, null, {
+    var dom = document.getElementById('echart-negative-values');
+    var myChart = echarts.init(dom, null, {
         renderer: 'canvas',
         useDirtyRect: false
     });
-    const app10 = {};
+    var app = {};
+    var option;
     const labelRight = {
         position: 'right'
     };
-    const option10  = {
+    option = {
         tooltip: {
             trigger: 'axis',
             axisPointer: {
@@ -756,6 +767,16 @@
                 'two',
                 'one'
             ],
+            axisLine: {
+                lineStyle: {
+                    color: "#8c9097"
+                }
+            },
+            splitLine: {
+                lineStyle: {
+                    color: "rgba(142, 156, 173,0.1)"
+                }
+            }
         },
         series: [
             {
@@ -780,20 +801,21 @@
                 ]
             }
         ],
-        color: "rgb(152, 95, 253)"
+        color: "#03b562"
     };
-    if (option10 && typeof option10 === 'object') {
-        myChart10.setOption(option10);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
     }
-    window.addEventListener('resize', myChart10.resize);
+    window.addEventListener('resize', myChart.resize);
 
     /* bar with labels chart */
-    const dom11 = document.getElementById('echart-bar-labels');
-    const myChart11 = echarts.init(dom11, null, {
+    var dom = document.getElementById('echart-bar-labels');
+    var myChart = echarts.init(dom, null, {
         renderer: 'canvas',
         useDirtyRect: false
     });
-    const app11 = {};
+    var app = {};
+    var option;
     const posList = [
         'left',
         'right',
@@ -809,7 +831,7 @@
         'insideBottomLeft',
         'insideBottomRight'
     ];
-    app11.configParameters = {
+    app.configParameters = {
         rotate: {
             min: -90,
             max: 90
@@ -839,7 +861,7 @@
             max: 100
         }
     };
-    app11.config = {
+    app.config = {
         rotate: 90,
         align: 'left',
         verticalAlign: 'middle',
@@ -873,18 +895,18 @@
     };
     const labelOption = {
         show: true,
-        position: app11.config.position,
-        distance: app11.config.distance,
-        align: app11.config.align,
-        verticalAlign: app11.config.verticalAlign,
-        rotate: app11.config.rotate,
+        position: app.config.position,
+        distance: app.config.distance,
+        align: app.config.align,
+        verticalAlign: app.config.verticalAlign,
+        rotate: app.config.rotate,
         formatter: '{c}  {name|{a}}',
         fontSize: 16,
         rich: {
             name: {}
         }
     };
-    const option11 = {
+    option = {
         tooltip: {
             trigger: 'axis',
             axisPointer: {
@@ -984,21 +1006,22 @@
                 data: [98, 77, 101, 99, 40]
             }
         ],
-        color: ['#985ffd', '#ff49cd', '#fdaf22', '#32d484', '#00c9ff', '#ff6757', 'rgba(53, 181, 170,1)']
+        color: ["#03b562", "rgb(127, 103, 257)", "rgb(244, 167, 66)", "rgb(254, 84, 84)"]
     };
-    if (option11 && typeof option11 === 'object') {
-        myChart11.setOption(option11);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
     }
-    window.addEventListener('resize', myChart11.resize);
+    window.addEventListener('resize', myChart.resize);
 
     /* horizontal bar chart */
-    const dom12 = document.getElementById('echart-bar-horizontal');
-    const myChart12 = echarts.init(dom12, null, {
+    var dom = document.getElementById('echart-bar-horizontal');
+    var myChart = echarts.init(dom, null, {
         renderer: 'canvas',
         useDirtyRect: false
     });
-    const app12 = {};
-    const option12 = {
+    var app = {};
+    var option;
+    option = {
         tooltip: {
             trigger: 'axis',
             axisPointer: {
@@ -1052,21 +1075,22 @@
                 data: [19325, 23438, 31000, 121594, 134141, 681807]
             }
         ],
-        color: ["rgb(152, 95, 253)", "rgb(255, 73, 205)"]
+        color: ["#03b562", "rgb(127, 103, 257)"]
     };
-    if (option12 && typeof option12 === 'object') {
-        myChart12.setOption(option12);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
     }
-    window.addEventListener('resize', myChart12.resize);
+    window.addEventListener('resize', myChart.resize);
 
     /* stacked horizontal bar chart */
-    const dom13 = document.getElementById('echart-stacked-horizontal');
-    const myChart13 = echarts.init(dom13, null, {
+    var dom = document.getElementById('echart-stacked-horizontal');
+    var myChart = echarts.init(dom, null, {
         renderer: 'canvas',
         useDirtyRect: false
     });
-    const app13 = {};
-    const option13  = {
+    var app = {};
+    var option;
+    option = {
         tooltip: {
             trigger: 'axis',
             axisPointer: {
@@ -1171,21 +1195,22 @@
                 data: [820, 832, 901, 934, 1290, 1330, 1320]
             }
         ],
-        color: ['#985ffd', '#ff49cd', '#fdaf22', '#32d484', '#00c9ff', '#ff6757', 'rgba(53, 181, 170,1)']
+        color: ["#03b562", "rgb(127, 103, 257)", "#fd4963", "#ffa909", "#0fbcf9"]
     };
-    if (option13 && typeof option13 === 'object') {
-        myChart13.setOption(option13);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
     }
-    window.addEventListener('resize', myChart13.resize);
+    window.addEventListener('resize', myChart.resize);
 
     /* pie chart */
-    const dom14 = document.getElementById('echart-pie');
-    const myChart14 = echarts.init(dom14, null, {
+    var dom = document.getElementById('echart-pie');
+    var myChart = echarts.init(dom, null, {
         renderer: 'canvas',
         useDirtyRect: false
     });
-    const app14 = {};
-    const option14 = {
+    var app = {};
+    var option;
+    option = {
         tooltip: {
             trigger: 'item'
         },
@@ -1217,21 +1242,22 @@
                 }
             }
         ],
-        color: ['#985ffd', '#ff49cd', '#fdaf22', '#32d484', '#00c9ff', '#ff6757', 'rgba(53, 181, 170,1)']
+        color: ["#03b562", "rgb(127, 103, 257)", "#fd4963", "#ffa909", "#0fbcf9"]
     };
-    if (option14 && typeof option14 === 'object') {
-        myChart14.setOption(option14);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
     }
-    window.addEventListener('resize', myChart14.resize);
+    window.addEventListener('resize', myChart.resize);
 
     /* doughnut chart */
-    const dom15 = document.getElementById('echart-doughnut');
-    const myChart15 = echarts.init(dom15, null, {
+    var dom = document.getElementById('echart-doughnut');
+    var myChart = echarts.init(dom, null, {
         renderer: 'canvas',
         useDirtyRect: false
     });
-    const app15 = {};
-    const option15 = {
+    var app = {};
+    var option;
+    option = {
         tooltip: {
             trigger: 'item'
         },
@@ -1271,21 +1297,22 @@
                 ]
             }
         ],
-        color: ['#985ffd', '#ff49cd', '#fdaf22', '#32d484', '#00c9ff', '#ff6757', 'rgba(53, 181, 170,1)']
+        color: ["#03b562", "rgb(127, 103, 257)", "#fd4963", "#ffa909", "#0fbcf9"]
     };
-    if (option15 && typeof option15 === 'object') {
-        myChart15.setOption(option15);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
     }
-    window.addEventListener('resize', myChart15.resize);
+    window.addEventListener('resize', myChart.resize);
 
     /* basic scatter chart */
-    const dom16 = document.getElementById('echart-scatter');
-    const myChart16 = echarts.init(dom16, null, {
+    var dom = document.getElementById('echart-scatter');
+    var myChart = echarts.init(dom, null, {
         renderer: 'canvas',
         useDirtyRect: false
     });
-    const app16 = {};
-    const option16 = {
+    var app = {};
+    var option;
+    option = {
         grid: {
             left: '0%',
             right: '0%',
@@ -1343,20 +1370,21 @@
                 type: 'scatter'
             }
         ],
-        color: ["rgb(152, 95, 253)"]
+        color: ["#03b562"]
     };
-    if (option16 && typeof option16 === 'object') {
-        myChart16.setOption(option16);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
     }
-    window.addEventListener('resize', myChart16.resize);
+    window.addEventListener('resize', myChart.resize);
 
     /* bubble chart */
-    const dom17 = document.getElementById('echart-bubble');
-    const myChart17 = echarts.init(dom17, null, {
+    var dom = document.getElementById('echart-bubble');
+    var myChart = echarts.init(dom, null, {
         renderer: 'canvas',
         useDirtyRect: false
     });
-    const app17 = {};
+    var app = {};
+    var option;
     const data = [
         [
             [28604, 77, 17096869, 'Australia', 1990],
@@ -1401,7 +1429,7 @@
             [53354, 79.1, 321773631, 'United States', 2015]
         ]
     ];
-    const option17 = {
+    option = {
         backgroundColor: new echarts.graphic.RadialGradient(0.3, 0.3, 0.8, [
             {
                 offset: 0,
@@ -1467,16 +1495,16 @@
                 },
                 itemStyle: {
                     shadowBlur: 10,
-                    shadowColor: 'rgba(152, 95, 253, 0.5)',
+                    shadowColor: 'rgba(127, 103, 257, 0.5)',
                     shadowOffsetY: 5,
                     color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [
                         {
                             offset: 0,
-                            color: 'rgb(152, 95, 253)'
+                            color: 'rgb(127, 103, 257)'
                         },
                         {
                             offset: 1,
-                            color: 'rgb(152, 95, 253)'
+                            color: 'rgb(127, 103, 257)'
                         }
                     ])
                 }
@@ -1500,16 +1528,16 @@
                 },
                 itemStyle: {
                     shadowBlur: 10,
-                    shadowColor: 'rgba(255, 73, 205, 0.5)',
+                    shadowColor: 'rgba(3, 181, 98, 0.5)',
                     shadowOffsetY: 5,
                     color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [
                         {
                             offset: 0,
-                            color: 'rgb(255, 73, 205)'
+                            color: 'rgb(3, 181, 98)'
                         },
                         {
                             offset: 1,
-                            color: 'rgb(255, 73, 205)'
+                            color: 'rgb(3, 181, 98)'
                         }
                     ])
                 }
@@ -1517,19 +1545,20 @@
         ],
         color: ["rgb(12, 163, 231)", "rgb(254, 84, 84)"]
     };
-    if (option17 && typeof option17 === 'object') {
-        myChart17.setOption(option17);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
     }
-    window.addEventListener('resize', myChart17.resize);
+    window.addEventListener('resize', myChart.resize);
 
     /* candlestick chart */
-    const dom18 = document.getElementById('echart-candlestick');
-    const myChart18 = echarts.init(dom18, null, {
+    var dom = document.getElementById('echart-candlestick');
+    var myChart = echarts.init(dom, null, {
         renderer: 'canvas',
         useDirtyRect: false
     });
-    const app18 = {};
-    const option18 = {
+    var app = {};
+    var option;
+    option = {
         grid: {
             left: '5%',
             right: '0%',
@@ -1568,28 +1597,29 @@
                 ],
                 itemStyle: {
                     normal: {
-                        color: "rgb(152, 95, 253)",
-                        color0: "rgb(255, 73, 205)",
-                        borderColor: "rgb(152, 95, 253)",
-                        borderColor0: "rgb(255, 73, 205)",
+                        color: "#03b562",
+                        color0: "rgb(127, 103, 257)",
+                        borderColor: "#03b562",
+                        borderColor0: "rgb(127, 103, 257)",
                     }
                 }
             }
         ]
     };
-    if (option18 && typeof option18 === 'object') {
-        myChart18.setOption(option18);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
     }
-    window.addEventListener('resize', myChart18.resize);
+    window.addEventListener('resize', myChart.resize);
 
     /* basic radar chart */
-    const dom19 = document.getElementById('echart-basic-radar');
-    const myChart19 = echarts.init(dom19, null, {
+    var dom = document.getElementById('echart-basic-radar');
+    var myChart = echarts.init(dom, null, {
         renderer: 'canvas',
         useDirtyRect: false
     });
-    const app19 = {};
-    const option19 = {
+    var app = {};
+    var option;
+    option = {
         legend: {
             data: ['Allocated Budget', 'Actual Spending'],
             left: '0%',
@@ -1624,20 +1654,21 @@
                 ]
             }
         ],
-        color: ["rgb(152, 95, 253)", "rgb(255, 73, 205)"]
+        color: ["#03b562", "rgb(127, 103, 257)"]
     };
-    if (option19 && typeof option19 === 'object') {
-        myChart19.setOption(option19);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
     }
-    window.addEventListener('resize', myChart19.resize);
+    window.addEventListener('resize', myChart.resize);
 
     /* heatmap chart */
-    const dom20 = document.getElementById('echart-heatmap');
-    const myChart20 = echarts.init(dom20, null, {
+    var dom = document.getElementById('echart-heatmap');
+    var myChart = echarts.init(dom, null, {
         renderer: 'canvas',
         useDirtyRect: false
     });
-    const app20 = {};
+    var app = {};
+    var option;
     function getVirtulData(year) {
         year = year || '2017';
         var date = +echarts.number.parseDate(year + '-01-01');
@@ -1652,7 +1683,7 @@
         }
         return data;
     }
-    const option20 = {
+    option = {
         title: {
             top: 30,
             left: 'center',
@@ -1684,19 +1715,20 @@
             data: getVirtulData('2016')
         }
     };
-    if (option20 && typeof option20 === 'object') {
-        myChart20.setOption(option20);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
     }
-    window.addEventListener('resize', myChart20.resize);
+    window.addEventListener('resize', myChart.resize);
 
     /* basic treemap chart */
-    const dom21 = document.getElementById('echart-treemap');
-    const myChart21 = echarts.init(dom21, null, {
+    var dom = document.getElementById('echart-treemap');
+    var myChart = echarts.init(dom, null, {
         renderer: 'canvas',
         useDirtyRect: false
     });
-    const app21 = {};
-    const option21 = {
+    var app = {};
+    var option;
+    option = {
         series: [
             {
                 type: 'treemap',
@@ -1734,21 +1766,22 @@
                 ]
             }
         ],
-        color: ["rgb(152, 95, 253)", "rgb(255, 73, 205)"]
+        color: ["#03b562", "rgb(127, 103, 257)"]
     };
-    if (option21 && typeof option21 === 'object') {
-        myChart21.setOption(option21);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
     }
-    window.addEventListener('resize', myChart21.resize);
+    window.addEventListener('resize', myChart.resize);
 
     /* funnel chart */
-    const dom22 = document.getElementById('echart-funnel');
-    const myChart22 = echarts.init(dom22, null, {
+    var dom = document.getElementById('echart-funnel');
+    var myChart = echarts.init(dom, null, {
         renderer: 'canvas',
         useDirtyRect: false
     });
-    const app22 = {};
-    const option22 = {
+    var app = {};
+    var option;
+    option = {
         tooltip: {
             trigger: 'item',
             formatter: '{a} <br/>{b} : {c}%'
@@ -1809,21 +1842,22 @@
                 ]
             }
         ],
-        color: ['#985ffd', '#ff49cd', '#fdaf22', '#32d484', '#00c9ff', '#ff6757', 'rgba(53, 181, 170,1)']
+        color: ["#03b562", "rgb(127, 103, 257)", "#fd4963", "#ffa909", "#0fbcf9"]
     };
-    if (option22 && typeof option22 === 'object') {
-        myChart22.setOption(option22);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
     }
-    window.addEventListener('resize', myChart22.resize);
+    window.addEventListener('resize', myChart.resize);
 
     /* basic gauge chart */
-    const dom23 = document.getElementById('echart-gauge-basic');
-    const myChart23 = echarts.init(dom23, null, {
+    var dom = document.getElementById('echart-gauge-basic');
+    var myChart = echarts.init(dom, null, {
         renderer: 'canvas',
         useDirtyRect: false
     });
-    const app23 = {};
-    const option23 = {
+    var app = {};
+    var option;
+    option = {
         tooltip: {
             formatter: '{a} <br/>{b} : {c}%'
         },
@@ -1846,21 +1880,22 @@
                 ]
             }
         ],
-        color: ["rgb(152, 95, 253)"]
+        color: ["#03b562"]
     };
-    if (option23 && typeof option23 === 'object') {
-        myChart23.setOption(option23);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
     }
-    window.addEventListener('resize', myChart23.resize);
+    window.addEventListener('resize', myChart.resize);
 
     /* simple graph chart */
-    const dom24 = document.getElementById('echart-simple-graph');
-    const myChart24 = echarts.init(dom24, null, {
+    var dom = document.getElementById('echart-simple-graph');
+    var myChart = echarts.init(dom, null, {
         renderer: 'canvas',
         useDirtyRect: false
     });
-    const app24 = {};
-    const option24 = {
+    var app = {};
+    var option;
+    option = {
         tooltip: {},
         animationDurationUpdate: 1500,
         animationEasingUpdate: 'quinticInOut',
@@ -1947,20 +1982,21 @@
                 }
             }
         ],
-        color:["rgb(152, 95, 253)"]
+        color:["#03b562"]
     };
-    if (option24 && typeof option24 === 'object') {
-        myChart24.setOption(option24);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
     }
-    window.addEventListener('resize', myChart24.resize);
+    window.addEventListener('resize', myChart.resize);
 
     /* pictorial chart */
-    const dom25 = document.getElementById('echart-pictorial');
-    const myChart25 = echarts.init(dom25, null, {
+    var dom = document.getElementById('echart-pictorial');
+    var myChart = echarts.init(dom, null, {
         renderer: 'canvas',
         useDirtyRect: false
     });
-    const app25 = {};
+    var app = {};
+    var option;
     const pathSymbols = {
         reindeer:
             'path://M-22.788,24.521c2.08-0.986,3.611-3.905,4.984-5.892 c-2.686,2.782-5.047,5.884-9.102,7.312c-0.992,0.005-0.25-2.016,0.34-2.362l1.852-0.41c0.564-0.218,0.785-0.842,0.902-1.347 c2.133-0.727,4.91-4.129,6.031-6.194c1.748-0.7,4.443-0.679,5.734-2.293c1.176-1.468,0.393-3.992,1.215-6.557 c0.24-0.754,0.574-1.581,1.008-2.293c-0.611,0.011-1.348-0.061-1.959-0.608c-1.391-1.245-0.785-2.086-1.297-3.313 c1.684,0.744,2.5,2.584,4.426,2.586C-8.46,3.012-8.255,2.901-8.04,2.824c6.031-1.952,15.182-0.165,19.498-3.937 c1.15-3.933-1.24-9.846-1.229-9.938c0.008-0.062-1.314-0.004-1.803-0.258c-1.119-0.771-6.531-3.75-0.17-3.33 c0.314-0.045,0.943,0.259,1.439,0.435c-0.289-1.694-0.92-0.144-3.311-1.946c0,0-1.1-0.855-1.764-1.98 c-0.836-1.09-2.01-2.825-2.992-4.031c-1.523-2.476,1.367,0.709,1.816,1.108c1.768,1.704,1.844,3.281,3.232,3.983 c0.195,0.203,1.453,0.164,0.926-0.468c-0.525-0.632-1.367-1.278-1.775-2.341c-0.293-0.703-1.311-2.326-1.566-2.711 c-0.256-0.384-0.959-1.718-1.67-2.351c-1.047-1.187-0.268-0.902,0.521-0.07c0.789,0.834,1.537,1.821,1.672,2.023 c0.135,0.203,1.584,2.521,1.725,2.387c0.102-0.259-0.035-0.428-0.158-0.852c-0.125-0.423-0.912-2.032-0.961-2.083 c-0.357-0.852-0.566-1.908-0.598-3.333c0.4-2.375,0.648-2.486,0.549-0.705c0.014,1.143,0.031,2.215,0.602,3.247 c0.807,1.496,1.764,4.064,1.836,4.474c0.561,3.176,2.904,1.749,2.281-0.126c-0.068-0.446-0.109-2.014-0.287-2.862 c-0.18-0.849-0.219-1.688-0.113-3.056c0.066-1.389,0.232-2.055,0.277-2.299c0.285-1.023,0.4-1.088,0.408,0.135 c-0.059,0.399-0.131,1.687-0.125,2.655c0.064,0.642-0.043,1.768,0.172,2.486c0.654,1.928-0.027,3.496,1,3.514 c1.805-0.424,2.428-1.218,2.428-2.346c-0.086-0.704-0.121-0.843-0.031-1.193c0.221-0.568,0.359-0.67,0.312-0.076 c-0.055,0.287,0.031,0.533,0.082,0.794c0.264,1.197,0.912,0.114,1.283-0.782c0.15-0.238,0.539-2.154,0.545-2.522 c-0.023-0.617,0.285-0.645,0.309,0.01c0.064,0.422-0.248,2.646-0.205,2.334c-0.338,1.24-1.105,3.402-3.379,4.712 c-0.389,0.12-1.186,1.286-3.328,2.178c0,0,1.729,0.321,3.156,0.246c1.102-0.19,3.707-0.027,4.654,0.269 c1.752,0.494,1.531-0.053,4.084,0.164c2.26-0.4,2.154,2.391-1.496,3.68c-2.549,1.405-3.107,1.475-2.293,2.984 c3.484,7.906,2.865,13.183,2.193,16.466c2.41,0.271,5.732-0.62,7.301,0.725c0.506,0.333,0.648,1.866-0.457,2.86 c-4.105,2.745-9.283,7.022-13.904,7.662c-0.977-0.194,0.156-2.025,0.803-2.247l1.898-0.03c0.596-0.101,0.936-0.669,1.152-1.139 c3.16-0.404,5.045-3.775,8.246-4.818c-4.035-0.718-9.588,3.981-12.162,1.051c-5.043,1.423-11.449,1.84-15.895,1.111 c-3.105,2.687-7.934,4.021-12.115,5.866c-3.271,3.511-5.188,8.086-9.967,10.414c-0.986,0.119-0.48-1.974,0.066-2.385l1.795-0.618 C-22.995,25.682-22.849,25.035-22.788,24.521z',
@@ -2096,7 +2132,7 @@
                     ]
                 }
             ],
-            color: ["rgb(152, 95, 253)", "rgb(255, 73, 205)"]
+            color: ["#03b562", "rgb(127, 103, 257)"]
         };
     }
     const options = [
@@ -2105,15 +2141,15 @@
         makeOption('pictorialBar', 'diamond')
     ];
     var optionIndex = 0;
-    const option25 = options[optionIndex];
+    option = options[optionIndex];
     setInterval(function () {
         optionIndex = (optionIndex + 1) % options.length;
         myChart.setOption(options[optionIndex]);
     }, 2500);
 
-    if (option25 && typeof option25 === 'object') {
-        myChart25.setOption(option25);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
     }
-    window.addEventListener('resize', myChart25.resize);
+    window.addEventListener('resize', myChart.resize);
 
 })();

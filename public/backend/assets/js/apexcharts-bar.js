@@ -2,7 +2,7 @@
     "use strict";
 
     /* basic bar chart */
-    const basicoptions = {
+    var options = {
         series: [{
             data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380]
         }],
@@ -12,11 +12,11 @@
         },
         plotOptions: {
             bar: {
-                borderRadius: 4,
+                borderRadius: 3,
                 horizontal: true,
             }
         },
-        colors: ["#985ffd"],
+        colors: ["#03b562"],    
         grid: {
             borderColor: '#f2f5f7',
         },
@@ -49,11 +49,11 @@
             }
         }
     };
-    const basicchart = new ApexCharts(document.querySelector("#bar-basic"), basicoptions);
-    if(basicchart) basicchart.render();
+    var chart = new ApexCharts(document.querySelector("#bar-basic"), options);
+    chart.render();
 
     /* grouped bar chart */
-    const groupedoptions = {
+    var options = {
         series: [{
             data: [44, 55, 41, 64, 22, 43, 21]
         }, {
@@ -74,7 +74,7 @@
         grid: {
             borderColor: '#f2f5f7',
         },
-        colors: ["#985ffd", "#ff49cd"],
+        colors: ["#03b562", "#7f67ff"],
         dataLabels: {
             enabled: true,
             offsetX: -6,
@@ -116,11 +116,11 @@
             }
         }
     };
-    const groupedchart = new ApexCharts(document.querySelector("#bar-group"), groupedoptions);
-    if(groupedchart) groupedchart.render();
+    var chart = new ApexCharts(document.querySelector("#bar-group"), options);
+    chart.render();
 
     /* stacked bar chart */
-    const stackedoptions = {
+    var options = {
         series: [{
             name: 'Marine Sprite',
             data: [44, 55, 41, 37, 22, 43, 21]
@@ -151,7 +151,7 @@
             width: 1,
             colors: ['#fff']
         },
-        colors: ['#985ffd', '#ff49cd', '#fdaf22', '#32d484', '#00c9ff', '#ff6757'],
+        colors: ["#03b562", "#7f67ff", "#fd4963", "#ffa909", "#0fbcf9"],
         grid: {
             borderColor: '#f2f5f7',
         },
@@ -207,11 +207,11 @@
             offsetX: 40
         }
     };
-    const stackedchart = new ApexCharts(document.querySelector("#bar-stacked"), stackedoptions);
-    if(stackedchart) stackedchart.render();
+    var chart = new ApexCharts(document.querySelector("#bar-stacked"), options);
+    chart.render();
 
     /* 100% stacked bar chart */
-    const fullstackedoptions = {
+    var options = {
         series: [{
             name: 'Marine Sprite',
             data: [44, 55, 41, 37, 22, 43, 21]
@@ -243,7 +243,7 @@
             width: 1,
             colors: ['#fff']
         },
-        colors: ['#985ffd', '#ff49cd', '#fdaf22', '#32d484', '#00c9ff', '#ff6757'],
+        colors: ["#03b562", "#7f67ff", "#fd4963", "#ffa909", "#0fbcf9"],
         grid: {
             borderColor: '#f2f5f7',
         },
@@ -295,11 +295,11 @@
             offsetX: 40
         }
     };
-    const fullstackedchart = new ApexCharts(document.querySelector("#bar-full"), fullstackedoptions);
-    if(fullstackedchart) fullstackedchart.render();
+    var chart = new ApexCharts(document.querySelector("#bar-full"), options);
+    chart.render();
 
     /* bar chart with negative values */
-    const negativeoptions = {
+    var options = {
         series: [{
             name: 'Males',
             data: [0.4, 0.65, 0.76, 0.88, 1.5, 2.1, 2.9, 3.8, 3.9, 4.2, 4, 4.3, 4.1, 4.2, 4.5,
@@ -332,13 +332,19 @@
             width: 1,
             colors: ["#fff"]
         },
+        colors: ["#03b562", "#7f67ff"],
         grid: {
-            borderColor: '#f2f5f7',
             xaxis: {
                 lines: {
                     show: false
                 }
             }
+        },
+        yaxis: {
+            min: -5,
+            max: 5,
+            title: {
+            },
         },
         tooltip: {
             shared: false,
@@ -352,6 +358,9 @@
                     return Math.abs(val) + "%"
                 }
             }
+        },
+        grid: {
+            borderColor: '#f2f5f7',
         },
         title: {
             text: 'Mauritius population pyramid 2011',
@@ -386,8 +395,6 @@
             }
         },
         yaxis: {
-            min: -5,
-            max: 5,
             labels: {
                 show: true,
                 style: {
@@ -399,11 +406,11 @@
             },
         }
     };
-    const negativechart = new ApexCharts(document.querySelector("#bar-negative"), negativeoptions);
-    if(negativechart) negativechart.render();
+    var chart = new ApexCharts(document.querySelector("#bar-negative"), options);
+    chart.render();
 
     /* bar with markers */
-    const markersoptions = {
+    var options = {
         series: [
             {
                 name: 'Actual',
@@ -417,7 +424,7 @@
                                 value: 14,
                                 strokeWidth: 2,
                                 strokeDashArray: 2,
-                                strokeColor: '#775DD0'
+                                strokeColor: '#03b562'
                             }
                         ]
                     },
@@ -430,7 +437,7 @@
                                 value: 54,
                                 strokeWidth: 5,
                                 strokeHeight: 10,
-                                strokeColor: '#775DD0'
+                                strokeColor: '#03b562'
                             }
                         ]
                     },
@@ -444,7 +451,7 @@
                                 strokeWidth: 10,
                                 strokeHeight: 0,
                                 strokeLineCap: 'round',
-                                strokeColor: '#775DD0'
+                                strokeColor: '#03b562'
                             }
                         ]
                     },
@@ -458,7 +465,7 @@
                                 strokeWidth: 10,
                                 strokeHeight: 0,
                                 strokeLineCap: 'round',
-                                strokeColor: '#775DD0'
+                                strokeColor: '#03b562'
                             }
                         ]
                     },
@@ -472,7 +479,7 @@
                                 strokeWidth: 10,
                                 strokeHeight: 0,
                                 strokeLineCap: 'round',
-                                strokeColor: '#775DD0'
+                                strokeColor: '#03b562'
                             }
                         ]
                     },
@@ -485,7 +492,7 @@
                                 value: 70,
                                 strokeWidth: 5,
                                 strokeHeight: 10,
-                                strokeColor: '#775DD0'
+                                strokeColor: '#03b562'
                             }
                         ]
                     }
@@ -504,7 +511,7 @@
         grid: {
             borderColor: '#f2f5f7',
         },
-        colors: ['#ff49cd'],
+        colors: ['#7f67ff'],
         dataLabels: {
             formatter: function (val, opt) {
                 const goals =
@@ -522,7 +529,7 @@
             showForSingleSeries: true,
             customLegendItems: ['Actual', 'Expected'],
             markers: {
-                fillColors: ['#00E396', '#775DD0']
+                fillColors: ['#7f67ff', '#03b562']
             }
         },
         xaxis: {
@@ -548,11 +555,11 @@
             }
         }
     };
-    const markerschart = new ApexCharts(document.querySelector("#bar-markers"), markersoptions);
-    if(markerschart) markerschart.render();
+    var chart = new ApexCharts(document.querySelector("#bar-markers"), options);
+    chart.render();
 
     /* reversed bar chart */
-    const reversedbaroptions = {
+    var options = {
         series: [{
             data: [400, 430, 448, 470, 540, 580, 690]
         }],
@@ -563,12 +570,12 @@
         annotations: {
             xaxis: [{
                 x: 500,
-                borderColor: '#00E396',
+                borderColor: '#7f67ff',
                 label: {
-                    borderColor: '#00E396',
+                    borderColor: '#7f67ff',
                     style: {
                         color: '#fff',
-                        background: '#00E396',
+                        background: '#7f67ff',
                     },
                     text: 'X annotation',
                 }
@@ -581,7 +588,10 @@
                 }
             }]
         },
-        colors: ["#985ffd"],
+        grid: {
+            borderColor: '#f2f5f7',
+        },
+        colors: ["#03b562"],
         plotOptions: {
             bar: {
                 horizontal: true,
@@ -603,7 +613,6 @@
             }
         },
         grid: {
-            borderColor: '#f2f5f7',
             xaxis: {
                 lines: {
                     show: true
@@ -626,11 +635,11 @@
             }
         }
     };
-    const reversedbarchart = new ApexCharts(document.querySelector("#bar-reversed"), reversedbaroptions);
-    if(reversedbarchart) reversedbarchart.render();
+    var chart = new ApexCharts(document.querySelector("#bar-reversed"), options);
+    chart.render();
 
     /* bar with categories as data labels */
-    const categoriesoptions = {
+    var options = {
         series: [{
             data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380]
         }],
@@ -648,8 +657,8 @@
                 },
             }
         },
-        colors: ['#985ffd', '#ff49cd', '#fdaf22', '#32d484', '#00c9ff', '#ff6757', 'rgba(53, 181, 170,1)','rgb(190, 43, 235)',
-            "#0cd7b1", "#ff49cd"
+        colors: ["#03b562", "#7f67ff", "#fd4963", "#ffa909", "#0fbcf9", "rgb(254, 84, 155)", "rgb(0, 216, 216)", "rgb(83, 196, 5)",
+            "rgb(254, 124, 88)", "rgb(123, 118, 254)"
         ],
         grid: {
             borderColor: '#f2f5f7',
@@ -719,11 +728,11 @@
             }
         }
     };
-    const categorieschart = new ApexCharts(document.querySelector("#bar-categories"), categoriesoptions);
-    if(categorieschart) categorieschart.render();
+    var chart = new ApexCharts(document.querySelector("#bar-categories"), options);
+    chart.render();
 
     /* patterned bar chart */
-    const patternedoptions = {
+    var options = {
         series: [{
             name: 'Marine Sprite',
             data: [44, 55, 41, 37, 22, 43, 21]
@@ -759,7 +768,7 @@
         stroke: {
             width: 2,
         },
-        colors: ['#985ffd', '#ff49cd', '#fdaf22', '#32d484'],
+        colors: ["#03b562", "#7f67ff", "#fd4963", "#ffa909"],
         title: {
             text: 'Compare Sales Strategy',
             style: {
@@ -820,11 +829,11 @@
             offsetY: 40
         }
     };
-    const patternedchart = new ApexCharts(document.querySelector("#bar-pattern"), patternedoptions);
-    if(patternedchart) patternedchart.render();
+    var chart = new ApexCharts(document.querySelector("#bar-pattern"), options);
+    chart.render();
 
     /* bar with image fill */
-    const imagefilloptions = {
+    var options = {
         series: [{
             name: 'coins',
             data: [2, 4, 3, 4, 3, 5, 5, 6.5, 6, 5, 4, 5, 8, 7, 7, 8, 8, 10, 9, 9, 12, 12,
@@ -905,7 +914,7 @@
             }
         },
     };
-    const imagefillchart = new ApexCharts(document.querySelector("#bar-image"), imagefilloptions);
-    if(imagefillchart) imagefillchart.render();
+    var chart = new ApexCharts(document.querySelector("#bar-image"), options);
+    chart.render();
 
 })();

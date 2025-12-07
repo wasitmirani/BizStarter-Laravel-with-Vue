@@ -2,7 +2,7 @@
     "use strict";
 
     /* basic line chart */
-    const basicoptions = {
+    var options = {
         series: [{
             name: "Desktops",
             data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
@@ -14,13 +14,13 @@
                 enabled: false
             }
         },
-        colors: ['#985ffd'],
+        colors: ['#03b562'],
         dataLabels: {
             enabled: false
         },
         stroke: {
             curve: 'straight',
-            width: 3,
+            width: 2,
         },
         grid: {
             borderColor: '#f2f5f7',
@@ -58,11 +58,11 @@
             }
         }
     };
-    const basicchart = new ApexCharts(document.querySelector("#line-chart"), basicoptions);
-    if(basicchart) basicchart.render();
+    var chart = new ApexCharts(document.querySelector("#line-chart"), options);
+    chart.render();
 
     /* line with data labels */
-    const dataoptions = {
+    var options = {
         series: [
             {
                 name: "High - 2013",
@@ -88,12 +88,13 @@
                 show: false
             }
         },
-        colors: ['#985ffd', '#ff49cd'],
+        colors: ['#03b562', '#7f67ff'],
         dataLabels: {
             enabled: true,
         },
         stroke: {
-            curve: 'smooth'
+            curve: 'smooth',
+            width: 2,
         },
         title: {
             text: 'Average High & Low Temperature',
@@ -154,26 +155,25 @@
         legend: {
             position: 'top',
             horizontalAlign: 'right',
-            offsetX: -10
+            offsetX: -10,
+            markers: {
+              size:5,
+            }
         }
     };
-    const datachart = new ApexCharts(document.querySelector("#line-chart-datalabels"), dataoptions);
-    if(datachart) datachart.render();
+    var chart = new ApexCharts(document.querySelector("#line-chart-datalabels"), options);
+    chart.render();
 
     /* zoomable time series */
-    let ts2 = 1484418600000;
-    const dates = [];
-    const spikes = [5, -5, 3, -3, 8, -8];
-    const dataSeries = [
-        [],
-        Array.from({ length: 120 }, () => ({ value: Math.floor(Math.random() * 1000000) + 1000000 }))
-    ];
-    for (let i = 0; i < 120; i++) {
+    var ts2 = 1484418600000;
+    var dates = [];
+    var spikes = [5, -5, 3, -3, 8, -8]
+    for (var i = 0; i < 120; i++) {
         ts2 = ts2 + 86400000;
-        const innerArr = [ts2, dataSeries[1][i].value];
+        var innerArr = [ts2, dataSeries[1][i].value];
         dates.push(innerArr)
     }
-    const zoomableoptions = {
+    var options = {
         series: [{
             name: 'XYZ MOTORS',
             data: dates
@@ -219,7 +219,10 @@
         grid: {
             borderColor: '#f2f5f7',
         },
-        colors: ["#985ffd"],
+        stroke: {
+            width: 2,
+        },
+        colors: ["#03b562"],
         yaxis: {
             labels: {
                 formatter: function (val) {
@@ -263,15 +266,15 @@
             }
         }
     };
-    const zoomablechart = new ApexCharts(document.querySelector("#zoom-chart"), zoomableoptions);
-    if(zoomablechart) zoomablechart.render();
+    var chart = new ApexCharts(document.querySelector("#zoom-chart"), options);
+    chart.render();
 
     /* line chart with annotations */
-    const annotationsoptions = {
+    var options = {
         series: [{
             data: series.monthDataSeries2.prices
         }],
-        colors: ["#985ffd"],
+        colors: ["#03b562"],
         chart: {
             height: 320,
             type: 'line',
@@ -280,12 +283,12 @@
         annotations: {
             yaxis: [{
                 y: 8200,
-                borderColor: '#00E396',
+                borderColor: '#7f67ff',
                 label: {
-                    borderColor: '#00E396',
+                    borderColor: '#7f67ff',
                     style: {
                         color: '#fff',
-                        background: '#00E396',
+                        background: '#7f67ff',
                     },
                     text: 'Support',
                 }
@@ -308,12 +311,12 @@
             xaxis: [{
                 x: new Date('23 Nov 2017').getTime(),
                 strokeDashArray: 0,
-                borderColor: '#775DD0',
+                borderColor: 'rgb(15, 188, 249)',
                 label: {
-                    borderColor: '#775DD0',
+                    borderColor: 'rgb(15, 188, 249)',
                     style: {
                         color: '#fff',
-                        background: '#775DD0',
+                        background: 'rgb(15, 188, 249)',
                     },
                     text: 'Anno Test',
                 }
@@ -327,7 +330,7 @@
                     style: {
                         fontSize: '10px',
                         color: '#fff',
-                        background: '#00E396',
+                        background: '#7f67ff',
                     },
                     offsetY: -10,
                     text: 'X-axis range',
@@ -368,7 +371,8 @@
             enabled: false
         },
         stroke: {
-            curve: 'straight'
+            curve: 'straight',
+            width: 2,
         },
         grid: {
             borderColor: '#f2f5f7',
@@ -407,11 +411,11 @@
             }
         }
     };
-    const annotationschart = new ApexCharts(document.querySelector("#annotation-chart"), annotationsoptions);
-    if(annotationschart) annotationschart.render();
+    var chart = new ApexCharts(document.querySelector("#annotation-chart"), options);
+    chart.render();
 
     /* stepline chart */
-    const steplineoptions = {
+    var options = {
         series: [{
             data: [34, 44, 54, 21, 12, 43, 33, 23, 66, 66, 58]
         }],
@@ -421,6 +425,7 @@
         },
         stroke: {
             curve: 'stepline',
+            width:2,
         },
         grid: {
             borderColor: '#f2f5f7',
@@ -428,7 +433,7 @@
         dataLabels: {
             enabled: false
         },
-        colors: ["#985ffd"],
+        colors: ["#03b562"],
         title: {
             text: 'Stepline Chart',
             align: 'left'
@@ -461,11 +466,11 @@
             }
         }
     };
-    const steplinechart = new ApexCharts(document.querySelector("#stepline-chart"), steplineoptions);
-    if(steplinechart) steplinechart.render();
+    var chart2 = new ApexCharts(document.querySelector("#stepline-chart"), options);
+    chart2.render();
 
     /* gradient chart */
-    const gradientoptions = {
+    var options = {
         series: [{
             name: 'Sales',
             data: [4, 3, 10, 9, 29, 19, 22, 9, 12, 7, 19, 5, 13, 9, 17, 2, 7, 5]
@@ -478,9 +483,10 @@
             count: 7
         },
         stroke: {
-            width: 3,
+            width: 2,
             curve: 'smooth'
-        },
+        },  
+        colors: ["#7f67ff"],
         xaxis: {
             type: 'datetime',
             categories: ['1/11/2000', '2/11/2000', '3/11/2000', '4/11/2000', '5/11/2000', '6/11/2000', '7/11/2000', '8/11/2000', '9/11/2000', '10/11/2000', '11/11/2000', '12/11/2000', '1/11/2001', '2/11/2001', '3/11/2001', '4/11/2001', '5/11/2001', '6/11/2001'],
@@ -509,12 +515,11 @@
                 color: '#8c9097'
             },
         },
-        colors: ["#ff49cd"],
         fill: {
             type: 'gradient',
             gradient: {
                 shade: 'dark',
-                gradientToColors: ['#985ffd'],
+                gradientToColors: ['#03b562'],
                 shadeIntensity: 1,
                 type: 'horizontal',
                 opacityFrom: 1,
@@ -536,11 +541,11 @@
             }
         }
     };
-    const gradientchart = new ApexCharts(document.querySelector("#gradient-chart"), gradientoptions);
-    if(gradientchart) gradientchart.render();
+    var chart = new ApexCharts(document.querySelector("#gradient-chart"), options);
+    chart.render();
 
     /* missing/null values chart */
-    const missingoptions = {
+    var options = {
         series: [{
             name: 'Peter',
             data: [5, 5, 10, 8, 7, 5, 4, null, null, null, 10, 10, 7, 8, 6, 9]
@@ -565,10 +570,10 @@
             borderColor: '#f2f5f7',
         },
         stroke: {
-            width: [3, 3, 2],
+            width: [2, 2, 2],
             curve: 'straight'
         },
-        colors: ["#985ffd", "#ff49cd", "#fdaf22"],
+        colors: ["#03b562", "#7f67ff", "rgb(253, 73, 99)"],
         labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
         title: {
             text: 'Missing data (null values)',
@@ -602,8 +607,8 @@
             }
         }
     };
-    const missingchart = new ApexCharts(document.querySelector("#null-chart"), missingoptions);
-    if(missingchart) missingchart.render();
+    var chart = new ApexCharts(document.querySelector("#null-chart"), options);
+    chart.render();
 
     /* syncing charts */
     // Replace Math.random() with a pseudo-random number generator to get reproducible results in e2e tests
@@ -657,11 +662,11 @@
         },
     }
     function generateDayWiseTimeSeries(baseval, count, yrange) {
-        let i = 0;
-        const series = [];
+        var i = 0;
+        var series = [];
         while (i < count) {
-            const x = baseval;
-            const y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+            var x = baseval;
+            var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
 
             series.push([x, y]);
             baseval += 86400000;
@@ -669,7 +674,7 @@
         }
         return series;
     }
-    const syncingoptions = {
+    var options = {
         series: [{
             data: generateDayWiseTimeSeries(new Date('11 Feb 2017').getTime(), 20, {
                 min: 10,
@@ -682,10 +687,10 @@
             type: 'line',
             height: 160
         },
-        colors: ['#985ffd'],
+        colors: ['#03b562'],
         stroke: {
             curve: 'straight',
-            width: 3,
+            width: 2,
         },
         grid: {
             borderColor: '#f2f5f7',
@@ -714,10 +719,10 @@
             }
         }
     };
-    const syncingchart = new ApexCharts(document.querySelector("#chart-line"), syncingoptions);
-    if(syncingchart) syncingchart.render();
+    var chart = new ApexCharts(document.querySelector("#chart-line"), options);
+    chart.render();
 
-    const syncingoptionsLine2 = {
+    var optionsLine2 = {
         series: [{
             data: generateDayWiseTimeSeries(new Date('11 Feb 2017').getTime(), 20, {
                 min: 10,
@@ -732,9 +737,9 @@
         },
         stroke: {
             curve: 'straight',
-            width: 3,
+            width: 2,
         },
-        colors: ['#ff49cd'],
+        colors: ['#7f67ff'],
         grid: {
             borderColor: '#f2f5f7',
         },
@@ -762,10 +767,10 @@
             }
         }
     };
-    const syncingchartLine2 = new ApexCharts(document.querySelector("#chart-line2"), syncingoptionsLine2);
-    if(syncingchartLine2) syncingchartLine2.render();
+    var chartLine2 = new ApexCharts(document.querySelector("#chart-line2"), optionsLine2);
+    chartLine2.render();
 
-    const optionsArea = {
+    var optionsArea = {
         series: [{
             data: generateDayWiseTimeSeries(new Date('11 Feb 2017').getTime(), 20, {
                 min: 10,
@@ -780,9 +785,9 @@
         },
         stroke: {
             curve: 'straight',
-            width: 3,
+            width: 2,
         },
-        colors: ['#fdaf22'],
+        colors: ['rgb(253, 73, 99)'],
         grid: {
             borderColor: '#f2f5f7',
         },
@@ -810,11 +815,11 @@
             }
         }
     };
-    const chartArea = new ApexCharts(document.querySelector("#chart-area"), optionsArea);
-    if(chartArea) chartArea.render();
+    var chartArea = new ApexCharts(document.querySelector("#chart-area"), optionsArea);
+    chartArea.render();
 
     /* dashed chart */
-    const dashedoptions = {
+    var options = {
         series: [{
             name: "Session Duration",
             data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10]
@@ -839,11 +844,11 @@
             enabled: false
         },
         stroke: {
-            width: [3, 4, 3],
+            width: [2, 2, 2],
             curve: 'straight',
             dashArray: [0, 8, 5]
         },
-        colors: ["#985ffd", "#ff49cd", "#fdaf22"],
+        colors: ["#03b562", "#7f67ff", "rgb(253, 73, 99)"],
         title: {
             text: 'Page Statistics',
             align: 'left',
@@ -918,47 +923,54 @@
             borderColor: '#f1f1f1',
         }
     };
-    const dashedchart = new ApexCharts(document.querySelector("#dashed-chart"), dashedoptions);
-    if(dashedchart) dashedchart.render();
+    var chart = new ApexCharts(document.querySelector("#dashed-chart"), options);
+    chart.render();
 
     /* real time chart */
-    let lastDate = 0;
-    let realtimeData = [];
-    let TICKINTERVAL = 86400000
+    var lastDate = 0;
+    var data = []
+    var TICKINTERVAL = 86400000
     let XAXISRANGE = 777600000
     function getDayWiseTimeSeries(baseval, count, yrange) {
-        for (let i = 0; i < count; i++) {
-            const x = baseval;
-            const y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
-            realtimeData.push({ x, y });
-            lastDate = baseval;
+        var i = 0;
+        while (i < count) {
+            var x = baseval;
+            var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+            data.push({
+                x, y
+            });
+            lastDate = baseval
             baseval += TICKINTERVAL;
+            i++;
         }
     }
     getDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 10, {
         min: 10,
         max: 90
-    });
+    })
     function getNewSeries(baseval, yrange) {
-        const newDate = baseval + TICKINTERVAL;
-        lastDate = newDate;
-    
-        for (let i = 0; i < realtimeData.length - 10; i++) {
-            realtimeData[i].x = newDate - XAXISRANGE - TICKINTERVAL;
-            realtimeData[i].y = 0;
+        var newDate = baseval + TICKINTERVAL;
+        lastDate = newDate
+        for (var i = 0; i < data.length - 10; i++) {
+            // IMPORTANT
+            // we reset the x and y of the data which is out of drawing area
+            // to prevent memory leaks
+            data[i].x = newDate - XAXISRANGE - TICKINTERVAL
+            data[i].y = 0
         }
-    
-        realtimeData.push({
+        data.push({
             x: newDate,
             y: Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min
-        });
+        })
     }
-    
     function resetData() {
-        realtimeData = realtimeData.slice(realtimeData.length - 10);
+        // Alternatively, you can also reset the data at certain intervals to prevent creating a huge series
+        data = data.slice(data.length - 10, data.length);
     }
-    const realoptions = {
-        series: [{ data: realtimeData.slice() }],
+    var options = {
+        series: [{
+            data: data.slice()
+        }],
         chart: {
             id: 'dynamic-chart',
             height: 320,
@@ -980,10 +992,10 @@
         dataLabels: {
             enabled: false
         },
-        colors: ["#985ffd"],
+        colors: ["#03b562"],
         stroke: {
             curve: 'smooth',
-            width: 3,
+            width: 2,
         },
         title: {
             text: 'Dynamic Updating Chart',
@@ -1026,31 +1038,40 @@
             show: false
         },
     };
-    const realchart = new ApexCharts(document.querySelector("#dynamic-chart"), realoptions);
-    if(realchart) realchart.render();
-    window.setInterval(() => {
-        getNewSeries(lastDate, { min: 10, max: 90 });
-        realchart.updateSeries([{ data: realtimeData }]);
-    }, 1000);
+    var chart = new ApexCharts(document.querySelector("#dynamic-chart"), options);
+    chart.render();
+    window.setInterval(function () {
+        getNewSeries(lastDate, {
+            min: 10,
+            max: 90
+        })
+        chart.updateSeries([{
+            data: data
+        }])
+    }, 1000)
 
     /* brush chart */
     function generateDayWiseTimeSeries(baseval, count, yrange) {
-        const series = [];
-        for (let i = 0; i < count; i++) {
-            const x = baseval;
-            const y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+        var i = 0;
+        var series = [];
+        while (i < count) {
+            var x = baseval;
+            var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+
             series.push([x, y]);
             baseval += 86400000;
+            i++;
         }
         return series;
     }
-    
-    const brushData = generateDayWiseTimeSeries(new Date('11 Feb 2017').getTime(), 185, {
+    var data = generateDayWiseTimeSeries(new Date('11 Feb 2017').getTime(), 185, {
         min: 30,
         max: 90
-    });
-    const brushoptions = {
-        series: [{ data: brushData }],
+    })
+    var options = {
+        series: [{
+            data: data
+        }],
         chart: {
             id: 'chart2',
             type: 'line',
@@ -1060,9 +1081,9 @@
                 show: false
             }
         },
-        colors: ['#985ffd'],
+        colors: ['#03b562'],
         stroke: {
-            width: 3
+            width: 2
         },
         fill: {
             opacity: 1,
@@ -1097,11 +1118,13 @@
             },
         }
     };
-    const brushchart = new ApexCharts(document.querySelector("#brush-chart1"), brushoptions);
-    if(brushchart) brushchart.render();
+    var chart = new ApexCharts(document.querySelector("#brush-chart1"), options);
+    chart.render();
 
-    const optionsLine = {
-        series: [{ data: brushData }],
+    var optionsLine = {
+        series: [{
+            data: data
+        }],
         chart: {
             id: 'chart1',
             height: 130,
@@ -1121,7 +1144,7 @@
         dataLabels: {
             enabled: false,
         },
-        colors: ['#ff49cd'],
+        colors: ['#7f67ff'],
         fill: {
             type: 'gradient',
             gradient: {
@@ -1163,7 +1186,7 @@
             },
         }
     };
-    const chartLine = new ApexCharts(document.querySelector("#brush-chart"), optionsLine);
-    if(chartLine) chartLine.render();
+    var chartLine = new ApexCharts(document.querySelector("#brush-chart"), optionsLine);
+    chartLine.render();
 
 })();

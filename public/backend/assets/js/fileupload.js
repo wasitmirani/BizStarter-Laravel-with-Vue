@@ -21,7 +21,7 @@
 
     /* multiple upload */
     const MultipleElement = document.querySelector('.multiple-filepond');
-    if (MultipleElement) FilePond.create(MultipleElement,);
+    FilePond.create(MultipleElement,);
     
     /* single upload */
     FilePond.create(

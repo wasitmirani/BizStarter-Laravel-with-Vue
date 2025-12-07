@@ -32,7 +32,7 @@
             {
                 name: 'Customer',
                 formatter: (_, row) => gridjs.html(
-                    `<a href="orders-details.html">
+                    `<a href="order-details.php">
                         <div class="d-flex align-items-center gap-3 position-relative">
                             <div class="lh-1">
                                 <span class="avatar avatar-md avatar-rounded">
@@ -51,7 +51,7 @@
             {
                 name: 'Delivery Status',
                 formatter: (_, row) => gridjs.html(
-                    `<span class="badge bg-${row.cells[4].data === 'Pending' ? 'warning' : row.cells[4].data === 'Shipped' ? 'info' : row.cells[4].data === 'Delivered' ? 'success' : 'danger'}-transparent">${row.cells[4].data}</span>`
+                    `<span class="badge bg-${row.cells[4].data === 'Pending' ? 'warning' : row.cells[4].data === 'Shipped' ? 'info' : row.cells[4].data === 'Delivered' ? 'primary' : 'danger'}-transparent">${row.cells[4].data}</span>`
                 )
             },
             {
@@ -63,19 +63,19 @@
             {
                 name: 'Payment Status',
                 formatter: (_, row) => gridjs.html(
-                    `<span class="text-${row.cells[5].data === 'Pending' ? 'info' : row.cells[5].data === 'Completed' ? 'success' : row.cells[5].data === 'Failed' ? 'orange' : row.cells[5].data === 'Refunded' ? 'warning' : 'danger'}"><i class="ri-circle-fill me-1 fs-10"></i>${row.cells[5].data}</span>`
+                    `<span class="text-${row.cells[5].data === 'Pending' ? 'info' : row.cells[5].data === 'Completed' ? 'primary' : row.cells[5].data === 'Failed' ? 'orange' : row.cells[5].data === 'Refunded' ? 'warning' : 'danger'}">${row.cells[5].data}</span>`
                 )
             },
             'Ordered Date',
             {
                 name: 'Actions',
                 formatter: (_, row) => gridjs.html(`
-                    <div class="dropdown text-center">
+                    <div class="dropdown">
                         <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-primary-light border" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fe fe-more-vertical"></i>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="orders-details.html"><i class="ri-eye-line me-2"></i>View</a></li>
+                            <li><a class="dropdown-item" href="order-details.php"><i class="ri-eye-line me-2"></i>View</a></li>
                             <li><a class="dropdown-item btn-delete" href="javascript:void(0);"><i class="ri-delete-bin-line me-2"></i>Delete</a></li>
                         </ul>
                     </div>

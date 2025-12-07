@@ -2,7 +2,7 @@
     "use strict";
 
     /* basic boxplot chart */
-    const basicoptions = {
+    var options = {
         series: [
             {
                 type: 'boxPlot',
@@ -57,8 +57,8 @@
         plotOptions: {
             boxPlot: {
                 colors: {
-                    upper: '#985ffd',
-                    lower: '#ff49cd'
+                    upper: '#03b562',
+                    lower: '#7f67ff'
                 }
             }
         },
@@ -85,11 +85,11 @@
             }
         }
     };
-    const basicchart = new ApexCharts(document.querySelector("#boxplot-basic"), basicoptions);
-    if(basicchart) basicchart.render();
+    var chart = new ApexCharts(document.querySelector("#boxplot-basic"), options);
+    chart.render();
 
     /* boxplot with scatter chart */
-    const boxplotoptions = {
+    var options = {
         series: [
             {
                 name: 'box',
@@ -152,7 +152,7 @@
             type: 'boxPlot',
             height: 320
         },
-        colors: ['#985ffd', '#ff49cd'],
+        colors: ['#03b562', '#7f67ff'],
         grid: {
             borderColor: '#f2f5f7',
         },
@@ -168,8 +168,8 @@
         plotOptions: {
             boxPlot: {
                 colors: {
-                    upper: '#985ffd',
-                    lower: '#ff49cd'
+                    upper: '#03b562',
+                    lower: '#7f67ff'
                 }
             }
         },
@@ -204,16 +204,13 @@
         tooltip: {
             shared: false,
             intersect: true
-        },
-        legend: {
-            show: false
         }
     };
-    const boxplotchart = new ApexCharts(document.querySelector("#boxplot-scatter"), boxplotoptions);
-    if(boxplotchart) boxplotchart.render();
+    var chart = new ApexCharts(document.querySelector("#boxplot-scatter"), options);
+    chart.render();
 
     /* horizontal boxplot chart */
-    const horizontaloptions = {
+    var options = {
         series: [
             {
                 data: [
@@ -302,7 +299,7 @@
             colors: ['#6c757d']
         }
     };
-    const horizontalchart = new ApexCharts(document.querySelector("#boxplot-horizontal"), horizontaloptions);
-    if(horizontalchart) horizontalchart.render();
+    var chart = new ApexCharts(document.querySelector("#boxplot-horizontal"), options);
+    chart.render();
 
 })();

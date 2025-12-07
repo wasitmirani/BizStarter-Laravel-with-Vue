@@ -1,187 +1,92 @@
 (function () {
     "use strict";
 
-    /* School Revenue */
-    const options1 = {
-        series: [{
-            name: 'This Year',
-            type: "column",
-            data: [44, 30, 57, 80, 90, 55, 70, 43, 23, 54, 77, 34]
-        }, {
-            name: 'Last Year',
-            type: "area",
-            data: [30, 25, 36, 30, 45, 35, 64, 51, 59, 36, 39, 51]
-        }],
-        chart: {
-            height: 320,
-            type: 'line',
-            stacked: !1,
-            toolbar: {
-                show: !1
-            },
-            dropShadow: {
-                enabled: true,
-                enabledOnSeries: undefined,
-                top: 6,
-                left: 0,
-                blur: 0,
-                color: 'var(--primary-color)',
-                opacity: 0.05
-            },
-        },
-        grid: {
-            borderColor: '#f2f6f7',
-            strokeDashArray: 2,
-            xaxis: {
-                lines: {
-                    show: true
-                }
-            },
-            yaxis: {
-                lines: {
-                    show: false
-                }
-            }
-        },
-        dataLabels: {
-            enabled: false
-        },
-        colors: ["var(--primary-color)", "rgb(255, 73, 205)"],
-        fill: {
-            type: ['solid', 'gradient'],
-            gradient: {
-                shadeIntensity: 1,
-                opacityFrom: 0.4,
-                opacityTo: 0.1,
-                stops: [0, 90, 100],
-                colorStops: [
-                    [
-                        {
-                            offset: 0,
-                            color: "var(--primary-color)",
-                            opacity: 1
-                        },
-                        {
-                            offset: 75,
-                            color: "var(--primary-color)",
-                            opacity: 1
-                        },
-                        {
-                            offset: 100,
-                            color: 'var(--primary-color)',
-                            opacity: 1
-                        }
-                    ],
-                    [
-                        {
-                            offset: 0,
-                            color: "rgba(255, 73, 205, 0.1)",
-                            opacity: 0.1
-                        },
-                        {
-                            offset: 75,
-                            color: "rgba(255, 73, 205, 0.1)",
-                            opacity: 1
-                        },
-                        {
-                            offset: 100,
-                            color: 'rgba(255, 73, 205, 0.2)',
-                            opacity: 1
-                        }
-                    ],
-                ]
-            }
-        },
-        stroke: {
-            width: [1.5, 1.5],
-            curve: "smooth",
-            dashArray: [0, 4]
-        },
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        legend: {
-            show: true,
-            position: 'top'
-        },
-        plotOptions: {
-            bar: {
-                columnWidth: "25%",
-                borderRadius: 2
-            }
-        },
-        tooltip: {
-            enabled: true,
-            theme: "dark",
-        }
+    var options = {
+      series: [{
+          name: 'Boys',
+          data: [44, 55, 41, 67, 22, 43, 44, 55, 41, 67, 22, 43]
+      }, {
+          name: 'Girls',
+          type: 'line',
+          data: [45, 31, 24, 56, 13, 28, 55, 41, 67, 22, 15, 13]
+      }, {
+        name: 'Teachers',
+        type: 'line',
+        data: [20, 55, 41, 30, 22, 50, 44, 55, 41, 67, 22, 43]
+      }],
+      chart: {
+          type: 'bar',
+          height: 345,
+          stacked: true,
+          toolbar: {
+              show: true  
+          },
+          zoom: {
+              enabled: true
+          },
+      },
+      grid: {
+          borderColor: '#f1f1f1',
+          strokeDashArray: 3
+      },
+      yaxis: {
+          max: 100
+      },
+      responsive: [{
+          breakpoint: 480,
+          options: {
+              legend: {
+                  position: 'bottom',
+                  offsetX: -10,
+                  offsetY: 0
+              }
+          }
+      }],
+      colors: ["rgba(var(--light-rgb),1)", "var(--primary-color)","rgba(127, 103, 257,1)"],
+      legend: {
+          show: true,
+          position: 'top',
+          markers: {
+              size: 5,
+              shape: "circle"
+          }
+      },
+      markers: {
+          size: [0, 4, 0],
+          colors: ['var(--primary-color)'], 
+          strokeColors: '#ffffff',
+          strokeWidth: 1,
+          hover: {
+              size: 5
+          }
+      },
+      stroke: {
+          curve: 'smooth',
+          width: [0, 2,2],
+          dashArray: [0,0,4]
+      },
+      plotOptions: {
+          bar: {
+              columnWidth: "25%",
+              borderRadius: 0,
+          }
+      },
+      dataLabels: {
+          enabled: false
+      },
+      xaxis: {
+          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      },
+      fill: {
+          opacity: 1
+      }
     };
-    const chart1 = new ApexCharts(document.querySelector("#school-revenue"), options1);
-    if(chart1) chart1.render();
-    /* School Revenue */
+    document.getElementById('attendance-report').innerHTML = '';
+    var chart1 = new ApexCharts(document.querySelector("#attendance-report"), options);
+    chart1.render();
 
-    /* Students Overview */
-    const options2 = {
-        series: [6560, 3354],
-        chart: {
-            height: 227,
-            type: 'donut',
-        },
-        colors: ["var(--primary-color)", "rgba(255, 73, 205, 1)"],
-        labels: ["Boys", "Girls"],
-        legend: {
-            show: false,
-        },
-        plotOptions: {
-            pie: {
-                offsetY: 10,
-                expandOnClick: false,
-                donut: {
-                    size: '85%',
-                    background: 'transparent',
-                    labels: {
-                        show: true,
-                        name: {
-                            show: true,
-                            fontSize: '20px',
-                            color: '#495057',
-                            offsetY: -5
-                        },
-                        value: {
-                            show: true,
-                            fontSize: '22px',
-                            color: undefined,
-                            offsetY: 5,
-                            fontWeight: 600,
-                            formatter: function (val) {
-                                return val + "%"
-                            }
-                        },
-                        total: {
-                            show: true,
-                            showAlways: true,
-                            label: 'Total Students',
-                            fontSize: '14px',
-                            fontWeight: 400,
-                            color: '#495057',
-                        }
-                    }
-                }
-            }
-        },
-        stroke: {
-            width: 0
-        },
-        dataLabels: {
-            enabled: false,
-            dropShadow: {
-                enabled: false,
-            },
-        },
-    };
-    const chart2 = new ApexCharts(document.querySelector("#students-overview"), options2);
-    if(chart2) chart2.render();
-    /* Students Overview */
-
-    /* Attendance Overview */
-    const options3 = {
+      /* Students statistics */
+    var options = {
         series: [
             {
                 name: "Girls",
@@ -195,7 +100,7 @@
         chart: {
             stacked: true,
             type: "bar",
-            height: 365,
+            height: 305,
             toolbar: {
                 show: false,
             },
@@ -214,7 +119,7 @@
                 }
             }
         },
-        colors: ["var(--primary-color)", "rgba(253, 175, 34, 1) "],
+        colors: ["var(--primary09)", "rgba(127, 103, 257, 0.9) "],
         plotOptions: {
             bar: {
                 borderRadius: 2,
@@ -231,9 +136,16 @@
             position: "top",
             fontFamily: "Mulish",
             markers: {
-                width: 10,
-                height: 10,
-            },
+                size: 4,
+                strokeWidth: 0,
+                strokeColor: '#fff',
+                fillColors: undefined,
+                radius: 5,
+                customHTML: undefined,
+                onClick: undefined,
+                offsetX: 0,
+                offsetY: 0
+              },
         },
         yaxis: {
             show: false,
@@ -258,8 +170,8 @@
             },
         },
     };
-    const chart3 = new ApexCharts(document.querySelector("#attendance-overview"), options3);
-    if(chart3) chart3.render();
-    /* Attendance Overview */
+    var chart = new ApexCharts(document.querySelector("#students-overview"), options);
+    chart.render();
+    /* Students statistics */
 
 })();

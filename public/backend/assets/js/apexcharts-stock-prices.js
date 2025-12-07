@@ -1,7 +1,7 @@
 
 "use strict";
 
-const series =
+var series =
 {
     "monthDataSeries1": {
         "prices": [

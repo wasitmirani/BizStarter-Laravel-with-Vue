@@ -1,6 +1,5 @@
 (function () {
     "use strict"
-
     //delete Btn
     let invoicebtn = document.querySelectorAll(".invoice-btn");
     invoicebtn.forEach((eleBtn) => {

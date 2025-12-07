@@ -2,7 +2,7 @@
     "use strict";
 
     /* basic range area chart */
-    const basicoptions = {
+    var options = {
         series: [
             {
                 name: 'New York Temperature',
@@ -68,7 +68,7 @@
         title: {
             text: 'New York Temperature (all year round)'
         },
-        colors: ["#985ffd"],
+        colors: ["#03b562"],
         markers: {
             hover: {
                 sizeOffset: 5
@@ -85,11 +85,11 @@
             }
         }
     };
-    const basicchart = new ApexCharts(document.querySelector("#rangearea-basic"), basicoptions);
-    if(basicchart) basicchart.render();
+    var chart = new ApexCharts(document.querySelector("#rangearea-basic"), options);
+    chart.render();
 
     /* combo range area chart */
-    const combooptions = {
+    var options = {
         series: [
             {
                 type: 'rangeArea',
@@ -270,7 +270,7 @@
                 speed: 500
             }
         },
-        colors: ['#985ffd', '#ff49cd', '#985ffd', '#ff49cd'],
+        colors: ['#03b562', '#7f67ff', '#03b562', '#7f67ff'],
         dataLabels: {
             enabled: false
         },
@@ -298,7 +298,7 @@
             }
         }
     };
-    const combochart = new ApexCharts(document.querySelector("#rangearea-combo"), combooptions);
-    if(combochart) combochart.render();
+    var chart = new ApexCharts(document.querySelector("#rangearea-combo"), options);
+    chart.render();
 
 })();

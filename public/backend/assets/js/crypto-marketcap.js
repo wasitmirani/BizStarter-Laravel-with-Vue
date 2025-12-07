@@ -1,8 +1,284 @@
 (function () {
   "use strict";
 
+  ///btcmain chart///
+  var options1 = {
+    series: [{
+        data: [32, 63, 59, 45, 72, 31, 84, 28, 53, 49, 68, 50, 42, 60, 30, 18, 97, 61, 67, 22, 74, 58, 33, 55]
+    }],
+    labels: [...Array(24).keys()].map(n => `2018-09-0${n + 1}`),
+    chart: {
+        type: 'area',
+        height: 50,
+        sparkline: {
+            enabled: true
+        },
+    },
+    stroke: {
+        curve: 'smooth',
+        width: 1.5,
+    },
+    colors: ["var(--primary05)"],
+    fill: {
+        type: ['gradient'],
+        gradient: {
+            shadeIntensity: 1,
+            opacityFrom: 0.4,
+            opacityTo: 0.1,
+            stops: [0, 90, 100],
+            colorStops: [
+                [
+                    {
+                        offset: 0,
+                        color: "var(--primary01)",
+                        opacity: 1
+                    },
+                    {
+                        offset: 75,
+                        color: "var(--primary005)",
+                        opacity: 1
+                    },
+                    {
+                        offset: 100,
+                        color: 'var(--primary005)',
+                        opacity: 0.05
+                    }
+                ],
+            ]
+        }
+    },
+    tooltip: {
+        fixed: {
+            enabled: false
+        },
+        x: {
+            show: false
+        },
+        y: {
+            title: {
+                formatter: function (seriesName) {
+                    return ''
+                }
+            }
+        },
+        marker: {
+            show: false
+        }
+    }
+  };
+  var chart1 = new ApexCharts(document.querySelector("#btcmain-chart"), options1);
+  chart1.render();
+  ///btcmain chart//
+
+    ///ethmain chart///
+    var options1 = {
+      series: [{
+          data: [32, 63, 59, 45, 72, 31, 84, 28, 53, 49, 68, 50, 42, 60, 30, 18, 97, 61, 67, 22, 74, 58, 33, 55]
+      }],
+      labels: [...Array(24).keys()].map(n => `2018-09-0${n + 1}`),
+      chart: {
+          type: 'area',
+          height: 50,
+          sparkline: {
+              enabled: true
+          },
+      },
+      stroke: {
+          curve: 'smooth',
+          width: 1.5,
+      },
+      colors: ["rgba(127, 103, 257,0.5)"],
+      fill: {
+          type: ['gradient'],
+          gradient: {
+              shadeIntensity: 1,
+              opacityFrom: 0.4,
+              opacityTo: 0.1,
+              stops: [0, 90, 100],
+              colorStops: [
+                  [
+                      {
+                          offset: 0,
+                          color: "rgba(127, 103, 257,0.1)",
+                          opacity: 1
+                      },
+                      {
+                          offset: 75,
+                          color: "rgba(127, 103, 257,0.05)",
+                          opacity: 1
+                      },
+                      {
+                          offset: 100,
+                          color: 'rgba(127, 103, 257,0.05)',
+                          opacity: 0.05
+                      }
+                  ],
+              ]
+          }
+      },
+      tooltip: {
+          fixed: {
+              enabled: false
+          },
+          x: {
+              show: false
+          },
+          y: {
+              title: {
+                  formatter: function (seriesName) {
+                      return ''
+                  }
+              }
+          },
+          marker: {
+              show: false
+          }
+      }
+    };
+    var chart1 = new ApexCharts(document.querySelector("#ethmain-chart"), options1);
+    chart1.render();
+    ///ethmain chart//
+
+     ///bnbmain chart///
+     var options1 = {
+      series: [{
+          data: [32, 63, 59, 45, 72, 31, 84, 28, 53, 49, 68, 50, 42, 60, 30, 18, 97, 61, 67, 22, 74, 58, 33, 55]
+      }],
+      labels: [...Array(24).keys()].map(n => `2018-09-0${n + 1}`),
+      chart: {
+          type: 'area',
+          height: 50,
+          sparkline: {
+              enabled: true
+          },
+      },
+      stroke: {
+          curve: 'smooth',
+          width: 1.5,
+      },
+      colors: ["rgba(253, 73, 99,0.5)"],
+      fill: {
+          type: ['gradient'],
+          gradient: {
+              shadeIntensity: 1,
+              opacityFrom: 0.4,
+              opacityTo: 0.1,
+              stops: [0, 90, 100],
+              colorStops: [
+                  [
+                      {
+                          offset: 0,
+                          color: "rgba(253, 73, 99,0.1)",
+                          opacity: 1
+                      },
+                      {
+                          offset: 75,
+                          color: "rgba(253, 73, 99,0.05)",
+                          opacity: 1
+                      },
+                      {
+                          offset: 100,
+                          color: 'rgba(253, 73, 99,0.05)',
+                          opacity: 0.05
+                      }
+                  ],
+              ]
+          }
+      },
+      tooltip: {
+          fixed: {
+              enabled: false
+          },
+          x: {
+              show: false
+          },
+          y: {
+              title: {
+                  formatter: function (seriesName) {
+                      return ''
+                  }
+              }
+          },
+          marker: {
+              show: false
+          }
+      }
+    };
+    var chart1 = new ApexCharts(document.querySelector("#bnbmain-marketcap"), options1);
+    chart1.render();
+    ///bnbmain chart//
+
+    ///cardinomain chart///
+    var options1 = {
+      series: [{
+          data: [32, 63, 59, 45, 72, 31, 84, 28, 53, 49, 68, 50, 42, 60, 30, 18, 97, 61, 67, 22, 74, 58, 33, 55]
+      }],
+      labels: [...Array(24).keys()].map(n => `2018-09-0${n + 1}`),
+      chart: {
+          type: 'area',
+          height: 50,
+          sparkline: {
+              enabled: true
+          },
+      },
+      stroke: {
+          curve: 'smooth',
+          width: 1.5,
+      },
+      colors: ["rgba(255, 169, 9,0.5)"],
+      fill: {
+          type: ['gradient'],
+          gradient: {
+              shadeIntensity: 1,
+              opacityFrom: 0.4,
+              opacityTo: 0.1,
+              stops: [0, 90, 100],
+              colorStops: [
+                  [
+                      {
+                          offset: 0,
+                          color: "rgba(255, 169, 9,0.1)",
+                          opacity: 1
+                      },
+                      {
+                          offset: 75,
+                          color: "rgba(255, 169, 9,0.05)",
+                          opacity: 1
+                      },
+                      {
+                          offset: 100,
+                          color: 'rgba(255, 169, 9,0.05)',
+                          opacity: 0.05
+                      }
+                  ],
+              ]
+          }
+      },
+      tooltip: {
+          fixed: {
+              enabled: false
+          },
+          x: {
+              show: false
+          },
+          y: {
+              title: {
+                  formatter: function (seriesName) {
+                      return ''
+                  }
+              }
+          },
+          marker: {
+              show: false
+          }
+      }
+    };
+    var chart1 = new ApexCharts(document.querySelector("#cardinomain-marketcap"), options1);
+    chart1.render();
+    ///cardinomain chart//
+
   /* Bitcoin Chart */
-  const spark1 = {
+  var spark1 = {
     chart: {
       type: "line",
       height: 30,
@@ -25,7 +301,7 @@
       curve: "smooth",
       lineCap: "butt",
       colors: undefined,
-      width: 1,
+      width: 1.5,
       dashArray: 0,
     },
     fill: {
@@ -37,22 +313,20 @@
       {
         name: "Value",
         data: [
-          0, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53,
-          61, 27, 54, 43, 19, 46, 0, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51,
-          35, 41, 35, 27, 93, 53, 61, 27, 54, 43, 19, 46, 0, 45, 54, 38, 56, 24,
-          65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53, 61, 27, 54, 43, 19,
-          46,
+          0, 45, 54, 38, 56, 24, 65,
         ],
       },
     ],
     yaxis: {
       min: 0,
       show: false,
+    },
+    xaxis: {
       axisBorder: {
         show: false,
       },
     },
-    xaxis: {
+    yaxis: {
       axisBorder: {
         show: false,
       },
@@ -60,13 +334,14 @@
     tooltip: {
       enabled: false,
     },
-    colors: ["rgb(255, 103, 87)"],
+    colors: ["rgb(253, 73, 99)"],
   };
-  const spark1chart = new ApexCharts(document.querySelector("#btc-chart"), spark1);
-  if(spark1chart) spark1chart.render();
+  document.getElementById("btc-chart").innerHTML = "";
+  var spark1 = new ApexCharts(document.querySelector("#btc-chart"), spark1);
+  spark1.render();
 
   /* Etherium Chart */
-  const spark2 = {
+  var spark2 = {
     chart: {
       type: "line",
       height: 30,
@@ -89,7 +364,7 @@
       curve: "smooth",
       lineCap: "butt",
       colors: undefined,
-      width: 1,
+      width: 1.5,
       dashArray: 0,
     },
     fill: {
@@ -101,22 +376,20 @@
       {
         name: "Value",
         data: [
-          0, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53,
-          61, 27, 54, 43, 19, 46, 0, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51,
-          35, 41, 35, 27, 93, 53, 61, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53,
-          61, 27, 54, 43, 19, 46, 0, 45, 54, 93, 53, 61, 27, 54, 43, 19,
-          46,
+          38, 24, 54, 65, 0, 45, 56
         ],
       },
     ],
     yaxis: {
       min: 0,
       show: false,
+    },
+    xaxis: {
       axisBorder: {
         show: false,
       },
     },
-    xaxis: {
+    yaxis: {
       axisBorder: {
         show: false,
       },
@@ -124,13 +397,14 @@
     tooltip: {
       enabled: false,
     },
-    colors: ["rgb(50, 212, 132)"],
+    colors: ["rgb(3, 181, 98)"],
   };
-  const spark2chart = new ApexCharts(document.querySelector("#eth-chart"), spark2);
-  if(spark2chart) spark2chart.render();
+  document.getElementById("eth-chart").innerHTML = "";
+  var spark2 = new ApexCharts(document.querySelector("#eth-chart"), spark2);
+  spark2.render();
 
   /* Golem Chart */
-  const spark3 = {
+  var spark3 = {
     chart: {
       type: "line",
       height: 30,
@@ -153,7 +427,7 @@
       curve: "smooth",
       lineCap: "butt",
       colors: undefined,
-      width: 1,
+      width: 1.5,
       dashArray: 0,
     },
     fill: {
@@ -165,22 +439,20 @@
       {
         name: "Value",
         data: [
-          0, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53,
-          61, 27, 54, 43, 19, 46, 0, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51,
-          35, 41, 35, 27, 93, 53, 61, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53,
-          61, 27, 54, 43, 19, 46, 0, 45, 54, 93, 53, 61, 27, 54, 43, 19,
-          46,
+          38, 65, 24, 0, 56, 45, 54
         ],
       },
     ],
     yaxis: {
       min: 0,
       show: false,
+    },
+    xaxis: {
       axisBorder: {
         show: false,
       },
     },
-    xaxis: {
+    yaxis: {
       axisBorder: {
         show: false,
       },
@@ -188,13 +460,14 @@
     tooltip: {
       enabled: false,
     },
-    colors: ["rgb(50, 212, 132)"],
+    colors: ["rgb(3, 181, 98)"],
   };
-  const spark3chart = new ApexCharts(document.querySelector("#glm-chart"), spark3);
-  if(spark3chart) spark3chart.render();
+  document.getElementById("glm-chart").innerHTML = "";
+  var spark3 = new ApexCharts(document.querySelector("#glm-chart"), spark3);
+  spark3.render();
 
   /* Dash Chart */
-  const spark4 = {
+  var spark4 = {
     chart: {
       type: "line",
       height: 30,
@@ -217,7 +490,7 @@
       curve: "smooth",
       lineCap: "butt",
       colors: undefined,
-      width: 1,
+      width: 1.5,
       dashArray: 0,
     },
     fill: {
@@ -229,22 +502,20 @@
       {
         name: "Value",
         data: [
-          0, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53,
-          61, 27, 54, 43, 19, 46, 0, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51,
-          35, 41, 35, 27, 93, 53, 61, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53,
-          61, 27, 54, 43, 19, 46, 0, 45, 54, 93, 53, 61, 27, 54, 43, 19,
-          46,
+          65, 38, 24, 56, 0, 54, 45
         ],
       },
     ],
     yaxis: {
       min: 0,
       show: false,
+    },
+    xaxis: {
       axisBorder: {
         show: false,
       },
     },
-    xaxis: {
+    yaxis: {
       axisBorder: {
         show: false,
       },
@@ -252,13 +523,14 @@
     tooltip: {
       enabled: false,
     },
-    colors: ["rgb(50, 212, 132)"],
+    colors: ["rgb(3, 181, 98)"],
   };
-  const spark4chart = new ApexCharts(document.querySelector("#dash-chart"), spark4);
-  if(spark4chart) spark4chart.render();
+  document.getElementById("dash-chart").innerHTML = "";
+  var spark4 = new ApexCharts(document.querySelector("#dash-chart"), spark4);
+  spark4.render();
 
   /* Litecoin Chart */
-  const spark5 = {
+  var spark5 = {
     chart: {
       type: "line",
       height: 30,
@@ -281,7 +553,7 @@
       curve: "smooth",
       lineCap: "butt",
       colors: undefined,
-      width: 1,
+      width: 1.5,
       dashArray: 0,
     },
     fill: {
@@ -293,22 +565,20 @@
       {
         name: "Value",
         data: [
-          0, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53,
-          61, 27, 54, 43, 19, 46, 0, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51,
-          35, 41, 35, 27, 93, 53, 61, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53,
-          61, 27, 54, 43, 19, 46, 0, 45, 54, 93, 53, 61, 27, 54, 43, 19,
-          46,
+          24, 45, 65, 0, 38, 56, 54
         ],
       },
     ],
     yaxis: {
       min: 0,
       show: false,
+    },
+    xaxis: {
       axisBorder: {
         show: false,
       },
     },
-    xaxis: {
+    yaxis: {
       axisBorder: {
         show: false,
       },
@@ -316,13 +586,14 @@
     tooltip: {
       enabled: false,
     },
-    colors: ["rgb(255, 103, 87)"],
+    colors: ["rgb(253, 73, 99)"],
   };
-  const spark5chart = new ApexCharts(document.querySelector("#lite-chart"), spark5);
-  if(spark5chart) spark5chart.render();
+  document.getElementById("lite-chart").innerHTML = "";
+  var spark5 = new ApexCharts(document.querySelector("#lite-chart"), spark5);
+  spark5.render();
 
   /* Ripple Chart */
-  const spark6 = {
+  var spark6 = {
     chart: {
       type: "line",
       height: 30,
@@ -345,7 +616,7 @@
       curve: "smooth",
       lineCap: "butt",
       colors: undefined,
-      width: 1,
+      width: 1.5,
       dashArray: 0,
     },
     fill: {
@@ -357,22 +628,20 @@
       {
         name: "Value",
         data: [
-          0, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53,
-          61, 27, 54, 43, 19, 46, 0, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51,
-          35, 41, 35, 27, 93, 53, 61, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53,
-          61, 27, 54, 43, 19, 46, 0, 45, 54, 93, 53, 61, 27, 54, 43, 19,
-          46,
+          54, 0, 56, 45, 38, 65, 24
         ],
       },
     ],
     yaxis: {
       min: 0,
       show: false,
+    },
+    xaxis: {
       axisBorder: {
         show: false,
       },
     },
-    xaxis: {
+    yaxis: {
       axisBorder: {
         show: false,
       },
@@ -380,13 +649,14 @@
     tooltip: {
       enabled: false,
     },
-    colors: ["rgb(50, 212, 132)"],
+    colors: ["rgb(3, 181, 98)"],
   };
-  const spark6chart = new ApexCharts(document.querySelector("#ripple-chart"), spark6);
-  if(spark6chart) spark6chart.render();
+  document.getElementById("ripple-chart").innerHTML = "";
+  var spark6 = new ApexCharts(document.querySelector("#ripple-chart"), spark6);
+  spark6.render();
 
   /* Eos Chart */
-  const spark7 = {
+  var spark7 = {
     chart: {
       type: "line",
       height: 30,
@@ -409,7 +679,7 @@
       curve: "smooth",
       lineCap: "butt",
       colors: undefined,
-      width: 1,
+      width: 1.5,
       dashArray: 0,
     },
     fill: {
@@ -421,22 +691,20 @@
       {
         name: "Value",
         data: [
-          0, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53,
-          61, 27, 54, 43, 19, 46, 0, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51,
-          35, 41, 35, 27, 93, 53, 61, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53,
-          61, 27, 54, 43, 19, 46, 0, 45, 54, 93, 53, 61, 27, 54, 43, 19,
-          46,
+          38, 54, 24, 65, 45, 0, 56
         ],
       },
     ],
     yaxis: {
       min: 0,
       show: false,
+    },
+    xaxis: {
       axisBorder: {
         show: false,
       },
     },
-    xaxis: {
+    yaxis: {
       axisBorder: {
         show: false,
       },
@@ -444,353 +712,11 @@
     tooltip: {
       enabled: false,
     },
-    colors: ["rgb(50, 212, 132)"],
+    colors: ["rgb(3, 181, 98)"],
   };
-  const spark7chart = new ApexCharts(document.querySelector("#eos-chart"), spark7);
-  if(spark7chart) spark7chart.render();
+  document.getElementById("eos-chart").innerHTML = "";
+  var spark7 = new ApexCharts(document.querySelector("#eos-chart"), spark7);
+  spark7.render();
 
-  /* Bytecoin Chart */
-  const spark8 = {
-    chart: {
-      type: "line",
-      height: 30,
-      width: 120,
-      sparkline: {
-        enabled: true,
-      },
-      dropShadow: {
-        enabled: true,
-        enabledOnSeries: undefined,
-        top: 0,
-        left: 0,
-        blur: 3,
-        color: "#000",
-        opacity: 0.1,
-      },
-    },
-    stroke: {
-      show: true,
-      curve: "smooth",
-      lineCap: "butt",
-      colors: undefined,
-      width: 1,
-      dashArray: 0,
-    },
-    fill: {
-      gradient: {
-        enabled: false,
-      },
-    },
-    series: [
-      {
-        name: "Value",
-        data: [
-          0, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53,
-          61, 27, 54, 43, 19, 46, 0, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51,
-          35, 41, 35, 27, 93, 53, 61, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53,
-          61, 27, 54, 43, 19, 46, 0, 45, 54, 93, 53, 61, 27, 54, 43, 19,
-          46,
-        ],
-      },
-    ],
-    yaxis: {
-      min: 0,
-      show: false,
-      axisBorder: {
-        show: false,
-      },
-    },
-    xaxis: {
-      axisBorder: {
-        show: false,
-      },
-    },
-    tooltip: {
-      enabled: false,
-    },
-    colors: ["rgb(255, 103, 87)"],
-  };
-  const spark8chart = new ApexCharts(document.querySelector("#bytecoin-chart"), spark8);
-  if(spark8chart) spark8chart.render();
-
-  /* IOTA Chart */
-  const spark9 = {
-    chart: {
-      type: "line",
-      height: 30,
-      width: 120,
-      sparkline: {
-        enabled: true,
-      },
-      dropShadow: {
-        enabled: true,
-        enabledOnSeries: undefined,
-        top: 0,
-        left: 0,
-        blur: 3,
-        color: "#000",
-        opacity: 0.1,
-      },
-    },
-    stroke: {
-      show: true,
-      curve: "smooth",
-      lineCap: "butt",
-      colors: undefined,
-      width: 1,
-      dashArray: 0,
-    },
-    fill: {
-      gradient: {
-        enabled: false,
-      },
-    },
-    series: [
-      {
-        name: "Value",
-        data: [
-          0, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53,
-          61, 27, 54, 43, 19, 46, 0, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51,
-          35, 41, 35, 27, 93, 53, 61, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53,
-          61, 27, 54, 43, 19, 46, 0, 45, 54, 93, 53, 61, 27, 54, 43, 19,
-          46,
-        ],
-      },
-    ],
-    yaxis: {
-      min: 0,
-      show: false,
-      axisBorder: {
-        show: false,
-      },
-    },
-    xaxis: {
-      axisBorder: {
-        show: false,
-      },
-    },
-    tooltip: {
-      enabled: false,
-    },
-    colors: ["rgb(255, 103, 87)"],
-  };
-  const spark9chart = new ApexCharts(document.querySelector("#iota-chart"), spark9);
-  if(spark9chart) spark9chart.render();
-
-  /* Monero Chart */
-  const spark10 = {
-    chart: {
-      type: "line",
-      height: 30,
-      width: 120,
-      sparkline: {
-        enabled: true,
-      },
-      dropShadow: {
-        enabled: true,
-        enabledOnSeries: undefined,
-        top: 0,
-        left: 0,
-        blur: 3,
-        color: "#000",
-        opacity: 0.1,
-      },
-    },
-    stroke: {
-      show: true,
-      curve: "smooth",
-      lineCap: "butt",
-      colors: undefined,
-      width: 1,
-      dashArray: 0,
-    },
-    fill: {
-      gradient: {
-        enabled: false,
-      },
-    },
-    series: [
-      {
-        name: "Value",
-        data: [
-          0, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53,
-          61, 27, 54, 43, 19, 46, 0, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51,
-          35, 41, 35, 27, 93, 53, 61, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53,
-          61, 27, 54, 43, 19, 46, 0, 45, 54, 93, 53, 61, 27, 54, 43, 19,
-          46,
-        ],
-      },
-    ],
-    yaxis: {
-      min: 0,
-      show: false,
-      axisBorder: {
-        show: false,
-      },
-    },
-    xaxis: {
-      axisBorder: {
-        show: false,
-      },
-    },
-    tooltip: {
-      enabled: false,
-    },
-    colors: ["rgb(50, 212, 132)"],
-  };
-  const spark10chart = new ApexCharts(document.querySelector("#monero-chart"), spark10);
-  if(spark10chart) spark10chart.render();
-
-  /* Start:: Main cards charts */
-  const Mainspark1 = {
-    chart: {
-      type: 'bar',
-      height: 40,
-      width: 150,
-      sparkline: {
-        enabled: true
-      }
-    },
-    stroke: {
-      show: true,
-      curve: 'smooth',
-      lineCap: 'butt',
-      colors: undefined,
-      width: 1,
-      dashArray: 0,
-    },
-    fill: {
-      gradient: {
-        enabled: false
-      }
-    },
-    series: [{
-      name: 'Value',
-      data: [0, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53, 61, 27, 54, 43, 19, 46]
-    }],
-    yaxis: {
-      min: 0,
-      show: false,
-      axisBorder: {
-        show: false
-      },
-    },
-    xaxis: {
-      axisBorder: {
-        show: false
-      },
-    },
-    plotOptions: {
-        bar: {
-            columnWidth: "75%",
-            borderRadius: 1
-        }
-    },
-    colors: ['rgb(50, 212, 132)'],
-
-  }
-  const Mainspark1chart = new ApexCharts(document.querySelector("#bitcoin-chart"), Mainspark1);
-  if(Mainspark1chart) Mainspark1chart.render();
-
-  const Mainspark2 = {
-    chart: {
-      type: 'bar',
-      height: 40,
-      width: 150,
-      sparkline: {
-        enabled: true
-      }
-    },
-    stroke: {
-      show: true,
-      curve: 'smooth',
-      lineCap: 'butt',
-      colors: undefined,
-      width: 1,
-      dashArray: 0,
-    },
-    fill: {
-      gradient: {
-        enabled: false
-      }
-    },
-    series: [{
-      name: 'Value',
-      data: [51, 35, 41, 35, 27, 93, 53, 30, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 61, 27, 54, 43, 19, 46]
-    }],
-    yaxis: {
-      min: 0,
-      show: false,
-      axisBorder: {
-        show: false
-      },
-    },
-    xaxis: {
-      axisBorder: {
-        show: false
-      },
-    },
-    plotOptions: {
-        bar: {
-            columnWidth: "75%",
-            borderRadius: 1
-        }
-    },
-    colors: ['rgb(50, 212, 132)'],
-
-  }
-  const Mainspark2chart = new ApexCharts(document.querySelector("#etherium-chart"), Mainspark2);
-  if(Mainspark2chart) Mainspark2chart.render();
-
-  const Mainspark3 = {
-    chart: {
-      type: 'bar',
-      height: 40,
-      width: 150,
-      sparkline: {
-        enabled: true
-      }
-    },
-    stroke: {
-      show: true,
-      curve: 'smooth',
-      lineCap: 'butt',
-      colors: undefined,
-      width: 1,
-      dashArray: 0,
-    },
-    fill: {
-      gradient: {
-        enabled: false
-      }
-    },
-    series: [{
-      name: 'Value',
-      data: [39, 62, 51, 35, 41, 50, 45, 54, 38, 56, 24, 65, 31, 37, 35, 27, 93, 53, 61, 27, 54, 43, 19, 46]
-    }],
-    yaxis: {
-      min: 0,
-      show: false,
-      axisBorder: {
-        show: false
-      },
-    },
-    xaxis: {
-      axisBorder: {
-        show: false
-      },
-    },
-    plotOptions: {
-        bar: {
-            columnWidth: "75%",
-            borderRadius: 1
-        }
-    },
-    colors: ['rgb(255, 103, 87)'],
-
-  }
-  const Mainspark3chart = new ApexCharts(document.querySelector("#dashcoin-chart"), Mainspark3);
-  if(Mainspark3chart) Mainspark3chart.render();
-  /* End:: Main cards charts */
 
 })();

@@ -8,262 +8,280 @@
     const pickrContainer2 = document.querySelector('.pickr-container2');
     const themeContainer2 = document.querySelector('.theme-container2');
 
-    if (pickrContainer) {
+    /* classic */
+    const themes = [
+        [
+            'classic',
+            {
+                swatches: [
+                    'rgba(244, 67, 54, 1)',
+                    'rgba(233, 30, 99, 0.95)',
+                    'rgba(156, 39, 176, 0.9)',
+                    'rgba(103, 58, 183, 0.85)',
+                    'rgba(63, 81, 181, 0.8)',
+                    'rgba(33, 150, 243, 0.75)',
+                    'rgba(3, 169, 244, 0.7)',
+                    'rgba(0, 188, 212, 0.7)',
+                    'rgba(0, 150, 136, 0.75)',
+                    'rgba(76, 175, 80, 0.8)',
+                    'rgba(139, 195, 74, 0.85)',
+                    'rgba(205, 220, 57, 0.9)',
+                    'rgba(255, 235, 59, 0.95)',
+                    'rgba(255, 193, 7, 1)'
+                ],
 
-        /* classic */
-        const themes = [
-            [
-                'classic',
-                {
-                    swatches: [
-                        'rgba(244, 67, 54, 1)',
-                        'rgba(233, 30, 99, 0.95)',
-                        'rgba(156, 39, 176, 0.9)',
-                        'rgba(103, 58, 183, 0.85)',
-                        'rgba(63, 81, 181, 0.8)',
-                        'rgba(33, 150, 243, 0.75)',
-                        'rgba(3, 169, 244, 0.7)',
-                        'rgba(0, 188, 212, 0.7)',
-                        'rgba(0, 150, 136, 0.75)',
-                        'rgba(76, 175, 80, 0.8)',
-                        'rgba(139, 195, 74, 0.85)',
-                        'rgba(205, 220, 57, 0.9)',
-                        'rgba(255, 235, 59, 0.95)',
-                        'rgba(255, 193, 7, 1)'
-                    ],
+                components: {
+                    preview: true,
+                    opacity: true,
+                    hue: true,
 
-                    components: {
-                        preview: true,
-                        opacity: true,
-                        hue: true,
-
-                        interaction: {
-                            hex: true,
-                            rgba: true,
-                            hsva: true,
-                            input: true,
-                            clear: true,
-                            save: true
-                        }
+                    interaction: {
+                        hex: true,
+                        rgba: true,
+                        hsva: true,
+                        input: true,
+                        clear: true,
+                        save: true
                     }
                 }
-            ],
-        ];
+            }
+        ],
+    ];
 
-        const buttons = [];
-        let pickr = null;
+    const buttons = [];
+    let pickr = null;
 
-        for (const [theme, config] of themes) {
-            const button = document.createElement('button');
-            button.innerHTML = theme;
-            buttons.push(button);
+    for (const [theme, config] of themes) {
+        const button = document.createElement('button');
+        button.innerHTML = theme;
+        buttons.push(button);
 
-            button.addEventListener('click', () => {
-                const el = document.createElement('p');
-                pickrContainer.appendChild(el);
+        button.addEventListener('click', () => {
+            const el = document.createElement('p');
+            pickrContainer.appendChild(el);
 
-                // Delete previous instance
-                if (pickr) {
-                    pickr.destroyAndRemove();
-                }
+            // Delete previous instance
+            if (pickr) {
+                pickr.destroyAndRemove();
+            }
 
-                // Apply active class
-                for (const btn of buttons) {
-                    btn.classList[btn === button ? 'add' : 'remove']('active');
-                }
+            // Apply active class
+            for (const btn of buttons) {
+                btn.classList[btn === button ? 'add' : 'remove']('active');
+            }
 
-                // Create fresh instance
-                pickr = new Pickr(Object.assign({
-                    el,
-                    theme,
-                    default: '#6c5ffc'
-                }, config));
+            // Create fresh instance
+            pickr = new Pickr(Object.assign({
+                el,
+                theme,
+                default: '#03b562'
+            }, config));
 
-                // Set events
-                pickr.on('init', instance => {
-                }).on('hide', instance => {
-                }).on('show', (color, instance) => {
-                }).on('save', (color, instance) => {
-                }).on('clear', instance => {
-                }).on('change', (color, source, instance) => {
-                }).on('changestop', (source, instance) => {
-                }).on('cancel', instance => {
-                }).on('swatchselect', (color, instance) => {
-                });
+            // Set events
+            pickr.on('init', instance => {
+                // console.log('Event: "init"', instance);
+            }).on('hide', instance => {
+                // console.log('Event: "hide"', instance);
+            }).on('show', (color, instance) => {
+                // console.log('Event: "show"', color, instance);
+            }).on('save', (color, instance) => {
+                // console.log('Event: "save"', color, instance);
+            }).on('clear', instance => {
+                // console.log('Event: "clear"', instance);
+            }).on('change', (color, source, instance) => {
+                // console.log('Event: "change"', color, source, instance);
+            }).on('changestop', (source, instance) => {
+                // console.log('Event: "changestop"', source, instance);
+            }).on('cancel', instance => {
+                // console.log('cancel', pickr.getColor().toRGBA().toString(0));
+            }).on('swatchselect', (color, instance) => {
+                // console.log('Event: "swatchselect"', color, instance);
             });
+        });
 
-            themeContainer.appendChild(button);
-        }
-
-        buttons[0].click();
+        themeContainer.appendChild(button);
     }
 
-    if(pickrContainer1){
-        
-        /* monolith */
-        const monolithThemes = [
-            [
-                'monolith',
-                {
-                    swatches: [
-                        'rgba(244, 67, 54, 1)',
-                        'rgba(233, 30, 99, 0.95)',
-                        'rgba(156, 39, 176, 0.9)',
-                        'rgba(103, 58, 183, 0.85)',
-                        'rgba(63, 81, 181, 0.8)',
-                        'rgba(33, 150, 243, 0.75)',
-                        'rgba(3, 169, 244, 0.7)'
-                    ],
+    buttons[0].click();
 
-                    defaultRepresentation: 'HEXA',
-                    components: {
-                        preview: true,
-                        opacity: true,
-                        hue: true,
+    /* monolith */
+    const monolithThemes = [
+        [
+            'monolith',
+            {
+                swatches: [
+                    'rgba(244, 67, 54, 1)',
+                    'rgba(233, 30, 99, 0.95)',
+                    'rgba(156, 39, 176, 0.9)',
+                    'rgba(103, 58, 183, 0.85)',
+                    'rgba(63, 81, 181, 0.8)',
+                    'rgba(33, 150, 243, 0.75)',
+                    'rgba(3, 169, 244, 0.7)'
+                ],
 
-                        interaction: {
-                            hex: false,
-                            rgba: false,
-                            hsva: false,
-                            input: true,
-                            clear: true,
-                            save: true
-                        }
+                defaultRepresentation: 'HEXA',
+                components: {
+                    preview: true,
+                    opacity: true,
+                    hue: true,
+
+                    interaction: {
+                        hex: false,
+                        rgba: false,
+                        hsva: false,
+                        input: true,
+                        clear: true,
+                        save: true
                     }
                 }
-            ]
-        ];
+            }
+        ]
+    ];
 
-        const monolithButtons = [];
-        let monolithPickr = null;
+    const monolithButtons = [];
+    let monolithPickr = null;
 
-        for (const [theme, config] of monolithThemes) {
-            const button = document.createElement('button');
-            button.innerHTML = theme;
-            monolithButtons.push(button);
+    for (const [theme, config] of monolithThemes) {
+        const button = document.createElement('button');
+        button.innerHTML = theme;
+        monolithButtons.push(button);
 
-            button.addEventListener('click', () => {
-                const el = document.createElement('p');
-                pickrContainer1.appendChild(el);
+        button.addEventListener('click', () => {
+            const el = document.createElement('p');
+            pickrContainer1.appendChild(el);
 
-                /* Delete previous instance */
-                if (monolithPickr) {
-                    monolithPickr.destroyAndRemove();
-                }
+            /* Delete previous instance */
+            if (monolithPickr) {
+                monolithPickr.destroyAndRemove();
+            }
 
-                /* Apply active class */
-                for (const btn of monolithButtons) {
-                    btn.classList[btn === button ? 'add' : 'remove']('active');
-                }
+            /* Apply active class */
+            for (const btn of monolithButtons) {
+                btn.classList[btn === button ? 'add' : 'remove']('active');
+            }
 
-                /* Create fresh instance */
-                monolithPickr = new Pickr(Object.assign({
-                    el,
-                    theme,
-                    default: '#fc5296'
-                }, config));
+            /* Create fresh instance */
+            monolithPickr = new Pickr(Object.assign({
+                el,
+                theme,
+                default: '#7f67ff'
+            }, config));
 
-                /* Set events */
-                monolithPickr.on('init', instance => {
-                }).on('hide', instance => {
-                }).on('show', (color, instance) => {
-                }).on('save', (color, instance) => {
-                }).on('clear', instance => {
-                }).on('change', (color, source, instance) => {
-                }).on('changestop', (source, instance) => {
-                }).on('cancel', instance => {
-                }).on('swatchselect', (color, instance) => {
-                });
+            /* Set events */
+            monolithPickr.on('init', instance => {
+                // console.log('Event: "init"', instance);
+            }).on('hide', instance => {
+                // console.log('Event: "hide"', instance);
+            }).on('show', (color, instance) => {
+                // console.log('Event: "show"', color, instance);
+            }).on('save', (color, instance) => {
+                // console.log('Event: "save"', color, instance);
+            }).on('clear', instance => {
+                // console.log('Event: "clear"', instance);
+            }).on('change', (color, source, instance) => {
+                // console.log('Event: "change"', color, source, instance);
+            }).on('changestop', (source, instance) => {
+                // console.log('Event: "changestop"', source, instance);
+            }).on('cancel', instance => {
+                // console.log('cancel', monolithPickr.getColor().toRGBA().toString(0));
+            }).on('swatchselect', (color, instance) => {
+                // console.log('Event: "swatchselect"', color, instance);
             });
+        });
 
-            themeContainer1.appendChild(button);
-        }
-
-        monolithButtons[0].click();
-        
+        themeContainer1.appendChild(button);
     }
 
-    if(pickrContainer2){
-        //nano
-        const nanoThemes = [
-            [
-                'nano',
-                {
-                    swatches: [
-                        'rgba(244, 67, 54, 1)',
-                        'rgba(233, 30, 99, 0.95)',
-                        'rgba(156, 39, 176, 0.9)',
-                        'rgba(103, 58, 183, 0.85)',
-                        'rgba(63, 81, 181, 0.8)',
-                        'rgba(33, 150, 243, 0.75)',
-                        'rgba(3, 169, 244, 0.7)'
-                    ],
+    monolithButtons[0].click();
 
-                    defaultRepresentation: 'HEXA',
-                    components: {
-                        preview: true,
-                        opacity: true,
-                        hue: true,
+    //nano
+    const nanoThemes = [
+        [
+            'nano',
+            {
+                swatches: [
+                    'rgba(244, 67, 54, 1)',
+                    'rgba(233, 30, 99, 0.95)',
+                    'rgba(156, 39, 176, 0.9)',
+                    'rgba(103, 58, 183, 0.85)',
+                    'rgba(63, 81, 181, 0.8)',
+                    'rgba(33, 150, 243, 0.75)',
+                    'rgba(3, 169, 244, 0.7)'
+                ],
 
-                        interaction: {
-                            hex: false,
-                            rgba: false,
-                            hsva: false,
-                            input: true,
-                            clear: true,
-                            save: true
-                        }
+                defaultRepresentation: 'HEXA',
+                components: {
+                    preview: true,
+                    opacity: true,
+                    hue: true,
+
+                    interaction: {
+                        hex: false,
+                        rgba: false,
+                        hsva: false,
+                        input: true,
+                        clear: true,
+                        save: true
                     }
                 }
-            ]
-        ];
+            }
+        ]
+    ];
 
-        const nanoButtons = [];
-        let nanoPickr = null;
+    const nanoButtons = [];
+    let nanoPickr = null;
 
-        for (const [theme, config] of nanoThemes) {
-            const button = document.createElement('button');
-            button.innerHTML = theme;
-            nanoButtons.push(button);
+    for (const [theme, config] of nanoThemes) {
+        const button = document.createElement('button');
+        button.innerHTML = theme;
+        nanoButtons.push(button);
 
-            button.addEventListener('click', () => {
-                const el = document.createElement('p');
-                pickrContainer2.appendChild(el);
+        button.addEventListener('click', () => {
+            const el = document.createElement('p');
+            pickrContainer2.appendChild(el);
 
-                /* Delete previous instance */
-                if (nanoPickr) {
-                    nanoPickr.destroyAndRemove();
-                }
+            /* Delete previous instance */
+            if (nanoPickr) {
+                nanoPickr.destroyAndRemove();
+            }
 
-                /* Apply active class */
-                for (const btn of nanoButtons) {
-                    btn.classList[btn === button ? 'add' : 'remove']('active');
-                }
+            /* Apply active class */
+            for (const btn of nanoButtons) {
+                btn.classList[btn === button ? 'add' : 'remove']('active');
+            }
 
-                /* Create fresh instance */
-                nanoPickr = new Pickr(Object.assign({
-                    el,
-                    theme,
-                    default: '#05c3fb'
-                }, config));
+            /* Create fresh instance */
+            nanoPickr = new Pickr(Object.assign({
+                el,
+                theme,
+                default: '#fd4963'
+            }, config));
 
-                /* Set events */
-                nanoPickr.on('init', instance => {
-                }).on('hide', instance => {
-                }).on('show', (color, instance) => {
-                }).on('save', (color, instance) => {
-                }).on('clear', instance => {
-                }).on('change', (color, source, instance) => {
-                }).on('changestop', (source, instance) => {
-                }).on('cancel', instance => {
-                }).on('swatchselect', (color, instance) => {
-                });
+            /* Set events */
+            nanoPickr.on('init', instance => {
+                // console.log('Event: "init"', instance);
+            }).on('hide', instance => {
+                // console.log('Event: "hide"', instance);
+            }).on('show', (color, instance) => {
+                // console.log('Event: "show"', color, instance);
+            }).on('save', (color, instance) => {
+                // console.log('Event: "save"', color, instance);
+            }).on('clear', instance => {
+                // console.log('Event: "clear"', instance);
+            }).on('change', (color, source, instance) => {
+                // console.log('Event: "change"', color, source, instance);
+            }).on('changestop', (source, instance) => {
+                // console.log('Event: "changestop"', source, instance);
+            }).on('cancel', instance => {
+                // console.log('cancel', nanoPickr.getColor().toRGBA().toString(0));
+            }).on('swatchselect', (color, instance) => {
+                // console.log('Event: "swatchselect"', color, instance);
             });
+        });
 
-            themeContainer2.appendChild(button);
-        }
-
-        nanoButtons[0].click(); 
+        themeContainer2.appendChild(button);
     }
+
+    nanoButtons[0].click();
 
 })();

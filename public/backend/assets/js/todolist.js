@@ -23,13 +23,30 @@
     );
 
     /* draggable js */
-    const todoDragElement = document.getElementById('todo-drag');
-    if(todoDragElement) {
-        dragula([todoDragElement],{
-            moves: function (el, container, handle) {
-                return handle.classList.contains('todo-handle');
-              }
-        });
-    }
+    dragula([document.getElementById('todo-drag')],{
+        moves: function (el, container, handle) {
+            return handle.classList.contains('todo-handle');
+          }
+    });
+
+     const checkboxes = document.getElementsByClassName("todo-check");
+
+     Array.from(checkboxes).forEach(function(checkbox) {
+         const todoItem = checkbox.closest(".todo-handle");
+ 
+         if (checkbox.checked) {
+             todoItem.classList.add("checked-todo");
+         } else {
+            todoItem.classList.remove("checked-todo");
+         }
+ 
+         checkbox.addEventListener("change", function() {
+             if (checkbox.checked) {
+                 todoItem.classList.add("checked-todo");
+             } else {
+                 todoItem.classList.remove("checked-todo");
+             }
+         });
+     });
 
 })();

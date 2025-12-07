@@ -1,211 +1,253 @@
 (function () {
     "use strict";
-
-    const myElement1 = document.getElementById('recent-jobs');
-    if(myElement1) {
-        new SimpleBar(myElement1, { autoHide: true });
-    }
-
-    /* Employees Performance */
-    const options = {
-        series: [
-            {
-                name: "Weekly",
-                type: "column",
-                data: [31, 11, 22, 37, 13, 22, 37, 21, 44, 22, 34, 25],
-            },
-            {
-                name: "Monthly",
-                type: "area",
-                data: [44, 55, 41, 87, 22, 43, 21, 41, 56, 27, 43, 23],
-            },
-            {
-                name: "Daily",
-                type: "line",
-                data: [30, 8, 20, 36, 15, 22, 37, 19, 44, 24, 32, 23],
-            },
-        ],
+    var options = {
         chart: {
-            height: 378,
-            type: "line",
-            stacked: false,
-            toolbar: {
-                show: false,
-            },
-            dropShadow: {
-                enabled: true,
-                enabledOnSeries: undefined,
-                top: 5,
-                left: 0,
-                blur: 3,
-                color: ["transparent", '#000', '#000'],
-                opacity: 0.15
-            },
-        },
-        stroke: {
-            width: [0, 1, 2],
-            curve: ["smooth", "stepline", "smooth"],
-        },
-        plotOptions: {
-            bar: {
-                columnWidth: "25%",
-                borderRadius: 2,
-            },
-        },
-        colors: ["var(--primary-color)", "#fdaf22", "rgb(255, 73, 205)"],
-        fill: {
-            opacity: [1, 0.05, 1],
-            gradient: {
-                inverseColors: false,
-                shade: "light",
-                type: "vertical",
-                opacityFrom: 0.85,
-                opacityTo: 0.55,
-                stops: [0, 100, 100, 100],
-            },
+          height: 325,
+          toolbar: {
+            show: false,
+          },
+          dropShadow: {
+            enabled: true,
+            enabledOnSeries: undefined,
+            top: 7,
+            left: 0,
+            blur: 1,
+            color: ["var(--primary-color)", "var(--primary02)", "rgb(127, 103, 257)"],
+            opacity: 0.05,
+          },
         },
         grid: {
-            show: true,
-            borderColor: 'rgba(119, 119, 142, 0.08)',
-            strokeDashArray: 3,
-        },
-        legend: {
-            show: true,
-            position: "top",
-            horizontalAlign: "right",
-            fontSize: "11px",
-            fontFamily: "Helvetica, Arial",
-            fontWeight: 600,
-            labels: {
-                colors: '#74767c',
-            },
-            markers: {
-                size: 4,
-                strokeWidth: 0,
-                strokeColor: "#fff",
-                fillColors: undefined,
-                radius: 12,
-                customHTML: undefined,
-                onClick: undefined,
-                offsetX: 0,
-                offsetY: 0,
-            },
-        },
-        markers: {
-            size: 0,
-        },
-        xaxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            axisBorder: {
-                show: false,
-                color: 'rgba(119, 119, 142, 0.05)',
-            },
-            axisTicks: {
-                show: false,
-                color: 'rgba(119, 119, 142, 0.05)',
-            },
-            labels: {
-                style: {
-                    colors: "#8c9097",
-                    fontSize: '11px',
-                    fontWeight: 600,
-                    cssClass: 'apexcharts-xaxis-label',
-                },
-            }
-        },
-        yaxis: {
-            title: {
-                style: {
-                    color: '#adb5be',
-                    fontSize: '14px',
-                    fontWeight: 600,
-                    cssClass: 'apexcharts-yaxis-label',
-                },
-            },
-            labels: {
-                show: true,
-                style: {
-                    colors: "#8c9097",
-                    fontSize: '11px',
-                    fontWeight: 600,
-                    cssClass: 'apexcharts-xaxis-label',
-                },
-            },
-            min: 0,
-        },
-    };
-    const chart = new ApexCharts(document.querySelector("#employees-performance"), options);
-    if(chart) chart.render();
-    /* Employees Performance */
-
-    /* Candidates Overview */
-    const options1 = {
-        series: [12765, 15976],
-        labels: ["Female", "Male"],
-        chart: {
-            height: 236,
-            type: 'donut',
+          show: true,
+          borderColor: "rgba(119, 119, 142, 0.1)",
+          strokeDashArray: 4,
         },
         dataLabels: {
-            enabled: false,
-        },
-        legend: {
-            show: true,
-            position: "bottom",
-            markers: {
-                size: 5
-            }
+          enabled: false,
         },
         stroke: {
+          width: [2, 2],
+          curve: "smooth",
+          dashArray: [0, 4],
+        },
+        legend: {
+          show: true,
+          position: "bottom",
+          horizontalAlign: "center",
+          fontWeight: 600,
+          fontSize: "11px",
+          labels: {
+            colors: "#74767c",
+          },
+          markers: {
+            size: 4,
+            strokeWidth: 0,
+            strokeColor: '#fff',
+            fillColors: undefined,
+            radius: 5,
+            customHTML: undefined,
+            onClick: undefined,
+            offsetX: 0,
+            offsetY: 0
+          },
+        },
+        series: [
+          {
+            name: "Total Application",
+            data: [20, 65, 40, 55, 80, 90, 59, 86, 120, 165, 115, 120],
+            type: "area",
+          },
+          {
+            name: "Selected Application",
+            data: [65, 20, 85, 38, 55, 25, 25, 165, 75, 64, 70, 75],
+            type: "line",
+          },
+        ],
+        fill: {
+          type: ['gradient', 'solid'],
+          gradient: {
+            shadeIntensity: 1,
+            opacityFrom: 0.4,
+            opacityTo: 0.1,
+            stops: [0, 90, 100],
+            colorStops: [
+              [
+                {
+                  offset: 0,
+                  color: "var(--primary01)",
+                  opacity: 0.05
+                },
+                {
+                  offset: 75,
+                  color: "var(--primary01)",
+                  opacity: 1
+                },
+                {
+                  offset: 100,
+                  color: 'var(--primary02)',
+                  opacity: 0.2
+                }
+              ],
+              [
+                {
+                  offset: 0,
+                  color: 'rgb(127, 103, 257)',
+                  opacity: 1
+                },
+                {
+                  offset: 75,
+                  color: 'rgb(127, 103, 257)',
+                  opacity: 1
+                },
+                {
+                  offset: 100,
+                  color: 'rgb(127, 103, 257)',
+                  opacity: 1
+                }
+              ],
+            ]
+          }
+        },
+        colors: ["var(--primary-color)", "rgba(127, 103, 257)"],
+        yaxis: {
+          min:0,
+          title: {
+            style: {
+              color: "#adb5be",
+              fontSize: "14px",
+              fontFamily: "poppins, sans-serif",
+              fontWeight: 600,
+              cssClass: "apexcharts-yaxis-label",
+            },
+          },
+        },
+        xaxis: {
+          type: "day",
+          categories: [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+          ],
+          axisBorder: {
             show: true,
-            curve: 'smooth',
-            lineCap: 'round',
-            colors: "#fff",
-            width: 0,
-            dashArray: 0,
+            color: "rgba(119, 119, 142, 0.05)",
+            offsetX: 0,
+            offsetY: 0,
+          },
+          axisTicks: {
+            show: true,
+            borderType: "solid",
+            color: "rgba(119, 119, 142, 0.05)",
+            width: 6,
+            offsetX: 0,
+            offsetY: 0,
+          },
+          labels: {
+            rotate: -90,
+            style: {
+              colors: "#8c9097",
+              fontSize: "11px",
+              fontWeight: 600,
+              cssClass: "apexcharts-xaxis-label",
+            },
+          },
+        },
+      };
+      var chart = new ApexCharts(document.querySelector("#recruitment-stats"), options);
+      chart.render();
+
+      var options = {
+        series: [18235, 12743, 8369, 16458],
+        labels: ["male", "Female", "Others", "Not Mentioned"],
+        chart: {
+          height: 270,
+          type: 'donut',
+        },
+        dataLabels: { 
+          enabled: false,
+        },
+    
+        legend: {
+          show: false,
+        },
+        stroke: {
+          width: 8,
+          colors: ["rgba(244, 244, 244,1)"],
         },
         plotOptions: {
-            pie: {
-                expandOnClick: false,
-                donut: {
-                    size: '85%',
-                    background: 'transparent',
-                    labels: {
-                        show: true,
-                        name: {
-                            show: true,
-                            fontSize: '20px',
-                            color: '#495057',
-                            offsetY: -5
-                        },
-                        value: {
-                            show: true,
-                            fontSize: '22px',
-                            color: undefined,
-                            offsetY: 5,
-                            fontWeight: 600,
-                            formatter: function (val) {
-                                return val + "%"
-                            }
-                        },
-                        total: {
-                            show: true,
-                            showAlways: true,
-                            label: 'Total Candidates',
-                            fontSize: '14px',
-                            fontWeight: 400,
-                            color: '#495057',
-                        }
-                    }
+          pie: {
+            startAngle: -90,
+            endAngle: 90,
+            offsetY: 10,
+            expandOnClick: false,
+            donut: {
+              size: '80%',
+              background: 'transparent',
+              labels: {
+                show: true,
+                name: {
+                  show: true,
+                  fontSize: '20px',
+                  color: '#495057',
+                  fontFamily: "Montserrat, sans-serif",
+                  offsetY: -35
+                },
+                value: {
+                  show: true,
+                  fontSize: '22px',
+                  color: undefined,
+                  offsetY: -25,
+                  fontWeight: 600,
+                  fontFamily: "Montserrat, sans-serif",
+                  formatter: function (val) {
+                    return val + "%"
+                  }
+                },
+                total: {
+                  show: true,
+                  showAlways: true,
+                  label: 'Total Candidates',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  color: '#495057',
                 }
+              }
             }
+          }
         },
-      
+        grid: {
+          padding: {
+            bottom: -85
+          }
+        },
+        colors: ["var(--primary09)", "rgba(127, 103, 257, 0.9)", "rgba(253, 73, 99, 0.9)", "rgba(255, 169, 9, 0.9)"],
+      };
+      var chart = new ApexCharts(document.querySelector("#candidates"), options);
+      chart.render();
 
-        colors: ["var(--primary-color)", "rgb(253, 175, 34)"],
-    };
-    const chart1 = new ApexCharts(document.querySelector("#candidates-overview"), options1);
-    if(chart1) chart1.render();
-    /* Candidates Overview */
+     // deault swiper
+     var swiper = new Swiper(".swiper-basic", {
+      loop: true,
+      autoplay: {
+          delay: 1500,
+          disableOnInteraction: false,
+          slidesPerView: 1,
+            spaceBetween: 10
+      },
+       breakpoints: {
+          1880: {
+            slidesPerView: 1,
+            spaceBetween: 10
+          }
+        }
+  });
 
 })();

@@ -89,11 +89,9 @@
 
     /* intl-tel-input Basic */
     const input = document.querySelector("#phone");
-    if (input) {
-        window.intlTelInput(input, {
-            utilsScript: "../assets/libs/intl-tel-input/build/js/utils.js"
-        });
-    }
+    window.intlTelInput(input, {
+        utilsScript: "../assets/libs/intl-tel-input/build/js/utils.js"
+    });
     /* intl-tel-input Basic */
 
     /* intl-tel-input with Validation */
@@ -106,56 +104,52 @@
     const errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
 
     // initialise plugin
-    if (input1) {
-        const iti = window.intlTelInput(input1, {
-            initialCountry: "us",
-            utilsScript: "../assets/libs/intl-tel-input/build/js/utils.js"
-        });
-        const reset = () => {
-            input1.classList.remove("error");
-            errorMsg.innerHTML = "";
-            errorMsg.classList.add("hide");
-            validMsg.classList.add("hide");
-        };
-    
-        const showError = (msg) => {
-            input1.classList.add("error");
-            errorMsg.innerHTML = msg;
-            errorMsg.classList.remove("hide");
-        };
-    
-        // on click button: validate
-        button.addEventListener('click', () => {
-            reset();
-            if (!input1.value.trim()) {
-                showError("Required");
-            } else if (iti.isValidNumberPrecise()) {
-                validMsg.classList.remove("hide");
-            } else {
-                const errorCode = iti.getValidationError();
-                const msg = errorMap[errorCode] || "Invalid number";
-                showError(msg);
-            }
-        });
-    
-        // on keyup / change flag: reset
-        input1.addEventListener('change', reset);
-        input1.addEventListener('keyup', reset);
-        /* intl-tel-input with Validation */
-    }
+    const iti = window.intlTelInput(input1, {
+        initialCountry: "us",
+        utilsScript: "../assets/libs/intl-tel-input/build/js/utils.js"
+    });
 
+    const reset = () => {
+        input1.classList.remove("error");
+        errorMsg.innerHTML = "";
+        errorMsg.classList.add("hide");
+        validMsg.classList.add("hide");
+    };
+
+    const showError = (msg) => {
+        input1.classList.add("error");
+        errorMsg.innerHTML = msg;
+        errorMsg.classList.remove("hide");
+    };
+
+    // on click button: validate
+    button.addEventListener('click', () => {
+        reset();
+        if (!input1.value.trim()) {
+            showError("Required");
+        } else if (iti.isValidNumberPrecise()) {
+            validMsg.classList.remove("hide");
+        } else {
+            const errorCode = iti.getValidationError();
+            const msg = errorMap[errorCode] || "Invalid number";
+            showError(msg);
+        }
+    });
+
+    // on keyup / change flag: reset
+    input1.addEventListener('change', reset);
+    input1.addEventListener('keyup', reset);
+    /* intl-tel-input with Validation */
 
     /* intl-tel-input with Only Countries */
     const input3 = document.querySelector("#phone-only-countries");
-    if(input3) {
-        window.intlTelInput(input3, {
-            onlyCountries: ["al", "ad", "at", "by", "be", "ba", "bg", "hr", "cz", "dk",
-                "ee", "fo", "fi", "fr", "de", "gi", "gr", "va", "hu", "is", "ie", "it", "lv",
-                "li", "lt", "lu", "mk", "mt", "md", "mc", "me", "nl", "no", "pl", "pt", "ro",
-                "ru", "sm", "rs", "sk", "si", "es", "se", "ch", "ua", "gb"],
-            utilsScript: "../assets/libs/intl-tel-input/build/js/utils.js" // just for formatting/placeholders etc
-        });
-    }
+    window.intlTelInput(input3, {
+        onlyCountries: ["al", "ad", "at", "by", "be", "ba", "bg", "hr", "cz", "dk",
+            "ee", "fo", "fi", "fr", "de", "gi", "gr", "va", "hu", "is", "ie", "it", "lv",
+            "li", "lt", "lu", "mk", "mt", "md", "mc", "me", "nl", "no", "pl", "pt", "ro",
+            "ru", "sm", "rs", "sk", "si", "es", "se", "ch", "ua", "gb"],
+        utilsScript: "../assets/libs/intl-tel-input/build/js/utils.js" // just for formatting/placeholders etc
+    });
     /* intl-tel-input with Only Countries */
 
     /* intl-tel-input with Hidden Input */
@@ -163,50 +157,41 @@
     const form = document.querySelector("#form");
     const message = document.querySelector("#message");
 
-    if(input4){
-        const iti1 = window.intlTelInput(input4, {
-            initialCountry: "us",
-            hiddenInput: () => "full_phone",
-            utilsScript: "../assets/libs/intl-tel-input/build/js/utils.js" // just for formatting/placeholders etc
-        });
-    }
-    if(form){
-        form.onsubmit = () => {
-            if (!iti1.isValidNumber()) {
-                message.innerHTML = "Invalid number. Please try again.";
-                return false;
-            }
-        };
-    }
+    const iti1 = window.intlTelInput(input4, {
+        initialCountry: "us",
+        hiddenInput: () => "full_phone",
+        utilsScript: "../assets/libs/intl-tel-input/build/js/utils.js" // just for formatting/placeholders etc
+    });
 
-    if(message){
-        const urlParams = new URLSearchParams(window.location.search);
-        const fullPhone = urlParams.get('full_phone')
-        if (fullPhone) {
-            message.innerHTML = `Submitted hidden input value: ${fullPhone}`;
+    form.onsubmit = () => {
+        if (!iti1.isValidNumber()) {
+            message.innerHTML = "Invalid number. Please try again.";
+            return false;
         }
+    };
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const fullPhone = urlParams.get('full_phone')
+    if (fullPhone) {
+        message.innerHTML = `Submitted hidden input value: ${fullPhone}`;
     }
     /* intl-tel-input with Hidden Input */
 
     /* intl-tel-input with Existing Number */
     const input5 = document.querySelector("#phone-existing-number");
-    if(input5){
-        window.intlTelInput(input5, {
-            initialCountry: "us",
-            utilsScript: "../assets/libs/intl-tel-input/build/js/utils.js" // just for formatting/placeholders etc
-        });
-    }
+    window.intlTelInput(input5, {
+        initialCountry: "us",
+        utilsScript: "../assets/libs/intl-tel-input/build/js/utils.js" // just for formatting/placeholders etc
+    });
     /* intl-tel-input with Existing Number */
 
     /* intl-tel-input with Selected Dial Code */
     const input6 = document.querySelector("#phone-show-selected-dial-code");
-    if(input6){
-        window.intlTelInput(input6, {
-            initialCountry: "us",
-            showSelectedDialCode: true,
-            utilsScript: "../assets/libs/intl-tel-input/build/js/utils.js" // just for formatting/placeholders etc
-        });
-    }
+    window.intlTelInput(input6, {
+        initialCountry: "us",
+        showSelectedDialCode: true,
+        utilsScript: "../assets/libs/intl-tel-input/build/js/utils.js" // just for formatting/placeholders etc
+    });
     /* intl-tel-input with Selected Dial Code */
 
     /* Basic DualList */
@@ -224,8 +209,10 @@
         searchPlaceholder: 'search numbers'
     });
     dlb2.addEventListener('added', function (event) {
+        console.log(event);
     });
     dlb2.addEventListener('removed', function (event) {
+        console.log(event);
     });
     /* DualLIst With Add Options & eventListeners */
 

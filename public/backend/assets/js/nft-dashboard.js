@@ -1,167 +1,186 @@
 (function () {
     "use strict";
 
-    /* nft balance chart */
-    const nft1 = {
-        chart: {
+    var options = {
+        series: [
+          {
+            name: 'Orders',
             type: 'area',
-            height: 60,
-            sparkline: {
-                enabled: true
-            }
+            data: [102, 103, 103, 99, 100, 105, 102, 102, 104, 104, 103, 105, 104, 106, 112, 101, 100, 102, 99, 98, 98, 99, 97, 103, 100, 101, 100, 103, 104, 102, 100]
+          },
+          {
+            name: 'Sales',
+            type: 'line',
+            data: [118, 119, 119, 122, 120, 123, 122, 120, 125, 118, 117, 119, 121, 123, 121, 119, 120, 118, 117, 119, 118, 120, 119, 122, 120, 121, 119, 118, 117, 119],
+          },
+          {
+            name: 'Profit',
+            type: 'line',
+            data: [123, 124, 124, 127, 125, 128, 127, 125, 130, 123, 122, 124, 126, 128, 126, 124, 125, 123, 122, 124, 123, 125, 124, 127, 125, 126, 124, 123, 122, 124
+            ],
+          }
+        ],
+        chart: {
+          type: "line",
+          height: 340,
+          toolbar: {
+            show: false
+          },
+          dropShadow: {
+            enabled: true,
+            enabledOnSeries: undefined,
+            top: 7,
+            left: 0,
+            blur: 1,
+            color: ['var(--primary-color)', "rgba(127, 103, 257,1)", "rgba(253, 73, 99,1)"],
+            opacity: 0.05,
+          },
         },
+        labels: ['Sun','','','','Mon','','','','','Tue','','','','','Wed','','','', '','Thu','','','','', 'Fri','','','','','Sat'],
+        colors: [
+          'var(--primary-color)',
+          "rgba(127, 103, 257,1)", "rgba(253, 73, 99,1)"
+        ],
+        dataLabels: {
+          enabled: false,
+        },
+        legend: {
+          show: true,
+          position: "top",
+          offsetX: 0,
+          offsetY: 8,
+          markers: {
+            size:5,
+            strokeWidth: 0,
+            strokeColor: '#fff',
+            fillColors: undefined,
+            radius: 12,
+            customHTML: undefined,
+            onClick: undefined,
+            offsetX: 0,
+            offsetY: 0
+          },
+        },
+          markers: {
+            size: [3.5,0,0],
+            strokeWidth: 1.5,
+            dashArray: 5
+          },
         stroke: {
-            show: true,
-            curve: 'smooth',
-            lineCap: 'butt',
-            colors: undefined,
-            width: 1.5,
-            dashArray: 0,
+          curve: 'smooth',
+          width: [2, 1.8, 1.8],
+          lineCap: 'round',
+          dashArray: [4,0, 0],
         },
         fill: {
-            type: 'gradient',
+            type: "gradient",
             gradient: {
-                shadeIntensity: 1,
-                opacityFrom: 0.4,
-                opacityTo: 0.1,
-                stops: [0, 90, 100],
+                opacityFrom: 0.5,
+                opacityTo: 0.2,
+                stops: [0, 60],
                 colorStops: [
                     [
                         {
                             offset: 0,
-                            color: "var(--primary01)",
+                            color: "rgba(3, 181, 98,0.1)",
                             opacity: 1
-                        },
-                        {
-                            offset: 75,
-                            color: "var(--primary01)",
+                          },
+                          {
+                            offset: 50,
+                            color: "rgba(3, 181, 98,0.1)",
                             opacity: 1
-                        },
-                        {
+                          },
+                          {
                             offset: 100,
-                            color: "var(--primary01)",
+                            color: 'rgba(3, 181, 98,0.1)',
+                            opacity: 0.5
+                          }
+                    ],
+                    [
+                        {
+                            offset: 0,
+                            color: "rgb(253, 73, 99)",
                             opacity: 1
-                        }
-                    ]
-                ]
-            }
-        },
-        series: [{
-            name: 'Value',
-            data: [20, 14, 19, 10, 25, 20, 22, 9, 12]
-        }],
-        yaxis: {
-            min: 0,
-            show: false,
-            axisBorder: {
-                show: false
+                          },
+                          {
+                            offset: 50,
+                            color: "rgb(253, 73, 99)",
+                            opacity: 1
+                          },
+                          {
+                            offset: 100,
+                            color: 'rgb(253, 73, 99)',
+                            opacity: 1
+                          }
+                    ],
+                    [
+                        {
+                            offset: 0,
+                            color: "rgba(127, 103, 257,1)",
+                            opacity: 1
+                          },
+                          {
+                            offset: 50,
+                            color: "rgba(127, 103, 257,1)",
+                            opacity: 1
+                          },
+                          {
+                            offset: 100,
+                            color: 'rgba(127, 103, 257,1)',
+                            opacity: 1
+                          }
+                    ],
+                ],
             },
-        },
-        xaxis: {
-            show: false,
-            axisBorder: {
-                show: false
-            },
-        },
-        colors: ["var(--primary-color)"],
-
-    }
-    const nft1chart = new ApexCharts(document.querySelector("#nft-balance-chart"), nft1);
-    if(nft1chart) nft1chart.render();
-    /* nft balance chart */
-
-    /* Featured Collections */
-    const swiper = new Swiper(".featured-collections", {
-        pagination: {
-            el: ".swiper-pagination",
-            dynamicBullets: true,
-            clickable: true,
-        },
-        loop: true,
-        autoplay: {
-            delay: 1500,
-            disableOnInteraction: false
-        }
-    });
-    /* Featured Collections */
-
-    /* NFT Statistics */
-    const options = {
-        series: [{
-            name: "Last Year",
-            data: [20, 38, 38, 72, 55, 63, 43, 76, 55, 80, 40, 80]
-        }, {
-            name: "This Year",
-            data: [85, 65, 75, 38, 85, 35, 62, 40, 40, 64, 50, 89]
-        }],
-        chart: {
-            height: 280,
-            type: 'bar',
-            zoom: {
-                enabled: false
-            },
-            stacked: true,
-        },
-        dataLabels: {
-            enabled: false
-        },
-        plotOptions: {
-            bar: {
-                columnWidth: '45%',
-                borderRadius: 2,
-            }
-        },
-        legend: {
-            show: true,
-            position: 'bottom',
-            markers: {
-                width: 10,
-                height: 10,
-            }
-        },
-        stroke: {
-            curve: 'smooth',
         },
         grid: {
-            borderColor: "#f1f1f1",
-            strokeDashArray: 3,
+          borderColor: "#f1f1f1",
+          strokeDashArray: 2,
+          xaxis: {
+            lines: {
+              show: true
+            }
+          },
+          yaxis: {
+            lines: {
+              show: false
+            }
+          }
         },
-        colors: ["var(--primary-color)", "var(--primary02)"],
         yaxis: {
-            title: {
-                text: 'Statistics',
-                style: {
-                    color: '#adb5be',
-                    fontSize: '14px',
-                    fontWeight: 600,
-                    cssClass: 'apexcharts-yaxis-label',
-                },
-            },
+          min: 85,
+          tickAmount: 5,
+          show: true,
+          axisBorder: {
+            show: false,
+          },
+          axisTicks: {
+            show: false,
+          }
         },
         xaxis: {
-            type: 'month',
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            axisBorder: {
-                show: true,
-                color: 'rgba(119, 119, 142, 0.05)',
-                offsetX: 0,
-                offsetY: 0,
-            },
-            axisTicks: {
-                show: true,
-                borderType: 'solid',
-                color: 'rgba(119, 119, 142, 0.05)',
-                width: 6,
-                offsetX: 0,
-                offsetY: 0
-            },
-            labels: {
-                rotate: -90
-            }
-        }
-    };
-    const chart = new ApexCharts(document.querySelector("#nft-statistics"), options);
-    if(chart) chart.render();
-    /* NFT Statistics */
+          show: false,
+          axisBorder: {
+            show: false,
+            color: 'rgba(119, 119, 142, 0.05)',
+            offsetX: 0,
+            offsetY: 0,
+          },
+          axisTicks: {
+            show: false,
+            borderType: 'solid',
+            color: 'rgba(119, 119, 142, 0.05)',
+            width: 6,
+            offsetX: 0,
+            offsetY: 0
+          },
+          labels: {
+            rotate: -90,
+          }
+        },
+      };
+      var chart4 = new ApexCharts(document.querySelector("#nft-statustics"), options);
+      chart4.render();
+    
 
 })();

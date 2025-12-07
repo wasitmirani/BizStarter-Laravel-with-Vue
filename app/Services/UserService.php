@@ -2,47 +2,61 @@
 
 namespace App\Services;
 
-use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Models\User;
 
 class UserService
 {
 
     public function __construct(
-        protected UserRepositoryInterface $userRepository
+        protected User $user
     ) {
     }
 
 
     public function store(array $data)
     {
-        return $this->userRepository->store($data);
+        return $this->user->create($data);
     }
 
     public function update($id,array $data)
     {
-        return $this->userRepository->update($id,$data);
+        $user = $this->user->find($id);
+        if (!$user) {
+            return null;
+        }
+        $user->fill($data);
+        $user->save();
+        return $user;
     }
 
     public function delete($uuid)
     {
 
-        return  $this->userRepository->delete($uuid);
+        $user = $this->user->where('uuid', $uuid)->first();
+        if (!$user) {
+            return false;
+        }
+        return (bool) $user->delete();
     }
 
     public function all($is_paginate)
     {
 
-        return  $this->userRepository->all((bool)$is_paginate);
+        if ((bool)$is_paginate) {
+            return $this->user->paginate();
+        }
+
+        return $this->user->all();
     }
 
     public function find($id)
     {
-        return $this->find($id);
+        return $this->user->find($id);
     }
 
     public function findByUUIDOrEmail($val){
-        return $this->userRepository->findByUUIDOrEmail($val);
+        return $this->user->where('uuid', $val)->orWhere('email', $val)->first();
     }
 
-    
+
 }

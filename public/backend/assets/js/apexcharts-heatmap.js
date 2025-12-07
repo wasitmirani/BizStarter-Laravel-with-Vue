@@ -3,11 +3,11 @@
 
     /* basic heatmap chart */
     function generateData(count, yrange) {
-        let i = 0;
-        const series = [];
+        var i = 0;
+        var series = [];
         while (i < count) {
-            const x = 'w' + (i + 1).toString();
-            const y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+            var x = 'w' + (i + 1).toString();
+            var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
 
             series.push({
                 x: x,
@@ -17,7 +17,7 @@
         }
         return series;
     }
-    const basicoptions = {
+    var options = {
         series: [{
             name: 'Metric1',
             data: generateData(18, {
@@ -89,7 +89,7 @@
         dataLabels: {
             enabled: false
         },
-        colors: ["#985ffd"],
+        colors: ["#03b562"],
         grid: {
             borderColor: '#f2f5f7',
         },
@@ -125,16 +125,16 @@
             }
         }
     };
-    const basicchart = new ApexCharts(document.querySelector("#heatmap-basic"), basicoptions);
-    if(basicchart) basicchart.render();
+    var chart = new ApexCharts(document.querySelector("#heatmap-basic"), options);
+    chart.render();
 
     /* multi series heatmap chart */
     function generateData(count, yrange) {
-        let i = 0;
-        const series = [];
+        var i = 0;
+        var series = [];
         while (i < count) {
-            const x = (i + 1).toString();
-            const y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+            var x = (i + 1).toString();
+            var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
 
             series.push({
                 x: x,
@@ -144,7 +144,7 @@
         }
         return series;
     }
-    const data = [
+    var data = [
         {
             name: 'W1',
             data: generateData(8, {
@@ -252,9 +252,9 @@
         }
     ]
     data.reverse()
-    const colors = ['#985ffd', '#ff49cd', '#fdaf22', '#32d484', '#00c9ff', '#ff6757', 'rgba(53, 181, 170,1)','rgb(190, 43, 235)', '#2176FF', '#33A1FD', '#7A918D', '#BAFF29']
+    var colors = ["#03b562", "#7f67ff", "#fd4963", "#ffa909", "#0fbcf9", "#00A7C6", "#18D8D8", '#A9D794', '#46AF78', '#A93F55', '#8C5E58', '#2176FF', '#33A1FD', '#7A918D', '#BAFF29']
     colors.reverse()
-    const heatmapoptions = {
+    var options = {
         series: data,
         chart: {
             height: 350,
@@ -264,6 +264,10 @@
             enabled: false
         },
         colors: colors,
+        xaxis: {
+            type: 'category',
+            categories: ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '01:00', '01:30']
+        },
         title: {
             text: 'HeatMap Chart (Different color shades for each series)',
             align: 'left',
@@ -280,8 +284,6 @@
             borderColor: '#f2f5f7',
         },
         xaxis: {
-            type: 'category',
-            categories: ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '01:00', '01:30'],
             labels: {
                 show: true,
                 style: {
@@ -304,16 +306,16 @@
             }
         }
     };
-    const heatmapchart = new ApexCharts(document.querySelector("#heatmap-multiseries"), heatmapoptions);
-    if(heatmapchart) heatmapchart.render();
+    var chart = new ApexCharts(document.querySelector("#heatmap-multiseries"), options);
+    chart.render();
 
     /* color range heatmap */
     function generateData(count, yrange) {
-        let i = 0;
-        const series = [];
+        var i = 0;
+        var series = [];
         while (i < count) {
-            const x = (i + 1).toString();
-            const y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+            var x = (i + 1).toString();
+            var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
 
             series.push({
                 x: x,
@@ -323,7 +325,7 @@
         }
         return series;
     }
-    const coloroptions = {
+    var options = {
         series: [{
             name: 'Jan',
             data: generateData(20, {
@@ -402,25 +404,25 @@
                         from: -30,
                         to: 5,
                         name: 'low',
-                        color: '#985ffd'
+                        color: '#03b562'
                     },
                     {
                         from: 6,
                         to: 20,
                         name: 'medium',
-                        color: '#ff49cd'
+                        color: '#7f67ff'
                     },
                     {
                         from: 21,
                         to: 45,
                         name: 'high',
-                        color: '#fdaf22'
+                        color: '#f4a742'
                     },
                     {
                         from: 46,
                         to: 55,
                         name: 'extreme',
-                        color: '#32d484'
+                        color: '#0ca3e7'
                     }
                     ]
                 }
@@ -467,11 +469,11 @@
             }
         }
     };
-    const colorchart = new ApexCharts(document.querySelector("#heatmap-colorrange"), coloroptions);
-    if(colorchart) colorchart.render();
+    var chart = new ApexCharts(document.querySelector("#heatmap-colorrange"), options);
+    chart.render();
 
     /* heatmap range without shades */
-    const rangeoptions = {
+    var options = {
         series: [{
             name: 'Metric1',
             data: generateData(20, {
@@ -551,12 +553,12 @@
                     ranges: [{
                         from: 0,
                         to: 50,
-                        color: '#985ffd'
+                        color: '#03b562'
                     },
                     {
                         from: 51,
                         to: 100,
-                        color: '#ff49cd'
+                        color: '#7f67ff'
                     },
                     ],
                 },
@@ -605,7 +607,7 @@
             },
         },
     };
-    const rangechart = new ApexCharts(document.querySelector("#heatmap-range"), rangeoptions);
-    if(rangechart) rangechart.render();
+    var chart = new ApexCharts(document.querySelector("#heatmap-range"), options);
+    chart.render();
 
 })();

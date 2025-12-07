@@ -9,47 +9,52 @@ provide('toast', toast);
 </script>
 <template>
     <div>
-    <Head />
-    <!-- END HEADER -->
-    <!-- SIDEBAR -->
-    <SideBarMenu />
-    <!-- END SIDEBAR -->
-    <!-- MAIN-CONTENT -->
-    <!-- Start::app-content -->
-       <div class="main-content app-content">
-            <div class="container-fluid page-container main-body-container">
 
-            <router-view v-slot="{ Component }">
-                <Transition name="slide-fade">
-                    <component :is="Component" />
-                </Transition>
-                  <!-- Start::row-1 -->
-            </router-view>
-            <FlashMessage ref="toast"/>
-           
-        </div>
-    </div>
-    <!-- End::app-content -->
-    <!-- END MAIN-CONTENT -->
-    <!-- FOOTER -->
-    <Footer />
-    <!-- END FOOTER -->
-      <div class="modal fade" id="header-responsive-search" tabindex="-1" aria-labelledby="header-responsive-search" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="input-group">
-                    <input type="text" class="form-control border-end-0" placeholder="Search Anything ..."
-                        aria-label="Search Anything ..." aria-describedby="button-addon2">
-                    <button class="btn btn-primary" type="button"
-                        id="button-addon2"><i class="bi bi-search"></i></button>
-                </div>
+        <Head />
+        <!-- END HEADER -->
+        <!-- SIDEBAR -->
+        <SideBarMenu />
+        <!-- END SIDEBAR -->
+        <!-- MAIN-CONTENT -->
+        <!-- Start::app-content -->
+        <div class="main-content app-content">
+            <div class="container-fluid">
+
+                <router-view v-slot="{ Component }">
+                    <Transition name="slide-fade">
+                        <component :is="Component" />
+                    </Transition>
+                    <!-- Start::row-1 -->
+                </router-view>
+                <FlashMessage ref="toast" />
+
             </div>
         </div>
-    </div>
-</div>
+        <!-- End::app-content -->
+        <!-- END MAIN-CONTENT -->
+        <!-- FOOTER -->
+        <Footer />
+        <!-- Start::main-modal -->
 
-</div>
+        <div class="modal fade" id="header-responsive-search" tabindex="-1" aria-labelledby="header-responsive-search"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="input-group">
+                            <input type="text" class="form-control border-end-0" placeholder="Search Anything ..."
+                                aria-label="Search Anything ..." aria-describedby="button-addon2">
+                            <button class="btn btn-primary" type="button" id="button-addon2"><i
+                                    class="bi bi-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- End::main-modal -->
+
+        <!-- Start::main-footer -->
+
+    </div>
 </template>
 
 <style>

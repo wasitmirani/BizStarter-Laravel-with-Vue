@@ -2,7 +2,7 @@
     "use strict";
 
     /* funnel chart */
-    const funneloptions = {
+    var options = {
         series: [
             {
                 name: "Funnel Series",
@@ -22,7 +22,7 @@
             },
         },
         colors: [
-            '#985ffd',
+            '#03b562',
         ],
         dataLabels: {
             enabled: true,
@@ -53,12 +53,12 @@
             show: false,
         },
     };
-    const funnelchart = new ApexCharts(document.querySelector("#funnel-chart"), funneloptions);
-    if(funnelchart) funnelchart.render();
+    var chart = new ApexCharts(document.querySelector("#funnel-chart"), options);
+    chart.render();
     /* funnel chart */
 
     /* pyramid chart */
-    const pyramidoptions = {
+    var options = {
         series: [
             {
                 name: "",
@@ -79,7 +79,7 @@
             },
         },
         colors: [
-            '#985ffd', '#ff49cd', '#fdaf22', '#32d484', '#00c9ff', '#ff6757', 'rgba(53, 181, 170,1)','rgb(190, 43, 235)'
+            '#03b562', '#7f67ff', '#fd4963', '#ffa909', '#0fbcf9', '#0cd7b1', '#7b76fe',"rgb(83, 196, 5)",
         ],
         dataLabels: {
             enabled: true,
@@ -102,8 +102,8 @@
         },
     };
 
-    const pyramidchart = new ApexCharts(document.querySelector("#pyramid-chart"), pyramidoptions);
-    if(pyramidchart) pyramidchart.render();
+    var chart = new ApexCharts(document.querySelector("#pyramid-chart"), options);
+    chart.render();
     /* pyramid chart */
 
 })();

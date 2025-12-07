@@ -15,3 +15,6 @@ let createpassword = (type, ele) => {
         ele.childNodes[0].classList.remove("ri-eye-off-line")
     }
 }
+
+
+

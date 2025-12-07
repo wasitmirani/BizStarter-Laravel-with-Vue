@@ -2,13 +2,11 @@
     'use strict';
 
     let loadFile = function (event) {
-        const reader = new FileReader();
+        var reader = new FileReader();
         reader.onload = function () {
-            const output = document.getElementById('profile-img');
+            var output = document.getElementById('profile-img');
             if (event.target.files[0].type.match('image.*')) {
-                if(output) {
-                    output.src = reader.result;
-                }
+                output.src = reader.result;
             } else {
                 event.target.value = '';
                 alert('please select a valid image');
@@ -39,6 +37,6 @@
 
     // for profile photo update
     let ProfileChange = document.querySelector('#profile-change');
-    if(ProfileChange) ProfileChange.addEventListener('change', loadFile);
+    ProfileChange.addEventListener('change', loadFile);
 
 })();

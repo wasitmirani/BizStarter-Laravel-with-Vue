@@ -2,13 +2,13 @@
     "use strict";
 
     /* basic radialbar chart */
-    const basicoptions = {
+    var options = {
         series: [70],
         chart: {
             height: 300,
             type: 'radialBar',
         },
-        colors: ["#985ffd"],
+        colors: ["#03b562"],
         plotOptions: {
             radialBar: {
                 hollow: {
@@ -18,11 +18,11 @@
         },
         labels: ['Cricket'],
     };
-    const basicchart = new ApexCharts(document.querySelector("#radialbar-basic"), basicoptions);
-    if(basicchart) basicchart.render();
+    var chart = new ApexCharts(document.querySelector("#radialbar-basic"), options);
+    chart.render();
 
     /* multiple radialbar chart */
-    const multipleoptions = {
+    var options = {
         series: [44, 55, 67, 83],
         chart: {
             height: 300,
@@ -48,14 +48,14 @@
                 }
             }
         },
-        colors: ['#985ffd', '#ff49cd', '#fdaf22', '#32d484',],
+        colors: ["#03b562", "#7f67ff", "#fd4963", "#ffa909"],
         labels: ['Apples', 'Oranges', 'Bananas', 'Berries'],
     };
-    const multiplechart = new ApexCharts(document.querySelector("#radialbar-multiple"), multipleoptions);
-    if(multiplechart) multiplechart.render();
+    var chart = new ApexCharts(document.querySelector("#radialbar-multiple"), options);
+    chart.render();
 
     /* circle chart custom angle */
-    const circleoptions = {
+    var options = {
         series: [76, 67, 61, 90],
         chart: {
             height: 320,
@@ -82,7 +82,7 @@
                 }
             }
         },
-        colors: ['#985ffd', '#ff49cd', '#fdaf22', '#32d484',],
+        colors: ["#03b562", "#7f67ff", "#fd4963", "#ffa909"],
         labels: ['Vimeo', 'Messenger', 'Facebook', 'LinkedIn'],
         legend: {
             show: true,
@@ -95,9 +95,9 @@
             markers: {
                 size: 0
             },
-            formatter: function (seriesName, opts) {
-                return seriesName + ":  " + opts.w.globals.series[opts.seriesIndex]
-            },
+            // formatter: function (seriesName, opts) {
+            //     return seriesName + ":  " + opts.w.globals.series[opts.seriesIndex]
+            // },
             itemMargin: {
                 vertical: 3
             }
@@ -111,11 +111,11 @@
             }
         }]
     };
-    const circlechart = new ApexCharts(document.querySelector("#circle-custom"), circleoptions);
-    if(circlechart) circlechart.render();
+    var chart = new ApexCharts(document.querySelector("#circle-custom"), options);
+    chart.render();
 
     /* gradient circle chart */
-    const gradientoptions = {
+    var options = {
         series: [75],
         chart: {
             height: 320,
@@ -182,7 +182,7 @@
                 shade: 'dark',
                 type: 'horizontal',
                 shadeIntensity: 0.5,
-                gradientToColors: ['#d77cf7'],
+                gradientToColors: ['#7f67ff'],
                 inverseColors: true,
                 opacityFrom: 1,
                 opacityTo: 1,
@@ -194,18 +194,18 @@
         },
         labels: ['Percent'],
     };
-    const gradientchart = new ApexCharts(document.querySelector("#gradient-circle"), gradientoptions);
-    if(gradientchart) gradientchart.render();
+    var chart = new ApexCharts(document.querySelector("#gradient-circle"), options);
+    chart.render();
 
     /* stroked circular gauge */
-    const strokedoptions = {
+    var options = {
         series: [67],
         chart: {
             height: 320,
             type: 'radialBar',
             offsetY: -10
         },
-        colors: ["#985ffd"],
+        colors: ["#03b562"],
         plotOptions: {
             radialBar: {
                 startAngle: -135,
@@ -243,11 +243,11 @@
         },
         labels: ['Median Ratio'],
     };
-    const strokedchart = new ApexCharts(document.querySelector("#circular-stroked"), strokedoptions);
-    if(strokedchart) strokedchart.render();
+    var chart = new ApexCharts(document.querySelector("#circular-stroked"), options);
+    chart.render();
 
     /* circle with image */
-    const imageoptions = {
+    var options = {
         series: [67],
         chart: {
             height: 330,
@@ -287,11 +287,11 @@
         },
         labels: ['Volatility'],
     };
-    const imagechart = new ApexCharts(document.querySelector("#circle-image"), imageoptions);
-    if(imagechart) imagechart.render();
+    var chart = new ApexCharts(document.querySelector("#circle-image"), options);
+    chart.render();
 
     /* semi circular gauge */
-    const semicircularoptions = {
+    var options = {
         series: [76],
         chart: {
             type: 'radialBar',
@@ -329,7 +329,7 @@
                 }
             }
         },
-        colors: ["#985ffd"],
+        colors: ["#03b562"],
         grid: {
             padding: {
                 top: -10
@@ -348,7 +348,7 @@
         },
         labels: ['Average Results'],
     };
-    const semicircularchart = new ApexCharts(document.querySelector("#circular-semi"), semicircularoptions);
-    if(semicircularchart) semicircularchart.render();
+    var chart = new ApexCharts(document.querySelector("#circular-semi"), options);
+    chart.render();
 
 })();

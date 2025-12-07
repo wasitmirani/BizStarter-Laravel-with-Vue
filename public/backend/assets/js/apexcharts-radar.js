@@ -2,7 +2,7 @@
     "use strict";
 
     /* basic radar chart */
-    const basicoptions = {
+    var options = {
         series: [{
             name: 'Series 1',
             data: [80, 50, 30, 40, 100, 20],
@@ -20,16 +20,21 @@
                 color: '#8c9097'
             },
         },
-        colors: ["#985ffd"],
+        grid: {
+            padding: {
+                right: 8,
+            }
+        },
+        colors: ["#03b562"],
         xaxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June']
+            categories: ['January', 'February', 'March', 'April', 'May', 'June']
         }
     };
-    const basicchart = new ApexCharts(document.querySelector("#radar-basic"), basicoptions);
-    if(basicchart) basicchart.render();
+    var chart = new ApexCharts(document.querySelector("#radar-basic"), options);
+    chart.render();
 
     /* radar chart with multiple series */
-    const multipleoptions = {
+    var options = {
         series: [{
             name: 'Series 1',
             data: [80, 50, 30, 40, 100, 20],
@@ -59,7 +64,7 @@
                 color: '#8c9097'
             },
         },
-        colors: ['#985ffd', '#ff49cd', '#fdaf22'],
+        colors: ["#03b562", "#7f67ff", "#fd4963"],
         stroke: {
             width: 2
         },
@@ -73,11 +78,11 @@
             categories: ['2011', '2012', '2013', '2014', '2015', '2016']
         }
     };
-    const multiplechart = new ApexCharts(document.querySelector("#radar-multiple"), multipleoptions);
-    if(multiplechart) multiplechart.render();
+    var chart = new ApexCharts(document.querySelector("#radar-multiple"), options);
+    chart.render();
 
     /* radar chart polygn fill */
-    const polygnoptions = {
+    var options = {
         series: [{
             name: 'Series 1',
             data: [20, 100, 40, 30, 50, 80, 33],
@@ -106,11 +111,11 @@
                 color: '#8c9097'
             },
         },
-        colors: ['#ff49cd'],
+        colors: ['#7f67ff'],
         markers: {
             size: 4,
             colors: ['#fff'],
-            strokeColor: '#ff49cd',
+            strokeColor: '#7f67ff',
             strokeWidth: 2,
         },
         tooltip: {
@@ -121,7 +126,7 @@
             }
         },
         xaxis: {
-            categories: ['Sun', 'Mon', 'Tues', 'Wednes', 'Thurs', 'Fri', 'Satur']
+            categories: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
         },
         yaxis: {
             tickAmount: 7,
@@ -136,7 +141,7 @@
             }
         }
     };
-    const polygnchart = new ApexCharts(document.querySelector("#radar-polygon"), polygnoptions);
-    if(polygnchart) polygnchart.render();
+    var chart = new ApexCharts(document.querySelector("#radar-polygon"), options);
+    chart.render();
 
 })();

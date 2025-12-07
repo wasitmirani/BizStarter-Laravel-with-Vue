@@ -1,13 +1,13 @@
 "use strict";
 
 /* basic pie chart */
-const basicoptions = {
+var options = {
   series: [44, 55, 13, 43, 22],
   chart: {
-    height: 295,
+    height: 300,
     type: "pie",
   },
-  colors: ['#985ffd', '#ff49cd', '#fdaf22', '#32d484', '#00c9ff',],
+  colors: ["#03b562", "#7f67ff", "#fd4963", "#ffa909", "#0fbcf9"],
   labels: ["Team A", "Team B", "Team C", "Team D", "Team E"],
   legend: {
     position: "bottom",
@@ -18,11 +18,11 @@ const basicoptions = {
     },
   },
 };
-const basicchart = new ApexCharts(document.querySelector("#pie-basic"), basicoptions);
-if(basicchart) basicchart.render();
+var chart = new ApexCharts(document.querySelector("#pie-basic"), options);
+chart.render();
 
 /* simple donut chart */
-const simpleoptions = {
+var options = {
   series: [44, 55, 41, 17, 15],
   chart: {
     type: "donut",
@@ -31,29 +31,29 @@ const simpleoptions = {
   legend: {
     position: "bottom",
   },
-  colors: ['#985ffd', '#ff49cd', '#fdaf22', '#32d484', '#00c9ff',],
+  colors: ["#03b562", "#7f67ff", "#fd4963", "#ffa909", "#0fbcf9"],
   dataLabels: {
     dropShadow: {
       enabled: false,
     },
   },
 };
-const simplechart = new ApexCharts(document.querySelector("#donut-simple"), simpleoptions);
-if(simplechart) simplechart.render();
+var chart = new ApexCharts(document.querySelector("#donut-simple"), options);
+chart.render();
 
 
 /* monochrome pie chart */
-const monochromeoptions = {
+var options = {
   series: [25, 15, 44, 55, 41, 17],
   chart: {
-    height: "310",
+    height: "280",
     type: "pie",
   },
   labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
   theme: {
     monochrome: {
       enabled: true,
-      color: "#985ffd",
+      color: "#03b562",
     },
   },
   plotOptions: {
@@ -85,11 +85,11 @@ const monochromeoptions = {
     show: false,
   },
 };
-const monochromechart = new ApexCharts(document.querySelector("#pie-monochrome"), monochromeoptions);
-if(monochromechart) monochromechart.render();
+var chart = new ApexCharts(document.querySelector("#pie-monochrome"), options);
+chart.render();
 
 /* graidnet donut chart */
-const gradientoptions = {
+var options = {
   series: [44, 55, 41, 17, 15],
   chart: {
     height: 300,
@@ -108,12 +108,11 @@ const gradientoptions = {
     type: "gradient",
   },
   legend: {
-    position: "bottom",
     formatter: function (val, opts) {
       return val + " - " + opts.w.globals.series[opts.seriesIndex];
     },
   },
-  colors: ['#985ffd', '#ff49cd', '#fdaf22', '#32d484', '#00c9ff',],
+  colors: ["#03b562", "#7f67ff", "#fd4963", "#ffa909", "#0fbcf9"],
   title: {
     text: "Gradient Donut with custom Start-angle",
     align: "left",
@@ -123,15 +122,18 @@ const gradientoptions = {
       color: "#8c9097",
     },
   },
+  legend: {
+    position: "bottom",
+  },
 };
-const gradientchart = new ApexCharts(document.querySelector("#donut-gradient"), gradientoptions);
-if(gradientchart) gradientchart.render();
+var chart = new ApexCharts(document.querySelector("#donut-gradient"), options);
+chart.render();
 
 /* patterned donut chart */
-const patternedoptions = {
+var options = {
   series: [44, 55, 41, 17, 15],
   chart: {
-    height:300,
+    height: 300,
     type: "donut",
     dropShadow: {
       enabled: true,
@@ -158,7 +160,7 @@ const patternedoptions = {
       },
     },
   },
-  colors: ["#985ffd", "#d77cf7", "#f4a742", "#0ca3e7", "#fe5454"],
+  colors: ["#03b562", "#7f67ff", "#fd4963", "#ffa909", "#0fbcf9"],
   labels: ["Comedy", "Action", "SciFi", "Drama", "Horror"],
   dataLabels: {
     enabled: true,
@@ -216,17 +218,17 @@ const patternedoptions = {
     },
   ],
 };
-const patternedchart = new ApexCharts(document.querySelector("#donut-pattern"), patternedoptions);
-if(patternedchart) patternedchart.render();
+var chart = new ApexCharts(document.querySelector("#donut-pattern"), options);
+chart.render();
 
 /* pie chart with image fill */
-const pieoptions = {
+var options = {
   series: [44, 33, 54, 45],
   chart: {
     height: 300,
     type: "pie",
   },
-  colors: ['#985ffd', '#ff49cd', '#fdaf22', '#32d484', '#00c9ff',],
+  colors: ["#93C3EE", "#E5C6A0", "#669DB5", "#94A74A"],
   fill: {
     type: "image",
     opacity: 0.85,
@@ -259,11 +261,11 @@ const pieoptions = {
     position: "bottom",
   },
 };
-const piechart = new ApexCharts(document.querySelector("#pie-image"), pieoptions);
-if(piechart) piechart.render();
+var chart = new ApexCharts(document.querySelector("#pie-image"), options);
+chart.render();
 
 /* updating donut chart */
-const donutoptions = {
+var options = {
     series: [44, 55, 13, 33],
     chart: {
     width: 300,
@@ -287,60 +289,46 @@ const donutoptions = {
     show: true,
     position: 'bottom',
   }
-};
-const donutchart = new ApexCharts(document.querySelector("#donut-update"), donutoptions);
-if(donutchart) donutchart.render();
-if(donutchart){
+  };
+
+  var chart = new ApexCharts(document.querySelector("#donut-update"), options);
+  chart.render();
+
 
   function appendData() {
-    const arr = donutchart.w.globals.series.slice()
-    arr.push(Math.floor(Math.random() * (100 - 1 + 1)) + 1)
-    return arr;
-  }
-  
-  function removeData() {
-    const arr = donutchart.w.globals.series.slice()
-    arr.pop()
-    return arr;
-  }
-  
-  function randomize() {
-    return donutchart.w.globals.series.map(function() {
-        return Math.floor(Math.random() * (100 - 1 + 1)) + 1
-    })
-  }
-  
-  function reset() {
-    return donutoptions.series
-  }
-
-  let randomizeDonut = document.querySelector("#randomize");
-  let AddDonut = document.querySelector("#add");
-  let RemoveDonut = document.querySelector("#remove");
-  let ResetDonut = document.querySelector("#reset");
-  
-  if (randomizeDonut) {
-    randomizeDonut.addEventListener("click", function() {
-      donutchart.updateSeries(randomize())
-    })
-  }
-  
-  if (AddDonut) {
-    AddDonut.addEventListener("click", function() {
-      donutchart.updateSeries(appendData())
-    })
-  }
-  
-  if (RemoveDonut) {
-    RemoveDonut.addEventListener("click", function() {
-      donutchart.updateSeries(removeData())
-    })
-  }
-  
-  if (ResetDonut) {
-    ResetDonut.addEventListener("click", function() {
-      donutchart.updateSeries(reset())
-    })
-  }
-  
+  var arr = chart.w.globals.series.slice()
+  arr.push(Math.floor(Math.random() * (100 - 1 + 1)) + 1)
+  return arr;
 }
+
+function removeData() {
+  var arr = chart.w.globals.series.slice()
+  arr.pop()
+  return arr;
+}
+
+function randomize() {
+  return chart.w.globals.series.map(function() {
+      return Math.floor(Math.random() * (100 - 1 + 1)) + 1
+  })
+}
+
+function reset() {
+  return options.series
+}
+
+document.querySelector("#randomize").addEventListener("click", function() {
+  chart.updateSeries(randomize())
+})
+
+document.querySelector("#add").addEventListener("click", function() {
+  chart.updateSeries(appendData())
+})
+
+document.querySelector("#remove").addEventListener("click", function() {
+  chart.updateSeries(removeData())
+})
+
+document.querySelector("#reset").addEventListener("click", function() {
+  chart.updateSeries(reset())
+})

@@ -1,4 +1,4 @@
-(function () {
+(function() {
     "use strict"
 
     var options = {
@@ -10,7 +10,7 @@
             data: [85, 65, 75, 38, 85, 35, 62, 40, 40, 64, 50, 89]
         }],
         chart: {
-            height: 370,
+            height: 300,
             type: 'bar',
             zoom: {
                 enabled: false
@@ -18,7 +18,7 @@
         },
         plotOptions: {
             bar: {
-                columnWidth: "50%",
+                columnWidth: "35%",
                 borderRadius: 2
             }
         },
@@ -26,25 +26,23 @@
             enabled: false
         },
         legend: {
-            show: true,
             position: "top",
             horizontalAlign: "center",
-            markers: {
-                size: 4,
-                strokeWidth: 0,
-            },
+            offsetX: -15,
+            fontWeight: "bold",
         },
         stroke: {
             curve: 'smooth',
-            width: ["2", "2"],
+            width: ["1","1"],
         },
         grid: {
             borderColor: '#f1f1f1',
             strokeDashArray: 3
         },
-        colors: ["var(--primary-color)", "rgba(255, 73, 205, 1)"],
+        colors: ["rgb(3, 181, 98)", "rgba(127, 103, 257, 1)"],
         yaxis: {
             title: {
+                text: 'Statistics',
                 style: {
                     color: '#adb5be',
                     fontSize: '14px',
@@ -76,7 +74,8 @@
             }
         }
     };
-    const chart = new ApexCharts(document.querySelector("#buy_sell-statistics"), options);
-    if(chart) chart.render();
+    document.getElementById('buy_sell-statistics').innerHTML = ''
+    var chart = new ApexCharts(document.querySelector("#buy_sell-statistics"), options);
+    chart.render();
 
 })()

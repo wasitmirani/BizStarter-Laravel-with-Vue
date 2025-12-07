@@ -2,7 +2,7 @@
     "use strict";
 
     /* basic polar area chart */
-    const basicoptions = {
+    var options = {
         series: [14, 23, 21, 17, 15, 10, 12, 17, 21],
         chart: {
             type: 'polarArea',
@@ -17,7 +17,7 @@
         legend: {
             position: 'bottom'
         },
-        colors: ['#985ffd', '#ff49cd', '#fdaf22', '#32d484', '#00c9ff', '#ff6757', 'rgba(53, 181, 170,1)','rgb(190, 43, 235)'],
+        colors: ["rgb(83, 196, 5)", "#7f67ff", "#fd4963", "#ffa909", "#0fbcf9", "#0cd7b1", "#fe7c58", "#0ca3e7", "#03b562"],
         responsive: [{
             breakpoint: 480,
             options: {
@@ -30,11 +30,11 @@
             }
         }]
     };
-    const basicchart = new ApexCharts(document.querySelector("#polararea-basic"), basicoptions);
-    if(basicchart) basicchart.render();
+    var chart = new ApexCharts(document.querySelector("#polararea-basic"), options);
+    chart.render();
 
     /* polar area monochrome chart */
-    const monochromeoptions = {
+    var options = {
         series: [42, 47, 52, 58, 65],
         chart: {
             height: 300,
@@ -69,11 +69,11 @@
                 enabled: true,
                 shadeTo: 'light',
                 shadeIntensity: 0.6,
-                color: "#985ffd",
+                color: "#03b562",
             }
         }
     };
-    const monochromechart = new ApexCharts(document.querySelector("#polararea-monochrome"), monochromeoptions);
-    if(monochromechart) monochromechart.render();
+    var chart = new ApexCharts(document.querySelector("#polararea-monochrome"), options);
+    chart.render();
 
 })();

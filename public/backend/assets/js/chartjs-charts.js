@@ -15,8 +15,8 @@
         labels: labels,
         datasets: [{
             label: 'My First dataset',
-            backgroundColor: 'rgb(152, 95, 253)',
-            borderColor: 'rgb(152, 95, 253)',
+            backgroundColor: '#03b562',
+            borderColor: '#03b562',
             data: [0, 10, 5, 2, 20, 30, 45],
         }]
     };
@@ -46,22 +46,22 @@
             label: 'My First Dataset',
             data: [65, 59, 80, 81, 56, 55, 40],
             backgroundColor: [
-                'rgba(152, 95, 253, 0.2)',
-                'rgba(255, 73, 205, 0.2)',
-                'rgba(253, 175, 34, 0.2)',
-                'rgba(50, 212, 132, 0.2)',
-                'rgba(0, 201, 255, 0.2)',
-                'rgba(255, 103, 87, 0.2)',
-                'rgba(10, 10, 10, 0.2)'
+                'rgba(3, 181, 98, 0.2)',
+                'rgba(127, 103, 257, 0.2)',
+                'rgba(253, 73, 99, 0.2)',
+                'rgba(255, 169, 9, 0.2)',
+                'rgba(83, 196, 5, 0.2)',
+                'rgba(15, 188, 249, 0.2)',
+                'rgba(254, 124, 88, 0.2)'
             ],
             borderColor: [ 
-                'rgb(152, 95, 253)',
-                'rgb(255, 73, 205)',
-                'rgb(253, 175, 34)',
-                'rgb(50, 212, 132)',
-                'rgb(0, 201, 255)',
-                'rgb(255, 103, 87)',
-                'rgb(10, 10, 10)'
+                'rgb(3, 181, 98)',
+                'rgb(127, 103, 257)',
+                'rgb(253, 73, 99)',
+                'rgb(255, 169, 9)',
+                'rgb(83, 196, 5)',
+                'rgb(15, 188, 249)',
+                'rgb(254, 124, 88)'
             ],
             borderWidth: 1
         }]
@@ -85,17 +85,17 @@
     /* pie chart */
     const data2 = {
         labels: [
+            'Green',
             'Blue',
-            'Pink',
-            'Yellow'
+            'Red'
         ],
         datasets: [{
             label: 'My First Dataset',
             data: [300, 50, 100],
             backgroundColor: [
-                'rgb(152, 95, 253)',
-                'rgb(255, 73, 205)',
-                'rgb(253, 175, 34)'
+                'rgb(3, 181, 98)',
+                'rgb(127, 103, 257)',
+                'rgb(253, 73, 99)'
             ],
             hoverOffset: 4
         }]
@@ -112,17 +112,17 @@
     /* doughnut chart */
     const data3 = {
         labels: [
+            'Green',
             'Blue',
-            'Pink',
-            'Yellow'
+            'Red'
         ],
         datasets: [{
             label: 'My First Dataset',
             data: [300, 50, 100],
             backgroundColor: [
-                'rgb(152, 95, 253)',
-                'rgb(255, 73, 205)',
-                'rgb(253, 175, 34)'
+               'rgb(3, 181, 98)',
+                'rgb(127, 103, 257)',
+                'rgb(253, 73, 99)'
             ],
             hoverOffset: 4
         }]
@@ -148,14 +148,14 @@
             type: 'bar',
             label: 'Bar Dataset',
             data: [10, 20, 30, 40],
-            borderColor: 'rgb(152, 95, 253)',
-            backgroundColor: 'rgba(152, 95, 253, 0.2)'
+            borderColor: 'rgb(3, 181, 98)',
+            backgroundColor: 'rgba(3, 181, 98, 0.2)'
         }, {
             type: 'line',
             label: 'Line Dataset',
             data: [50, 50, 50, 50],
             fill: false,
-            borderColor: 'rgb(255, 73, 205)'
+            borderColor: 'rgb(127, 103, 257)'
         }]
     };
     const config5 = {
@@ -177,21 +177,21 @@
     /* polar area chart */
     const data5 = {
         labels: [
-            'Blue',
             'Green',
+            'Blue',
             'Yellow',
-            'Grey',
-            'Pink'
+            'Red',
+            'Grey'
         ],
         datasets: [{
             label: 'My First Dataset',
             data: [11, 16, 7, 3, 14],
             backgroundColor: [
-                'rgb(152, 95, 253)',
-                'rgb(75, 192, 192)',
-                'rgb(253, 175, 34)',
-                'rgb(201, 203, 207)',
-                'rgb(255, 73, 205)'
+                'rgb(3, 181, 98)',
+                'rgb(127, 103, 257)',
+                'rgb(255, 169, 9)',
+                'rgb(253, 73, 99)',
+                'rgb(201, 203, 207)'
             ]
         }]
     };
@@ -220,22 +220,22 @@
             label: 'My First Dataset',
             data: [65, 59, 90, 81, 56, 55, 40],
             fill: true,
-            backgroundColor: 'rgba(152, 95, 253, 0.2)',
-            borderColor: 'rgb(152, 95, 253)',
-            pointBackgroundColor: 'rgb(152, 95, 253)',
+            backgroundColor: 'rgba(3, 181, 98, 0.2)',
+            borderColor: 'rgb(3, 181, 98)',
+            pointBackgroundColor: 'rgb(3, 181, 98)',
             pointBorderColor: '#fff',
             pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgb(152, 95, 253)'
+            pointHoverBorderColor: 'rgb(3, 181, 98)'
         }, {
             label: 'My Second Dataset',
             data: [28, 48, 40, 19, 96, 27, 100],
             fill: true,
-            backgroundColor: 'rgba(255, 73, 205, 0.2)',
-            borderColor: 'rgb(255, 73, 205)',
-            pointBackgroundColor: 'rgb(255, 73, 205)',
+            backgroundColor: 'rgba(127, 103, 257, 0.2)',
+            borderColor: 'rgb(127, 103, 257)',
+            pointBackgroundColor: 'rgb(127, 103, 257)',
             pointBorderColor: '#fff',
             pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgb(255, 73, 205)'
+            pointHoverBorderColor: 'rgb(127, 103, 257)'
         }]
     };
     const config7 = {
@@ -271,7 +271,7 @@
                 x: 0.5,
                 y: 5.5
             }],
-            backgroundColor: 'rgb(152, 95, 253)'
+            backgroundColor: 'rgb(3, 181, 98)'
         }],
     };
     const config8 = {
@@ -304,7 +304,7 @@
                 y: 10,
                 r: 10
             }],
-            backgroundColor: 'rgb(152, 95, 253)'
+            backgroundColor: 'rgb(3, 181, 98)'
         }]
     };
     const config9 = {

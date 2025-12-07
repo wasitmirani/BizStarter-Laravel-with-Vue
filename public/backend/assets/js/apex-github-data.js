@@ -1,6 +1,6 @@
 "use strict";
 
-const githubdata = {
+var githubdata = {
     series: [
         {
             x: 1352592000000,

@@ -1,13 +1,10 @@
-
 (function () {
   "use strict";
 
   /* page loader */
   function hideLoader() {
     const loader = document.getElementById("loader");
-    if(loader) {
-      loader.classList.add("d-none")
-    }
+    loader.classList.add("d-none")
   }
 
   window.addEventListener("load", hideLoader);
@@ -30,386 +27,291 @@
   );
 
   /* breadcrumb date range picker */
-  // Get today's date
-  const today = new Date();
-
-  // Calculate the start date (today) and end date (30 days from today)
-  const startDate = today.toISOString().split('T')[0]; // Format: YYYY-MM-DD
-  const endDate = new Date(today);
-  endDate.setDate(today.getDate() + 30); // Add 30 days
-  const endDateFormatted = endDate.toISOString().split('T')[0]; // Format: YYYY-MM-DD
-
   flatpickr("#daterange", {
     mode: "range",
     dateFormat: "Y-m-d",
-    defaultDate: [startDate, endDateFormatted],
-    onReady: function (selectedDates, dateStr, instance) {
-      updateInputDisplay([startDate, endDateFormatted], instance);
-    },
-    onChange: function (selectedDates, dateStr, instance) {
-      updateInputDisplay(selectedDates, instance);
-    }
+    defaultDate: ["2024-07-01", "2024-07-30"]
   });
-
-  // Function to update the input display with formatted date range
-  function updateInputDisplay(dates, instance) {
-    if (dates.length === 2) {
-      const startDateFormatted = formatDate(dates[0]);
-      const endDateFormatted = formatDate(dates[1]);
-      instance.input.value = `${startDateFormatted} to ${endDateFormatted}`;
-    } else {
-      instance.input.value = ''; // Clear value if less than 2 dates
-    }
-  }
-
-  function formatDate(dateString) {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0'); // Get day and pad with leading zero if necessary
-    const month = date.toLocaleString('default', { month: 'short' }); // Get the short month name
-    const year = date.getFullYear(); // Get the year
-    return `${day}, ${month} ${year}`; // Return formatted date
-  }
   /* breadcrumb date range picker */
 
-  //switcher color pickers
-  const pickrContainerPrimary = document.querySelector(
-    ".pickr-container-primary"
-  );
-  const themeContainerPrimary = document.querySelector(
-    ".theme-container-primary"
-  );
-  const pickrContainerBackground = document.querySelector(
-    ".pickr-container-background"
-  );
-  const themeContainerBackground = document.querySelector(
-    ".theme-container-background"
-  );
+if (document.querySelector("#switcher-canvas")) {
 
-  /* for theme primary */
-  const nanoThemes = [
-    [
-      "nano",
-      {
-        defaultRepresentation: "RGB",
-        components: {
-          preview: true,
-          opacity: false,
-          hue: true,
+    //switcher color pickers
+    const pickrContainerPrimary = document.querySelector(
+      ".pickr-container-primary"
+    );
+    const themeContainerPrimary = document.querySelector(
+      ".theme-container-primary"
+    );
+    const pickrContainerBackground = document.querySelector(
+      ".pickr-container-background"
+    );
+    const themeContainerBackground = document.querySelector(
+      ".theme-container-background"
+    );
 
-          interaction: {
-            hex: false,
-            rgba: true,
-            hsva: false,
-            input: true,
-            clear: false,
-            save: false,
+    /* for theme primary */
+    const nanoThemes = [
+      [
+        "nano",
+        {
+          defaultRepresentation: "RGB",
+          components: {
+            preview: true,
+            opacity: false,
+            hue: true,
+
+            interaction: {
+              hex: false,
+              rgba: true,
+              hsva: false,
+              input: true,
+              clear: false,
+              save: false,
+            },
           },
         },
-      },
-    ],
-  ];
-  const nanoButtons = [];
-  let nanoPickr = null;
-  for (const [theme, config] of nanoThemes) {
-    const button = document.createElement("button");
-    button.innerHTML = theme;
-    nanoButtons.push(button);
+      ],
+    ];
+    const nanoButtons = [];
+    let nanoPickr = null;
+    for (const [theme, config] of nanoThemes) {
+      const button = document.createElement("button");
+      button.innerHTML = theme;
+      nanoButtons.push(button);
 
-    button.addEventListener("click", () => {
-      const el = document.createElement("p");
-      pickrContainerPrimary.appendChild(el);
+      button.addEventListener("click", () => {
+        const el = document.createElement("p");
+        pickrContainerPrimary.appendChild(el);
 
-      /* Delete previous instance */
-      if (nanoPickr) {
-        nanoPickr.destroyAndRemove();
-      }
+        /* Delete previous instance */
+        if (nanoPickr) {
+          nanoPickr.destroyAndRemove();
+        }
 
-      /* Apply active class */
-      for (const btn of nanoButtons) {
-        btn.classList[btn === button ? "add" : "remove"]("active");
-      }
+        /* Apply active class */
+        for (const btn of nanoButtons) {
+          btn.classList[btn === button ? "add" : "remove"]("active");
+        }
 
-      /* Create fresh instance */
-      nanoPickr = new Pickr(
-        Object.assign(
-          {
-            el,
-            theme,
-            default: "#985ffd",
-          },
-          config
-        )
-      );
-
-      /* Set events */
-      nanoPickr.on("changestop", (source, instance) => {
-        let color = instance.getColor().toRGBA();
-        let html = document.querySelector("html");
-        html.style.setProperty(
-          "--primary-rgb",
-          `${Math.floor(color[0])}, ${Math.floor(color[1])}, ${Math.floor(
-            color[2]
-          )}`
+        /* Create fresh instance */
+        nanoPickr = new Pickr(
+          Object.assign(
+            {
+              el,
+              theme,
+              default: "#1cbc71",
+            },
+            config
+          )
         );
-        /* theme color picker */
-        localStorage.setItem(
-          "primaryRGB",
-          `${Math.floor(color[0])}, ${Math.floor(color[1])}, ${Math.floor(
-            color[2]
-          )}`
-        );
-        // updateColors();
+
+        /* Set events */
+        nanoPickr.on("changestop", (source, instance) => {
+          let color = instance.getColor().toRGBA();
+          let html = document.querySelector("html");
+          html.style.setProperty(
+            "--primary-rgb",
+            `${Math.floor(color[0])}, ${Math.floor(color[1])}, ${Math.floor(
+              color[2]
+            )}`
+          );
+          /* theme color picker */
+          localStorage.setItem(
+            "primaryRGB",
+            `${Math.floor(color[0])}, ${Math.floor(color[1])}, ${Math.floor(
+              color[2]
+            )}`
+          );
+          // updateColors();
+        });
       });
-    });
 
-    themeContainerPrimary.appendChild(button);
-  }
-  nanoButtons[0].click();
-  /* for theme primary */
+      themeContainerPrimary.appendChild(button);
+    }
+    nanoButtons[0].click();
+    /* for theme primary */
 
-  /* for theme background */
-  const nanoThemes1 = [
-    [
-      "nano",
-      {
-        defaultRepresentation: "RGB",
-        components: {
-          preview: true,
-          opacity: false,
-          hue: true,
+    /* for theme background */
+    const nanoThemes1 = [
+      [
+        "nano",
+        {
+          defaultRepresentation: "RGB",
+          components: {
+            preview: true,
+            opacity: false,
+            hue: true,
 
-          interaction: {
-            hex: false,
-            rgba: true,
-            hsva: false,
-            input: true,
-            clear: false,
-            save: false,
+            interaction: {
+              hex: false,
+              rgba: true,
+              hsva: false,
+              input: true,
+              clear: false,
+              save: false,
+            },
           },
         },
-      },
-    ],
-  ];
-  const nanoButtons1 = [];
-  let nanoPickr1 = null;
-  for (const [theme, config] of nanoThemes) {
-    const button = document.createElement("button");
-    button.innerHTML = theme;
-    nanoButtons1.push(button);
+      ],
+    ];
+    const nanoButtons1 = [];
+    let nanoPickr1 = null;
+    for (const [theme, config] of nanoThemes) {
+      const button = document.createElement("button");
+      button.innerHTML = theme;
+      nanoButtons1.push(button);
 
-    button.addEventListener("click", () => {
-      const el = document.createElement("p");
-      pickrContainerBackground.appendChild(el);
+      button.addEventListener("click", () => {
+        const el = document.createElement("p");
+        pickrContainerBackground.appendChild(el);
 
-      /* Delete previous instance */
-      if (nanoPickr1) {
-        nanoPickr1.destroyAndRemove();
-      }
+        /* Delete previous instance */
+        if (nanoPickr1) {
+          nanoPickr1.destroyAndRemove();
+        }
 
-      /* Apply active class */
-      for (const btn of nanoButtons) {
-        btn.classList[btn === button ? "add" : "remove"]("active");
-      }
+        /* Apply active class */
+        for (const btn of nanoButtons) {
+          btn.classList[btn === button ? "add" : "remove"]("active");
+        }
 
-      /* Create fresh instance */
-      nanoPickr1 = new Pickr(
-        Object.assign(
-          {
-            el,
-            theme,
-            default: "#985ffd",
-          },
-          config
-        )
-      );
-
-      /* Set events */
-      nanoPickr1.on("changestop", (source, instance) => {
-        let color = instance.getColor().toRGBA();
-        let html = document.querySelector("html");
-        html.style.setProperty(
-          "--body-bg-rgb",
-          `${color[0]}, ${color[1]}, ${color[2]}`
+        /* Create fresh instance */
+        nanoPickr1 = new Pickr(
+          Object.assign(
+            {
+              el,
+              theme,
+              default: "#1cbc71",
+            },
+            config
+          )
         );
-        document
-          .querySelector("html")
-          .style.setProperty(
-            "--body-bg-rgb2",
+
+        /* Set events */
+        nanoPickr1.on("changestop", (source, instance) => {
+          let color = instance.getColor().toRGBA();
+          let html = document.querySelector("html");
+          html.style.setProperty(
+            "--body-bg-rgb",
+            `${color[0]}, ${color[1]}, ${color[2]}`
+          );
+          document
+            .querySelector("html")
+            .style.setProperty(
+              "--body-bg-rgb2",
+              `${color[0] + 14}, ${color[1] + 14}, ${color[2] + 14}`
+            );
+          document
+            .querySelector("html")
+            .style.setProperty(
+              "--light-rgb",
+              `${color[0] + 14}, ${color[1] + 14}, ${color[2] + 14}`
+            );
+          document
+            .querySelector("html")
+            .style.setProperty(
+              "--form-control-bg",
+              `rgb(${color[0] + 14}, ${color[1] + 14}, ${color[2] + 14})`
+            );
+            document
+              .querySelector("html")
+              .style.setProperty(
+                "--gray-3",
+                `rgb(${color[0] + 14}, ${color[1] + 14}, ${color[2] + 14})`
+              );
+          localStorage.removeItem("bgtheme");
+          // updateColors();
+          html.setAttribute("data-theme-mode", "dark");
+          html.setAttribute("data-menu-styles", "dark");
+          html.setAttribute("data-header-styles", "dark");
+          document.querySelector("#switcher-dark-theme").checked = true;
+          localStorage.setItem(
+            "bodyBgRGB",
+            `${color[0]}, ${color[1]}, ${color[2]}`
+          );
+          localStorage.setItem(
+            "bodylightRGB",
             `${color[0] + 14}, ${color[1] + 14}, ${color[2] + 14}`
           );
-        document
-          .querySelector("html")
-          .style.setProperty(
-            "--light-rgb",
-            `${color[0] + 14}, ${color[1] + 14}, ${color[2] + 14}`
-          );
-        document
-          .querySelector("html")
-          .style.setProperty(
-            "--form-control-bg",
-            `rgb(${color[0] + 14}, ${color[1] + 14}, ${color[2] + 14})`
-          );
-        document
-          .querySelector("html")
-          .style.setProperty(
-            "--gray-3",
-            `rgb(${color[0] + 14}, ${color[1] + 14}, ${color[2] + 14})`
-          );
-        localStorage.removeItem("bgtheme");
-        // updateColors();
-        html.setAttribute("data-theme-mode", "dark");
-        html.setAttribute("data-menu-styles", "dark");
-        html.setAttribute("data-header-styles", "dark");
-        document.querySelector('#switcher-menu-dark').checked = true;
-        document.querySelector('#switcher-header-dark').checked = true;
-        document.querySelector("#switcher-dark-theme").checked = true;
-        localStorage.setItem(
-          "bodyBgRGB",
-          `${color[0]}, ${color[1]}, ${color[2]}`
-        );
-        localStorage.setItem(
-          "bodylightRGB",
-          `${color[0] + 14}, ${color[1] + 14}, ${color[2] + 14}`
-        );
+        });
       });
-    });
-    themeContainerBackground.appendChild(button);
+      themeContainerBackground.appendChild(button);
+    }
+    nanoButtons1[0].click();
+    /* for theme background */
   }
-  nanoButtons1[0].click();
-  /* for theme background */
 
   /* header theme toggle */
   function toggleTheme() {
     let html = document.querySelector("html");
     if (html.getAttribute("data-theme-mode") === "dark") {
       html.setAttribute("data-theme-mode", "light");
-      html.setAttribute("data-header-styles", "transparent");
-      html.setAttribute("data-menu-styles", "transparent");
+      html.setAttribute("data-header-styles", "light");
+      html.setAttribute("data-menu-styles", "dark");
       if (!localStorage.getItem("primaryRGB")) {
         html.setAttribute("style", "");
       }
       html.removeAttribute("data-bg-theme");
-      document.querySelector("#switcher-light-theme").checked = true;
-      document.querySelector("#switcher-menu-transparent").checked = true;
+      if (document.querySelector("#switcher-canvas")) {
+        document.querySelector("#switcher-light-theme").checked = true;
+        document.querySelector("#switcher-menu-light").checked = true;
+      }
       document
         .querySelector("html")
         .style.removeProperty("--body-bg-rgb", localStorage.bodyBgRGB);
-      checkOptions();
+      // checkOptions();
       html.style.removeProperty("--body-bg-rgb2");
       html.style.removeProperty("--light-rgb");
       html.style.removeProperty("--form-control-bg");
       html.style.removeProperty("--input-border");
-      document.querySelector("#switcher-header-transparent").checked = true;
-      document.querySelector("#switcher-menu-transparent").checked = true;
-      document.querySelector("#switcher-light-theme").checked = true;
-      document.querySelector("#switcher-background4").checked = false;
-      document.querySelector("#switcher-background3").checked = false;
-      document.querySelector("#switcher-background2").checked = false;
-      document.querySelector("#switcher-background1").checked = false;
-      document.querySelector("#switcher-background").checked = false;
-      localStorage.removeItem("vyzordarktheme");
-      localStorage.removeItem("vyzorMenu");
-      localStorage.removeItem("vyzorHeader");
+      if (document.querySelector("#switcher-canvas")) {
+        document.querySelector("#switcher-header-light").checked = true;
+        document.querySelector("#switcher-menu-dark").checked = true;
+        document.querySelector("#switcher-light-theme").checked = true;
+        document.querySelector("#switcher-background4").checked = false;
+        document.querySelector("#switcher-background3").checked = false;
+        document.querySelector("#switcher-background2").checked = false;
+        document.querySelector("#switcher-background1").checked = false;
+        document.querySelector("#switcher-background").checked = false;
+      }
+      localStorage.removeItem("yzendarktheme");
+      localStorage.removeItem("yzenMenu");
+      localStorage.removeItem("yzenHeader");
       localStorage.removeItem("bodylightRGB");
       localStorage.removeItem("bodyBgRGB");
-      html.setAttribute("data-header-styles", "transparent");
+      html.setAttribute("data-header-styles", "light");
     } else {
       html.setAttribute("data-theme-mode", "dark");
-      html.setAttribute("data-header-styles", "transparent");
+      html.setAttribute("data-header-styles", "dark");
       if (!localStorage.getItem("primaryRGB")) {
         html.setAttribute("style", "");
       }
-      html.setAttribute("data-menu-styles", "transparent");
-      document.querySelector("#switcher-dark-theme").checked = true;
-      document.querySelector("#switcher-menu-transparent").checked = true;
-      document.querySelector("#switcher-header-transparent").checked = true;
-      checkOptions();
-      document.querySelector("#switcher-menu-transparent").checked = true;
-      document.querySelector("#switcher-header-transparent").checked = true;
-      document.querySelector("#switcher-dark-theme").checked = true;
-      document.querySelector("#switcher-background4").checked = false;
-      document.querySelector("#switcher-background3").checked = false;
-      document.querySelector("#switcher-background2").checked = false;
-      document.querySelector("#switcher-background1").checked = false;
-      document.querySelector("#switcher-background").checked = false;
-      localStorage.setItem("vyzordarktheme", "true");
-      localStorage.setItem("vyzorMenu", "transparent");
-      localStorage.setItem("vyzorHeader", "transparent");
+      html.setAttribute("data-menu-styles", "dark");
+      
+      if (document.querySelector("#switcher-canvas")) {
+        document.querySelector("#switcher-dark-theme").checked = true;
+        document.querySelector("#switcher-menu-dark").checked = true;
+        document.querySelector("#switcher-header-dark").checked = true;
+        checkOptions();
+        document.querySelector("#switcher-menu-dark").checked = true;
+        document.querySelector("#switcher-header-dark").checked = true;
+        document.querySelector("#switcher-dark-theme").checked = true;
+        document.querySelector("#switcher-background4").checked = false;
+        document.querySelector("#switcher-background3").checked = false;
+        document.querySelector("#switcher-background2").checked = false;
+        document.querySelector("#switcher-background1").checked = false;
+        document.querySelector("#switcher-background").checked = false;
+      }
+      localStorage.setItem("yzendarktheme", "true");
+      localStorage.setItem("yzenMenu", "dark");
+      localStorage.setItem("yzenHeader", "dark");
       localStorage.removeItem("bodylightRGB");
       localStorage.removeItem("bodyBgRGB");
     }
   }
   let layoutSetting = document.querySelector(".layout-setting");
   layoutSetting.addEventListener("click", toggleTheme);
-  /* header theme toggle */
-
-  /* header theme toggle */
-  let html = document.querySelector("html");
-  if (html.getAttribute('data-vertical-style') === 'doublemenu') {
-    function toggleTheme1() {
-      let html = document.querySelector("html");
-      if (html.getAttribute("data-theme-mode") === "dark") {
-        html.setAttribute("data-theme-mode", "light");
-        html.setAttribute("data-header-styles", "transparent");
-        html.setAttribute("data-menu-styles", "transparent");
-        if (!localStorage.getItem("primaryRGB")) {
-          html.setAttribute("style", "");
-        }
-        html.removeAttribute("data-bg-theme");
-        document.querySelector("#switcher-light-theme").checked = true;
-        document.querySelector("#switcher-menu-transparent").checked = true;
-        document
-          .querySelector("html")
-          .style.removeProperty("--body-bg-rgb", localStorage.bodyBgRGB);
-        checkOptions();
-        html.style.removeProperty("--body-bg-rgb2");
-        html.style.removeProperty("--light-rgb");
-        html.style.removeProperty("--form-control-bg");
-        html.style.removeProperty("--input-border");
-        document.querySelector("#switcher-header-transparent").checked = true;
-        document.querySelector("#switcher-menu-transparent").checked = true;
-        document.querySelector("#switcher-light-theme").checked = true;
-        document.querySelector("#switcher-background4").checked = false;
-        document.querySelector("#switcher-background3").checked = false;
-        document.querySelector("#switcher-background2").checked = false;
-        document.querySelector("#switcher-background1").checked = false;
-        document.querySelector("#switcher-background").checked = false;
-        localStorage.removeItem("vyzordarktheme");
-        localStorage.removeItem("vyzorMenu");
-        localStorage.removeItem("vyzorHeader");
-        localStorage.removeItem("bodylightRGB");
-        localStorage.removeItem("bodyBgRGB");
-        html.setAttribute("data-header-styles", "transparent");
-      } else {
-        html.setAttribute("data-theme-mode", "dark");
-        html.setAttribute("data-header-styles", "transparent");
-        if (!localStorage.getItem("primaryRGB")) {
-          html.setAttribute("style", "");
-        }
-        html.setAttribute("data-menu-styles", "transparent");
-        document.querySelector("#switcher-dark-theme").checked = true;
-        document.querySelector("#switcher-menu-transparent").checked = true;
-        document.querySelector("#switcher-header-transparent").checked = true;
-        checkOptions();
-        document.querySelector("#switcher-menu-transparent").checked = true;
-        document.querySelector("#switcher-header-transparent").checked = true;
-        document.querySelector("#switcher-dark-theme").checked = true;
-        document.querySelector("#switcher-background4").checked = false;
-        document.querySelector("#switcher-background3").checked = false;
-        document.querySelector("#switcher-background2").checked = false;
-        document.querySelector("#switcher-background1").checked = false;
-        document.querySelector("#switcher-background").checked = false;
-        localStorage.setItem("vyzordarktheme", "true");
-        localStorage.setItem("vyzorMenu", "transparent");
-        localStorage.setItem("vyzorHeader", "transparent");
-        localStorage.removeItem("bodylightRGB");
-        localStorage.removeItem("bodyBgRGB");
-      }
-    }
-    let layoutSetting1 = document.querySelector(".layout-setting-doublemenu");
-    layoutSetting1.addEventListener("click", toggleTheme1);
-
-  }
   /* header theme toggle */
 
   /* Choices JS */
@@ -427,8 +329,7 @@
   /* Choices JS */
 
   /* footer year */
-  const yearElement = document.getElementById("year");
-  yearElement.innerHTML = new Date().getFullYear();
+  document.getElementById("year").innerHTML = new Date().getFullYear();
   /* footer year */
 
   /* node waves */
@@ -480,15 +381,6 @@
   }, 10);
   /* count-up */
 
-  /* Progressbar Top */
-  window.addEventListener('scroll', () => {
-    var widnowScroll = document.body.scrollTop || document.documentElement.scrollTop,
-      height = document.documentElement.scrollHeight - document.documentElement.clientHeight,
-      scrollAmount = (widnowScroll / height) * 100;
-    document.querySelector(".progress-top-bar").style.width = scrollAmount + "%";
-  })
-  /* Progressbar Top */
-
   /* back to top */
   const scrollToTop = document.querySelector(".scrollToTop");
   const $rootElement = document.documentElement;
@@ -509,30 +401,35 @@
 
   /* header dropdowns scroll */
   var myHeadernotification = document.getElementById("header-notification-scroll");
-  if(myHeadernotification) {
-    new SimpleBar(myHeadernotification, { autoHide: true });
-  }
+  new SimpleBar(myHeadernotification, { autoHide: true });
+
+  var myHeadernotification = document.getElementById("header-notification-scroll1");
+  new SimpleBar(myHeadernotification, { autoHide: true });
+
+  var myHeadernotification = document.getElementById("header-notification-scroll2");
+  new SimpleBar(myHeadernotification, { autoHide: true });
+
+  var myHeadernotification = document.getElementById("header-notification-scroll3");
+  new SimpleBar(myHeadernotification, { autoHide: true });
 
   var myHeaderCart = document.getElementById("header-cart-items-scroll");
-  if(myHeaderCart) {
-    new SimpleBar(myHeaderCart, { autoHide: true });
-  }
+  new SimpleBar(myHeaderCart, { autoHide: true });
   /* header dropdowns scroll */
 
   const autoCompleteJS = new autoComplete({
     selector: "#header-search",
     data: {
       src: [
-        "How do plants adapt to different environments?",
-        "What makes the ocean's tides rise and fall?",
-        "How do our brains process emotions?",
-        "What factors contribute to the creation of a rainbow?",
-        "Who invented the telephone?",
-        "What role does the moon play in Earth's ecosystem?",
-        "How do animals communicate with each other?",
-        "What causes earthquakes to happen?",
-        "What is the significance of the Great Barrier Reef?",
-        "How do human bones regenerate after an injury?"
+        "What is the meaning of life?",
+        "How does gravity work?",
+        "Why is the sky blue?",
+        "What is the capital of France?",
+        "Who painted the Mona Lisa?",
+        "What is the speed of light?",
+        "Why do we dream?",
+        "How do birds fly?",
+        "What is the largest mammal?",
+        "Why do leaves change color in the fall?"
       ],
       cache: true,
     },
@@ -600,65 +497,74 @@ customSwitch.forEach((e) =>
 );
 /* toggle switches */
 
+/* header dropdown close button */
+
 /* for cart dropdown */
 const headerbtn = document.querySelectorAll(".dropdown-item-close");
 headerbtn.forEach((button) => {
   button.addEventListener("click", (e) => {
-    let cartCount = document.querySelectorAll(".dropdown-item-close").length;
-    const cartDataEl = document.getElementById("cart-data");
-    const cartBadgeEl = document.getElementById("cart-icon-badge");
     e.preventDefault();
     e.stopPropagation();
     button.parentNode.parentNode.parentNode.parentNode.parentNode.remove();
-    cartCount = document.querySelectorAll(".dropdown-item-close").length;
-    if (cartDataEl) {
-        cartDataEl.innerText = `${cartCount}`;
-    } 
-    if (cartBadgeEl) {
-      cartBadgeEl.innerText = `${cartCount}`;
-    }
-    console.log(cartCount);
-    
-    if (cartCount == 0) {
+    document.getElementById("cart-data").innerText = `${document.querySelectorAll(".dropdown-item-close").length
+      } `;
+    document.getElementById("cart-icon-badge").innerText = `${document.querySelectorAll(".dropdown-item-close").length
+      }`;
+    console.log(
+      document.getElementById("header-cart-items-scroll").children.length
+    );
+    if (document.querySelectorAll(".dropdown-item-close").length == 0) {
       let elementHide = document.querySelector(".empty-header-item");
       let elementShow = document.querySelector(".empty-item");
-      if (elementHide) {
-        elementHide.classList.add("d-none");
-      }
-      if (elementShow) {
-        elementShow.classList.remove("d-none");
-      }
-    } 
+      elementHide.classList.add("d-none");
+      elementShow.classList.remove("d-none");
+    }
   });
 });
 /* for cart dropdown */
 
-// Cart quantity settings
-const minValue = 0;
-const maxValue = 30;
-
-const productMinusBtn = document.querySelectorAll(".product-quantity-minus");
-const productPlusBtn = document.querySelectorAll(".product-quantity-plus");
-
-productMinusBtn.forEach((button) => {
-  button.onclick = () => {
-    const input = button.parentElement.querySelector("input");
-    let value = Number(input.value);
-    if (value > minValue) {
-      value -= 1;
-      input.value = value;
+/* for notifications dropdown */
+const headerbtn1 = document.querySelectorAll(".dropdown-item-close1");
+headerbtn1.forEach((button) => {
+  button.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    button.parentNode.parentNode.parentNode.parentNode.remove();
+    document.getElementById("notifiation-data").innerText = `${document.querySelectorAll(".dropdown-item-close1").length
+      } Unread`;
+    if (document.querySelectorAll(".dropdown-item-close1").length == 0) {
+      let elementHide1 = document.querySelector(".empty-header-item1");
+      let elementShow1 = document.querySelector(".empty-item1");
+      elementHide1.classList.add("d-none");
+      elementShow1.classList.remove("d-none");
     }
-  };
+  });
 });
+/* for notifications dropdown */
 
-productPlusBtn.forEach((button) => {
-  button.onclick = () => {
-    const input = button.parentElement.querySelector("input");
-    let value = Number(input.value);
-    if (value < maxValue) {
-      value += 1;
-      input.value = value;
-    }
-  };
-});
-// Cart quantity settings
+
+  // for nummber of products selected 
+
+  var value = 1,
+  minValue = 0,
+  maxValue = 30;
+
+let productMinusBtn = document.querySelectorAll(".product-quantity-minus")
+let productPlusBtn = document.querySelectorAll(".product-quantity-plus")
+productMinusBtn.forEach((element) => {
+  element.onclick = () => {
+      value = Number(element.parentElement.childNodes[3].value)
+      if (value > minValue) {
+          value = Number(element.parentElement.childNodes[3].value) - 1;
+          element.parentElement.childNodes[3].value = value;
+      }
+  }
+})
+productPlusBtn.forEach((element) => {
+  element.onclick = () => {
+      if (value < maxValue) {
+          value = Number(element.parentElement.childNodes[3].value) + 1;
+          element.parentElement.childNodes[3].value = value;
+      }
+  }
+})

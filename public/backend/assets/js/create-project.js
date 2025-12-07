@@ -23,7 +23,7 @@
     );
 
     /* quill snow editor */
-    const toolbarOptions = [
+    var toolbarOptions = [
         [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
         [{ 'font': [] }],
         ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -43,7 +43,7 @@
         ['image', 'video'],
         ['clean']                                         // remove formatting button
     ];
-    const quill = new Quill('#project-descriptioin-editor', {
+    var quill = new Quill('#project-descriptioin-editor', {
         modules: {
             toolbar: toolbarOptions
         },
@@ -65,10 +65,10 @@
 
     /* multiple upload */
     const MultipleElement = document.querySelector('.multiple-filepond');
-    if(MultipleElement) FilePond.create(MultipleElement,);
+    FilePond.create(MultipleElement,);
 
     /* passing unique values */
-    const textUniqueVals = new Choices('#choices-text-unique-values', {
+    var textUniqueVals = new Choices('#choices-text-unique-values', {
         allowHTML: true,
         paste: false,
         duplicateItemsAllowed: false,

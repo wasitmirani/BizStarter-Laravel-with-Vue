@@ -2,33 +2,26 @@
 
     /* Basic Tagify */
     // The DOM element you wish to replace with Tagify
-    const inputtagify = document.querySelector('input[name=basic]');
+    var inputtagify = document.querySelector('input[name=basic]');
 
     // initialize Tagify on the above input node reference
-    if(inputtagify) {
-        new Tagify(inputtagify)
-    }
+    new Tagify(inputtagify)
     /* Basic Tagify */
 
     /* Readonly Tags */
-    const input = document.querySelector('input[name=tags4]');
-    if(input) {
+    var input = document.querySelector('input[name=tags4]'),
         tagify = new Tagify(input);
-    }
     /* Readonly Tags */
 
     /* Readonly Mix */
-    const input2 = document.querySelector('input[name=tags-readonly-mix]');
-    if(input2) {
-        tagify2 = new Tagify(input2);
-    }
+    var input = document.querySelector('input[name=tags-readonly-mix]'),
+    tagify = new Tagify(input);
     /* Readonly Mix */
 
     /* Tagify With Custom Suggestions */
-    const inputCustom = document.querySelector('input[name="input-custom-dropdown"]');
-    if(inputCustom) {
+    var inputCustom = document.querySelector('input[name="input-custom-dropdown"]'),
         // init Tagify script on the above inputs
-        tagify3 = new Tagify(inputCustom, {
+        tagify = new Tagify(inputCustom, {
             whitelist: ["A# .NET", "A# (Axiom)", "A-0 System", "A+", "A++", "ABAP", "ABC", "ABC ALGOL", "ABSET", "ABSYS", "ACC", "Accent", "Ace DASL", "ACL2", "Avicsoft", "ACT-III", "Action!", "ActionScript", "Ada", "Adenine", "Agda", "Agilent VEE", "Agora", "AIMMS", "Alef", "ALF", "ALGOL 58", "ALGOL 60", "ALGOL 68", "ALGOL W", "Alice", "Alma-0", "AmbientTalk", "Amiga E", "AMOS", "AMPL", "Apex (Salesforce.com)", "APL", "AppleScript", "Arc", "ARexx", "Argus", "AspectJ", "Assembly language", "ATS", "Ateji PX", "AutoHotkey", "Autocoder", "AutoIt", "AutoLISP / Visual LISP", "Averest", "AWK", "Axum", "Active Server Pages", "ASP.NET", "B", "Babbage", "Bash", "BASIC", "bc", "BCPL", "BeanShell", "Batch (Windows/Dos)", "Bertrand", "BETA", "Bigwig", "Bistro", "BitC", "BLISS", "Blockly", "BlooP", "Blue", "Boo", "Boomerang", "Bourne shell (including bash and ksh)", "BREW", "BPEL", "B", "C--", "C++ – ISO/IEC 14882", "C# – ISO/IEC 23270", "C/AL", "Caché ObjectScript", "C Shell", "Caml", "Cayenne", "CDuce", "Cecil", "Cesil", "Céu", "Ceylon", "CFEngine", "CFML", "Cg", "Ch", "Chapel", "Charity", "Charm", "Chef", "CHILL", "CHIP-8", "chomski", "ChucK", "CICS", "Cilk", "Citrine (programming language)", "CL (IBM)", "Claire", "Clarion", "Clean", "Clipper", "CLIPS", "CLIST", "Clojure", "CLU", "CMS-2", "COBOL – ISO/IEC 1989", "CobolScript – COBOL Scripting language", "Cobra", "CODE", "CoffeeScript", "ColdFusion", "COMAL", "Combined Programming Language (CPL)", "COMIT", "Common Intermediate Language (CIL)", "Common Lisp (also known as CL)", "COMPASS", "Component Pascal", "Constraint Handling Rules (CHR)", "COMTRAN", "Converge", "Cool", "Coq", "Coral 66", "Corn", "CorVision", "COWSEL", "CPL", "CPL", "Cryptol", "csh", "Csound", "CSP", "CUDA", "Curl", "Curry", "Cybil", "Cyclone", "Cython", "Java", "Javascript", "M2001", "M4", "M#", "Machine code", "MAD (Michigan Algorithm Decoder)", "MAD/I", "Magik", "Magma", "make", "Maple", "MAPPER now part of BIS", "MARK-IV now VISION:BUILDER", "Mary", "MASM Microsoft Assembly x86", "MATH-MATIC", "Mathematica", "MATLAB", "Maxima (see also Macsyma)", "Max (Max Msp – Graphical Programming Environment)", "Maya (MEL)", "MDL", "Mercury", "Mesa", "Metafont", "Microcode", "MicroScript", "MIIS", "Milk (programming language)", "MIMIC", "Mirah", "Miranda", "MIVA Script", "ML", "Model 204", "Modelica", "Modula", "Modula-2", "Modula-3", "Mohol", "MOO", "Mortran", "Mouse", "MPD", "Mathcad", "MSIL – deprecated name for CIL", "MSL", "MUMPS", "Mystic Programming L"],
             maxTags: 10,
             dropdown: {
@@ -38,64 +31,59 @@
                 closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
             }
         })
-    }
     /* Tagify With Custom Suggestions */
 
     /* Tagify With Disabled User Input */
-    const inputDisabled = document.querySelector('input[name=tags-disabled-user-input]');
-    if(inputDisabled) {
-        new Tagify4(inputDisabled, {
-            whitelist: [1, 2, 3, 4, 5],
-            userInput: false
-        })
-    }
+    var inputDisabled = document.querySelector('input[name=tags-disabled-user-input]');
+    new Tagify(inputDisabled, {
+        whitelist: [1, 2, 3, 4, 5],
+        userInput: false
+    })
     /* Tagify With Disabled User Input */
 
     /* Tagify With Drag & Sort */
-    const input5 = document.querySelector('input[name=drag-sort]');
-    if(input5) {
-        tagify5 = new Tagify(input);
-    }
+    var input = document.querySelector('input[name=drag-sort]'),
+        tagify = new Tagify(input);
 
     // using 3-party script "dragsort"
     // https://github.com/yairEO/dragsort
-    const dragsort = new DragSort(tagify5.DOM.scope, {
-        selector: '.' + tagify5.settings.classNames.tag,
+    var dragsort = new DragSort(tagify.DOM.scope, {
+        selector: '.' + tagify.settings.classNames.tag,
         callbacks: {
             dragEnd: onDragEnd
         }
     })
     function onDragEnd(elm) {
-        tagify5.updateValueByDOMTags()
+        tagify.updateValueByDOMTags()
     }
     /* Tagify With Drag & Sort */
 
     /* Tagify Single-Value Select */
-    const input6 = document.querySelector('input[name=tags-select-mode]');
-    if(input6) {
-            tagify6 = new Tagify(input, {
-                enforceWhitelist: true,
-                mode: "select",
-                whitelist: ["first option", "second option", "third option"],
-                blacklist: ['foo', 'bar'],
-            })
+    var input = document.querySelector('input[name=tags-select-mode]'),
+        tagify = new Tagify(input, {
+            enforceWhitelist: true,
+            mode: "select",
+            whitelist: ["first option", "second option", "third option"],
+            blacklist: ['foo', 'bar'],
+        })
 
-        // bind events
-        tagify6.on('add', onAddTag)
-        tagify6.DOM.input.addEventListener('focus', onSelectFocus)
+    // bind events
+    tagify.on('add', onAddTag)
+    tagify.DOM.input.addEventListener('focus', onSelectFocus)
 
-        function onAddTag(e) {
-        }
+    function onAddTag(e) {
+        console.log(e.detail)
+    }
 
-        function onSelectFocus(e) {
-        }
+    function onSelectFocus(e) {
+        console.log(e)
     }
     /* Tagify Single-Value Select */
 
     /* Tagify With Mix Text & Tags */
     // Define two types of whitelists, each used for the dropdown suggestions menu,
     // depending on the prefix pattern typed (@/#). See settings below.
-    const whitelist_1 = [
+    var whitelist_1 = [
         { value: 100, text: 'kenny', title: 'Kenny McCormick' },
         { value: 200, text: 'cartman', title: 'Eric Cartman' },
         { value: 300, text: 'kyle', title: 'Kyle Broflovski' },
@@ -110,14 +98,13 @@
 
     // Second whitelist, which is shown only when starting to type "#".
     // Below whitelist is the simplest possible format.
-    const whitelist_2 = ['Homer simpson', 'Marge simpson', 'Bart', 'Lisa', 'Maggie', 'Mr. Burns', 'Ned', 'Milhouse', 'Moe'];
+    var whitelist_2 = ['Homer simpson', 'Marge simpson', 'Bart', 'Lisa', 'Maggie', 'Mr. Burns', 'Ned', 'Milhouse', 'Moe'];
 
 
     // initialize Tagify
-    const input7 = document.querySelector('[name=mix]');
-    if(input7) {
+    var input = document.querySelector('[name=mix]'),
         // init Tagify script on the above inputs
-        tagify7 = new Tagify(input, {
+        tagify = new Tagify(input, {
             //  mixTagsInterpolator: ["{{", "}}"],
             mode: 'mix',  // <--  Enable mixed-content
             pattern: /@|#/,  // <--  Text starting with @ or # (if single, String can be used here)
@@ -139,36 +126,42 @@
                 highlightFirst: true  // automatically highlights first sugegstion item in the dropdown
             },
             callbacks: {
+                add: console.log,  // callback when adding a tag
+                remove: console.log   // callback when removing a tag
             }
         })
-        // A good place to pull server suggestion list accoring to the prefix/value
-        tagify7.on('input', function (e) {
-            const prefix = e.detail.prefix;
 
-            // first, clean the whitlist array, because the below code, while not, might be async,
-            // therefore it should be up to you to decide WHEN to render the suggestions dropdown
-            // tagify.settings.whitelist.length = 0;
 
-            if (prefix) {
-                if (prefix == '@')
-                    tagify7.whitelist = whitelist_1;
+    // A good place to pull server suggestion list accoring to the prefix/value
+    tagify.on('input', function (e) {
+        var prefix = e.detail.prefix;
 
-                if (prefix == '#')
-                    tagify7.whitelist = whitelist_2;
+        // first, clean the whitlist array, because the below code, while not, might be async,
+        // therefore it should be up to you to decide WHEN to render the suggestions dropdown
+        // tagify.settings.whitelist.length = 0;
 
-                if (e.detail.value.length > 1)
-                    tagify7.dropdown.show(e.detail.value);
-            }
+        if (prefix) {
+            if (prefix == '@')
+                tagify.whitelist = whitelist_1;
 
-        })
+            if (prefix == '#')
+                tagify.whitelist = whitelist_2;
 
-        tagify7.on('add', function (e) {
-        })
-    }
+            if (e.detail.value.length > 1)
+                tagify.dropdown.show(e.detail.value);
+        }
+
+        console.log(tagify.value)
+        console.log('mix-mode "input" event value: ', e.detail)
+    })
+
+    tagify.on('add', function (e) {
+        console.log(e)
+    })
     /* Tagify With Mix Text & Tags */
 
     /* Tagify With User List Tags */
-    const inputElm = document.querySelector('input[name=users-list-tags]');
+    var inputElm = document.querySelector('input[name=users-list-tags]');
 
     function tagTemplate(tagData) {
         return `
@@ -216,206 +209,204 @@
     `
     }
 
-    if(inputElm) {
-        // initialize Tagify on the above input node reference
-        const tagify8 = new Tagify(inputElm, {
-            tagTextProp: 'name', // very important since a custom template is used with this property as text
-            // enforceWhitelist: true,
-            skipInvalid: true, // do not remporarily add invalid tags
-            dropdown: {
-                closeOnSelect: false,
-                enabled: 0,
-                classname: 'users-list',
-                searchKeys: ['name', 'email']  // very important to set by which keys to search for suggesttions when typing
+    // initialize Tagify on the above input node reference
+    var tagify = new Tagify(inputElm, {
+        tagTextProp: 'name', // very important since a custom template is used with this property as text
+        // enforceWhitelist: true,
+        skipInvalid: true, // do not remporarily add invalid tags
+        dropdown: {
+            closeOnSelect: false,
+            enabled: 0,
+            classname: 'users-list',
+            searchKeys: ['name', 'email']  // very important to set by which keys to search for suggesttions when typing
+        },
+        templates: {
+            tag: tagTemplate,
+            dropdownItem: suggestionItemTemplate,
+            dropdownHeader: dropdownHeaderTemplate
+        },
+        whitelist: [
+            {
+                "value": 1,
+                "name": "Justinian Hattersley",
+                "avatar": "https://i.pravatar.cc/80?img=1",
+                "email": "jhattersley0@ucsd.edu",
+                "team": "A"
             },
-            templates: {
-                tag: tagTemplate,
-                dropdownItem: suggestionItemTemplate,
-                dropdownHeader: dropdownHeaderTemplate
+            {
+                "value": 2,
+                "name": "Antons Esson",
+                "avatar": "https://i.pravatar.cc/80?img=2",
+                "email": "aesson1@ning.com",
+                "team": "B"
+
             },
-            whitelist: [
-                {
-                    "value": 1,
-                    "name": "Justinian Hattersley",
-                    "avatar": "https://i.pravatar.cc/80?img=1",
-                    "email": "jhattersley0@ucsd.edu",
-                    "team": "A"
-                },
-                {
-                    "value": 2,
-                    "name": "Antons Esson",
-                    "avatar": "https://i.pravatar.cc/80?img=2",
-                    "email": "aesson1@ning.com",
-                    "team": "B"
-
-                },
-                {
-                    "value": 3,
-                    "name": "Ardeen Batisse",
-                    "avatar": "https://i.pravatar.cc/80?img=3",
-                    "email": "abatisse2@nih.gov",
-                    "team": "A"
-                },
-                {
-                    "value": 4,
-                    "name": "Graeme Yellowley",
-                    "avatar": "https://i.pravatar.cc/80?img=4",
-                    "email": "gyellowley3@behance.net",
-                    "team": "C"
-                },
-                {
-                    "value": 5,
-                    "name": "Dido Wilford",
-                    "avatar": "https://i.pravatar.cc/80?img=5",
-                    "email": "dwilford4@jugem.jp",
-                    "team": "A"
-                },
-                {
-                    "value": 6,
-                    "name": "Celesta Orwin",
-                    "avatar": "https://i.pravatar.cc/80?img=6",
-                    "email": "corwin5@meetup.com",
-                    "team": "C"
-                },
-                {
-                    "value": 7,
-                    "name": "Sally Main",
-                    "avatar": "https://i.pravatar.cc/80?img=7",
-                    "email": "smain6@techcrunch.com",
-                    "team": "A"
-                },
-                {
-                    "value": 8,
-                    "name": "Grethel Haysman",
-                    "avatar": "https://i.pravatar.cc/80?img=8",
-                    "email": "ghaysman7@mashable.com",
-                    "team": "B"
-                },
-                {
-                    "value": 9,
-                    "name": "Marvin Mandrake",
-                    "avatar": "https://i.pravatar.cc/80?img=9",
-                    "email": "mmandrake8@sourceforge.net",
-                    "team": "B"
-                },
-                {
-                    "value": 10,
-                    "name": "Corrie Tidey",
-                    "avatar": "https://i.pravatar.cc/80?img=10",
-                    "email": "ctidey9@youtube.com",
-                    "team": "A"
-                },
-                {
-                    "value": 11,
-                    "name": "foo",
-                    "avatar": "https://i.pravatar.cc/80?img=11",
-                    "email": "foo@bar.com",
-                    "team": "B"
-                },
-                {
-                    "value": 12,
-                    "name": "foo",
-                    "avatar": "https://i.pravatar.cc/80?img=12",
-                    "email": "foo.aaa@foo.com",
-                    "team": "A"
-                },
-            ],
-
-            transformTag: (tagData, originalData) => {
-                const { name, email } = parseFullValue(tagData.name)
-                tagData.name = name
-                tagData.email = email || tagData.email
+            {
+                "value": 3,
+                "name": "Ardeen Batisse",
+                "avatar": "https://i.pravatar.cc/80?img=3",
+                "email": "abatisse2@nih.gov",
+                "team": "A"
             },
+            {
+                "value": 4,
+                "name": "Graeme Yellowley",
+                "avatar": "https://i.pravatar.cc/80?img=4",
+                "email": "gyellowley3@behance.net",
+                "team": "C"
+            },
+            {
+                "value": 5,
+                "name": "Dido Wilford",
+                "avatar": "https://i.pravatar.cc/80?img=5",
+                "email": "dwilford4@jugem.jp",
+                "team": "A"
+            },
+            {
+                "value": 6,
+                "name": "Celesta Orwin",
+                "avatar": "https://i.pravatar.cc/80?img=6",
+                "email": "corwin5@meetup.com",
+                "team": "C"
+            },
+            {
+                "value": 7,
+                "name": "Sally Main",
+                "avatar": "https://i.pravatar.cc/80?img=7",
+                "email": "smain6@techcrunch.com",
+                "team": "A"
+            },
+            {
+                "value": 8,
+                "name": "Grethel Haysman",
+                "avatar": "https://i.pravatar.cc/80?img=8",
+                "email": "ghaysman7@mashable.com",
+                "team": "B"
+            },
+            {
+                "value": 9,
+                "name": "Marvin Mandrake",
+                "avatar": "https://i.pravatar.cc/80?img=9",
+                "email": "mmandrake8@sourceforge.net",
+                "team": "B"
+            },
+            {
+                "value": 10,
+                "name": "Corrie Tidey",
+                "avatar": "https://i.pravatar.cc/80?img=10",
+                "email": "ctidey9@youtube.com",
+                "team": "A"
+            },
+            {
+                "value": 11,
+                "name": "foo",
+                "avatar": "https://i.pravatar.cc/80?img=11",
+                "email": "foo@bar.com",
+                "team": "B"
+            },
+            {
+                "value": 12,
+                "name": "foo",
+                "avatar": "https://i.pravatar.cc/80?img=12",
+                "email": "foo.aaa@foo.com",
+                "team": "A"
+            },
+        ],
 
-            validate({ name, email }) {
-                // when editing a tag, there will only be the "name" property which contains name + email (see 'transformTag' above)
-                if (!email && name) {
-                    const parsed = parseFullValue(name)
-                    name = parsed.name
-                    email = parsed.email
-                }
+        transformTag: (tagData, originalData) => {
+            var { name, email } = parseFullValue(tagData.name)
+            tagData.name = name
+            tagData.email = email || tagData.email
+        },
 
-                if (!name) return "Missing name"
-                if (!validateEmail(email)) return "Invalid email"
-
-                return true
-            }
-        })
-
-        // The below code is printed as escaped, so please copy this function from:
-        // https://github.com/yairEO/tagify/blob/master/src/parts/helpers.js#L89-L97
-        // function escapeHTML(s) {
-        //     return typeof s == 'string' ? s
-        //         .replace(/&/g, "&")
-        //         .replace(/</g, "<")
-        //         .replace(/>/g, ">")
-        //         .replace(/"/g, """)
-        //             .replace(/`|'/g, "'")
-        //     : s;
-        // }
-
-        // The below part is only if you want to split the users into groups, when rendering the suggestions list dropdown:
-        // (since each user also has a 'team' property)
-        tagify8.dropdown.createListHTML = sugegstionsList => {
-            const teamsOfUsers = sugegstionsList.reduce((acc, suggestion) => {
-                const team = suggestion.team || 'Not Assigned';
-
-                if (!acc[team])
-                    acc[team] = [suggestion]
-                else
-                    acc[team].push(suggestion)
-
-                return acc
-            }, {})
-
-            const getUsersSuggestionsHTML = teamUsers => teamUsers.map((suggestion, idx) => {
-                if (typeof suggestion == 'string' || typeof suggestion == 'number')
-                    suggestion = { value: suggestion }
-
-                const value = tagify8.dropdown.getMappedValue.call(tagify8, suggestion)
-
-                suggestion.value = value && typeof value == 'string' ? escapeHTML(value) : value
-
-                return tagify8.settings.templates.dropdownItem.apply(tagify8, [suggestion]);
-            }).join("")
-
-
-            // assign the user to a group
-            return Object.entries(teamsOfUsers).map(([team, teamUsers]) => {
-                return `<div class="tagify__dropdown__itemsGroup" data-title="Team ${team}:">${getUsersSuggestionsHTML(teamUsers)}</div>`
-            }).join("")
-        }
-
-        // attach events listeners
-        tagify8.on('dropdown:select', onSelectSuggestion) // allows selecting all the suggested (whitelist) items
-            .on('edit:start', onEditStart)  // show custom text in the tag while in edit-mode
-
-        function onSelectSuggestion(e) {
-            if (e.detail.event.target.matches('.remove-all-tags')) {
-                tagify8.removeAllTags()
+        validate({ name, email }) {
+            // when editing a tag, there will only be the "name" property which contains name + email (see 'transformTag' above)
+            if (!email && name) {
+                var parsed = parseFullValue(name)
+                name = parsed.name
+                email = parsed.email
             }
 
-            // custom class from "dropdownHeaderTemplate"
-            else if (e.detail.elm.classList.contains(`${tagify8.settings.classNames.dropdownItem}__addAll`))
-                tagify8.dropdown.selectAll();
+            if (!name) return "Missing name"
+            if (!validateEmail(email)) return "Invalid email"
+
+            return true
+        }
+    })
+
+    // The below code is printed as escaped, so please copy this function from:
+    // https://github.com/yairEO/tagify/blob/master/src/parts/helpers.js#L89-L97
+    // function escapeHTML(s) {
+    //     return typeof s == 'string' ? s
+    //         .replace(/&/g, "&")
+    //         .replace(/</g, "<")
+    //         .replace(/>/g, ">")
+    //         .replace(/"/g, """)
+    //             .replace(/`|'/g, "'")
+    //     : s;
+    // }
+
+    // The below part is only if you want to split the users into groups, when rendering the suggestions list dropdown:
+    // (since each user also has a 'team' property)
+    tagify.dropdown.createListHTML = sugegstionsList => {
+        const teamsOfUsers = sugegstionsList.reduce((acc, suggestion) => {
+            const team = suggestion.team || 'Not Assigned';
+
+            if (!acc[team])
+                acc[team] = [suggestion]
+            else
+                acc[team].push(suggestion)
+
+            return acc
+        }, {})
+
+        const getUsersSuggestionsHTML = teamUsers => teamUsers.map((suggestion, idx) => {
+            if (typeof suggestion == 'string' || typeof suggestion == 'number')
+                suggestion = { value: suggestion }
+
+            var value = tagify.dropdown.getMappedValue.call(tagify, suggestion)
+
+            suggestion.value = value && typeof value == 'string' ? escapeHTML(value) : value
+
+            return tagify.settings.templates.dropdownItem.apply(tagify, [suggestion]);
+        }).join("")
+
+
+        // assign the user to a group
+        return Object.entries(teamsOfUsers).map(([team, teamUsers]) => {
+            return `<div class="tagify__dropdown__itemsGroup" data-title="Team ${team}:">${getUsersSuggestionsHTML(teamUsers)}</div>`
+        }).join("")
+    }
+
+    // attach events listeners
+    tagify.on('dropdown:select', onSelectSuggestion) // allows selecting all the suggested (whitelist) items
+        .on('edit:start', onEditStart)  // show custom text in the tag while in edit-mode
+
+    function onSelectSuggestion(e) {
+        if (e.detail.event.target.matches('.remove-all-tags')) {
+            tagify.removeAllTags()
         }
 
-        function onEditStart({ detail: { tag, data } }) {
-            tagify8.setTagTextNode(tag, `${data.name} <${data.email}>`)
-        }
+        // custom class from "dropdownHeaderTemplate"
+        else if (e.detail.elm.classList.contains(`${tagify.settings.classNames.dropdownItem}__addAll`))
+            tagify.dropdown.selectAll();
+    }
 
-        // https://stackoverflow.com/a/9204568/104380
-        function validateEmail(email) {
-            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-        }
+    function onEditStart({ detail: { tag, data } }) {
+        tagify.setTagTextNode(tag, `${data.name} <${data.email}>`)
+    }
 
-        function parseFullValue(value) {
-            // https://stackoverflow.com/a/11592042/104380
-            const parts = value.split(/<(.*?)>/g),
-                name = parts[0].trim(),
-                email = parts[1]?.replace(/<(.*?)>/g, '').trim();
+    // https://stackoverflow.com/a/9204568/104380
+    function validateEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+    }
 
-            return { name, email }
-        }
+    function parseFullValue(value) {
+        // https://stackoverflow.com/a/11592042/104380
+        var parts = value.split(/<(.*?)>/g),
+            name = parts[0].trim(),
+            email = parts[1]?.replace(/<(.*?)>/g, '').trim();
+
+        return { name, email }
     }
     /* Tagify With User List Tags */

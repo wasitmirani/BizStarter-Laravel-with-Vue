@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const myDataService = {
+  var myDataService = {
     rate: function (rating) {
       return {
         then: function (callback) {
@@ -14,7 +14,7 @@
   };
 
   /* Basic Rater */
-  const starRating1 = raterJs({
+  var starRating1 = raterJs({
     starSize: 24,
     element: document.querySelector("#rater-basic"),
     rateCallback: function rateCallback(rating, done) {
@@ -137,7 +137,7 @@
   document.getElementById("switcher-ltr").addEventListener("click", ratingLTR);
   document.getElementById("reset-all").addEventListener("click", ratingLTR);
 
-  if (localStorage.getItem("vyzorrtl")) {
+  if (localStorage.getItem("yzenrtl")) {
     setTimeout(() => {
       ratingRTL();
     }, 100);
@@ -146,7 +146,7 @@
   /* Basic Rater */
 
   /* 5 star rater with steps */
-  const starRating2 = raterJs({
+  var starRating2 = raterJs({
     element: document.querySelector("#rater-steps"),
     rateCallback: function rateCallback(rating, done) {
       this.setRating(rating);
@@ -158,7 +158,7 @@
   /* 5 star rater with steps */
 
   /* Custom messages */
-  const starRating3 = raterJs({
+  var starRating3 = raterJs({
     starSize: 24,
     max: 5,
     rating: 4,
@@ -175,7 +175,7 @@
   /* Custom messages */
 
   /* Unlimited number of stars readOnly */
-  const starRating4 = raterJs({
+  var starRating4 = raterJs({
     max: 10,
     starSize: 24,
     readOnly: true,
@@ -185,7 +185,7 @@
   /* Unlimited number of stars readOnly */
 
   /* 5 Star rater with custom isBusyText and simulated backend */
-  let starRating14 = raterJs({
+  var starRating14 = raterJs({
     starSize: 24,
     isBusyText: "Rating in progress. Please wait...",
     element: document.querySelector("#stars-busytext"),
@@ -200,7 +200,7 @@
   /* 5 Star rater with custom isBusyText and simulated backend */
 
   /* On hover event */
-  const starRating5 = raterJs({
+  var starRating5 = raterJs({
     starSize: 24,
     element: document.querySelector("#stars-hover"),
     rateCallback: function rateCallback(rating, done) {
@@ -217,7 +217,7 @@
   /* On hover event */
 
   /* Clear/reset rater */
-  const starRating6 = raterJs({
+  var starRating6 = raterJs({
     starSize: 24,
     element: document.querySelector("#rater-reset"),
     rateCallback: function rateCallback(rating, done) {

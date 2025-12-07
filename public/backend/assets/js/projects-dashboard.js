@@ -1,383 +1,306 @@
 (function () {
     "use strict";
-
-    /* Task Activity */
-    const options = {
-        series: [44, 55, 67, 83],
+   
+    var options = {
+        series: [{
+            name: "Paid",
+            type: "column",
+            data: [33, 21, 32, 37, 23, 32, 47, 31, 54, 32, 20, 38]
+        }, {
+            name: "Unpaid",
+            type: "area",
+            data: [44, 55, 41, 42, 22, 43, 21, 35, 56, 27, 43, 27]
+        }, {
+            name: "Refunded",
+            type: "line",
+            data: [30, 25, 36, 30, 45, 35, 64, 51, 59, 36, 39, 51]
+        }],
         chart: {
-            height: 235,
-            type: 'radialBar',
-        },
-        plotOptions: {
-            radialBar: {
-                dataLabels: {
-                    show: true,
-                    name: {
-                        show: true,
-                        fontSize: '20px',
-                        color: '#495057',
-                        offsetY: -5
-                    },
-                    value: {
-                        show: true,
-                        fontSize: '22px',
-                        color: undefined,
-                        offsetY: 5,
-                        fontWeight: 600,
-                    },
-                    total: {
-                        show: true,
-                        showAlways: true,
-                        label: 'Total',
-                        fontSize: '14px',
-                        fontWeight: 400,
-                        color: '#495057',
-                    }
-                }
+            height: 310,
+            type: "line",
+            stacked: !1,
+            toolbar: {
+                show: !1
             }
         },
         stroke: {
-            lineCap: "round",
-        },
-        colors: ["var(--primary-color)", "rgb(255, 73, 205)", "rgb(50, 212, 132)", "rgb(253, 175, 34)"],
-        labels: ['On-Going', 'Completed', 'Todo-Tasks', 'Pending'],
-    };
-    const chart = new ApexCharts(document.querySelector("#task-activity"), options);
-    if(chart) chart.render();
-    /* Task Activity */
-
-    /* Projects Overview */
-    const options4 = {
-        series: [
-            {
-                type: "bar",
-                name: "Projects",
-                data: [
-                    {
-                        x: "Jan",
-                        y: 320,
-                    },
-                    {
-                        x: "Feb",
-                        y: 560,
-                    },
-                    {
-                        x: "Mar",
-                        y: 250,
-                    },
-                    {
-                        x: "Apr",
-                        y: 486,
-                    },
-                    {
-                        x: "May",
-                        y: 310,
-                    },
-                    {
-                        x: "Jun",
-                        y: 560,
-                    },
-                    {
-                        x: "Jul",
-                        y: 560,
-                    },
-                    {
-                        x: "Aug",
-                        y: 860,
-                    },
-                    {
-                        x: "Sep",
-                        y: 400,
-                    },
-                    {
-                        x: "Oct",
-                        y: 500,
-                    },
-                    {
-                        x: "Nov",
-                        y: 350,
-                    },
-                    {
-                        x: "Dec",
-                        y: 700,
-                    },
-                ],
-            },
-            {
-                type: "area",
-                name: "Revenue",
-                data: [
-                    {
-                        x: "Jan",
-                        y: 680,
-                    },
-                    {
-                        x: "Feb",
-                        y: 800,
-                    },
-                    {
-                        x: "Mar",
-                        y: 680,
-                    },
-                    {
-                        x: "Apr",
-                        y: 840,
-                    },
-                    {
-                        x: "May",
-                        y: 980,
-                    },
-                    {
-                        x: "Jun",
-                        y: 720,
-                    },
-                    {
-                        x: "Jul",
-                        y: 900,
-                    },
-                    {
-                        x: "Aug",
-                        y: 1000,
-                    },
-                    {
-                        x: "Sep",
-                        y: 850,
-                    },
-                    {
-                        x: "Oct",
-                        y: 950,
-                    },
-                    {
-                        x: "Nov",
-                        y: 750,
-                    },
-                    {
-                        x: "Dec",
-                        y: 860,
-                    },
-                ],
-            },
-            {
-                type: "bar",
-                name: "Tasks",
-                chart: {
-                    dropShadow: {
-                        enabled: true,
-                        enabledOnSeries: undefined,
-                        top: 5,
-                        left: 0,
-                        blur: 3,
-                        color: "#000",
-                        opacity: 0.1,
-                    },
-                },
-                data: [
-                    {
-                        x: "Jan",
-                        y: 180,
-                    },
-                    {
-                        x: "Feb",
-                        y: 250,
-                    },
-                    {
-                        x: "Mar",
-                        y: 300,
-                    },
-                    {
-                        x: "Apr",
-                        y: 350,
-                    },
-                    {
-                        x: "May",
-                        y: 350,
-                    },
-                    {
-                        x: "Jun",
-                        y: 250,
-                    },
-                    {
-                        x: "Jul",
-                        y: 150,
-                    },
-                    {
-                        x: "Aug",
-                        y: 250,
-                    },
-                    {
-                        x: "Sep",
-                        y: 350,
-                    },
-                    {
-                        x: "Oct",
-                        y: 350,
-                    },
-                    {
-                        x: "Nov",
-                        y: 250,
-                    },
-                    {
-                        x: "Dec",
-                        y: 200,
-                    },
-                ],
-            },
-        ],
-        chart: {
-            type: "area",
-            height: 408,
-            animations: {
-                speed: 100
-            },
-            toolbar: {
-                show: false,
-            },
-            zoom: {
-                enabled: false,
-            },
-            dropShadow: {
-                enabled: true,
-                enabledOnSeries: undefined,
-                top: 6,
-                left: 1,
-                blur: 4,
-                color: ['transparent', '#000', 'transparent'],
-                opacity: 0.12
-            },
-        },
-        colors: ["var(--primary-color)", "rgba(253, 175, 34, 1)", "rgba(50, 212, 132, 1)"],
-        dataLabels: {
-            enabled: false,
+            width: [0, 0, 2.5],
+            dashArray: [0, 0, 4],
+            show: true,
+            curve: 'smooth',
+            lineCap: 'butt',
         },
         grid: {
-            borderColor: "#f1f1f1",
-            strokeDashArray: 2,
-            xaxis: {
-                lines: {
-                    show: true
-                }
-            },
-            yaxis: {
-                lines: {
-                    show: false
-                }
-            }
-        },
-        fill: {
-            type: 'gradient',
-            gradient: {
-                shadeIntensity: 1,
-                opacityFrom: 0.4,
-                opacityTo: 0.1,
-                stops: [0, 90, 100],
-                colorStops: [
-                    [
-                        {
-                            offset: 0,
-                            color: "var(--primary-color)",
-                            opacity: 1
-                        },
-                        {
-                            offset: 75,
-                            color: "var(--primary-color)",
-                            opacity: 1
-                        },
-                        {
-                            offset: 100,
-                            color: "var(--primary-color)",
-                            opacity: 1
-                        }
-                    ],
-                    [
-                        {
-                            offset: 0,
-                            color: "rgba(253, 175, 34, 0.1)",
-                            opacity: 1
-                        },
-                        {
-                            offset: 75,
-                            color: "rgba(253, 175, 34, 0.1)",
-                            opacity: 1
-                        },
-                        {
-                            offset: 100,
-                            color: "rgba(253, 175, 34, 0.1)",
-                            opacity: 1
-                        }
-                    ],
-                    [
-                        {
-                            offset: 0,
-                            color: "rgba(50, 212, 132, 1)",
-                            opacity: 1
-                        },
-                        {
-                            offset: 75,
-                            color: "rgba(50, 212, 132, 1)",
-                            opacity: 1
-                        },
-                        {
-                            offset: 100,
-                            color: "rgba(50, 212, 132, 1)",
-                            opacity: 1
-                        }
-                    ],
-                ]
-            }
-        },
-        stroke: {
-            curve: ["smooth", "smooth", "smooth"],
-            width: [0, 2, 0],
-            dashArray: [0, 2, 0],
+            borderColor: '#f1f1f1',
+            strokeDashArray: 3
         },
         xaxis: {
-            axisTicks: {
-                show: false,
+            axisBorder: {
+                color: 'rgba(119, 119, 142, 0.05)',
+                offsetX: 0,
+                offsetY: 0,
             },
-        },
-        yaxis: {
-            labels: {
-                formatter: function (value) {
-                    return "$" + value;
-                },
+            axisTicks: {
+                color: 'rgba(119, 119, 142, 0.05)',
+                width: 6,
+                offsetX: 0,
+                offsetY: 0
             },
         },
         plotOptions: {
             bar: {
-                columnWidth: "30%",
-                borderRadius: "2",
-            },
-        },
-        tooltip: {
-            y: [
-                {
-                    formatter: function (e) {
-                        return void 0 !== e ? e.toFixed(0) : e;
-                    },
-                },
-                {
-                    formatter: function (e) {
-                        return void 0 !== e ? e.toFixed(0) : e;
-                    },
-                },
-                {
-                    formatter: function (e) {
-                        return void 0 !== e ? e.toFixed(0) : e;
-                    },
-                },
-            ],
+                columnWidth: "20%",
+                borderRadius: 2
+            }
         },
         legend: {
-            show: true,
-            position: "top",
-            markers: {
-                size: 4,
-                strokeWidth: 0,
-            },
+            position: "top"
+        },
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        markers: {
+            size: 0
+        },
+        colors: ['var(--primary-color)', "rgba(127, 103, 257,0.1)",'rgba(127, 103, 257,1)'],
+        tooltip: {
+            theme: "dark",
         },
     };
-    const chart4 = new ApexCharts(document.querySelector("#projects-overview"), options4);
-    if(chart4) chart4.render();
-    /* Projects Overview */
+    var chart = new ApexCharts(document.querySelector("#project-analysis"), options);
+    chart.render();
+
+    //team memeber1//
+    var options1 = {
+        series: [4, 4, 4, 4, 4, 4,4, 4, 4, 3],
+        chart: {
+          type: "donut",
+          width: 50,
+          height: 50,
+          sparkline: {
+            enabled: true
+          },    
+        },
+        dataLabels: {
+          enabled: false
+        },
+        colors: ["var(--primary-color)","var(--primary-color)","var(--primary-color)","var(--primary-color)","var(--primary-color)","var(--primary-color)","var(--primary01)","var(--primary01)","var(--primary01)","var(--primary01)"],
+        plotOptions: {
+            pie: {
+              donut: {
+                labels: {
+                  show: true,
+                  value: {
+                    fontSize: "11px",
+                    fontFamily: "Rubik, sans-serif",
+                    fontWeight: 400,
+                    color: "#000",
+                    offsetY: -12,
+                    formatter: function (val) {
+                      return val;
+                    },
+                  },
+                  total: {
+                    show: true,
+                    showAlways: false,
+                    fontSize: "11px",
+                    fontFamily: "Rubik, sans-serif",
+                  },
+                },
+              },
+            },
+          },
+          tooltip: {
+            enabled: false // Disable tooltips
+        }
+      };
+      var chart1 = new ApexCharts(document.querySelector("#team-1"), options1);
+      chart1.render();
+
+    //team memeber2//
+    var options2 = {
+        series: [5, 5, 5, 5, 5, 5,5, 5, 5, 2],
+        chart: {
+          type: "donut",
+          width: 50,
+          height: 50,
+          sparkline: {
+            enabled: true
+          },    
+        },
+        dataLabels: {
+          enabled: false
+        },
+        colors: ["rgba(127, 103, 257,1)","rgba(127, 103, 257,1)","rgba(127, 103, 257,1)","rgba(127, 103, 257,1)","rgba(127, 103, 257,0.1)","rgba(127, 103, 257,0.1)","rgba(127, 103, 257,0.1)","rgba(127, 103, 257,0.1)","rgba(127, 103, 257,0.1)","rgba(127, 103, 257,0.1)"],
+        plotOptions: {
+            pie: {
+              donut: {
+                labels: {
+                  show: true,
+                  value: {
+                    fontSize: "11px",
+                    fontFamily: "Rubik, sans-serif",
+                    fontWeight: 400,
+                    color: "#000",
+                    offsetY: -12,
+                    formatter: function (val) {
+                      return val;
+                    },
+                  },
+                  total: {
+                    show: true,
+                    showAlways: false,
+                    fontSize: "11px",
+                    fontFamily: "Rubik, sans-serif",
+                  },
+                },
+              },
+            },
+          }, 
+           tooltip: {
+            enabled: false // Disable tooltips
+          }
+      };
+      var chart2 = new ApexCharts(document.querySelector("#team-2"), options2);
+      chart2.render();
+
+    //team memeber3//
+    var options3 = {
+        series: [4, 4, 4, 4, 3, 4,4, 4, 3, 2],
+        chart: {
+          type: "donut",
+          width: 50,
+          height: 50,
+          sparkline: {
+            enabled: true
+          },    
+        },
+        dataLabels: {
+          enabled: false
+        },
+        colors: ["rgba(253, 73, 99,1)","rgba(253, 73, 99,1)","rgba(253, 73, 99,1)","rgba(253, 73, 99,1)","rgba(253, 73, 99,1)","rgba(253, 73, 99,1)","rgba(253, 73, 99,0.1)","rgba(253, 73, 99,0.1)","rgba(253, 73, 99,0.1)","rgba(253, 73, 99,0.1)"],
+        plotOptions: {
+            pie: {
+              donut: {
+                labels: {
+                  show: true,
+                  value: {
+                    fontSize: "11px",
+                    fontFamily: "Rubik, sans-serif",
+                    fontWeight: 400,
+                    color: "#000",
+                    offsetY: -12,
+                    formatter: function (val) {
+                      return val;
+                    },
+                  },
+                  total: {
+                    show: true,
+                    showAlways: false,
+                    fontSize: "11px",
+                    fontFamily: "Rubik, sans-serif",
+                  },
+                },
+              },
+            },
+          },
+          tooltip: {
+            enabled: false // Disable tooltips
+        }
+      };
+      var chart3 = new ApexCharts(document.querySelector("#team-3"), options3);
+      chart3.render();
+
+       //team memeber4//
+      var options4 = {
+        series: [5, 5, 5, 5, 5, 5,5, 5, 3, 2],
+        chart: {
+          type: "donut",
+          width: 50,
+          height: 50,
+          sparkline: {
+            enabled: true
+          },    
+        },
+        dataLabels: {
+          enabled: false
+        },
+        colors: ["rgba(255, 169, 9,1)","rgba(255, 169, 9,1)","rgba(255, 169, 9,1)","rgba(255, 169, 9,1)","rgba(255, 169, 9,1)","rgba(255, 169, 9,1)","rgba(255, 169, 9,1)","rgba(255, 169, 9,0.1)","rgba(255, 169, 9,0.1)","rgba(255, 169, 9,0.1)"],
+        plotOptions: {
+            pie: {
+              donut: {
+                labels: {
+                  show: true,
+                  value: {
+                    fontSize: "11px",
+                    fontFamily: "Rubik, sans-serif",
+                    fontWeight: 400,
+                    color: "#000",
+                    offsetY: -12,
+                    formatter: function (val) {
+                      return val;
+                    },
+                  },
+                  total: {
+                    show: true,
+                    showAlways: false,
+                    fontSize: "11px",
+                    fontFamily: "Rubik, sans-serif",
+                  },
+                },
+              },
+            },
+          },
+          tooltip: {
+            enabled: false // Disable tooltips
+        }
+      };
+      var chart4 = new ApexCharts(document.querySelector("#team-4"), options4);
+      chart4.render();
+
+       //team memeber5//
+       var options5 = {
+        series: [5, 5, 4, 5, 5, 4,5, 5, 3, 2],
+        chart: {
+          type: "donut",
+          width: 50,
+          height: 50,
+          sparkline: {
+            enabled: true
+          },    
+        },
+        dataLabels: {
+          enabled: false
+        },
+        colors: ["rgba(15, 188, 249,1)","rgba(15, 188, 249,1)","rgba(15, 188, 249,1)","rgba(15, 188, 249,1)","rgba(15, 188, 249,1)","rgba(15, 188, 249,1)","rgba(15, 188, 249,0.1)","rgba(15, 188, 249,0.1)","rgba(15, 188, 249,0.1)","rgba(15, 188, 249,0.1)"],
+        plotOptions: {
+            pie: {
+              donut: {
+                labels: {
+                  show: true,
+                  value: {
+                    fontSize: "11px",
+                    fontFamily: "Rubik, sans-serif",
+                    fontWeight: 400,
+                    color: "#000",
+                    offsetY: -12,
+                    formatter: function (val) {
+                      return val;
+                    },
+                  },
+                  total: {
+                    show: true,
+                    showAlways: false,
+                    fontSize: "11px",
+                    fontFamily: "Rubik, sans-serif",
+                  },
+                },
+              },
+            },
+          },
+          tooltip: {
+            enabled: false // Disable tooltips
+        }
+      };
+      var chart5 = new ApexCharts(document.querySelector("#team-5"), options5);
+      chart5.render();
 
 })();

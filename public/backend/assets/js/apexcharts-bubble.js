@@ -3,12 +3,12 @@
 
     /* simple bubble chart */
     function generateData(baseval, count, yrange) {
-        let i = 0;
-        const series = [];
+        var i = 0;
+        var series = [];
         while (i < count) {
-            const x = Math.floor(Math.random() * (750 - 1 + 1)) + 1;;
-            const y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
-            const z = Math.floor(Math.random() * (75 - 15 + 1)) + 15;
+            var x = Math.floor(Math.random() * (750 - 1 + 1)) + 1;;
+            var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+            var z = Math.floor(Math.random() * (75 - 15 + 1)) + 15;
 
             series.push([x, y, z]);
             baseval += 86400000;
@@ -16,7 +16,7 @@
         }
         return series;
     }
-    const simpleoptions = {
+    var options = {
         series: [{
             name: 'Bubble1',
             data: generateData(new Date('11 Feb 2017 GMT').getTime(), 20, {
@@ -67,7 +67,7 @@
                 color: '#8c9097'
             },
         },
-        colors: ["#985ffd", "#ff49cd", "#fdaf22", '#32d484'],
+        colors: ["#03b562", "#7f67ff", "#fd4963"],
         xaxis: {
             tickAmount: 12,
             type: 'category',
@@ -94,11 +94,11 @@
             }
         }
     };
-    const simplechart = new ApexCharts(document.querySelector("#bubble-simple"), simpleoptions);
-    if(simplechart) simplechart.render();
+    var chart = new ApexCharts(document.querySelector("#bubble-simple"), options);
+    chart.render();
 
     /* 3D bubble chart */
-    const bubbleoptions = {
+    var options = {
         series: [{
             name: 'Product1',
             data: generateData(new Date('11 Feb 2017 GMT').getTime(), 20, {
@@ -140,7 +140,7 @@
         grid: {
             borderColor: '#f2f5f7',
         },
-        colors: ["#985ffd", "#ff49cd", "#fdaf22", '#32d484'],
+        colors: ["#03b562", "#7f67ff", "#fd4963","#ffa909"],
         title: {
             text: '3D Bubble Chart',
             align: 'left',
@@ -179,7 +179,7 @@
             palette: 'palette2'
         }
     };
-    const bubblechart = new ApexCharts(document.querySelector("#bubble-3d"), bubbleoptions);
-    if(bubblechart) bubblechart.render();
+    var chart = new ApexCharts(document.querySelector("#bubble-3d"), options);
+    chart.render();
 
 })();

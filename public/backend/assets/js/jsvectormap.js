@@ -2,69 +2,80 @@
     "use strict";
 
     /* basic vector map */
-    const map1 = new jsVectorMap({
+    var map = new jsVectorMap({
         selector: "#vector-map",
         map: "world_merc",
     });
 
     /* map with markers */
-    const markers1 = [{
+    var markers = [{
         name: 'Russia',
         coords: [61, 105],
         style: {
-            fill: '#5c5cff'
+            initial: {
+                fill: '#03b562'
+            }
         }
     },
     {
         name: 'Greenland',
         coords: [72, -42],
         style: {
-            fill: '#ff9251'
+            initial: {
+                fill: '#7f67ff'
+            }
         }
     },
     {
         name: 'Canada',
         coords: [56, -106],
         style: {
-            fill: '#56de80'
+            initial: {
+                fill: '#fd4963'
+            }
         }
     },
     {
         name: 'Palestine',
         coords: [31.5, 34.8],
         style: {
-            fill: 'yellow'
+            initial: {
+                fill: '#ffa909'
+            }
         }
     },
     {
         name: 'Brazil',
         coords: [-14.2350, -51.9253],
         style: {
-            fill: '#000'
+            initial: {
+                fill: '#0fbcf9'
+            }
         }
     },
     ];
 
-    const map2 = new jsVectorMap({
+    var map = new jsVectorMap({
         map: 'world_merc',
         selector: '#marker-map',
         markersSelectable: true,
         // markersSelectableOne: true,
 
         onMarkerSelected(index, isSelected, selectedMarkers) {
+            console.log(index, isSelected, selectedMarkers);
         },
 
         // -------- Labels --------
         labels: {
             markers: {
-                render: function (markers1) {
-                    return markers1.name
+                render: function (marker) {
+                    return marker.name
                 },
             },
         },
 
         // -------- Marker and label style --------
-        markers: markers1,
+        markers: markers,
         markerStyle: {
             hover: {
                 stroke: "#DDD",
@@ -86,7 +97,7 @@
     })
 
     /* map with image markers */
-    const markers2 = [
+    var markers = [
         {
             name: 'Palestine',
             coords: [31.5, 34.8],
@@ -104,18 +115,18 @@
             coords: [56, -106],
         },
     ];
-    const map3 = new jsVectorMap({
+    var map = new jsVectorMap({
         map: 'world_merc',
         selector: '#marker-image-map',
 
         labels: {
             markers: {
-                render: function (markers2) {
-                    return markers2.name
+                render: function (marker) {
+                    return marker.name
                 }
             }
         },
-        markers: markers2,
+        markers: markers,
         markerStyle: {
             initial: {
                 image: true
@@ -145,14 +156,14 @@
     })
 
     /* maps with lines */
-    const markers = [
+    var markers = [
         { name: 'Russia', coords: [61.5240, 105.3188] },
         { name: 'Egypt', coords: [26.8206, 30.8025] },
         { name: 'Greenland', coords: [71.7069, -42.6043], offsets: [2, 10] },
         { name: 'Canada', coords: [56, -106], offsets: [-7, 12] },
     ]
 
-    const lines = [
+    var lines = [
         { from: 'Russia', to: 'Egypt', style: { stroke: '#abb0b7', strokeWidth: 1.5 } },
         { from: 'Canada', to: 'Russia', style: { stroke: '#abb0b7', strokeWidth: 1.5 } },
     ]
@@ -180,7 +191,7 @@
         markerStyle: {
             initial: {
                 r: 6,
-                fill: '#1266f1',
+                fill: 'rgb(3, 181, 98)',
                 stroke: '#fff',
                 strokeWidth: 3,
             }
@@ -189,62 +200,62 @@
             initial: {
                 fontSize: 13,
                 fontWeight: 500,
-                fill: '#35373e',
+                fill: 'rgb(3, 181, 98)',
             },
         },
     })
 
     /* us vector map */
-    const map4 = new jsVectorMap({
+    var map = new jsVectorMap({
         selector: "#us-map",
         map: "us_merc_en",
         regionStyle: {
             initial: {
                 stroke: "#e9e9e9",
                 strokeWidth: .15,
-                fill: "const(--primary-color)",
+                fill: "var(--primary-color)",
                 fillOpacity: 1
             }
         },
     });
 
     /* russia vector map */
-    const map5 = new jsVectorMap({
+    var map = new jsVectorMap({
         selector: "#russia-map",
         map: "russia",
         regionStyle: {
             initial: {
                 stroke: "#e9e9e9",
                 strokeWidth: .15,
-                fill: "#fe7c58",
+                fill: "rgb(127, 103, 257)",
                 fillOpacity: 1
             }
         },
     });
 
     /* spain vector map */
-    const map6 = new jsVectorMap({
+    var map = new jsVectorMap({
         selector: "#spain-map",
         map: "spain",
         regionStyle: {
             initial: {
                 stroke: "#e9e9e9",
                 strokeWidth: .15,
-                fill: "#d77cf7",
+                fill: "rgb(253, 73, 99)",
                 fillOpacity: 1
             }
         },
     });
 
     /* canada vector map */
-    const map7 = new jsVectorMap({
+    var map = new jsVectorMap({
         selector: "#canada-map",
         map: "canada",
         regionStyle: {
             initial: {
                 stroke: "#e9e9e9",
                 strokeWidth: .15,
-                fill: "rgba(const(--warning-rgb))",
+                fill: "rgba(var(--warning-rgb))",
                 fillOpacity: 1
             }
         },

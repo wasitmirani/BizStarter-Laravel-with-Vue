@@ -18,9 +18,9 @@ const popoverList = [...popoverTriggerList].map(
 
 /* Choices JS */
 document.addEventListener("DOMContentLoaded", function () {
-  const genericExamples = document.querySelectorAll("[data-trigger]");
+  var genericExamples = document.querySelectorAll("[data-trigger]");
   for (let i = 0; i < genericExamples.length; ++i) {
-    const element = genericExamples[i];
+    var element = genericExamples[i];
     new Choices(element, {
       allowHTML: true,
       placeholderValue: "This is a placeholder set in the config",
@@ -30,7 +30,68 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 /* Choices JS */
 
-/*------swipter-js-----*/
+
+ /* testimonial swiper service start */
+ var swiper = new Swiper(".testimonialSwiperService", {
+  slidesPerView: 2,
+  spaceBetween: 30,
+  loop: true,
+  loopFillGroupWithBlank: true,
+  pagination: {
+      el: ".swiper-pagination",
+      dynamicBullets: true,
+      clickable: true,
+  },
+  autoplay: {
+    delay: 3000,
+    disableOnInteraction: false,
+  },
+  breakpoints: {
+    "@0.00": {
+      slidesPerView: 1,
+      spaceBetween: 10,
+    },
+    "@0.75": {
+      slidesPerView: 2,
+      spaceBetween: 20,
+    },
+  },
+});
+/* testimonial swiper service start */
+
+
+
+/* counter js */
+window.addEventListener("load", function() {
+  var counters = document.querySelectorAll(".count");
+  var countersQuantity = counters.length;
+  var counter = [];
+
+  for (var i = 0; i < countersQuantity; i++) {
+      counter[i] = parseInt(counters[i].innerHTML);
+  }
+
+  var count = function(start, value, id) {
+      var localStart = start;
+      var interval = setInterval(function() {
+          if (localStart < value) {
+              localStart++;
+              counters[id].innerHTML = localStart;
+          } else {
+              clearInterval(interval); // Stop the interval when the count is done
+          }
+      }, 5);
+  };
+
+  for (var j = 0; j < countersQuantity; j++) {
+      count(0, counter[j], j);
+  }
+});
+
+/* counter js */  
+
+
+/*------switcher-js-----*/
 
 //switcher color pickers
 const pickrContainerPrimary = document.querySelector(
@@ -89,7 +150,7 @@ for (const [theme, config] of nanoThemes) {
         {
           el,
           theme,
-          default: "rgb(152, 95, 253)",
+          default: "rgb(28 ,188, 113)",
         },
         config
       )
@@ -121,6 +182,10 @@ for (const [theme, config] of nanoThemes) {
 nanoButtons[0].click();
 /* for theme primary */
 
+/* footer year */
+document.getElementById("year").innerHTML = new Date().getFullYear();
+/* footer year */
+
 let mainContent;
 (function () {
   let html = document.querySelector("html");
@@ -129,6 +194,8 @@ let mainContent;
   localStorageBackup();
   switcherClick();
   checkOptions();
+  /* LTR to RTL */
+  // html.setAttribute("dir" , "rtl") // for rtl version
 })();
 
 function switcherClick() {
@@ -157,16 +224,16 @@ function switcherClick() {
   /* Light Layout Start */
   let lightThemeVar = lightBtn.addEventListener("click", () => {
     lightFn();
-    localStorage.setItem("vyzorHeader", "light");
-    localStorage.setItem("vyzorMenu", "light");
+    localStorage.setItem("yzenHeader", "light");
+    localStorage.setItem("yzenMenu", "light");
   });
   /* Light Layout End */
 
   /* Dark Layout Start */
   let darkThemeVar = darkBtn.addEventListener("click", () => {
     darkFn();
-    localStorage.setItem("vyzorMenu", "dark");
-    localStorage.setItem("vyzorHeader", "dark");
+    localStorage.setItem("yzenMenu", "dark");
+    localStorage.setItem("yzenHeader", "dark");
   });
   /* Dark Layout End */
 
@@ -174,63 +241,63 @@ function switcherClick() {
   let primaryColor1Var = primaryDefaultColor1Btn.addEventListener(
     "click",
     () => {
-      localStorage.setItem("primaryRGB", "42 ,16, 164");
-      html.style.setProperty("--primary-rgb", `42 ,16, 164`);
+      localStorage.setItem("primaryRGB", "25, 168, 213");
+      html.style.setProperty("--primary-rgb", `25, 168, 213`);
       updateColors();
     }
   );
-  if (localStorage.primaryRGB == "42 ,16, 164") {
+  if(localStorage.primaryRGB == "25, 168, 213"){
     document.querySelector('#switcher-primary').checked = true;
   }
   let primaryColor2Var = primaryDefaultColor2Btn.addEventListener(
     "click",
     () => {
-      localStorage.setItem("primaryRGB", "125 ,0, 189");
-      html.style.setProperty("--primary-rgb", `125 ,0, 189`);
+      localStorage.setItem("primaryRGB", "217, 116, 25");
+      html.style.setProperty("--primary-rgb", `217, 116, 25`);
       updateColors();
     }
   );
-  if (localStorage.primaryRGB == "125 ,0, 189") {
+  if(localStorage.primaryRGB == "217, 116, 25"){
     document.querySelector('#switcher-primary1').checked = true;
   }
   let primaryColor3Var = primaryDefaultColor3Btn.addEventListener(
     "click",
     () => {
-      localStorage.setItem("primaryRGB", "4, 118, 141");
-      html.style.setProperty("--primary-rgb", `4, 118, 141`);
+      localStorage.setItem("primaryRGB", "223, 25, 194");
+      html.style.setProperty("--primary-rgb", `223, 25, 194`);
       updateColors();
     }
   );
-  if (localStorage.primaryRGB == "4, 118, 141") {
+  if(localStorage.primaryRGB == "223, 25, 194"){
     document.querySelector('#switcher-primary2').checked = true;
   }
   let primaryColor4Var = primaryDefaultColor4Btn.addEventListener(
     "click",
     () => {
-      localStorage.setItem("primaryRGB", "138, 0, 32");
-      html.style.setProperty("--primary-rgb", `138, 0, 32`);
+      localStorage.setItem("primaryRGB", "161, 182, 28");
+      html.style.setProperty("--primary-rgb", `161, 182, 28`);
       updateColors();
     }
   );
-  if (localStorage.primaryRGB == "138, 0, 32") {
+  if(localStorage.primaryRGB == "161, 182, 28"){
     document.querySelector('#switcher-primary3').checked = true;
   }
   let primaryColor5Var = primaryDefaultColor5Btn.addEventListener(
     "click",
     () => {
-      localStorage.setItem("primaryRGB", "9 ,124, 103");
-      html.style.setProperty("--primary-rgb", `9 ,124, 103`);
+      localStorage.setItem("primaryRGB", "166, 25, 230");
+      html.style.setProperty("--primary-rgb", `166, 25, 230`);
       updateColors();
     }
   );
-  if (localStorage.primaryRGB == "9 ,124, 103") {
+  if(localStorage.primaryRGB == "166, 25, 230"){
     document.querySelector('#switcher-primary4').checked = true;
   }
 
   /* rtl start */
   let rtlVar = rtlBtn.addEventListener("click", () => {
-    localStorage.setItem("vyzorrtl", true);
-    localStorage.removeItem("vyzorltr");
+    localStorage.setItem("yzenrtl", true);
+    localStorage.removeItem("yzenltr");
     rtlFn();
   });
   /* rtl end */
@@ -238,8 +305,8 @@ function switcherClick() {
   /* ltr start */
   let ltrVar = ltrBtn.addEventListener("click", () => {
     //    local storage
-    localStorage.setItem("vyzorltr", true);
-    localStorage.removeItem("vyzorrtl");
+    localStorage.setItem("yzenltr", true);
+    localStorage.removeItem("yzenrtl");
     ltrFn();
   });
   /* ltr end */
@@ -280,7 +347,7 @@ function rtlFn() {
   checkOptions();
 }
 
-if (localStorage.vyzorrtl) {
+if (localStorage.yzenrtl) {
   rtlFn();
 }
 
@@ -289,17 +356,19 @@ function lightFn() {
   html.setAttribute("data-theme-mode", "light");
   document.querySelector("#switcher-light-theme").checked = true;
   updateColors();
-  localStorage.removeItem("vyzordarktheme");
+  localStorage.removeItem("yzendarktheme");
   checkOptions();
+  // html.style.removeProperty('--primary-rgb');
 }
 
 function darkFn() {
   let html = document.querySelector("html");
   html.setAttribute("data-theme-mode", "dark");
   updateColors();
-  localStorage.setItem("vyzordarktheme", true);
-  localStorage.removeItem("vyzorlighttheme");
+  localStorage.setItem("yzendarktheme", true);
+  localStorage.removeItem("yzenlighttheme");
   checkOptions();
+  // html.style.removeProperty("--primary-rgb");
 }
 
 function ResetAllFn() {
@@ -328,12 +397,12 @@ function ResetAllFn() {
 
 function checkOptions() {
   // dark
-  if (localStorage.getItem("vyzordarktheme")) {
+  if (localStorage.getItem("yzendarktheme")) {
     document.querySelector("#switcher-dark-theme").checked = true;
   }
 
   //RTL
-  if (localStorage.getItem("vyzorrtl")) {
+  if (localStorage.getItem("yzenrtl")) {
     document.querySelector("#switcher-rtl").checked = true;
   }
 }
@@ -358,29 +427,21 @@ function localStorageBackup() {
       .querySelector("html")
       .style.setProperty("--primary-rgb", localStorage.primaryRGB);
   }
-  if (localStorage.vyzordarktheme) {
+  if (localStorage.yzendarktheme) {
     let html = document.querySelector("html");
     html.setAttribute("data-theme-mode", "dark");
   }
 
-  if (localStorage.vyzorrtl) {
+  if (localStorage.yzenrtl) {
     let html = document.querySelector("html");
     html.setAttribute("dir", "rtl");
   }
-  if (localStorage.vyzorlayout) {
+  if (localStorage.yzenlayout) {
     let html = document.querySelector("html");
-    let layoutValue = localStorage.getItem("vyzorlayout");
+    let layoutValue = localStorage.getItem("yzenlayout");
     html.setAttribute("data-nav-layout", "horizontal");
   }
 }
-/*------swipter-js-----*/
-
-/* footer year */ 
-const yearElement = document.getElementById("year");
-yearElement.innerHTML = new Date().getFullYear();
-/* footer year */
-
-
 // section menu active
 function onScroll(event) {
   const sections = document.querySelectorAll(".side-menu__item");
@@ -435,68 +496,4 @@ scrollToTop.onclick = () => {
 };
 /* back to top */
 
-/* Trusted Clients Swiper */
-const swiper = new Swiper(".trusted-clients", {
-  loop: true,
-  slidesPerView: 5,
-  spaceBetween: 30,
-  autoplay: {
-    delay: 1500,
-    disableOnInteraction: false,
-  },
-  breakpoints: {
-    320: {
-        slidesPerView: 1,
-        spaceBetween: 5,
-    },
-    640: {
-        slidesPerView: 1,
-        spaceBetween: 5,
-    },
-    768: {
-        slidesPerView: 3,
-        spaceBetween: 5,
-    },
-    1024: {
-        slidesPerView: 5,
-        spaceBetween: 20,
-    }
-},
-});
-/* Trusted Clients Swiper */
-
-/* testimonial swiper service start */
-const swiper1 = new Swiper(".testimonialSwiperService", {
-  slidesPerView: 2,
-  spaceBetween: 30,
-  loop: true,
-  loopFillGroupWithBlank: true,
-  pagination: {
-    el: ".swiper-pagination",
-    dynamicBullets: true,
-    clickable: true,
-  },
-  autoplay: {
-    delay: 3000,
-    disableOnInteraction: false,
-  },
-  breakpoints: {
-    320: {
-      slidesPerView: 1,
-      spaceBetween: 10,
-    },
-    480: {
-      slidesPerView: 1,
-      spaceBetween: 10,
-    },
-    1112: {
-      slidesPerView: 2,
-      spaceBetween: 10,
-    },
-    1300: {
-      slidesPerView: 2,
-      spaceBetween: 30,
-    }
-  },
-});
-/* testimonial swiper service start */
+/*------switcher-js-----*/

@@ -2,53 +2,70 @@
   "use strict";
 
   /* learning activity */
-  const options = {
+  var options = {
     series: [{
-      name: 'Enrolled',
-      type: 'bar',
-      data: [44, 88, 58, 120, 112, 95, 70, 88, 60, 85, 77, 85]
+      name: 'This Week',
+      type: 'column',
+      data: [25, 18, 20, 25, 50, 20, 40,35,55,25,30,43]
     }, {
-      name: 'Left',
-      type: 'bar',
-      data: [20, 42, 38, 26, 80, 55, 35, 43, 23, 54, 75, 34]
+      name: 'Last Week',
+      type: 'line',
+      data: [45, 55, 40, 65, 20, 45, 25 ,32,42,55,33,23]
+    }, {
+      name: 'Average',
+      type: 'line',
+      data: [30, 25, 35, 30, 45, 35, 65,52,41,35,55,60]
     }],
     chart: {
-      height: 365,
+      height: 325,
       type: 'line',
       stacked: false,
       toolbar: {
         show: false
       },
+      dropShadow: {
+        enabled: true,
+        enabledOnSeries: undefined,
+        top: 5,
+        left: 0,
+        blur: 3,
+        color: ["transparent", 'rgba(127, 103, 257, 0.2)', 'var(--primary02)'],
+        opacity: 0.5
+      },
     },
-    colors: ["var(--primary-color)", "rgb(255, 73, 205)"],
+    colors: ["var(--primary02)", "rgba(127, 103, 257,1)", "var(--primary-color)"],
     grid: {
       show: true,
       borderColor: 'rgba(119, 119, 142, 0.1)',
       strokeDashArray: 4,
     },
     stroke: {
-      width: [2, 2],
+      width: [0, 2, 2],
       curve: 'smooth',
+      dashArray: [0,0, 4], 
+
     },
     plotOptions: {
       bar: {
-        columnWidth: '45%',
-        borderRadius: 2,
+        columnWidth: '32%',
+        borderRadius: 3,
       }
     },
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'sep', 'oct', 'nov', 'dec'],
+    labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
     markers: {
       size: 0,
     },
     legend: {
       show: true,
       position: 'top',
+      fontFamily: "Montserrat",
       markers: {
-        width: 10,
-        height: 10,
+      size:4,
       }
     },
     xaxis: {
+      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'sep', 'oct', 'nov', 'dec'],
+      fontFamily: "Montserrat",
       axisBorder: {
         show: true,
         color: 'rgba(119, 119, 142, 0.05)',
@@ -69,9 +86,11 @@
     },
     yaxis: {
       title: {
+        text: 'Growth',
         style: {
-          color: '#adb5be',
+          color: '	#adb5be',
           fontSize: '14px',
+          fontFamily: 'Montserrat, sans-serif',
           fontWeight: 600,
           cssClass: 'apexcharts-yaxis-label',
         },
@@ -88,7 +107,7 @@
       y: {
         formatter: function (y) {
           if (typeof y !== "undefined") {
-            return y.toFixed(0)
+            return y.toFixed(0) + " Hours";
           }
           return y;
 
@@ -96,84 +115,402 @@
       }
     }
   };
-  const chart = new ApexCharts(document.querySelector("#students-analysis"), options);
-  if(chart) chart.render();
+  var chart = new ApexCharts(document.querySelector("#learning-activity"), options);
+  chart.render();
   /* learning activity */
 
-  /* Payout Report */
-  const options2 = {
-    series: [{
-      name: 'Paid',
-      data: [50, 20, 32, 32, 20, 50, 20, 40, 25, 55, 20, 30],
-      type: 'line',
-    }, {
-      name: 'UnPaid',
-      data: [25, 15, 40, 20, 25, 15, 58, 28, 30, 15, 58, 28],
-      type: "line",
-    }],
+  /* Top Category */
+  var options = {
+    series: [2224, 1267, 553],
+    labels: ["Mobile", "Tablet", "Desktop"],
     chart: {
-      height: 212,
-      toolbar: {
-        show: false,
-      },
-      background: 'none',
-      fill: "#fff",
+        height: 190,
+        type: 'donut',
     },
-    grid: {
-      show: true,
-      borderColor: 'rgba(119, 119, 142, 0.1)',
-      strokeDashArray: 4,
-    },
-    colors: ["var(--primary-color)", "rgb(255,73,205)"],
-    background: 'transparent',
     dataLabels: {
-      enabled: false
-    },
-    stroke: {
-      curve: 'smooth',
-      width: 2,
+        enabled: false,
     },
     legend: {
-      show: true,
-      position: 'bottom',
+        show: false,
     },
-    xaxis: {
-      show: false,
-      axisBorder: {
-        show: false,
-        color: 'rgba(119, 119, 142, 0.05)',
-        offsetX: 0,
-        offsetY: 0,
+    stroke: {
+        show: true,
+        curve: 'smooth',
+        lineCap: 'round',
+        colors: "#fff",
+        width: 0,
+        dashArray: 0,
+    },
+    stroke: {
+        width: 2,
       },
-      axisTicks: {
-        show: false,
-        borderType: 'solid',
-        color: 'rgba(119, 119, 142, 0.05)',
-        width: 6,
-        offsetX: 0,
-        offsetY: 0
+    fill: {
+        type: 'solid',
+    },
+    plotOptions: {
+    
+        pie: {
+        expandOnClick: false,
+        donut: {
+            size: '80%',
+            background: 'transparent',
+            labels: {
+            show: true,
+            name: {
+                show: true,
+                fontSize: '20px',
+                color: '#495057',
+                offsetY: -4
+            },
+            value: {
+                show: true,
+                fontSize: '18px',
+                color: undefined,
+                offsetY: 8,
+                formatter: function (val) {
+                return val + "%"
+                }
+            },
+            total: {
+                show: true,
+                showAlways: true,
+                label: 'Total',
+                fontSize: '22px',
+                fontWeight: 600,
+                color: '#495057',
+            }
+    
+            }
+        }
+        }
+    },
+    colors: ["var(--primary-color)", "rgba(127, 103, 257)", "rgba(253, 73, 99)"],
+    };
+    document.querySelector("#top-category").innerHTML = " ";
+    var chart = new ApexCharts(document.querySelector("#top-category"), options);
+    chart.render();
+  /* Top Category */
+
+    /* Financial Summery */
+    var options = {
+      series: [{
+          name: 'Income',
+          data: [4, 8, 10, 15, 8, 15, 5]
       },
-      labels: {
-        rotate: -90,
+      {
+          name: 'Expenses',
+          data: [-4, -8, -10, -15, -8, -15, -5]
       }
-    },
-    yaxis: {
-      show: false,
-      axisBorder: {
-        show: false,
+      ],
+      chart: {
+          type: 'bar',
+          height: 320,
+          stacked: true,
+          toolbar: {
+            show: false,
+          },
       },
-      axisTicks: {
-        show: false,
+      colors: [ 'rgba(var(--primary-rgb),0.8)', 'rgba(var(--secondary-rgb), 0.8)'],
+      plotOptions: {
+          bar: {
+              horizontal: true,
+              barHeight: '35%',
+              borderRadius: 4,
+          },
+      },
+      dataLabels: {
+          enabled: false
+      },
+      legend: {
+          show: true,
+          position: 'bottom',
+          floating: false,
+          markers: {
+              size: 4,
+              shape: "circle",
+          },
+      },
+      grid: {
+          show: true,
+          borderColor: "rgba(119, 119, 142, 0.1)",
+          strokeDashArray: 4,
+          xaxis: {
+              lines: {
+                  show: false
+              }
+          }, 
+          row: {
+              colors: ["rgba(var(--light-rgb), 1)", "transparent"],
+              opacity: 0.7
+          },
+      },
+      xaxis: {
+          labels: {
+              formatter: function (val) {
+                  return Math.abs(Math.round(val)) + "%"
+              },
+              style: {
+                  colors: "#8c9097",
+                  fontSize: '11px',
+                  fontWeight: 600,
+                  cssClass: 'apexcharts-xaxis-label',
+              },
+          },
+          axisBorder: {
+              show: false,
+          }
+      },
+      yaxis: {
+          labels: {
+              show: true,
+              style: {
+                  colors: "#8c9097",
+                  fontSize: '11px',
+                  fontWeight: 600,
+                  cssClass: 'apexcharts-yaxis-label',
+              },
+          },
       }
-    },
-    tooltip: {
-      x: {
-        format: 'dd/MM/yy HH:mm'
-      },
-    },
   };
-  const chart2 = new ApexCharts(document.querySelector("#payout-Report"), options2);
-  if(chart2) chart2.render();
-  /* Payout Report */
+  var chart = new ApexCharts(document.querySelector("#financial-summary"), options);
+  chart.render();
+    /* Financial Summery */
+
+       // vertical swiper
+    //    if (document.querySelector('[data-width="boxed"]')) {
+    //     // Set swiper to 1 (for the "boxed" condition)
+    //     var swiper = new Swiper(".course-swiper-vertical", {
+    //         direction: "vertical",
+    //         slidesPerView: 1,  // Adjusted to 1 as per the requirement
+    //         spaceBetween: 10, 
+    //         pagination: {
+    //             el: ".swiper-pagination",
+    //             clickable: true,
+    //         },
+    //         loop: true,
+    //         autoplay: {
+    //             delay: 1500,
+    //             disableOnInteraction: false
+    //         },
+    //     });
+    // } 
+    // else {
+        // Default swiper settings if data-width is not 'boxed'
+        var swiper = new Swiper(".course-swiper-vertical", {
+            direction: "vertical",
+            slidesPerView: 2,  // Default value when not "boxed"
+            spaceBetween: 10, 
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            loop: true,
+            autoplay: {
+                delay: 1500,
+                disableOnInteraction: false
+            },
+            breakpoints: {
+              1000: {
+                  slidesPerView: 1,
+                  spaceBetween: 10,
+              },
+              1400: {
+                  slidesPerView: 1,
+                  spaceBetween: 10,
+              },
+               1640: {
+                  slidesPerView: 2,
+                  spaceBetween: 10,
+              },
+          },
+        }); 
+    // }
+
+
+    var options1 = {
+      series: [4, 4, 4, 4, 4, 4,4, 4, 4, 3],
+      chart: {
+        type: "donut",
+        width: 53,
+        height: 53,
+        sparkline: {
+          enabled: true
+        },    
+      },
+      dataLabels: {
+        enabled: false
+      },
+      colors: ["var(--primary-color)","var(--primary-color)","var(--primary-color)","var(--primary-color)","var(--primary-color)","var(--primary-color)","var(--primary01)","var(--primary01)","var(--primary01)","var(--primary01)"],
+      plotOptions: {
+          pie: {
+            donut: {
+              labels: {
+                show: true,
+                value: {
+                  fontSize: "11px",
+                  fontFamily: "Rubik, sans-serif",
+                  fontWeight: 400,
+                  color: "#000",
+                  offsetY: -12,
+                  formatter: function (val) {
+                    return val;
+                  },
+                },
+                total: {
+                  show: true,
+                  showAlways: false,
+                  fontSize: "11px",
+                  fontFamily: "Rubik, sans-serif",
+                },
+              },
+            },
+          },
+        },
+        tooltip: {
+          enabled: false // Disable tooltips
+      }
+    };
+    var chart1 = new ApexCharts(document.querySelector("#course-1"), options1);
+    chart1.render();
+
+
+    var options2 = {
+      series: [5, 5, 5, 5, 5, 5,5, 5, 5, 2],
+      chart: {
+        type: "donut",
+        width: 53,
+        height: 53,
+        sparkline: {
+          enabled: true
+        },    
+      },
+      dataLabels: {
+        enabled: false
+      },
+      colors: ["rgba(127, 103, 257,1)","rgba(127, 103, 257,1)","rgba(127, 103, 257,1)","rgba(127, 103, 257,1)","rgba(127, 103, 257,0.1)","rgba(127, 103, 257,0.1)","rgba(127, 103, 257,0.1)","rgba(127, 103, 257,0.1)","rgba(127, 103, 257,0.1)","rgba(127, 103, 257,0.1)"],
+      plotOptions: {
+          pie: {
+            donut: {
+              labels: {
+                show: true,
+                value: {
+                  fontSize: "11px",
+                  fontFamily: "Rubik, sans-serif",
+                  fontWeight: 400,
+                  color: "#000",
+                  offsetY: -12,
+                  formatter: function (val) {
+                    return val;
+                  },
+                },
+                total: {
+                  show: true,
+                  showAlways: false,
+                  fontSize: "11px",
+                  fontFamily: "Rubik, sans-serif",
+                },
+              },
+            },
+          },
+        }, 
+         tooltip: {
+          enabled: false // Disable tooltips
+        }
+    };
+    var chart2 = new ApexCharts(document.querySelector("#course-2"), options2);
+    chart2.render();
+
+
+    var options3 = {
+      series: [4, 4, 4, 4, 3, 4,4, 4, 3, 2],
+      chart: {
+        type: "donut",
+        width: 53,
+        height: 53,
+        sparkline: {
+          enabled: true
+        },    
+      },
+      dataLabels: {
+        enabled: false
+      },
+      colors: ["rgba(253, 73, 99,1)","rgba(253, 73, 99,1)","rgba(253, 73, 99,1)","rgba(253, 73, 99,1)","rgba(253, 73, 99,1)","rgba(253, 73, 99,1)","rgba(253, 73, 99,0.1)","rgba(253, 73, 99,0.1)","rgba(253, 73, 99,0.1)","rgba(253, 73, 99,0.1)"],
+      plotOptions: {
+          pie: {
+            donut: {
+              labels: {
+                show: true,
+                value: {
+                  fontSize: "11px",
+                  fontFamily: "Rubik, sans-serif",
+                  fontWeight: 400,
+                  color: "#000",
+                  offsetY: -12,
+                  formatter: function (val) {
+                    return val;
+                  },
+                },
+                total: {
+                  show: true,
+                  showAlways: false,
+                  fontSize: "11px",
+                  fontFamily: "Rubik, sans-serif",
+                },
+              },
+            },
+          },
+        },
+        tooltip: {
+          enabled: false // Disable tooltips
+      }
+    };
+    var chart3 = new ApexCharts(document.querySelector("#course-3"), options3);
+    chart3.render();
+
+    var options4 = {
+      series: [5, 5, 5, 5, 5, 5,5, 5, 3, 2],
+      chart: {
+        type: "donut",
+        width: 53,
+        height: 53,
+        sparkline: {
+          enabled: true
+        },    
+      },
+      dataLabels: {
+        enabled: false
+      },
+      colors: ["rgba(255, 169, 9,1)","rgba(255, 169, 9,1)","rgba(255, 169, 9,1)","rgba(255, 169, 9,1)","rgba(255, 169, 9,1)","rgba(255, 169, 9,1)","rgba(255, 169, 9,1)","rgba(255, 169, 9,0.1)","rgba(255, 169, 9,0.1)","rgba(255, 169, 9,0.1)"],
+      plotOptions: {
+          pie: {
+            donut: {
+              labels: {
+                show: true,
+                value: {
+                  fontSize: "11px",
+                  fontFamily: "Rubik, sans-serif",
+                  fontWeight: 400,
+                  color: "#000",
+                  offsetY: -12,
+                  formatter: function (val) {
+                    return val;
+                  },
+                },
+                total: {
+                  show: true,
+                  showAlways: false,
+                  fontSize: "11px",
+                  fontFamily: "Rubik, sans-serif",
+                },
+              },
+            },
+          },
+        },
+        tooltip: {
+          enabled: false // Disable tooltips
+      }
+    };
+    var chart4 = new ApexCharts(document.querySelector("#course-4"), options4);
+    chart4.render();
 
 })();

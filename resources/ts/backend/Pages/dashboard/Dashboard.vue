@@ -1,149 +1,511 @@
 
 <template >
     <div>
-       <!-- Start::page-header -->
-                <div class="d-flex align-items-center justify-content-between mb-3 page-header-breadcrumb flex-wrap gap-2">
+
+                <!-- Start::page-header -->
+                <div class="my-4 page-header-breadcrumb d-flex align-items-center justify-content-between flex-wrap gap-2">
                     <div>
-                        <h1 class="page-title fw-medium fs-20 mb-0">Dashboard</h1>
+                        <h1 class="page-title fw-medium fs-18 mb-2">Ecommerce</h1>
+                        <div class="">
+                            <nav>
+                                <ol class="breadcrumb mb-0">
+                                    <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Ecommerce</li>
+                                </ol>
+                            </nav>
+                        </div>
                     </div>
-                    <div class="d-flex align-items-center gap-2 flex-wrap">
-                        <div class="form-group">
-                            <input type="text" class="form-control breadcrumb-input" id="daterange" placeholder="Search By Date Range">
-                        </div>
-                        <div class="btn-list">
-                            <button class="btn btn-icon btn-primary btn-wave">
-                                <i class="ri-refresh-line"></i>
-                            </button>
-                            <button class="btn btn-icon btn-primary btn-wave me-0">
-                                <i class="ri-filter-3-line"></i>
-                            </button>
-                        </div>
+                    <div class="btn-list">
+                        <button class="btn btn-primary-light btn-wave me-2">
+                            <i class="bx bx-crown align-middle"></i> Plan Upgrade
+                        </button>
+                        <button class="btn btn-secondary-light btn-wave me-0">
+                            <i class="ri-upload-cloud-line align-middle"></i> Export Report
+                        </button>
                     </div>
                 </div>
                 <!-- End::page-header -->
 
                 <!-- Start:: row-1 -->
                 <div class="row">
-                    <div class="col-xxl-9">
+                    <div class="col-xxl-8">
                         <div class="row">
-                            <div class="col-xl-3">
-                                <div class="row">
-                                    <div class="col-xl-12 col-md-6">
-                                        <div class="card custom-card dashboard-main-card overflow-hidden primary">
-                                            <div class="card-body">
-                                                <div class="d-flex align-items-start gap-3">
-                                                    <div class="flex-fill">
-                                                        <span class="fs-13 fw-medium">Total Revenue</span>
-                                                        <h4 class="fw-semibold my-2 lh-1">$46,658</h4>
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <span class="fs-12 d-block text-muted"><span class="text-success me-1 d-inline-flex align-items-center fw-semibold"><i class="ti ti-trending-up me-1 fw-semibold align-middle"></i>0.45%</span>this month</span>
+                            <div class="col-xl-6">
+                                <div class="card custom-card overflow-hidden main-custom-card primary-dash-border">
+                                    <div class="card-body p-0 ecommerce-main-card position-relative bg-primary bg-opacity-10">
+                                        <div class="img-container">
+                                            <img :src="`/backend/assets/images/media/media-76.png`">
+                                        </div>
+                                        <div class="p-4 rounded  z-2 position-relative">
+                                            <div class="row">
+                                                <div class="col-sm-7">
+                                                    <div class="">
+                                                        <div>
+                                                            <span class="avatar avatar-md primary mb-3">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewbox="0 0 24 24" width="24px" fill="#00000">
+                                                                    <rect fill="none" height="24" width="24"></rect>
+                                                                    <path d="M10.5,9.44l5.32,1.99c1.24,0.46,2.21,1.41,2.74,2.57L19,14V7.5L14,4L9,7.5V9h0.33L10.5,9.44z M14.5,7h1v1h-1 V7z M14.5,9h1v1h-1V9z M12.5,7h1v1h-1V7z M12.5,9h1v1h-1V9z M3,13h2v7H3V13z M19.9,18.57l-5.93,1.84L7,18.48V13h1.61l5.82,2.17 C14.77,15.3,15,15.63,15,16c0,0-1.99-0.05-2.3-0.15l-2.38-0.79l-0.63,1.9l2.38,0.79c0.51,0.17,1.04,0.26,1.58,0.26H19 C19.39,18.01,19.74,18.24,19.9,18.57z" opacity=".8" fill="#fff"></path>
+                                                                    <path d="M15.5,7h-1v1h1V7z M13.5,7h-1v1h1V7z M15.5,9h-1v1h1V9z M13.5,9h-1v1h1V9z M21,6.5V14h-2V7.5L14,4L9,7.5V9H7V6.5l7-5L21,6.5 z M19,16h-2c0-1.2-0.75-2.28-1.87-2.7L8.97,11H1v11h6v-1.44l7,1.94l8-2.5v-1C22,17.34,20.66,16,19,16z M3,20v-7h2v7H3z M13.97,20.41 L7,18.48V13h1.61l5.82,2.17C14.77,15.3,15,15.63,15,16c0,0-1.99-0.05-2.3-0.15l-2.38-0.79l-0.63,1.9l2.38,0.79 c0.51,0.17,1.04,0.26,1.58,0.26H19c0.39,0,0.74,0.23,0.9,0.56L13.97,20.41z"></path>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                        <div>
+                                                            <h5 class="fw-semibold"> Welcome to our Store! </h5>
+                                                            <p class="text-default mb-3">Explore the latest trends, shop
+                                                                our curated collections, and enjoy exclusive discounts
+                                                                and Offers.</p>
+                                                            <button class="btn btn-primary btn-wave waves-effect waves-light">Start
+                                                                shopping now<i class="ti ti-arrow-narrow-right align-middle mx-1"></i></button>
                                                         </div>
                                                     </div>
-                                                    <div>
-                                                        <span class="avatar avatar-md bg-primary-transparent svg-primary">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#5f6368"><g><rect fill="none" height="24" width="24"/><path d="M18 6h-2c0-2.21-1.79-4-4-4S8 3.79 8 6H6c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-8 4c0 .55-.45 1-1 1s-1-.45-1-1V8h2v2zm2-6c1.1 0 2 .9 2 2h-4c0-1.1.9-2 2-2zm4 6c0 .55-.45 1-1 1s-1-.45-1-1V8h2v2z"/></g></svg>
-                                                        </span>
-                                                    </div>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <img :src="`/backend/assets/images/media/png/14.png`" alt="" class="ecommerce-side-img d-md-block d-none">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-12 col-md-6">
-                                        <div class="card custom-card dashboard-main-card overflow-hidden secondary">
-                                            <div class="card-body">
-                                                <div class="d-flex align-items-start gap-3">
-                                                    <div class="flex-fill">
-                                                        <span class="fs-13 fw-medium">Refund Requests</span>
-                                                        <h4 class="fw-semibold my-2 lh-1">4,654</h4>
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <span class="fs-12 d-block text-muted"><span class="text-success me-1 d-inline-flex align-items-center fw-medium"><i class="ti ti-trending-up me-1 fw-semibold align-middle"></i>4.43%</span>this month</span>
-                                                        </div>
-                                                    </div>
-                                                    <div>
-                                                        <span class="avatar avatar-md bg-secondary-transparent svg-secondary">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#5f6368"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm4 12h-4v3l-5-5 5-5v3h4v4z"/></svg>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-12 col-md-6">
-                                        <div class="card custom-card dashboard-main-card overflow-hidden warning">
-                                            <div class="card-body p-4">
-                                                <div class="d-flex align-items-start gap-3">
-                                                    <div class="flex-fill">
-                                                        <span class="fs-13 fw-medium">Total Orders</span>
-                                                        <h4 class="fw-semibold my-2 lh-1">25,853</h4>
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <span class="fs-12 d-block text-muted"><span class="text-success me-1 d-inline-flex align-items-center fw-medium"><i class="ti ti-trending-up me-1 fw-semibold align-middle"></i>1.25%</span>this month</span>
-                                                        </div>
-                                                    </div>
-                                                    <div>
-                                                        <span class="avatar avatar-md bg-warning-transparent svg-warning">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#5f6368"><path d="M0 0h24v24H0z" fill="none"/><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-12 col-md-6">
-                                        <div class="card custom-card dashboard-main-card overflow-hidden success">
-                                            <div class="card-body p-4">
-                                                <div class="d-flex align-items-start gap-3">
-                                                    <div class="flex-fill">
-                                                        <span class="fs-13 fw-medium">Total Visitors</span>
-                                                        <h4 class="fw-semibold my-2 lh-1">63,744</h4>
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <span class="fs-12 d-block text-muted"><span class="text-danger me-1 d-inline-flex align-items-center fw-medium"><i class="ti ti-trending-down me-1 fw-semibold align-middle"></i>2.97%</span>this month</span>
-                                                        </div>
-                                                    </div>
-                                                    <div>
-                                                        <span class="avatar avatar-md bg-success-transparent svg-success">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#5f6368"><g><rect fill="none" height="24" width="24"/></g><g><g/><g><g><path d="M16.67,13.13C18.04,14.06,19,15.32,19,17v3h4v-3 C23,14.82,19.43,13.53,16.67,13.13z" fill-rule="evenodd"/></g><g><circle cx="9" cy="8" fill-rule="evenodd" r="4"/></g><g><path d="M15,12c2.21,0,4-1.79,4-4c0-2.21-1.79-4-4-4c-0.47,0-0.91,0.1-1.33,0.24 C14.5,5.27,15,6.58,15,8s-0.5,2.73-1.33,3.76C14.09,11.9,14.53,12,15,12z" fill-rule="evenodd"/></g><g><path d="M9,13c-2.67,0-8,1.34-8,4v3h16v-3C17,14.34,11.67,13,9,13z" fill-rule="evenodd"/></g></g></g></svg>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> 
                                 </div>
                             </div>
-                            <div class="col-xl-9">
+                            <div class="col-xl-6">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card custom-card main-custom-card">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-center flex-wrap gap-1">
+                                                    <div>
+                                                        <div class="fw-medium fs-13 mb-1">Total Orders</div>
+                                                        <p class="fs-22 fw-semibold mb-1">
+                                                            35,367
+                                                        </p>
+                                                        <div class="d-flex gap-2 justify-content-between flex-wrap align-items-center">
+                                                            <div class="fs-12 mb-0 text-muted">Increased by </div>
+                                                            <div class="badge bg-primary-transparent rounded-pill">+
+                                                                2.3%</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-primary p-1 rounded-circle border border-primary border-opacity-25 ms-auto">
+                                                        <span class="avatar avatar-md rounded-circle primary">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewbox="0 0 24 24" width="24px" fill="#00000">
+                                                                <path d="M0 0h24v24H0V0z" fill="none"></path>
+                                                                <path d="M15.55 11l2.76-5H6.16l2.37 5z" fill="#fff" opacity=".8"></path>
+                                                                <path d="M15.55 13c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.37-.66-.11-1.48-.87-1.48H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7l1.1-2h7.45zM6.16 6h12.15l-2.76 5H8.53L6.16 6zM7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"></path>
+                                                            </svg>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card custom-card main-custom-card">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-center flex-wrap gap-1">
+                                                    <div>
+                                                        <div class="fs-13 align-middle mb-1">Total Revenue</div>
+                                                        <p class="fw-semibold fs-22 mb-1">
+                                                            $28,346.00
+                                                        </p>
+                                                        <div class="d-flex gap-2 justify-content-between flex-wrap align-items-center">
+                                                            <div class="fs-12 mb-0 text-muted">Increased by </div>
+                                                            <div class="badge bg-danger-transparent rounded-pill">-
+                                                                12.0%</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-secondary p-1 rounded-circle border border-secondary border-opacity-25 ms-auto">
+                                                        <span class="avatar avatar-md secondary rounded-circle">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewbox="0 0 24 24" width="24px" fill="#00000">
+                                                                <path d="M0 0h24v24H0V0z" fill="none"></path>
+                                                                <path d="M12 4c-4.41 0-8 3.59-8 8s3.59 8 8 8 8-3.59 8-8-3.59-8-8-8zm1.23 13.33V19H10.9v-1.69c-1.5-.31-2.77-1.28-2.86-2.97h1.71c.09.92.72 1.64 2.32 1.64 1.71 0 2.1-.86 2.1-1.39 0-.73-.39-1.41-2.34-1.87-2.17-.53-3.66-1.42-3.66-3.21 0-1.51 1.22-2.48 2.72-2.81V5h2.34v1.71c1.63.39 2.44 1.63 2.49 2.97h-1.71c-.04-.97-.56-1.64-1.94-1.64-1.31 0-2.1.59-2.1 1.43 0 .73.57 1.22 2.34 1.67 1.77.46 3.66 1.22 3.66 3.42-.01 1.6-1.21 2.48-2.74 2.77z" opacity=".8" fill="#fff"></path>
+                                                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z"></path>
+                                                            </svg>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card custom-card main-custom-card">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-center flex-wrap gap-1">
+                                                    <div>
+                                                        <div class="fs-13 align-middle mb-1">Total Sales</div>
+                                                        <p class="fw-semibold fs-22 mb-1">
+                                                            24,573
+                                                        </p>
+                                                        <div class="d-flex gap-2 justify-content-between flex-wrap align-items-center">
+                                                            <div class="fs-12 mb-0 text-muted">Increased by </div>
+                                                            <div class="badge bg-primary-transparent rounded-pill">+
+                                                                2.3%</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-danger p-1 rounded-circle border border-danger border-opacity-25 ms-auto">
+                                                        <span class="avatar avatar-md danger rounded-circle">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewbox="0 0 24 24" width="24px" fill="#00000">
+                                                                <path d="M0 0h24v24H0V0z" fill="none"></path>
+                                                                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm7 10c0 4.52-2.98 8.69-7 9.93-4.02-1.24-7-5.41-7-9.93V6.3l7-3.11 7 3.11V11zm-11.59.59L6 13l4 4 8-8-1.41-1.42L10 14.17z"></path>
+                                                                <path d="M5 6.3V11c0 4.52 2.98 8.69 7 9.93 4.02-1.23 7-5.41 7-9.93V6.3l-7-3.11L5 6.3zM18 9l-8 8-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9z" opacity=".8" fill="#fff"></path>
+                                                            </svg>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card custom-card main-custom-card">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-center flex-wrap gap-1">
+                                                    <div>
+                                                        <div class="fs-13 align-middle mb-1">New Visitors</div>
+                                                        <p class="fw-semibold fs-22 mb-1">
+                                                            5,659
+                                                        </p>
+                                                        <div class="d-flex gap-2 justify-content-between flex-wrap align-items-center">
+                                                            <div class="fs-12 mb-0 text-muted">Decreased by </div>
+                                                            <div class="badge bg-danger-transparent rounded-pill">- 7.6%
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-warning p-1 rounded-circle border border-warning border-opacity-25 ms-auto">
+                                                        <span class="avatar avatar-md warning rounded-circle">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewbox="0 0 24 24" width="24px" fill="#00000">
+                                                                <g>
+                                                                    <rect fill="none" height="24" width="24"></rect>
+                                                                </g>
+                                                                <g>
+                                                                    <g>
+                                                                        <path d="M10,10h4c0.8,0,1.34-0.94,0.76-1.63c-0.87-1.04-0.26-2-0.26-2.37c0-0.41-0.24-0.77-0.62-0.92 c-0.29-0.12-0.55-0.31-0.75-0.54C12.96,4.33,12.58,4,12,4s-0.96,0.33-1.13,0.53c-0.2,0.24-0.46,0.42-0.75,0.54 C9.74,5.23,9.5,5.59,9.5,6c0,0.37,0.61,1.33-0.26,2.37C8.66,9.06,9.2,10,10,10z" opacity=".8" fill="#fff"></path>
+                                                                        <path d="M17.48,16.34C16.29,15.73,14.37,15,12,15c-2.37,0-4.29,0.73-5.48,1.34C6.2,16.5,6,16.84,6,17.22V18h12 v-0.78C18,16.84,17.8,16.5,17.48,16.34z" opacity=".8" fill="#fff"></path>
+                                                                        <path d="M18.39,14.56C16.71,13.7,14.53,13,12,13c-2.53,0-4.71,0.7-6.39,1.56C4.61,15.07,4,16.1,4,17.22V20h16v-2.78 C20,16.1,19.39,15.07,18.39,14.56z M18,18H6v-0.78c0-0.38,0.2-0.72,0.52-0.88C7.71,15.73,9.63,15,12,15 c2.37,0,4.29,0.73,5.48,1.34C17.8,16.5,18,16.84,18,17.22V18z"></path>
+                                                                        <path d="M10,12c0.17,0,3.83,0,4,0c1.66,0,3-1.34,3-3c0-0.73-0.27-1.4-0.71-1.92C16.42,6.75,16.5,6.38,16.5,6 c0-1.25-0.77-2.32-1.86-2.77C14,2.48,13.06,2,12,2s-2,0.48-2.64,1.23C8.27,3.68,7.5,4.75,7.5,6c0,0.38,0.08,0.75,0.21,1.08 C7.27,7.6,7,8.27,7,9C7,10.66,8.34,12,10,12z M9.24,8.37C10.11,7.33,9.5,6.37,9.5,6c0-0.41,0.24-0.77,0.62-0.92 c0.29-0.12,0.55-0.31,0.75-0.54C11.04,4.33,11.42,4,12,4s0.96,0.33,1.13,0.53c0.2,0.24,0.46,0.42,0.75,0.54 C14.26,5.23,14.5,5.59,14.5,6c0,0.37-0.61,1.33,0.26,2.37C15.34,9.06,14.8,10,14,10h-4C9.2,10,8.66,9.06,9.24,8.37z"></path>
+                                                                    </g>
+                                                                </g>
+                                                            </svg>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
                                 <div class="card custom-card">
                                     <div class="card-header justify-content-between">
-                                        <div class="card-title">
-                                            Sales Overview
-                                        </div>
-                                        <div class="btn-group btn-group-sm" role="group" aria-label="Basic example"> 
-                                            <button type="button" class="btn btn-primary btn-wave waves-effect waves-light">Day</button> 
-                                            <button type="button" class="btn btn-primary-light btn-wave waves-effect waves-light">Week</button> 
-                                            <button type="button" class="btn btn-primary-light btn-wave waves-effect waves-light">Month</button> 
-                                            <button type="button" class="btn btn-primary-light btn-wave waves-effect waves-light">Year</button> 
+                                        <div class="card-title"> Sales History </div>
+                                        <a href="javascript:void(0);" class="fs-12 text-muted fw-medium d-inline-flex align-items-center"> View
+                                            All<i class="ti ti-arrow-narrow-right ms-1"></i> </a>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div class="table-responsive">
+                                            <table class="table text-nowrap">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="d-flex align-items-start gap-2">
+                                                                <div> <span class="avatar avatar-md avatar-rounded bg-primary-transparent">
+                                                                        <img :src="`/backend/assets/images/ecommerce/jpg/11.jpg`" alt="">
+                                                                    </span> </div>
+                                                                <div> <span class="d-block fw-semibold mb-0">Rolled
+                                                                        Signature Scent</span>
+                                                                    <span class="d-block fs-13 text-muted">United States
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="text-end">
+                                                            <div> <span class="d-block fw-semibold mb-1 fs-14">$1,234.78</span>
+                                                                <span class="d-block fs-12 text-muted">15 Min Ago</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="d-flex align-items-start gap-2">
+                                                                <div> <span class="avatar avatar-md avatar-rounded bg-secondary-transparent">
+                                                                        <img :src="`/backend/assets/images/ecommerce/jpg/2.jpg`" alt="">
+                                                                    </span> </div>
+                                                                <div> <span class="d-block fw-semibold mb-0">Little Pro
+                                                                        Kids Backpack
+                                                                    </span> <span class="d-block fs-13 text-muted">Japan</span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="text-end">
+                                                            <div> <span class="d-block fw-semibold mb-1  fs-14">$623.99</span>
+                                                                <span class="d-block fs-12 text-muted">Today</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="d-flex align-items-start gap-2">
+                                                                <div> <span class="avatar avatar-md avatar-rounded bg-danger-transparent">
+                                                                        <img :src="`/backend/assets/images/ecommerce/jpg/3.jpg`" alt="">
+                                                                    </span> </div>
+                                                                <div> <span class="d-block fw-semibold mb-0">Galaxy X9
+                                                                        Ultra Camera</span> <span class="d-block fs-13 text-muted">Canada</span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="text-end">
+                                                            <div> <span class="d-block fw-semibold mb-1  fs-14">$1,324</span>
+                                                                <span class="d-block fs-12 text-muted">2 Days Ago</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="d-flex align-items-start gap-2">
+                                                                <div> <span class="avatar avatar-md avatar-rounded bg-warning-transparent">
+                                                                        <img :src="`/backend/assets/images/ecommerce/jpg/4.jpg`" alt="">
+                                                                    </span>
+                                                                </div>
+                                                                <div> <span class="d-block fw-semibold mb-0">HP 120Ram
+                                                                        Laptop</span> <span class="d-block fs-13 text-muted">United
+                                                                        Kingdom</span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="text-end">
+                                                            <div> <span class="d-block fw-semibold mb-1  fs-14">$1,123.49</span>
+                                                                <span class="d-block fs-12 text-muted">5 Months
+                                                                    Ago</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="d-flex align-items-start gap-2">
+                                                                <div> <span class="avatar avatar-md avatar-rounded bg-info-transparent">
+                                                                        <img :src="`/backend/assets/images/ecommerce/jpg/5.jpg`" alt="">
+                                                                    </span> </div>
+                                                                <div> <span class="d-block fw-semibold mb-0">Black
+                                                                        Oxford Sofa Set</span>
+                                                                    <span class="d-block fs-13 text-muted">Australia</span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="text-end">
+                                                            <div> <span class="d-block fw-semibold mb-1  fs-14">$1,234.78</span>
+                                                                <span class="d-block fs-12 text-muted">1 year Ago</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="border-bottom-0 rounded">
+                                                            <div class="d-flex align-items-start gap-2">
+                                                                <div> <span class="avatar avatar-md avatar-rounded bg-info-transparent">
+                                                                        <img :src="`/backend/assets/images/ecommerce/jpg/6.jpg`" alt="">
+                                                                    </span> </div>
+                                                                <div> <span class="d-block fw-semibold mb-0">Jordan
+                                                                        Money Plant</span>
+                                                                    <span class="d-block fs-13 text-muted">India</span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="text-end border-bottom-0 rounded">
+                                                            <div> <span class="d-block fw-semibold mb-1  fs-14">$1,234.78</span>
+                                                                <span class="d-block fs-12 text-muted">1 year Ago</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
-                                    <div class="card-body pb-0 pt-5">
-                                        <div id="sales-overview"></div>
+                                </div>
+                            </div>
+                            <div class="col-xl-8">
+                                <div class="card custom-card">
+                                    <div class="card-header justify-content-between">
+                                        <div class="card-title"> Monthly Income </div>
+                                        <div class="d-flex align-items-center flex-wrap gap-2">
+                                            <div class="dropdown">
+                                                <a href="javascript:void(0);" class="btn btn-primary-light btn-sm btn-wave waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="false"> Sort By<i class="ri-arrow-down-s-line align-middle ms-1 d-inline-block"></i>
+                                                </a>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li><a class="dropdown-item" href="javascript:void(0);">New</a></li>
+                                                    <li><a class="dropdown-item" href="javascript:void(0);">Popular</a>
+                                                    </li>
+                                                    <li><a class="dropdown-item" href="javascript:void(0);">Relevant</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div> <button class="btn btn-light border btn-sm">Export<i class="ri-share-forward-line ms-1"></i></button> </div>
+                                        </div>
                                     </div>
-                                    <div class="card-footer bg-light p-0">
-                                        <div class="row g-0 w-100">
-                                            <div class="col-sm-4 border-sm-end">
-                                                <div class="p-3 text-center">
-                                                    <span class="d-block text-muted mb-1">Total Orders</span>
-                                                    <h6 class="fw-semibold mb-0">15,535</h6>
+                                    <div class="card-body pb-0">
+                                        <div id="revenue-overview"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-4">
+                        <div class="card custom-card">
+                            <div class="card-header justify-content-between">
+                                <div class="card-title">Premier Product Selections</div>
+                                <a href="javascript:void(0);" class="fs-12 text-muted fw-medium d-inline-flex align-items-center"> View All<i class="ti ti-arrow-narrow-right ms-1"></i> </a>
+                            </div>
+                            <div class="card-body">
+                                <div class="swiper swiper-basic">
+                                    <div class="swiper-wrapper">
+                                        <div class="swiper-slide">
+                                            <div class="row gx-3 gy-2">
+                                                <div class="col-sm-4">
+                                                    <div class="border border-primary border-opacity-10 p-3 rounded-2 align-items-center d-block gap-2 text-center bg-primary-transparent posotion-relative overflow-hidden">
+                                                        <div class="d-flex align-items-center justify-content-center">
+                                                            <img :src="`/backend/assets/images/ecommerce/png/14.png`" alt="" class="img-fluid avatar avatar-xxl mb-4">
+                                                        </div>
+                                                        <div class="text-center ms-auto">
+                                                            <span>20% OFF</span>
+                                                            <p class="fw-medium mb-1 text-default">Ladies Hand Bag</p>
+                                                            <div class="ratings mb-3">
+                                                                <span class="text-warning fs-10 lh-1 custom-star"><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-half-fill"></i></span><br>
+                                                                <span class="text-muted fs-12">(22 reviews)</span>
+                                                            </div>
+                                                            <a class="btn btn-primary btn-sm">View Product</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="border border-secondary border-opacity-10 p-3 rounded-2 align-items-center d-block gap-2 text-center bg-secondary-transparent ">
+                                                        <div class="d-flex align-items-center justify-content-center">
+                                                            <img :src="`/backend/assets/images/ecommerce/png/15.png`" alt="" class="img-fluid avatar avatar-xxl mb-4">
+                                                        </div>
+                                                        <div class="text-center ms-auto">
+                                                            <span>21% OFF</span>
+                                                            <p class="fw-medium mb-1 text-default">Jublex Men Watch</p>
+                                                            <div class="ratings mb-3">
+                                                                <span class="text-warning fs-10 lh-1 custom-star"><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-half-fill"></i></span><br>
+                                                                <span class="text-muted fs-12">(75 reviews)</span>
+                                                            </div>
+                                                            <a class="btn btn-secondary btn-sm" href="javascript:void(0);">View Product</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="border border-danger border-opacity-10 p-3 rounded-2 align-items-center d-block gap-2 text-center bg-danger-transparent">
+                                                        <div class="d-flex align-items-center justify-content-center">
+                                                            <img :src="`/backend/assets/images/ecommerce/png/12.png`" alt="" class="img-fluid avatar avatar-xxl mb-4">
+                                                        </div>
+                                                        <div class="text-center ms-auto">
+                                                            <span>30% OFF</span>
+                                                            <p class="fw-medium mb-1 text-default">Leather Handbag</p>
+                                                            <div class="ratings mb-3">
+                                                                <span class="text-warning fs-10 lh-1 custom-star"><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-half-fill"></i></span><br>
+                                                                <span class="text-muted fs-12">(66 reviews)</span>
+                                                            </div>
+                                                            <a class="btn btn-danger btn-sm">View Product</a>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-4 border-sm-end">
-                                                <div class="p-3 text-center">
-                                                    <span class="d-block text-muted mb-1">Total Sales</span>
-                                                    <h6 class="fw-semibold mb-0">21,754</h6>
+                                        </div>
+                                        <div class="swiper-slide">
+                                            <div class="row gx-3 gy-2">
+                                                <div class="col-sm-4">
+                                                    <div class="border border-secondary border-opacity-10 p-3 rounded-2 align-items-center d-block gap-2 text-center bg-secondary-transparent">
+                                                        <div class="d-flex align-items-center justify-content-center">
+                                                            <img :src="`/backend/assets/images/ecommerce/png/15.png`" alt="" class="img-fluid avatar avatar-xxl mb-4">
+                                                        </div>
+                                                        <div class="text-center ms-auto">
+                                                            <span>20% OFF</span>
+                                                            <p class="fw-medium mb-1 text-default">Adidas Men shoe</p>
+                                                            <div class="ratings mb-3">
+                                                                <span class="text-warning fs-10 lh-1 custom-star"><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-half-fill"></i></span><br>
+                                                                <span class="text-muted fs-12">(111 reviews)</span>
+                                                            </div>
+                                                            <a class="btn btn-secondary btn-sm">View Product</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="border border-warning border-opacity-10 p-3 rounded-2 align-items-center d-block gap-2 text-center bg-warning-transparent">
+                                                        <div class="d-flex align-items-center justify-content-center">
+                                                            <img :src="`/backend/assets/images/ecommerce/png/16.png`" alt="" class="img-fluid avatar avatar-xxl mb-4">
+                                                        </div>
+                                                        <div class="text-center ms-auto">
+                                                            <span>10% OFF</span>
+                                                            <p class="fw-medium mb-1 text-default">Samsong Headset</p>
+                                                            <div class="ratings mb-3">
+                                                                <span class="text-warning fs-10 lh-1 custom-star"><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-half-fill"></i></span><br>
+                                                                <span class="text-muted fs-12">(23 reviews)</span>
+                                                            </div>
+                                                            <a class="btn btn-warning btn-sm">View Product</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="border border-info border-opacity-10 p-3 rounded-2 align-items-center d-block gap-2 text-center bg-info-transparent">
+                                                        <div class="d-flex align-items-center justify-content-center">
+                                                            <img :src="`/backend/assets/images/ecommerce/png/25.png`" alt="" class="img-fluid avatar avatar-xxl mb-4">
+                                                        </div>
+                                                        <div class="text-center ms-auto">
+                                                            <span>15% OFF</span>
+                                                            <p class="fw-medium mb-1 text-default">10Lens Camera</p>
+                                                            <div class="ratings mb-3">
+                                                                <span class="text-warning fs-10 lh-1 custom-star"><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-half-fill"></i></span><br>
+                                                                <span class="text-muted fs-12">(43 reviews)</span>
+                                                            </div>
+                                                            <a class="btn btn-info btn-sm">View Product</a>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-4">
-                                                <div class="p-3 text-center">
-                                                    <span class="d-block text-muted mb-1">Revenue Earned</span>
-                                                    <h6 class="fw-semibold mb-0">$1.8M</h6>
+                                        </div>
+                                        <div class="swiper-slide">
+                                            <div class="row gx-3 gy-2">
+                                                <div class="col-sm-4">
+                                                    <div class="border border-danger border-opacity-10 p-3 rounded-2 align-items-center d-block gap-2 text-center bg-danger-transparent">
+                                                        <div class="d-flex align-items-center justify-content-center">
+                                                            <img :src="`/backend/assets/images/ecommerce/png/12.png`" alt="" class="img-fluid avatar avatar-xxl mb-4">
+                                                        </div>
+                                                        <div class="text-center ms-auto">
+                                                            <span>20% OFF</span>
+                                                            <p class="fw-medium mb-1 text-default">Ladies Hand Bag</p>
+                                                            <div class="ratings mb-3">
+                                                                <span class="text-warning fs-10 lh-1 custom-star"><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-half-fill"></i></span><br>
+                                                                <span class="text-muted fs-12">(111 reviews)</span>
+                                                            </div>
+                                                            <a class="btn btn-danger btn-sm">View Product</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="border border-primary border-opacity-10 p-3 rounded-2 align-items-center d-block gap-2 text-center bg-primary-transparent">
+                                                        <div class="d-flex align-items-center justify-content-center">
+                                                            <img :src="`/backend/assets/images/ecommerce/png/20.png`" alt="" class="img-fluid avatar avatar-xxl mb-4">
+                                                        </div>
+                                                        <div class="text-center ms-auto">
+                                                            <span>10% OFF</span>
+                                                            <p class="fw-medium mb-1 text-default">Ladies Tshirt</p>
+                                                            <div class="ratings mb-3">
+                                                                <span class="text-warning fs-10 lh-1 custom-star"><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-half-fill"></i></span><br>
+                                                                <span class="text-muted fs-12">(23 reviews)</span>
+                                                            </div>
+                                                            <a class="btn btn-primary btn-sm">View Product</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="border border-orange border-opacity-10 p-3 rounded-2 align-items-center d-block gap-2 text-center bg-orange-transparent">
+                                                        <div class="d-flex align-items-center justify-content-center">
+                                                            <img :src="`/backend/assets/images/ecommerce/png/19.png`" alt="" class="img-fluid avatar avatar-xxl mb-4">
+                                                        </div>
+                                                        <div class="text-center ms-auto">
+                                                            <span>15% OFF</span>
+                                                            <p class="fw-medium mb-1 text-default">Pink Ladiesbag</p>
+                                                            <div class="ratings mb-3">
+                                                                <span class="text-warning fs-10 lh-1 custom-star"><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-half-fill"></i></span><br>
+                                                                <span class="text-muted fs-12">(43 reviews)</span>
+                                                            </div>
+                                                            <a class="btn btn-orange btn-sm">View Product</a>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -151,39 +513,131 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-xxl-3">
-                        <div class="row">
-                            <div class="col-xl-12">
-                                <div class="card custom-card shadow-none card-bg-primary overflow-hidden dashboard-banner-card">
-                                    <div class="card-body">
-                                        <div class="dashboard-banner-card-background">
-                                            <img :src="`/backend/assets/images/media/backgrounds/8.png`" alt="">
-                                        </div>
-                                        <div class="d-flex align-items-center justify-content-between gap-3">
-                                            <div>
-                                                <h5 class="fw-semibold mb-1 text-fixed-white">Hi, Tom Phillip &#128075;</h5>
-                                                <span class="d-block fs-14 mb-3 pe-5 text-fixed-white">Check out the latest sales updates.</span>
-                                                <a href="javascript:void(0)" class="btn btn-secondary btn-wave mt-1">Upgrade To Pro <i class="ti ti-arrow-narrow-right"></i></a>
-                                            </div>
-                                            <div class="dashboard-banner-image d-sm-block d-none">
-                                                <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" width="748.82965" height="557.20035" viewBox="0 0 748.82965 557.20035" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M276.60133,642.057c-3.59968,0-7.20676.1709-10.72934.51563l-.51267.0498c-23.36542,2.37793-40.45611,16.17286-39.75323,32.08985l.13588,2.87793c.08961,1.81933.18508,3.77539.26367,5.94531.04255,1.07031,1.31106,1.8916,2.88946,1.8916H803.62751c40.52148-.2832,80.89606-.63965,119.9956-1.05957a177.65216,177.65216,0,0,0,21.95374-1.30957c10.86591-1.48047,18.40759-4.415,23.05841-8.97168h.00147c5.78332-5.65039,5.96551-12.76562,5.6159-20.80469-.71246-16.23242-1.419-33.28515-2.12414-50.28613-.62281-14.9834-1.24274-29.92676-1.86261-44.2334-.38343-8.49023-1.23536-15.98437-7.80317-21.71191-7.11865-6.19434-20.10137-9.334-38.58831-9.334-.22333,0-.44507,0-.67133.001-57.9361.23731-115.34192,23.1709-142.8454,57.06732-3.16711,3.90332-6.11822,8.082-8.97247,12.124a158.91584,158.91584,0,0,1-13.7804,17.66406,66.94863,66.94863,0,0,1-9.10321,8.16894c-.22326.17774-.47888.36817-.7492.54883-.61847.46387-1.26477.91114-1.895,1.30957a62.04148,62.04148,0,0,1-11.60926,6.07617l-.40692.15723c-.30627.126-.6383.252-.97027.36719a68.20886,68.20886,0,0,1-7.17,2.20605c-10.484,2.66016-22.40545,3.29785-35.43151,1.89356a151.75182,151.75182,0,0,1-35.2295-8.26465c-12.06244-4.38867-23.3529-9.86035-34.27173-15.15137-4.79614-2.32519-9.75683-4.72851-14.711-7.00586-.93134-.42871-1.84723-.84765-2.7771-1.2666-6.05066-2.71484-11.5365-4.957-16.77045-6.85449a146.28118,146.28118,0,0,0-39.96478-8.52149c-14.40918-.9082-27.10688.80469-37.73191,5.07911a60.6496,60.6496,0,0,0-8.53469,4.23339c-12.58466,7.52344-20.343,18.627-27.845,29.36524-9.33233,13.35644-18.98275,27.16894-38.0382,34.3291-21.98825,8.26953-54.08371,4.834-76.791-1.14062-7.13919-1.87891-14.26956-4.04-21.16565-6.13086q-4.17768-1.26719-8.36136-2.51661c-5.48071-1.6289-9.96621-2.877-14.116-3.93066l-1.31253-.33594c-.73008-.18261-1.46088-.36523-2.20493-.53906-4.92911-1.19141-9.51892-2.12891-14.03891-2.86621l-1.06943-.17969c-2.144-.32519-4.14834-.5957-6.11526-.82324l-.78516-.08984A109.23844,109.23844,0,0,0,276.60133,642.057Z" transform="translate(-225.58517 -171.39982)" fill="rgba(255, 255, 255, 0.2)"/><path d="M343.64,685.3514a1.19069,1.19069,0,0,1,1.18683-1.19452h510.294a1.19069,1.19069,0,0,1,0,2.38135h-510.294A1.19066,1.19066,0,0,1,343.64,685.3514Z" transform="translate(-225.58517 -171.39982)" fill="#cacaca"/><path d="M746.00469,214.43986a42.86006,42.86006,0,0,1-11.46,29.24c-.56.61-1.15,1.2-1.75,1.77a650.40347,650.40347,0,0,0-69.84-46.89c.3-.76.62-1.51.97-2.25a43.04295,43.04295,0,0,1,82.08,18.13Z" transform="translate(-225.58517 -171.39982)" fill="rgb(var(--secondary-rgb))"/><path d="M780.91466,302.03984l-.04.45q-42.465-2.925-84.92-5.86c-20.45-1.41-41.61-3.01-59.68-12.69-6.86005-3.67-13.54-8.57-21.32-8.91-9.65-.43-18.07,6.32-24.69,13.36-39.13,41.68-50.46,105.41-94.36,142.02a1394.13755,1394.13755,0,0,1,98.86-197.31c7.04-11.65,15.39-24.09,28.46-27.89,12.47-3.63,25.23,1.67,36.71,8.47,2.46,1.46,4.86,2.99,7.18,4.51q26.535,17.36994,52.2,36.06995Q750.82971,277.19487,780.91466,302.03984Z" transform="translate(-225.58517 -171.39982)" fill="rgba(255, 255, 255, 0.2)"/><path d="M872.47466,390.43986a670.65125,670.65125,0,0,0-104.75-116.27q-16.965-14.91-34.93-28.72a650.40347,650.40347,0,0,0-69.84-46.89q-11.94-6.93-24.16-13.31c-6.33-3.29-13.07-6.3-20.37-5.83a27.10218,27.10218,0,0,0-14.07,5.41c-8.97,6.55-14.91,16.78-19.8,26.53-4.28,8.55-8.27,17.27-12.34,25.94-1.73,3.69-3.46,7.37-5.25,11.03q-9.36008,19.23-19.16,38.25-12.63,24.51-25.99,48.65-28.065,50.745-59.23,99.66-45.81006,71.895-98.02,139.43c-4.27,5.51-6.03,6.79-10.36,12.26-1,1.28-2.78-.52-1.79-1.79,36.11005-45.64,67.55005-88.76,99.25-137.58q35.85-55.215,67.76-112.88,10.245-18.49494,20.06-37.22,15.885-30.315,30.67-61.2,3.9-8.13,7.72-16.32c8.09-17.33,19.87-43.1,42.62-42.75,6.69.1,12.9,2.81,18.76,5.81,5.97,3.07,11.83,6.33,17.68,9.64q3.51,1.98,6.99,4.02,13.785,8.00994,27.16,16.69,22.32,14.47494,43.46,30.68,10.035,7.695,19.77,15.74a673.54712,673.54712,0,0,1,109.09,114.31q5.74493,7.635,11.25,15.44C875.59472,390.49986,873.40472,391.75981,872.47466,390.43986Z" transform="translate(-225.58517 -171.39982)" fill="rgba(255,255,255, 0.3)"/><path d="M769.97685,261.4421c1.32186-1.47358,2.63549-2.94715,3.966-4.42072C784.43462,245.418,795.6924,233.94944,810.1,227.2973a52.4571,52.4571,0,0,1,21.97735-5.09434c7.86453.02529,15.55227,2.08825,22.819,4.97649,3.43559,1.37253,6.79554,2.93029,10.10449,4.58908,3.781,1.903,7.4945,3.93237,11.19076,5.97852q10.40791,5.75957,20.54571,12.02432,20.17137,12.46641,39.07925,26.83584,9.80167,7.45209,19.19878,15.39253,8.74029,7.37624,17.127,15.14831c1.19563,1.10307,2.98086-.68205,1.78523-1.78512-1.47357-1.37253-2.964-2.73664-4.45443-4.08388q-6.31532-5.70906-12.8329-11.19919-11.885-10.0287-24.38547-19.2827-19.43869-14.39893-40.21568-26.84427-10.38264-6.21425-21.051-11.90647c-2.14745-1.14516-4.32-2.26509-6.51759-3.32607a103.89918,103.89918,0,0,0-15.49347-6.30688,55.11725,55.11725,0,0,0-23.40035-2.29875,60.92335,60.92335,0,0,0-21.59005,7.46889c-14.14612,7.90678-25.11773,20.13318-35.795,32.06494C767.11358,260.86109,768.89058,262.65464,769.97685,261.4421Z" transform="translate(-225.58517 -171.39982)" fill="rgba(255,255,255, 0.3)"/><path d="M480.12667,381.68342l-33.89782-12.39828-16.83038-6.15579c-5.48137-2.00484-10.94957-4.28719-16.616-5.72275a26.21362,26.21362,0,0,0-15.03952.19162,34.66256,34.66256,0,0,0-11.73046,7.27166,95.19524,95.19524,0,0,0-9.62144,10.275c-3.66428,4.40365-7.27444,8.85345-10.90079,13.28835q-22.45,27.45558-44.6064,55.14948-22.1559,27.69344-44.01554,55.62218-21.91307,27.997-43.52474,56.22818-2.64747,3.45842-5.2904,6.92031c-.97346,1.275-3.16844.018-2.18124-1.275q21.77112-28.515,43.84571-56.79666,22.1289-28.3492,44.56359-56.45793,22.43425-28.10817,45.17171-55.97256,5.66458-6.94185,11.34787-13.86842c3.196-3.89521,6.356-7.83243,9.86155-11.45793,6.43462-6.65486,14.47386-12.536,24.09692-12.69554,5.65786-.09382,11.13345,1.70155,16.3902,3.60326,5.667,2.05012,11.32041,4.1386,16.98015,6.20868l34.13486,12.485,8.53372,3.12124c1.51441.55391.8602,2.99613-.67154,2.43589Z" transform="translate(-225.58517 -171.39982)" fill="rgba(255,255,255, 0.3)"/><path d="M814.56088,241.89784c17.22612-8.85335,39.28657-7.11936,55.11616,3.94157a786.11526,786.11526,0,0,0-89.43729,20.87423C792.44014,259.5639,801.98377,248.36189,814.56088,241.89784Z" transform="translate(-225.58517 -171.39982)" fill="rgba(255, 255, 255, 0.2)"/><path d="M869.84659,245.80893l3.31625,2.69552c-1.12172-.94344-2.28786-1.828-3.4858-2.665C869.73362,245.82965,869.79,245.8187,869.84659,245.80893Z" transform="translate(-225.58517 -171.39982)" fill="rgba(255, 255, 255, 0.2)"/><path d="M387.28886,381.80727c3.33682-4.06177,6.94448-8.31469,11.93551-9.96449l4.65975.18379A528.5525,528.5525,0,0,1,263.10428,532.971Q325.19657,457.38918,387.28886,381.80727Z" transform="translate(-225.58517 -171.39982)" fill="rgba(255, 255, 255, 0.2)"/><path d="M736.79357,610.34291l-28.21714-12.44874V587.19183l10.0561-.05651a7.46918,7.46918,0,0,0,7.044-5.10714l7.06437-21.193a7.46924,7.46924,0,0,0-7.08594-9.83122h-17.0785v-9.959h21.44024a7.46925,7.46925,0,0,0,7.27937-5.79584l4.865-21.16286a7.46923,7.46923,0,0,0-7.27937-9.14265H708.57643v-2.48975a4.97949,4.97949,0,0,0-9.959,0v2.48975H522.26028v-2.48975a4.9795,4.9795,0,0,0-9.959,0v2.48975h-20.9108a7.46923,7.46923,0,0,0-7.27937,9.14265l4.865,21.16286a7.46925,7.46925,0,0,0,7.27937,5.79584h16.04578v9.959H500.617a7.46923,7.46923,0,0,0-7.10927,9.76L500.7181,583.141a7.46925,7.46925,0,0,0,7.15123,5.17837l4.432-.0249v9.59968l-22.82269,12.44874a7.46922,7.46922,0,0,0-7.46924,7.46922v0a7.46925,7.46925,0,0,0,7.46924,7.46925h22.82269v54.77446a4.9795,4.9795,0,0,0,9.959,0V625.2814H698.61744v54.77446a4.9795,4.9795,0,0,0,9.959,0V625.2814h28.21714a7.46925,7.46925,0,0,0,7.46925-7.46925v0A7.46922,7.46922,0,0,0,736.79357,610.34291Zm-214.53329-69.298H698.61744v9.959H522.26028Zm0,56.84925v-9.65563l176.35716-.99076v10.64639Z" transform="translate(-225.58517 -171.39982)" fill="rgba(255, 255, 255, 0.4)"/><path d="M315.95555,589.21408l7.98486-26.00457a87.77022,87.77022,0,0,0-35.0839-23.50552c13.12443,21.74329.40683,50.10772,5.70643,74.94591a52.79391,52.79391,0,0,0,28.27717,35.97783l12.11706,15.0135a88.46589,88.46589,0,0,0,6.50218-73.78667,85.453,85.453,0,0,0-9.89442-19.0176C324.36444,581.302,315.95555,589.21408,315.95555,589.21408Z" transform="translate(-225.58517 -171.39982)" fill="rgba(255, 255, 255, 0.2)"/><path d="M272.05023,592.53665l-4.45075-26.83629a87.7702,87.7702,0,0,0-41.8846-5.39169c21.444,13.60792,22.71121,44.6671,38.53194,64.53481a52.79391,52.79391,0,0,0,41.3547,19.59061l17.541,8.03374a88.466,88.466,0,0,0-27.08773-68.942,85.45248,85.45248,0,0,0-17.3374-12.60883C276.04789,581.70478,272.05023,592.53665,272.05023,592.53665Z" transform="translate(-225.58517 -171.39982)" fill="rgba(255, 255, 255, 0.2)"/><path d="M902.5106,479.11845,885.044,458.26383a87.77019,87.77019,0,0,1,23.18573-35.29606c-3.63882,25.13524,19.10562,46.32412,23.87929,71.26873a52.79386,52.79386,0,0,1-12.06557,44.141l-5.327,18.54322a88.4659,88.4659,0,0,1-34.67683-65.45432,85.45238,85.45238,0,0,1,1.72257-21.36823C891.68721,475.0979,902.5106,479.11845,902.5106,479.11845Z" transform="translate(-225.58517 -171.39982)" fill="rgba(255, 255, 255, 0.2)"/><path d="M944.2538,465.1105,937.92125,438.655a87.77005,87.77005,0,0,1,36.49358-21.25108c-14.46674,20.87426-3.55934,49.98279-10.41151,74.43825a52.79393,52.79393,0,0,1-30.48523,34.127l-13.03785,14.2212a88.46591,88.46591,0,0,1-1.84586-74.0496,85.45328,85.45328,0,0,1,11.0716-18.35724C936.35949,456.68492,944.2538,465.1105,944.2538,465.1105Z" transform="translate(-225.58517 -171.39982)" fill="rgba(255, 255, 255, 0.2)"/><polygon points="373.867 536.045 362.393 541.58 335.583 499.958 352.517 491.789 373.867 536.045" fill="#ffb6b6"/><path d="M600.74559,539.92239,590.54818,555.309s-60.63447,40.15326-58.10323,55.09015c.88547,5.22518,4.73286,16.21626,9.68184,28.46477,1.52072,3.76372,8.6663,11.24446,10.34108,15.11482,8.45541,19.54026,12.66545,35.17435,16.72606,37.26588,4.50965,2.33785,4.0477.48289,6.81076,4.74524l16-6s2.492-5.59411,3.72976-8.36482-.70312-4.14914-.70312-4.14914-2.34884,1.25171-1.9409-1.37838.26732-3.45993-.70312-4.14914-4.72555-7.73579-4.72555-7.73579a69.82223,69.82223,0,0,1-8.19389-16.23385c-.89266-2.521-.8037-8.56182-2-11-2.52046-5.13691-3.41208-8.92851-7.48445-11.59957,0,0,51.26687-24.90725,56.0774-36.82s-.13917-51.19588-.13917-51.19588Z" transform="translate(-225.58517 -171.39982)" fill="#2f2e41"/><path d="M605.53555,713.49,566.738,728.60018l-.19114-.49072A16.2068,16.2068,0,0,1,575.766,707.127l.001-.00038,4.99263-8.13674,15.31681.227,3.38679-1.319Z" transform="translate(-225.58517 -171.39982)" fill="#2f2e41"/><polygon points="470.462 475.448 489.209 474.029 486.873 523.483 474.17 524.444 470.462 475.448" fill="#ffb6b6"/><path d="M593.02692,553.52922c-4.3106-18.98155,7.83714,37.61669,20.4366,48.19854,4.95423,4.16091,25.69256-.14621,42.8621,1.16619a87.67112,87.67112,0,0,1,30.31954,8.23641c-2.73885,4.99134.12692,12.43982.6598,19.13657.97215,12.21694,1.951,23.45149,1.951,23.45149s-.00949,7.98466-.54308,9.04866-.26835,1.86279,1.326,3.99393-1.06716,2.12794-1.06716,2.12794-1.06715,2.128,1.326,3.99393,8.07377,7.30057,8.07377,7.30057l15.2371-1.353c.44-5.06062,1.75485-5.72611,4.64021-9.90671,2.74584-3.95613,2.11713-27.69491.18239-49.97665-.13112-1.5101,1.975-6.26147,1.83251-7.75157-1.42952-14.95072-5.64132-25.31417-7.49858-30.90816-1.28141-3.85954-7.43466-7.18789-15.75192-9.99213-1.26923-.42794-2.58886-.84367-3.94927-1.24722-22.9351-6.80347-57.45854-10.145-57.45854-10.145l-18.87706-16.79029Z" transform="translate(-225.58517 -171.39982)" fill="#2f2e41"/><path d="M698.047,693.13029l3.44938-1.14538,11.64877-9.948,9.036,3.07948.001-.00032a16.2068,16.2068,0,0,1,20.48676,10.27369l.16594.49981-39.51465,13.1209Z" transform="translate(-225.58517 -171.39982)" fill="#2f2e41"/><path d="M610.42386,444.23228l-11.34,8.635-13.676,4.20263s-5.65377,79.52833-10.74813,84.62269-.49987,5.23128-1.52352,11.84916-3.51168,20.18377-3.51168,20.18377c34.38707,18.20258,64.03233,18.69086,87.845-2.60926a5.93117,5.93117,0,0,0-3.23608-6.69462c-4.43194-2.35163,4.08556-13.32756.4636-15.16273s1.47241-17.755,1.47241-17.755l-3.34187-33.21557,2.64024-5.30957-6.44317-32.48858-11.18013-4.083-4.466-10.76026Z" transform="translate(-225.58517 -171.39982)" fill="rgb(255,255,255)"/><circle cx="396.44756" cy="245.59574" r="22.43078" fill="#ffb6b6"/><path d="M603.31993,585.581a9.8303,9.8303,0,0,0-11.20736-10.08022l-15.98166-31.06366L567.227,560.25692l16.54148,27.07327a9.88361,9.88361,0,0,0,19.55136-1.74918Z" transform="translate(-225.58517 -171.39982)" fill="#ffb6b6"/><path d="M576.40552,577.98205l-34.27838-53.12743.11315-.24444c.12942-.28007,7.89169-17.0446,15.413-32.39983,1.15826-2.36467,2.31081-4.69592,3.42889-6.9284q.72381-1.44525,1.42605-2.83006c3.159-6.22783,5.919-11.37528,7.56649-13.8204A29.01536,29.01536,0,0,1,585.45,456.96784l.15859-.04078.15141.06312a14.72433,14.72433,0,0,1,8.76284,16.19753,104.296,104.296,0,0,1-19.35291,43.755l-5.557,7.32473,19.31154,41.98522Z" transform="translate(-225.58517 -171.39982)" fill="rgb(255,255,255)"/><path d="M665.672,597.791v1.42726a3.15238,3.15238,0,0,1-3.1517,3.15168H557.69779a3.15237,3.15237,0,0,1-3.1517-3.15168V597.791a3.15235,3.15235,0,0,1,3.1517-3.15167H559.559a2.65083,2.65083,0,0,1-.10157-.70776V540.43129a2.645,2.645,0,0,1,2.64324-2.64334h96.01673a2.645,2.645,0,0,1,2.64325,2.64334v53.50028a2.49845,2.49845,0,0,1-.10158.70776h1.8612A3.15235,3.15235,0,0,1,665.672,597.791Z" transform="translate(-225.58517 -171.39982)" fill="#3f3d56"/><path d="M612.17439,568.01513a5.99072,5.99072,0,1,1,5.99071-5.99072A5.99747,5.99747,0,0,1,612.17439,568.01513Zm0-10.94882a4.95811,4.95811,0,1,0,4.9581,4.9581A4.96375,4.96375,0,0,0,612.17439,557.06631Z" transform="translate(-225.58517 -171.39982)" fill="#fff"/><circle cx="384.52404" cy="388.55935" r="5.47437" fill="#fff"/><path d="M694.27889,374.33627a9.83029,9.83029,0,0,0,2.35881,14.888l-7.14559,34.1951,16.87861-6.68267,4.19795-31.44773A9.88361,9.88361,0,0,0,694.279,374.33631Z" transform="translate(-225.58517 -171.39982)" fill="#ffb6b6"/><path d="M710.402,397.18741l-6.82552,62.85653-.24182.11865c-.19928.09793-8.84664,4.33935-19.46132,9.3906-1.79066.85213-1.534,4.54333-3.40547,5.42554-1.28914.60769-4.69342-1.5973-5.996-.98816-11.6023,5.42574-23.33421,10.70159-28.00981,12.13114a29.01531,29.01531,0,0,1-19.2887-.621l-.14887-.06818-.07788-.14438a14.72433,14.72433,0,0,1,3.39225-18.10082,104.29609,104.29609,0,0,1,42.58656-21.80405l8.92931-2.19087,11.43611-44.77622Z" transform="translate(-225.58517 -171.39982)" fill="rgb(255,255,255)"/><path d="M672.18567,373.68221l2.56841,23.30916A2.84507,2.84507,0,0,0,677.47344,399h11.83939a2.84516,2.84516,0,0,0,2.71966-2.00863l2.12733-17.86534A4.32088,4.32088,0,1,0,695.274,370.998a2.8198,2.8198,0,0,0-2.15867-.998h-18.21A2.84558,2.84558,0,0,0,672.18567,373.68221Zm22.34593,4.23569,1.303-4.23569a2.8158,2.8158,0,0,0,.04308-1.506c.05574-.003.10816-.01661.1645-.01661a3.08511,3.08511,0,0,1,0,6.17022A3.04612,3.04612,0,0,1,694.5316,377.9179Z" transform="translate(-225.58517 -171.39982)" fill="#3f3d56"/><path d="M640.30289,397.72555c-1.84465-5.36654-11.02746-9.08881-25.91418-9.60638s-18.66227,17.02576-18.66227,17.02576c-9.938,8.06174,10.61182,29.64505,11.606,28.86767l-.447-4.05508C606.1452,423.24079,603,418,607,411l3.841.0441q7.441,1.43086,14.882,2.8617l-5.87291-5.17092.1656-.25624a22.7265,22.7265,0,0,0,8.01667,2.43412c3.15652.18554,6.6074-1.0707,8.11933-3.84781a6.46562,6.46562,0,0,0,.72539-2.46008c4.25656,1.70064,6.203,6.94811,6.203,6.94811S642.14753,403.09209,640.30289,397.72555Z" transform="translate(-225.58517 -171.39982)" fill="#2f2e41"/></svg>
-                                            </div>
-                                        </div>
-                                    </div>
+                        <div class="card custom-card">
+                            <div class="card-header justify-content-between pb-2">
+                                <div class="card-title">
+                                    Top Sellers
                                 </div>
+                                <a href="javascript:void(0);" class="text-primary text-decoration-underline link-offset-1">
+                                    View All
+                                </a>
                             </div>
-                            <div class="col-xl-12">
-                                <div class="card custom-card">
-                                    <div class="card-header justify-content-between">
-                                        <div class="card-title">
-                                            Visitors By Device
-                                        </div>  
-                                        <a href="javascript:void(0);" class="fs-12 text-muted text-decoration-underline">View Report <i class="ti ti-arrow-narrow-right"></i></a>
-                                    </div>
-                                    <div class="card-body px-0 py-4 my-2 pb-0">    
-                                        <div id="visitors-report"></div>
-                                    </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table text-nowrap">
+                                        <tbody>
+                                            <tr>
+                                                <th>
+                                                    <div class="d-flex align-items-top justify-content-start flex-grow-1">
+                                                        <div class="avatar avatar-md avatar-rounded bg-secondary me-2">
+                                                            <img :src="`/backend/assets/images/faces/6.jpg`" alt="Natalie Brown">
+                                                        </div>
+                                                        <div>
+                                                            <p class="mb-0 fw-semibold">Emily Johnson <i class="ri-checkbox-circle-line text-primary fw-normal fs-14 lh-1 fw-medium"></i>
+                                                            </p>
+                                                            <p class="mb-0 text-muted fs-12"><i class="ri ri-map-pin-line me-1 lh-1 align-end d-inline-block"></i>San
+                                                                Francisco</p>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <td>Bags & Wallet</td>
+                                                <td>
+                                                    <span class="mb-0">8547</span>
+                                                </td>
+                                                <td>
+                                                    <span>32%<span><i class="ri-bar-chart-fill text-secondary ms-1 fs-14"></i></span></span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>
+                                                    <div class="d-flex align-items-top justify-content-start flex-grow-1">
+                                                        <div class="avatar avatar-md avatar-rounded bg-secondary me-2">
+                                                            <img :src="`/backend/assets/images/faces/3.jpg`" alt="Natalie Brown">
+                                                        </div>
+                                                        <div>
+                                                            <p class="mb-0 fw-semibold">Sophie Davis <i class="ri-checkbox-circle-line text-primary fw-normal fs-14 lh-1 fw-medium"></i>
+                                                            </p>
+                                                            <p class="mb-0 text-muted fs-12"><i class="ri ri-map-pin-line me-1 lh-1 align-end d-inline-block"></i>San
+                                                                Francisco</p>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <td>Home Appliances</td>
+                                                <td>
+                                                    <span class="mb-0">1254</span>
+                                                </td>
+                                                <td>
+                                                    <span>26%<span><i class="ri-bar-chart-fill text-secondary ms-1 fs-14"></i></span></span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>
+                                                    <div class="d-flex align-items-top justify-content-start flex-grow-1">
+                                                        <div class="avatar avatar-md avatar-rounded bg-secondary me-2">
+                                                            <img :src="`/backend/assets/images/faces/5.jpg`" alt="Natalie Brown">
+                                                        </div>
+                                                        <div>
+                                                            <p class="mb-0 fw-semibold">Olivia White <i class="ri-checkbox-circle-line text-primary fw-normal fs-14 lh-1 fw-medium"></i>
+                                                            </p>
+                                                            <p class="mb-0 text-muted fs-12"><i class="ri ri-map-pin-line me-1 lh-1 align-end d-inline-block"></i>San
+                                                                Francisco</p>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <td>Electronics</td>
+                                                <td>
+                                                    <span class="mb-0">986</span>
+                                                </td>
+                                                <td>
+                                                    <span>65%<span><i class="ri-bar-chart-fill text-secondary ms-1 fs-14"></i></span></span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>
+                                                    <div class="d-flex align-items-top justify-content-start flex-grow-1">
+                                                        <div class="avatar avatar-md avatar-rounded bg-secondary me-2">
+                                                            <img :src="`/backend/assets/images/faces/7.jpg`" alt="Natalie Brown">
+                                                        </div>
+                                                        <div>
+                                                            <p class="mb-0 fw-semibold">Mia Taylor <i class="ri-checkbox-circle-line text-primary fw-normal fs-14 lh-1 fw-medium"></i>
+                                                            </p>
+                                                            <p class="mb-0 text-muted fs-12"><i class="ri ri-map-pin-line me-1 lh-1 align-end d-inline-block"></i>San
+                                                                Francisco</p>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <td>Beauty & Care</td>
+                                                <td>
+                                                    <span class="mb-0">3422</span>
+                                                </td>
+                                                <td>
+                                                    <span>76%<span><i class="ri-bar-chart-fill text-secondary ms-1 fs-14"></i></span></span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="border-bottom-0 rounded">
+                                                    <div class="d-flex align-items-top justify-content-start flex-grow-1">
+                                                        <div class="avatar avatar-md avatar-rounded bg-secondary me-2">
+                                                            <img :src="`/backend/assets/images/faces/2.jpg`" alt="Natalie Brown">
+                                                        </div>
+                                                        <div>
+                                                            <p class="mb-0 fw-semibold">Chloe Anderson <i class="ri-checkbox-circle-line text-primary fw-normal fs-14 lh-1 fw-medium"></i>
+                                                            </p>
+                                                            <p class="mb-0 text-muted fs-12"><i class="ri ri-map-pin-line me-1 lh-1 align-end d-inline-block"></i>San
+                                                                Francisco</p>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <td class="border-bottom-0">Kitchenware</td>
+                                                <td class="border-bottom-0">
+                                                    <span class="mb-0">8935</span>
+                                                </td>
+                                                <td class="border-bottom-0 rounded">
+                                                    <span>52%<span><i class="ri-bar-chart-fill text-secondary ms-1 fs-14"></i></span></span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -193,751 +647,576 @@
 
                 <!-- Start:: row-2 -->
                 <div class="row">
-                    <div class="col-xxl-3 col-md-6">
-                        <div class="card custom-card overflow-hidden">
-                            <div class="card-header justify-content-between">
+                    <div class="col-xxl-3">
+                        <div class="card custom-card">
+                            <div class="card-header justify-content-between pb-2">
+                                <div class="card-title">
+                                    Track Order
+                                </div>
+                                <div class="dropdown">
+                                    <a aria-label="anchor" href="javascript:void(0);" class="btn btn-icon btn-sm btn-light" data-bs-toggle="dropdown">
+                                        <i class="fe fe-more-vertical"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="javascript:void(0);">Action</a></li>
+                                        <li><a class="dropdown-item" href="javascript:void(0);">Another action</a></li>
+                                        <li><a class="dropdown-item" href="javascript:void(0);">Something else here</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex gap-3 border-bottom pb-3">
+                                    <span class="avatar avatar-lg bg-light">
+                                        <img :src="`/backend/assets/images/ecommerce/png/3.png`">
+                                    </span>
+                                    <div>
+                                        <p class="mb-0 fs-15 fw-semibold">Wired Headset With Mic(Black)</p>
+                                        <span class="fs-14 text-primary fw-semibold">$12,756<span class="text-muted fs-13 ms-2">(Qty:02)</span></span>
+                                    </div>
+                                </div>
+                                <ul class="list-unstyled mb-0 track-order pt-3">
+                                    <li class="d-flex">
+                                        <div class="avatar-md p-1 bg-primary-transparent avatar avatar-rounded flex-shrink-0 me-3">
+                                            <span class="avatar-sm avatar avatar-rounded bg-primary">
+                                                <i class="ti ti-user fs-18"></i>
+                                            </span>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex flex-wrap gap-1">
+                                                <div class="flex-grow-1">
+                                                    <p class="mb-1 fs-14 fw-medium">Order Placed</p>
+                                                    <p class="text-muted fs-13 mb-0">We Have Recieved Your Order</p>
+                                                </div>
+                                                <div class="ms-auto text-end flex-shrink-0">
+                                                    <p class="fs-12 mb-0">10 mins ago</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="d-flex">
+                                        <div class="avatar-md p-1 bg-secondary-transparent avatar avatar-rounded flex-shrink-0 me-3">
+                                            <span class="avatar-sm avatar avatar-rounded bg-secondary">
+                                                <i class="ti ti-file-invoice fs-18"></i>
+                                            </span>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex flex-wrap gap-1">
+                                                <div class="flex-grow-1">
+                                                    <p class="mb-1 fs-14 fw-medium">Order Packed</p>
+                                                    <p class="text-muted fs-13 mb-0">Your Product Packed</p>
+                                                </div>
+                                                <div class="ms-auto text-end flex-shrink-0">
+                                                    <p class="fs-12 mb-0">30 mins ago</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="d-flex">
+                                        <div class="avatar-md p-1 bg-danger-transparent avatar avatar-rounded flex-shrink-0 me-3">
+                                            <span class="avatar-sm avatar avatar-rounded bg-danger">
+                                                <i class="ti ti-message fs-18"></i>
+                                            </span>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex flex-wrap gap-1">
+                                                <div class="flex-grow-1">
+                                                    <p class="mb-1 fs-14 fw-medium">Order Shipped</p>
+                                                    <p class="text-muted fs-13 mb-0">Your Order Is Shipped</p>
+                                                </div>
+                                                <div class="ms-auto text-end flex-shrink-0">
+                                                    <p class="fs-12 mb-0">1 hour ago</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="d-flex">
+                                        <div class="avatar-md p-1 bg-light avatar avatar-rounded flex-shrink-0 me-3">
+                                            <span class="avatar-sm avatar avatar-rounded bg-gray-400 text-dark border">
+                                                <i class="ti ti-shopping-cart fs-18"></i>
+                                            </span>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex flex-wrap gap-1">
+                                                <div class="flex-grow-1">
+                                                    <p class="mb-1 fs-14 fw-medium">On The Way</p>
+                                                    <p class="text-muted fs-13 mb-0">Your Order Is Ready To Deliver.</p>
+                                                </div>
+                                                <div class="ms-auto text-end flex-shrink-0">
+                                                    <p class="fs-12 mb-0">2 hours ago</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="d-flex mb-0">
+                                        <div class="avatar-md p-1 bg-light avatar avatar-rounded flex-shrink-0 me-3">
+                                            <span class="avatar-sm avatar avatar-rounded bg-gray-400 text-dark border">
+                                                <i class="ti ti-check fs-18"></i>
+                                            </span>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex flex-wrap gap-1">
+                                                <div class="flex-grow-1">
+                                                    <p class="mb-1 fs-14 fw-medium">Product Deliverd</p>
+                                                    <p class="text-muted fs-13 mb-0">Order successfully Deliverd.</p>
+                                                </div>
+                                                <div class="ms-auto text-end flex-shrink-0">
+                                                    <p class="fs-12 mb-0"> 3 hours ago</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-6">
+                        <div class="card custom-card">
+                            <div class="card-header justify-content-between d-flex gap-2 flex-wrap">
                                 <div class="card-title">
                                     Top Selling Products
                                 </div>
-                                <a href="javascript:void(0);" class="text-muted fs-12 text-decoration-underline">View All<i class="ti ti-arrow-narrow-right"></i></a>
-                            </div>
-                            <div class="card-body p-0">
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">
-                                        <div class="d-flex align-items-center gap-3">
-                                            <div class="lh-1">
-                                                <span class="avatar avatar-lg bg-light border border-dashed p-1">
-                                                    <img :src="`/backend/assets/images/ecommerce/png/11.png`" alt="">
-                                                </span>
-                                            </div>
-                                            <div class="flex-fill">
-                                                <span class="fw-semibold mb-1 d-block">TaoTronics Wall Clock</span>
-                                                <div class="d-flex align-items-center gap-2 fw-medium">
-                                                    <div class="fs-12 text-muted">$699</div>
-                                                    <div class="vr"></div>
-                                                    <span class="text-success fs-12"><i class="ri-circle-fill me-1 fs-7 align-middle"></i>In Stock</span>
-                                                </div>
-                                            </div>
-                                            <div class="text-end">
-                                                <span class="d-block fw-semibold">1000</span>
-                                                <span class="fs-12 d-block text-muted">Sales</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <div class="d-flex align-items-center gap-3">
-                                            <div class="lh-1">
-                                                <span class="avatar avatar-lg bg-light border border-dashed p-1">
-                                                    <img :src="`/backend/assets/images/ecommerce/png/12.png`" alt="">
-                                                </span>
-                                            </div>
-                                            <div class="flex-fill">
-                                                <span class="fw-semibold mb-1 d-block">Club Fleece Hoodie</span>
-                                                <div class="d-flex align-items-center gap-2 fw-medium">
-                                                    <div class="fs-12 text-muted">$55</div>
-                                                    <div class="vr"></div>
-                                                    <span class="text-success fs-12"><i class="ri-circle-fill me-1 fs-7 align-middle"></i>In Stock</span>
-                                                </div>
-                                            </div>
-                                            <div class="text-end">
-                                                <span class="d-block fw-semibold">3,100</span>
-                                                <span class="fs-12 d-block text-muted">Sales</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <div class="d-flex align-items-center gap-3">
-                                            <div class="lh-1">
-                                                <span class="avatar avatar-lg bg-light border border-dashed p-1">
-                                                    <img :src="`/backend/assets/images/ecommerce/png/14.png`" alt="">
-                                                </span>
-                                            </div>
-                                            <div class="flex-fill">
-                                                <span class="fw-semibold mb-1 d-block">SmartGizmo Pro Headset</span>
-                                                <div class="d-flex align-items-center gap-2 fw-medium">
-                                                    <div class="fs-12 text-muted">$199</div>
-                                                    <div class="vr"></div>
-                                                    <span class="text-success fs-12"><i class="ri-circle-fill me-1 fs-7 align-middle"></i>In Stock</span>
-                                                </div>
-                                            </div>
-                                            <div class="text-end">
-                                                <span class="d-block fw-semibold">1,250</span>
-                                                <span class="fs-12 d-block text-muted">Sales</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <div class="d-flex align-items-center gap-3">
-                                            <div class="lh-1">
-                                                <span class="avatar avatar-lg bg-light border border-dashed p-1">
-                                                    <img :src="`/backend/assets/images/ecommerce/png/16.png`" alt="">
-                                                </span>
-                                            </div>
-                                            <div class="flex-fill">
-                                                <span class="fw-semibold mb-1 d-block">TaoTronics Cattle</span>
-                                                <div class="d-flex align-items-center gap-2 fw-medium">
-                                                    <div class="fs-12 text-muted">$699</div>
-                                                    <div class="vr"></div>
-                                                    <span class="text-danger fs-12"><i class="ri-circle-fill me-1 fs-7 align-middle"></i>Out Of Stock</span>
-                                                </div>
-                                            </div>
-                                            <div class="text-end">
-                                                <span class="d-block fw-semibold">1000</span>
-                                                <span class="fs-12 d-block text-muted">Sales</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <div class="d-flex align-items-center gap-3">
-                                            <div class="lh-1">
-                                                <span class="avatar avatar-lg bg-light border border-dashed p-1">
-                                                    <img :src="`/backend/assets/images/ecommerce/png/13.png`" alt="">
-                                                </span>
-                                            </div>
-                                            <div class="flex-fill">
-                                                <span class="fw-semibold mb-1 d-block">UltraMaze Ladies Bag</span>
-                                                <div class="d-flex align-items-center gap-2 fw-medium ">
-                                                    <div class="fs-12 text-muted">$89</div>
-                                                    <div class="vr"></div>
-                                                    <span class="text-success fs-12"><i class="ri-circle-fill me-1 fs-7 align-middle"></i>In Stock</span>
-                                                </div>
-                                            </div>
-                                            <div class="text-end">
-                                                <span class="d-block fw-semibold">2,150</span>
-                                                <span class="fs-12 d-block text-muted">Sales</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xxl-3 col-md-6">
-                        <div class="card custom-card">
-                            <div class="card-header justify-content-between">
-                                <div class="card-title">
-                                    Recent Activity
-                                </div>
-                                <a href="javascript:void(0);" class="text-muted fs-12 text-decoration-underline">View All<i class="ti ti-arrow-narrow-right"></i></a>
-                            </div>
-                            <div class="card-body px-sm-5">
-                                <ul class="list-unstyled recent-activity-list">
-                                    <li>
-                                        <div class="recent-activity-time text-end">
-                                            <span class="fw-semibold d-block">24,Nov</span>
-                                            <span class="d-block text-muted fs-12">08:45 AM</span>
-                                        </div>
-                                        <div>
-                                            <span class="d-block fs-13 mt-1">
-                                                John Doe placed an order for <span class="fw-medium text-primary">5x Apple iPhone 14</span>
-                                            </span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="recent-activity-time text-end">
-                                            <span class="fw-semibold d-block">24,Nov</span>
-                                            <span class="d-block text-muted fs-12">09:15 AM</span>
-                                        </div>
-                                        <div>
-                                            <span class="d-block fs-13 mt-1">
-                                                Payment of <span class="fw-medium text-default">$1,250.00</span> received from <span class="fw-medium text-default">Alice Smith</span> for <span class="fw-medium text-warning">Order #1020</span>.
-                                            </span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="recent-activity-time text-end">
-                                            <span class="fw-semibold d-block">24,Nov</span>
-                                            <span class="d-block text-muted fs-12">10:00 AM</span>
-                                        </div>
-                                        <div>
-                                            <span class="d-block fs-13 mt-1">
-                                                <span class="fw-medium text-default">David Brown</span> requested a refund for <span class="fw-medium text-info">1x Samsung Galaxy S22</span>.
-                                            </span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="recent-activity-time text-end">
-                                            <span class="fw-semibold d-block">24,Nov</span>
-                                            <span class="d-block text-muted fs-12">10:45 AM</span>
-                                        </div>
-                                        <div>
-                                            <span class="d-block fs-13 mt-1">
-                                                <span class="fw-medium text-success">Product ID: 5409</span> (Sony WH-1000XM5) stock dropped below threshold.
-                                            </span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="recent-activity-time text-end">
-                                            <span class="fw-semibold d-block">24,Nov</span>
-                                            <span class="d-block text-muted fs-12">11:30 AM</span>
-                                        </div>
-                                        <div>
-                                            <span class="d-block fs-13 mt-1">
-                                                <span class="fw-medium text-default">Emma Johnson</span> left a <span class="fw-medium text-default">5-star review</span> on <span class="fw-medium text-orange">Product ID: 7312</span> (Dell XPS 13).
-                                            </span>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xxl-3 col-xl-6">
-                        <div class="card custom-card">
-                            <div class="card-header justify-content-between">
-                                <div class="card-title">
-                                    Top Customers
-                                </div>
-                                <a href="javascript:void(0);" class="text-muted fs-12 text-decoration-underline">View All<i class="ti ti-arrow-narrow-right"></i></a>
-                            </div>
-                            <div class="card-body">
-                                <ul class="list-unstyled top-customers-list">
-                                    <li>
-                                        <div class="d-flex align-items-center gap-3 flex-wrap">
-                                            <div class="lh-1">
-                                                <span class="avatar avatar-md bg-primary-transparent">
-                                                    JS
-                                                </span>
-                                            </div>
-                                            <div class="flex-fill">
-                                                <span class="d-block fw-semibold">Jane Smith</span>
-                                                <span class="fs-12 text-muted"><a href="https://sprukomarket.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="076d666962746a6e736f35363247606a666e6b2964686a">[email&#160;protected]</a></span>
-                                            </div>
-                                            <div class="text-end">
-                                                <div class="fw-semibold text-primary mb-0">$23,755</div>
-                                                <span class="fs-12 text-muted">Spent</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="d-flex align-items-center gap-3 flex-wrap">
-                                            <div class="lh-1">
-                                                <span class="avatar avatar-md bg-secondary-transparent">
-                                                    JD
-                                                </span>
-                                            </div>
-                                            <div class="flex-fill">
-                                                <span class="d-block fw-semibold">Jhon Doe</span>
-                                                <span class="fs-12 text-muted"><a href="https://sprukomarket.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="38525057565c575d0c0b09785f55595154165b5755">[email&#160;protected]</a></span>
-                                            </div>
-                                            <div class="text-end">
-                                                <div class="fw-semibold text-secondary mb-0">$14,563</div>
-                                                <span class="fs-12 text-muted">Spent</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="d-flex align-items-center gap-3 flex-wrap">
-                                            <div class="lh-1">
-                                                <span class="avatar avatar-md bg-warning-transparent">
-                                                    AK
-                                                </span>
-                                            </div>
-                                            <div class="flex-fill">
-                                                <span class="d-block fw-semibold">Alicia Keys</span>
-                                                <span class="fs-12 text-muted"><a href="https://sprukomarket.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="81e0ede8e2e8e0eae4f8f2b8b9b7c1e6ece0e8edafe2eeec">[email&#160;protected]</a></span>
-                                            </div>
-                                            <div class="text-end">
-                                                <div class="fw-semibold text-warning mb-0">$12,075</div>
-                                                <span class="fs-12 text-muted">Spent</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="d-flex align-items-center gap-3 flex-wrap">
-                                            <div class="lh-1">
-                                                <span class="avatar avatar-md bg-info-transparent">
-                                                    LP
-                                                </span>
-                                            </div>
-                                            <div class="flex-fill">
-                                                <span class="d-block fw-semibold">Leo Phillip</span>
-                                                <span class="fs-12 text-muted"><a href="https://sprukomarket.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b3dfd6dcc3dbdadfdfdac38484f3d4ded2dadf9dd0dcde">[email&#160;protected]</a></span>
-                                            </div>
-                                            <div class="text-end">
-                                                <div class="fw-semibold text-info mb-0">$10,485</div>
-                                                <span class="fs-12 text-muted">Spent</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="d-flex align-items-center gap-3 flex-wrap">
-                                            <div class="lh-1">
-                                                <span class="avatar avatar-md bg-success-transparent">
-                                                    BS
-                                                </span>
-                                            </div>
-                                            <div class="flex-fill">
-                                                <span class="d-block fw-semibold">Brenda Simpson</span>
-                                                <span class="fs-12 text-muted"><a href="https://sprukomarket.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f89a8a9d969c998b9195888b9796c8cfcdb89f95999194d69b9795">[email&#160;protected]</a></span>
-                                            </div>
-                                            <div class="text-end">
-                                                <div class="fw-semibold text-success mb-0">$8,533</div>
-                                                <span class="fs-12 text-muted">Spent</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xxl-3 col-xl-6">
-                        <div class="card custom-card overflow-hidden">
-                            <div class="card-header justify-content-between">
-                                <div class="card-title">
-                                    Top User Channels
-                                </div>
-                                <div class="dropdown"> 
-                                    <a aria-label="anchor" href="javascript:void(0);" class="btn btn-icon btn-sm btn-light" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fe fe-more-vertical"></i> 
-                                    </a> 
-                                    <ul class="dropdown-menu"> 
-                                        <li><a class="dropdown-item" href="javascript:void(0);">Week</a></li> 
-                                        <li><a class="dropdown-item" href="javascript:void(0);">Month</a></li> 
-                                        <li><a class="dropdown-item" href="javascript:void(0);">Year</a></li> 
-                                    </ul> 
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <ul class="list-unstyled top-user-channels-list">
-                                    <li>
-                                        <div class="d-flex align-items-center gap-3 flex-wrap">
-                                            <div class="lh-1">
-                                                <span class="avatar avatar-md bg-light">
-                                                    <img :src="`/backend/assets/images/company-logos/1.png`" alt="">
-                                                </span>
-                                            </div>
-                                            <div class="flex-fill">
-                                                <span class="d-block fw-semibold">CloudComm</span>
-                                                <span class="text-muted fs-12">Digital Communication</span>
-                                            </div>
-                                            <div class="text-end">
-                                                <div class="d-flex align-items-center gap-2 mb-2">
-                                                    <span class="fs-12 text-success fw-medium"><i class="ti ti-arrow-narrow-up"></i>2.98%</span>
-                                                    <div class="fw-semibold">3,765</div>
-                                                </div>
-                                                <div class="progress progress-xs progress-animate bg-primary-transparent" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
-                                                    <div class="progress-bar bg-primary" style="width: 75%">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="d-flex align-items-center gap-3 flex-wrap">
-                                            <div class="lh-1">
-                                                <span class="avatar avatar-md bg-light">
-                                                    <img :src="`/backend/assets/images/company-logos/2.png`" alt="">
-                                                </span>
-                                            </div>
-                                            <div class="flex-fill">
-                                                <span class="d-block fw-semibold">BuzzWave</span>
-                                                <span class="text-muted fs-12">Social Media</span>
-                                            </div>
-                                            <div class="text-end">
-                                                <div class="d-flex align-items-center gap-2 mb-2">
-                                                    <span class="fs-12 text-danger fw-medium"><i class="ti ti-arrow-narrow-down"></i>6.45%</span>
-                                                    <div class="fw-semibold">2,855</div>
-                                                </div>
-                                                <div class="progress progress-xs progress-animate bg-secondary-transparent" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">
-                                                    <div class="progress-bar bg-secondary" style="width: 45%">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="d-flex align-items-center gap-3 flex-wrap">
-                                            <div class="lh-1">
-                                                <span class="avatar avatar-md bg-light">
-                                                    <img :src="`/backend/assets/images/company-logos/3.png`" alt="">
-                                                </span>
-                                            </div>
-                                            <div class="flex-fill">
-                                                <span class="d-block fw-semibold">NexusNet</span>
-                                                <span class="text-muted fs-12">Networking</span>
-                                            </div>
-                                            <div class="text-end">
-                                                <div class="d-flex align-items-center gap-2 mb-2">
-                                                    <span class="fs-12 text-success fw-medium"><i class="ti ti-arrow-narrow-up"></i>1.95%</span>
-                                                    <div class="fw-semibold">2,384</div>
-                                                </div>
-                                                <div class="progress progress-xs progress-animate bg-warning-transparent" role="progressbar" aria-valuenow="81" aria-valuemin="0" aria-valuemax="100">
-                                                    <div class="progress-bar bg-warning" style="width: 81%">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="d-flex align-items-center gap-3 flex-wrap">
-                                            <div class="lh-1">
-                                                <span class="avatar avatar-md bg-light">
-                                                    <img :src="`/backend/assets/images/company-logos/4.png`" alt="">
-                                                </span>
-                                            </div>
-                                            <div class="flex-fill">
-                                                <span class="d-block fw-semibold">FlashConnect</span>
-                                                <span class="text-muted fs-12">Direct Marketing</span>
-                                            </div>
-                                            <div class="text-end">
-                                                <div class="d-flex align-items-center gap-2 mb-2">
-                                                    <span class="fs-12 text-danger fw-medium"><i class="ti ti-arrow-narrow-down"></i>5.91%</span>
-                                                    <div class="fw-semibold">1,755</div>
-                                                </div>
-                                                <div class="progress progress-xs progress-animate bg-info-transparent" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
-                                                    <div class="progress-bar bg-info" style="width: 60%">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="d-flex align-items-center gap-3 flex-wrap">
-                                            <div class="lh-1">
-                                                <span class="avatar avatar-md bg-light">
-                                                    <img :src="`/backend/assets/images/company-logos/5.png`" alt="">
-                                                </span>
-                                            </div>
-                                            <div class="flex-fill">
-                                                <span class="d-block fw-semibold">EchoLink</span>
-                                                <span class="text-muted fs-12">Feedback & Surveys</span>
-                                            </div>
-                                            <div class="text-end">
-                                                <div class="d-flex align-items-center gap-2 mb-2">
-                                                    <span class="fs-12 text-success fw-medium"><i class="ti ti-arrow-narrow-up"></i>3.75%</span>
-                                                    <div class="fw-semibold">1,525</div>
-                                                </div>
-                                                <div class="progress progress-xs progress-animate bg-success-transparent" role="progressbar" aria-valuenow="53" aria-valuemin="0" aria-valuemax="100">
-                                                    <div class="progress-bar bg-success" style="width: 53%">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="d-flex align-items-center gap-3 flex-wrap">
-                                            <div class="lh-1">
-                                                <span class="avatar avatar-md bg-light">
-                                                    <img :src="`/backend/assets/images/company-logos/6.png`" alt="">
-                                                </span>
-                                            </div>
-                                            <div class="flex-fill">
-                                                <span class="d-block fw-semibold">VibeStream</span>
-                                                <span class="text-muted fs-12">Content Distribution</span>
-                                            </div>
-                                            <div class="text-end">
-                                                <div class="d-flex align-items-center gap-2 mb-2">
-                                                    <span class="fs-12 text-success fw-medium"><i class="ti ti-arrow-narrow-up"></i>0.95%</span>
-                                                    <div class="fw-semibold">1,345</div>
-                                                </div>
-                                                <div class="progress progress-xs progress-animate bg-danger-transparent" role="progressbar" aria-valuenow="37" aria-valuemin="0" aria-valuemax="100">
-                                                    <div class="progress-bar bg-danger" style="width: 37%">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- End:: row-2 -->    
-
-                <!-- Start:: row-3 -->
-                <div class="row">
-                    <div class="col-xl-8"> 
-                        <div class="card custom-card overflow-hidden">
-                            <div class="card-header justify-content-between">
-                                <div class="card-title">
-                                    Recent Invoices
-                                </div>
-                                <div class="d-flex flex-wrap gap-2"> 
-                                    <div class="dropdown custom-invoice"> 
-                                        <a href="javascript:void(0);" class="btn btn-outline-light btn-wave waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="false">Filters<i class="ri-arrow-down-s-line align-middle ms-1 d-inline-block"></i> </a> 
-                                        <ul class="dropdown-menu" role="menu"> 
-                                            <li><a class="dropdown-item" href="javascript:void(0);">New</a></li> 
-                                            <li><a class="dropdown-item" href="javascript:void(0);">Popular</a></li> 
-                                            <li><a class="dropdown-item" href="javascript:void(0);">Relevant</a></li> 
-                                        </ul> 
-                                    </div> 
-                                    <div> 
-                                        <input class="form-control" type="text" placeholder="Search Here" aria-label=".form-control-sm example"> 
-                                    </div> 
+                                <div class="dropdown">
+                                    <a href="javascript:void(0);" class="btn btn-light btn-sm btn-wave waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="false"> Sort By<i class="ri-arrow-down-s-line align-middle ms-1 d-inline-block"></i>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a class="dropdown-item" href="javascript:void(0);">New</a></li>
+                                        <li><a class="dropdown-item" href="javascript:void(0);">Popular</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="javascript:void(0);">Relevant</a>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                             <div class="card-body p-0">
                                 <div class="table-responsive">
-                                    <table class="table text-nowrap table-hover">
+                                    <table class="table text-nowrap mb-0">
                                         <thead>
                                             <tr>
-                                                <th><input class="form-check-input" type="checkbox" id="checkboxAll" value="" aria-label="..."></th>
-                                                <th>ID</th>
-                                                <th>Customer</th>
-                                                <th>Ordered Date</th>
-                                                <th>Items</th>
-                                                <th>Price</th>
-                                                <th>Status</th>
-                                                <th>Actions</th>
+                                                <th scope="col" class="text-center">Id.no</th>
+                                                <th scope="col">Product Name</th>
+                                                <th scope="col">Date</th>
+                                                <th scope="col">Category</th>
+                                                <th scope="col">Stock</th>
+                                                <th scope="col">Total Sales</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="top-selling">
+                                            <tr>
+                                                <td class="text-center lh-1">
+                                                    #31265
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="avatar avatar-sm me-2 my-1">
+                                                            <img :src="`/backend/assets/images/ecommerce/jpg/3.jpg`" class="rounded-pill bg-light" alt="">
+                                                        </span>Galaxy X9 Ultra Camera
+                                                    </div>
+                                                </td>
+                                                <td>19/02/2024</td>
+                                                <td>Electronics</td>
+                                                <td><span class="badge bg-primary-transparent text-primary">In
+                                                        Stock</span></td>
+                                                <td>
+                                                    <span class="fw-semibold">7,892</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center lh-1">
+                                                    #37535
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="avatar avatar-sm me-2 my-1">
+                                                            <img :src="`/backend/assets/images/ecommerce/jpg/6.jpg`" class="rounded-pill bg-light" alt="">
+                                                        </span>
+                                                        Elegant Red Flower Pot
+                                                    </div>
+                                                </td>
+                                                <td>15/05/2024</td>
+                                                <td>Home Decoration</td>
+                                                <td><span class="badge bg-primary-transparent text-primary">In
+                                                        Stock</span></td>
+                                                <td>
+                                                    <span class="fw-semibold">3,578</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center lh-1">
+                                                    #35482
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="avatar avatar-sm me-2 my-1">
+                                                            <img :src="`/backend/assets/images/ecommerce/jpg/7.jpg`" class="rounded-pill bg-light" alt="">
+                                                        </span>
+                                                        Altra Pro Max Camera
+                                                    </div>
+                                                </td>
+                                                <td>22/07/2024</td>
+                                                <td>Electronics</td>
+                                                <td><span class="badge bg-danger-transparent text-danger">Out Of
+                                                        Stock</span></td>
+                                                <td>
+                                                    <span class="fw-semibold">2,934</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center lh-1">
+                                                    #46535
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="avatar avatar-sm me-2 my-1">
+                                                            <img :src="`/backend/assets/images/ecommerce/jpg/8.jpg`" class="rounded-pill bg-light" alt="">
+                                                        </span>
+                                                        Elegant Smell Candles
+                                                    </div>
+                                                </td>
+                                                <td>12/11/2024</td>
+                                                <td>Home Decoration</td>
+                                                <td><span class="badge bg-danger-transparent text-danger">Out Of
+                                                        Stock</span></td>
+                                                <td>
+                                                    <span class="fw-semibold">4,589</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center lh-1">
+                                                    #46535
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="avatar avatar-sm me-2 my-1">
+                                                            <img :src="`/backend/assets/images/ecommerce/jpg/3.jpg`" class="rounded-pill bg-light" alt="">
+                                                        </span>
+                                                        Altra Pro max Camera
+                                                    </div>
+                                                </td>
+                                                <td>12/11/2024</td>
+                                                <td>Electronics</td>
+                                                <td><span class="badge bg-danger-transparent text-danger">Out Of
+                                                        Stock</span></td>
+                                                <td>
+                                                    <span class="fw-semibold">4,589</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center lh-1 border-bottom-0 rounded">
+                                                    #35653
+                                                </td>
+                                                <td class="border-bottom-0">
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="avatar avatar-sm me-2 my-1">
+                                                            <img :src="`/backend/assets/images/ecommerce/jpg/2.jpg`" class="rounded-pill bg-light" alt="">
+                                                        </span>
+                                                        Little Pro Kids Backpack
+                                                    </div>
+                                                </td>
+                                                <td>31/08/2024</td>
+                                                <td class="border-bottom-0">Kids' Fashion</td>
+                                                <td class="border-bottom-0"><span class="badge bg-primary-transparent text-primary">In
+                                                        Stock</span></td>
+                                                <td class="border-bottom-0 rounded">
+                                                    <span class="fw-semibold">4,589</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-3">
+                        <div class="card custom-card">
+                            <div class="card-header justify-content-between">
+                                <div class="card-title">
+                                    Top Selling Categories
+                                </div>
+                                <div class="dropdown">
+                                    <a href="javascript:void(0);" class="btn btn-light btn-sm btn-wave waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="false"> Sort By<i class="ri-arrow-down-s-line align-middle ms-1 d-inline-block"></i>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a class="dropdown-item" href="javascript:void(0);">New</a></li>
+                                        <li><a class="dropdown-item" href="javascript:void(0);">Popular</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="javascript:void(0);">Relevant</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <div id="top-categories"></div>
+                                <div class="table-responsive border-top">
+                                    <table class="table text-nowrap">
+                                        <tbody>
+                                            <tr>
+                                                <th>
+                                                    <div class="d-flex gap-2 align-items-center">
+                                                        <span class="avatar avatar-sm bg-primary-transparent">
+                                                            <i class="ri-macbook-line fs-18"></i>
+                                                        </span>
+                                                        <span class="d-block fw-semibold">Electronics</span>
+                                                    </div>
+                                                </th>
+                                                <td class="text-center"><span class="text-primary fw-medium ms-1 d-inline-flex align-items-center"><i class="ti ti-arrow-narrow-up"></i>0.78%</span></td>
+                                                <td class="text-center">
+                                                    <div class="fs-14 mb-0 fw-semibold"> 18,235 </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>
+                                                    <div class="d-flex gap-2 align-items-center">
+                                                        <span class="avatar avatar-sm bg-secondary-transparent">
+                                                            <i class="ri-t-shirt-line fs-18"></i>
+                                                        </span>
+                                                        <span class="d-block fw-semibold">Fashion Trends</span>
+                                                    </div>
+                                                </th>
+                                                <td class="text-center"><span class="text-danger fw-medium ms-1 d-inline-flex"><i class="ti ti-arrow-narrow-down"></i>1.57%</span>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="fs-14 mb-0 fw-semibold"> 12,743 </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>
+                                                    <div class="d-flex gap-2 align-items-center">
+                                                        <span class="avatar avatar-sm bg-danger-transparent">
+                                                            <i class="ri-discord-line fs-18"></i>
+                                                        </span>
+                                                        <span class="d-block fw-semibold">Entertainment</span>
+                                                    </div>
+                                                </th>
+                                                <td class="text-center"><span class="text-primary fw-medium ms-1 d-inline-flex align-items-center"><i class="ti ti-arrow-narrow-up"></i>0.32%</span></td>
+                                                <td class="text-center">
+                                                    <div class="fs-14 mb-0 fw-semibold"> 8,369 </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="border-bottom-0 rounded">
+                                                    <div class="d-flex gap-2 align-items-center">
+                                                        <span class="avatar avatar-sm bg-warning-transparent">
+                                                            <i class="ri-home-3-line fs-18"></i>
+                                                        </span>
+                                                        <span class="d-block fw-semibold">Home Decoration</span>
+                                                    </div>
+                                                </th>
+                                                <td class="text-center border-bottom-0 rounded"><span class="text-primary fw-medium ms-1 d-inline-flex align-items-center"><i class="ti ti-arrow-narrow-up"></i>19.45%</span></td>
+                                                <td class="text-center border-bottom-0 rounded">
+                                                    <div class="fs-14 mb-0 fw-semibold"> 16,458 </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End:: row-2 -->
+
+                <!-- Start:: row-3 -->
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card custom-card">
+                            <div class="card-header justify-content-between border-bottom-0">
+                                <div class="card-title">
+                                    Recent Orders
+                                </div>
+                                <div class="d-flex flex-wrap ms-auto gap-2">
+                                    <div class="me-1">
+                                        <input class="form-control form-control-sm" type="text" placeholder="Search" aria-label=".form-control-sm example">
+                                    </div>
+                                    <div class="dropdown">
+                                        <a href="javascript:void(0);" class="btn btn-primary btn-sm btn-wave waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Sort By<i class="ri-arrow-down-s-line align-middle ms-1 d-inline-block"></i>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end" role="menu">
+                                            <li><a class="dropdown-item" href="javascript:void(0);">New</a></li>
+                                            <li><a class="dropdown-item" href="javascript:void(0);">Popular</a></li>
+                                            <li><a class="dropdown-item" href="javascript:void(0);">Relevant</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body pt-0">
+                                <div class="table-responsive">
+                                    <table class="table text-nowrap table-bordered custom-orders">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Order Id</th>
+                                                <th scope="col">Product Title</th>
+                                                <th scope="col">Category</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Price</th>
+                                                <th scope="col">Ordered Date</th>
+                                                <th scope="col">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <input class="form-check-input" type="checkbox" id="checkbox1" value="" aria-label="..." checked>
+                                                    <span class="fw-medium">#42A5689</span>
                                                 </td>
-                                                <td>#SPK231</td>
                                                 <td>
-                                                    <div class="d-flex align-items-center gap-2">
-                                                        <div class="lh-1">
-                                                            <span class="avatar avatar-sm avatar-rounded bg-primary">
-                                                                JS
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="me-2 lh-1">
+                                                            <span class="avatar avatar-sm">
+                                                                <img :src="`/backend/assets/images/ecommerce/jpg/6.jpg`" alt="">
                                                             </span>
                                                         </div>
-                                                        <div>
-                                                            <span class="d-block fw-semibold">Jane Smith</span>
-                                                            <span class="fs-12 d-block text-muted"><a href="https://sprukomarket.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="89e3e8e7ecfae4e0fde1bbb8bac9eee4e8e0e5a7eae6e4">[email&#160;protected]</a></span>
-                                                        </div>
+                                                        <div class="fs-14">Wood Handled Flower Pot</div>
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div>
-                                                        27,Aug 2024 
-                                                    </div>
-                                                    <div class="text-muted fs-12">
-                                                        12:45PM
-                                                    </div>
+                                                    <span class="fw-medium">Home Decoration</span>
                                                 </td>
                                                 <td>
-                                                    <div class="avatar-list-stacked">
-                                                        <span class="avatar avatar-rounded avatar-sm bg-light">
-                                                            <img :src="`/backend/assets/images/ecommerce/jpg/3.jpg`" alt="img">
-                                                        </span>
-                                                        <span class="avatar avatar-rounded avatar-sm bg-light">
-                                                            <img :src="`/backend/assets/images/ecommerce/jpg/4.jpg`" alt="img">
-                                                        </span>
-                                                        <span class="avatar avatar-rounded avatar-sm bg-light">
-                                                            <img :src="`/backend/assets/images/ecommerce/jpg/5.jpg`" alt="img">
-                                                        </span>
-                                                    </div>
+                                                    <span class="badge bg-primary-transparent">Delivered</span>
+                                                </td>
+                                                <td class="fw-medium">
+                                                    $999.00
                                                 </td>
                                                 <td>
-                                                    $1,249
+                                                    <span class="">24th Jul,24</span>
                                                 </td>
                                                 <td>
-                                                    <span class="badge bg-success-transparent">Paid</span>
-                                                </td>
-                                                <td>
-                                                    <div class="dropdown custom-invoice"> 
-                                                        <a aria-label="anchor" href="javascript:void(0);" class="btn btn-icon btn-sm btn-light border" data-bs-toggle="dropdown" aria-expanded="false"> <i class="fe fe-more-vertical"></i> </a> 
-                                                        <ul class="dropdown-menu"> 
-                                                            <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-eye-line me-2"></i>View</a></li> 
-                                                            <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-pencil-line me-2"></i>Edit</a></li> 
-                                                            <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-delete-bin-line me-2"></i>Delete</a></li> 
-                                                        </ul> 
+                                                    <div class="btn-list">
+                                                        <button class="btn btn-sm btn-icon btn-primary-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="ri-pencil-line lh-1 align-middle"></i></button>
+                                                        <button class="btn btn-sm btn-icon btn-danger-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="ri-delete-bin-line lh-1 align-middle"></i></button>
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <input class="form-check-input" type="checkbox" id="checkbox2" value="" aria-label="..." checked>
+                                                    <span class="fw-medium">#875J789</span>
                                                 </td>
-                                                <td>#SPK421</td>
                                                 <td>
-                                                    <div class="d-flex align-items-center gap-2">
-                                                        <div class="lh-1">
-                                                            <span class="avatar avatar-sm avatar-rounded bg-secondary">
-                                                               JD
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="me-2 lh-1">
+                                                            <span class="avatar avatar-sm">
+                                                                <img :src="`/backend/assets/images/ecommerce/jpg/1.jpg`" alt="">
                                                             </span>
                                                         </div>
-                                                        <div>
-                                                            <span class="d-block fw-semibold">Jhon Doe</span>
-                                                            <span class="fs-12 d-block text-muted"><a href="https://sprukomarket.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7a101215141e151f424c4f3a1d171b131654191517">[email&#160;protected]</a></span>
+                                                        <div class="fs-14">Samsung Galaxy Headset</div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span class="fw-medium">Electronics</span>
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-info-transparent">Shipped</span>
+                                                </td>
+                                                <td class="fw-medium">
+                                                    $897.69
+                                                </td>
+                                                <td>
+                                                    <span class="">08th Aug,24</span>
+                                                </td>
+                                                <td>
+                                                    <div class="btn-list">
+                                                        <button class="btn btn-sm btn-icon btn-primary-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="ri-pencil-line lh-1 align-middle"></i></button>
+                                                        <button class="btn btn-sm btn-icon btn-danger-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="ri-delete-bin-line lh-1 align-middle"></i></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="fw-medium">#37T8746L</span>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="me-2 lh-1">
+                                                            <span class="avatar avatar-sm">
+                                                                <img :src="`/backend/assets/images/ecommerce/jpg/2.jpg`" alt="">
+                                                            </span>
                                                         </div>
+                                                        <div class="fs-14">Little Pro Kids Backpack</div>
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div>16,Sep 2024</div>
-                                                    <div class="fs-12 text-muted">
-                                                        11:15AM
+                                                    <span class="fw-medium">Kids' Fashion</span>
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-danger-transparent">Cancelled</span>
+                                                </td>
+                                                <td class="fw-medium">
+                                                    $688.00
+                                                </td>
+                                                <td>
+                                                    <span class="">19th May,24</span>
+                                                </td>
+                                                <td>
+                                                    <div class="btn-list">
+                                                        <button class="btn btn-sm btn-icon btn-primary-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="ri-pencil-line lh-1 align-middle"></i></button>
+                                                        <button class="btn btn-sm btn-icon btn-danger-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="ri-delete-bin-line lh-1 align-middle"></i></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="fw-medium">#589Y324</span>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="me-2 lh-1">
+                                                            <span class="avatar avatar-sm">
+                                                                <img :src="`/backend/assets/images/ecommerce/jpg/3.jpg`" alt="">
+                                                            </span>
+                                                        </div>
+                                                        <div class="fs-14">Altra Pro max Camera</div>
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div class="avatar-list-stacked">
-                                                        <span class="avatar avatar-rounded avatar-sm bg-light">
-                                                            <img :src="`/backend/assets/images/ecommerce/jpg/1.jpg`" alt="img">
-                                                        </span>
-                                                        <span class="avatar avatar-rounded avatar-sm bg-light">
-                                                            <img :src="`/backend/assets/images/ecommerce/jpg/2.jpg`" alt="img">
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    $3,299
+                                                    <span class="fw-medium">Electronics</span>
                                                 </td>
                                                 <td>
                                                     <span class="badge bg-warning-transparent">Pending</span>
                                                 </td>
+                                                <td class="fw-medium">
+                                                    $599.09
+                                                </td>
                                                 <td>
-                                                    <div class="dropdown custom-invoice"> 
-                                                        <a aria-label="anchor" href="javascript:void(0);" class="btn btn-icon btn-sm btn-light border" data-bs-toggle="dropdown" aria-expanded="false"> <i class="fe fe-more-vertical"></i> </a> 
-                                                        <ul class="dropdown-menu"> 
-                                                            <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-eye-line me-2"></i>View</a></li> 
-                                                            <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-pencil-line me-2"></i>Edit</a></li> 
-                                                            <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-delete-bin-line me-2"></i>Delete</a></li> 
-                                                        </ul> 
+                                                    <span class=""> 02th Aug,24</span>
+                                                </td>
+                                                <td>
+                                                    <div class="btn-list">
+                                                        <button class="btn btn-sm btn-icon btn-primary-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="ri-pencil-line lh-1 align-middle"></i></button>
+                                                        <button class="btn btn-sm btn-icon btn-danger-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="ri-delete-bin-line lh-1 align-middle"></i></button>
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <input class="form-check-input" type="checkbox" id="checkbox3" value="" aria-label="...">
+                                                    <span class="fw-medium">#66T7845</span>
                                                 </td>
-                                                <td>#SPK175</td>
                                                 <td>
-                                                    <div class="d-flex align-items-center gap-2">
-                                                        <div class="lh-1">
-                                                            <span class="avatar avatar-sm avatar-rounded bg-warning">
-                                                                ED
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="me-2 lh-1">
+                                                            <span class="avatar avatar-sm">
+                                                                <img :src="`/backend/assets/images/ecommerce/jpg/4.jpg`" alt="">
                                                             </span>
                                                         </div>
-                                                        <div>
-                                                            <span class="d-block fw-semibold">Emiley Davis</span>
-                                                            <span class="fs-12 d-block text-muted"><a href="https://sprukomarket.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b0d5ddd9dcd5c9d4d1c6d9c3828384f0d7ddd1d9dc9ed3dfdd">[email&#160;protected]</a></span>
-                                                        </div>
+                                                        <div class="fs-14">Stunning 120ram Laptop</div>
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div>
-                                                        15,Sep 2024
-                                                    </div>
-                                                    <div class="fs-12 text-muted">
-                                                        04:45PM
-                                                    </div>
+                                                    <span class="fw-medium">Electronics</span>
                                                 </td>
                                                 <td>
-                                                    <div class="avatar-list-stacked">
-                                                        <span class="avatar avatar-rounded avatar-sm bg-light">
-                                                            <img :src="`/backend/assets/images/ecommerce/jpg/5.jpg`" alt="img">
-                                                        </span>
-                                                        <span class="avatar avatar-rounded avatar-sm bg-light">
-                                                            <img :src="`/backend/assets/images/ecommerce/jpg/6.jpg`" alt="img">
-                                                        </span>
-                                                    </div>
+                                                    <span class="badge bg-primary-transparent">Returned</span>
+                                                </td>
+                                                <td class="fw-medium">
+                                                    $245.99
                                                 </td>
                                                 <td>
-                                                    $4,799
+                                                    <span class="">05th Sep,24</span>
                                                 </td>
                                                 <td>
-                                                    <span class="badge bg-danger-transparent">Overdue</span>
-                                                </td>
-                                                <td>
-                                                    <div class="dropdown custom-invoice"> 
-                                                        <a aria-label="anchor" href="javascript:void(0);" class="btn btn-icon btn-sm btn-light border" data-bs-toggle="dropdown" aria-expanded="false"> <i class="fe fe-more-vertical"></i> </a> 
-                                                        <ul class="dropdown-menu"> 
-                                                            <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-eye-line me-2"></i>View</a></li> 
-                                                            <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-pencil-line me-2"></i>Edit</a></li> 
-                                                            <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-delete-bin-line me-2"></i>Delete</a></li> 
-                                                        </ul> 
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <input class="form-check-input" type="checkbox" id="checkbox13" value="" aria-label="..." checked>
-                                                </td>
-                                                <td>#SPK145</td>
-                                                <td>
-                                                    <div class="d-flex align-items-center gap-2">
-                                                        <div class="lh-1">
-                                                            <span class="avatar avatar-sm avatar-rounded bg-info">
-                                                                LP
-                                                            </span>
-                                                        </div>
-                                                        <div>
-                                                            <span class="d-block fw-semibold">Leo Phillip</span>
-                                                            <span class="fs-12 d-block text-muted"><a href="https://sprukomarket.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ddb1b8b2adb5b4b1b1b4ade9efee9dbab0bcb4b1f3beb2b0">[email&#160;protected]</a></span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div>
-                                                        21,Sep 2024 
-                                                    </div>
-                                                    <div class="fs-12 text-muted">
-                                                        02:18PM
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="avatar-list-stacked">
-                                                        <span class="avatar avatar-rounded avatar-sm bg-light">
-                                                            <img :src="`/backend/assets/images/ecommerce/jpg/3.jpg`" alt="img">
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    $2,499
-                                                </td>
-                                                <td>
-                                                    <span class="badge bg-success-transparent">Paid</span>
-                                                </td>
-                                                <td>
-                                                    <div class="dropdown custom-invoice"> 
-                                                        <a aria-label="anchor" href="javascript:void(0);" class="btn btn-icon btn-sm btn-light border" data-bs-toggle="dropdown" aria-expanded="false"> <i class="fe fe-more-vertical"></i> </a> 
-                                                        <ul class="dropdown-menu"> 
-                                                            <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-eye-line me-2"></i>View</a></li> 
-                                                            <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-pencil-line me-2"></i>Edit</a></li> 
-                                                            <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-delete-bin-line me-2"></i>Delete</a></li> 
-                                                        </ul> 
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="border-bottom-0">
-                                                    <input class="form-check-input" type="checkbox" id="checkbox4" value="" aria-label="...">
-                                                </td>
-                                                <td class="border-bottom-0">#SPK426</td>
-                                                <td class="border-bottom-0">
-                                                    <div class="d-flex align-items-center gap-2">
-                                                        <div class="lh-1">
-                                                            <span class="avatar avatar-sm avatar-rounded bg-success">
-                                                                SL
-                                                            </span>
-                                                        </div>
-                                                        <div>
-                                                            <span class="d-block fw-semibold">Sara Lee</span>
-                                                            <span class="fs-12 d-block text-muted"><a href="https://sprukomarket.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cdbeacbfaca1a8a8fafbf88daaa0aca4a1e3aea2a0">[email&#160;protected]</a></span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="border-bottom-0">
-                                                    <div>19,Oct 2024</div>
-                                                    <div class="fs-12 text-muted">03:52PM</div>
-                                                </td>
-                                                <td class="border-bottom-0">
-                                                    <div class="avatar-list-stacked">
-                                                        <span class="avatar avatar-rounded avatar-sm bg-light">
-                                                            <img :src="`/backend/assets/images/ecommerce/jpg/4.jpg`" alt="img">
-                                                        </span>
-                                                        <span class="avatar avatar-rounded avatar-sm bg-light">
-                                                            <img :src="`/backend/assets/images/ecommerce/jpg/1.jpg`" alt="img">
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                                <td class="border-bottom-0">
-                                                    $3,999
-                                                </td>
-                                                <td class="border-bottom-0">
-                                                    <span class="badge bg-success-transparent">Paid</span>
-                                                </td>
-                                                <td class="border-bottom-0">
-                                                    <div class="dropdown custom-invoice"> 
-                                                        <a aria-label="anchor" href="javascript:void(0);" class="btn btn-icon btn-sm btn-light border" data-bs-toggle="dropdown" aria-expanded="false"> <i class="fe fe-more-vertical"></i> </a> 
-                                                        <ul class="dropdown-menu"> 
-                                                            <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-eye-line me-2"></i>View</a></li> 
-                                                            <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-pencil-line me-2"></i>Edit</a></li> 
-                                                            <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-delete-bin-line me-2"></i>Delete</a></li> 
-                                                        </ul> 
+                                                    <div class="btn-list">
+                                                        <button class="btn btn-sm btn-icon btn-primary-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="ri-pencil-line lh-1 align-middle"></i></button>
+                                                        <button class="btn btn-sm btn-icon btn-danger-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="ri-delete-bin-line lh-1 align-middle"></i></button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -945,25 +1224,21 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="card-footer"> 
-                                <div class="d-flex align-items-center flex-wrap"> 
-                                    <div> Showing 5 Entries <i class="bi bi-arrow-right ms-2 fw-semibold custom-arrow"></i> </div> 
-                                    <div class="ms-auto"> 
-                                        <nav aria-label="Page navigation" class="pagination-style-2">
-                                            <ul class="pagination mb-0 flex-wrap">
+                            <div class="card-footer border-top-0">
+                                <div class="d-flex align-items-center">
+                                    <div>
+                                        Showing 5 Entries <i class="bi bi-arrow-right ms-2 fw-semibold"></i>
+                                    </div>
+                                    <div class="ms-auto">
+                                        <nav aria-label="Page navigation" class="pagination-style-4">
+                                            <ul class="pagination mb-0">
                                                 <li class="page-item disabled">
                                                     <a class="page-link" href="javascript:void(0);">
                                                         Prev
                                                     </a>
                                                 </li>
-                                                <li class="page-item"><a class="page-link" href="javascript:void(0);">1</a></li>
-                                                <li class="page-item active"><a class="page-link" href="javascript:void(0);">2</a></li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="javascript:void(0);">
-                                                        <i class="bi bi-three-dots"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="page-item"><a class="page-link" href="javascript:void(0);">17</a></li>
+                                                <li class="page-item active"><a class="page-link" href="javascript:void(0);">1</a></li>
+                                                <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
                                                 <li class="page-item">
                                                     <a class="page-link text-primary" href="javascript:void(0);">
                                                         next
@@ -971,219 +1246,7 @@
                                                 </li>
                                             </ul>
                                         </nav>
-                                    </div> 
-                                </div> 
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4">
-                        <div class="card custom-card overflow-hidden">
-                            <div class="card-header justify-content-between">
-                                <div class="card-title">
-                                    Recent Transactions
-                                </div>
-                                <div class="dropdown"> 
-                                    <a aria-label="anchor" href="javascript:void(0);" class="btn btn-icon btn-light border" data-bs-toggle="dropdown" aria-expanded="false"> <i class="fe fe-more-vertical"></i> </a> 
-                                    <ul class="dropdown-menu"> 
-                                        <li><a class="dropdown-item" href="javascript:void(0);">Week</a></li> 
-                                        <li><a class="dropdown-item" href="javascript:void(0);">Month</a></li> 
-                                        <li><a class="dropdown-item" href="javascript:void(0);">Year</a></li> 
-                                    </ul> 
-                                </div>
-                            </div>
-                            <div class="card-body p-0">
-                                <div class="table-responsive">
-                                    <table class="table text-nowrap">
-                                        <thead>
-                                            <tr>
-                                                <th>
-                                                    Order
-                                                </th>
-                                                <th>
-                                                    Price
-                                                </th>
-                                                <th class="text-end">
-                                                    Products
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div class="flex-fill">
-                                                        <div><span class="fw-semibold">Order Id</span> - #SPK1234</div>
-                                                        <div class="d-flex align-items-center gap-2 fw-medium">
-                                                            <div class="fs-12 text-muted">4 Items</div>
-                                                            <div class="vr"></div>
-                                                            <span class="badge bg-success-transparent"><i class="ri-check-line me-1 align-middle"></i>Paid</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div>
-                                                        <span class="d-block fw-semibold">$150.00</span>
-                                                        <span class="d-block fs-12 text-muted">2024-08-27</span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="avatar-list-stacked text-end">
-                                                        <span class="avatar avatar-rounded avatar-sm bg-light">
-                                                            <img :src="`/backend/assets/images/ecommerce/jpg/1.jpg`" alt="img">
-                                                        </span>
-                                                        <span class="avatar avatar-rounded avatar-sm bg-light">
-                                                            <img :src="`/backend/assets/images/ecommerce/jpg/2.jpg`" alt="img">
-                                                        </span>
-                                                        <a class="avatar bg-primary avatar-rounded avatar-sm text-fixed-white" href="javascript:void(0);">
-                                                            +2
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="flex-fill">
-                                                        <div><span class="fw-semibold">Order Id</span> - #SPK7432</div>
-                                                        <div class="d-flex align-items-center gap-2 fw-medium">
-                                                            <div class="fs-12 text-muted">3 Items</div>
-                                                            <div class="vr"></div>
-                                                            <span class="badge bg-warning-transparent"><i class="ri-time-line me-1 align-middle"></i>Pending</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div>
-                                                        <span class="d-block fw-semibold">$75.00</span>
-                                                        <span class="d-block fs-12 text-muted">2024-08-26</span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="avatar-list-stacked text-end">
-                                                        <span class="avatar avatar-rounded avatar-sm bg-light">
-                                                            <img :src="`/backend/assets/images/ecommerce/jpg/3.jpg`" alt="img">
-                                                        </span>
-                                                        <span class="avatar avatar-rounded avatar-sm bg-light">
-                                                            <img :src="`/backend/assets/images/ecommerce/jpg/4.jpg`" alt="img">
-                                                        </span>
-                                                        <span class="avatar avatar-rounded avatar-sm bg-light">
-                                                            <img :src="`/backend/assets/images/ecommerce/jpg/5.jpg`" alt="img">
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="flex-fill">
-                                                        <div><span class="fw-semibold">Order Id</span> - #SPK3422</div>
-                                                        <div class="d-flex align-items-center gap-2 fw-medium">
-                                                            <div class="fs-12 text-muted">2 Items</div>
-                                                            <div class="vr"></div>
-                                                            <span class="badge bg-success-transparent"><i class="ri-check-line me-1 align-middle"></i>Paid</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div>
-                                                        <span class="d-block fw-semibold">$200.00</span>
-                                                        <span class="d-block fs-12 text-muted">2024-08-25</span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="avatar-list-stacked text-end">
-                                                        <span class="avatar avatar-rounded avatar-sm bg-light">
-                                                            <img :src="`/backend/assets/images/ecommerce/jpg/6.jpg`" alt="img">
-                                                        </span>
-                                                        <span class="avatar avatar-rounded avatar-sm bg-light">
-                                                            <img :src="`/backend/assets/images/ecommerce/jpg/2.jpg`" alt="img">
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="flex-fill">
-                                                        <div><span class="fw-semibold">Order Id</span> - #SPK1578</div>
-                                                        <div class="d-flex align-items-center gap-2 fw-medium">
-                                                            <div class="fs-12 text-muted">1 Items</div>
-                                                            <div class="vr"></div>
-                                                            <span class="badge bg-success-transparent"><i class="ri-check-line me-1 align-middle"></i>Paid</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div>
-                                                        <span class="d-block fw-semibold">$120.00</span>
-                                                        <span class="d-block fs-12 text-muted">2024-08-24</span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="avatar-list-stacked text-end">
-                                                        <span class="avatar avatar-rounded avatar-sm bg-light">
-                                                            <img :src="`/backend/assets/images/ecommerce/jpg/5.jpg`" alt="img">
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="flex-fill">
-                                                        <div><span class="fw-semibold">Order Id</span> - #SPK2355</div>
-                                                        <div class="d-flex align-items-center gap-2 fw-medium">
-                                                            <div class="fs-12 text-muted">5 Items</div>
-                                                            <div class="vr"></div>
-                                                            <span class="badge bg-danger-transparent"><i class="ri-close-line me-1 align-middle"></i>Failed</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div>
-                                                        <span class="d-block fw-semibold">$90.00</span>
-                                                        <span class="d-block fs-12 text-muted">2024-08-23</span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="avatar-list-stacked text-end">
-                                                        <span class="avatar avatar-rounded avatar-sm bg-light">
-                                                            <img :src="`/backend/assets/images/ecommerce/jpg/1.jpg`" alt="img">
-                                                        </span>
-                                                        <span class="avatar avatar-rounded avatar-sm bg-light">
-                                                            <img :src="`/backend/assets/images/ecommerce/jpg/4.jpg`" alt="img">
-                                                        </span>
-                                                        <a class="avatar bg-primary avatar-rounded avatar-sm text-fixed-white" href="javascript:void(0);">
-                                                            +3
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="border-bottom-0">
-                                                    <div class="flex-fill">
-                                                        <div><span class="fw-semibold">Order Id</span> - #SPK1643</div>
-                                                        <div class="d-flex align-items-center gap-2 fw-medium">
-                                                            <div class="fs-12 text-muted">1 Items</div>
-                                                            <div class="vr"></div>
-                                                            <span class="badge bg-success-transparent"><i class="ri-check-line me-1 align-middle"></i>Paid</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="border-bottom-0">
-                                                    <div>
-                                                        <span class="d-block fw-semibold">$249.00</span>
-                                                        <span class="d-block fs-12 text-muted">2024-08-16</span>
-                                                    </div>
-                                                </td>
-                                                <td class="border-bottom-0">
-                                                    <div class="avatar-list-stacked text-end">
-                                                        <span class="avatar avatar-rounded avatar-sm bg-light">
-                                                            <img :src="`/backend/assets/images/ecommerce/jpg/6.jpg`" alt="img">
-                                                        </span>
-                                                        <span class="avatar avatar-rounded avatar-sm bg-light">
-                                                            <img :src="`/backend/assets/images/ecommerce/jpg/2.jpg`" alt="img">
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -1,6 +1,6 @@
 
 "use strict"
-let dataSeries = [
+var dataSeries = [
     [{
         "date": "2014-01-01",
         "value": 20000000

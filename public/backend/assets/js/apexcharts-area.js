@@ -2,7 +2,7 @@
     "use strict";
 
     /* basic area chart */
-    const basicoptions = {
+    var options = {
         series: [{
             name: "STOCK ABC",
             data: series.monthDataSeries1.prices
@@ -19,6 +19,7 @@
         },
         stroke: {
             curve: 'straight',
+            width:2,
         },
         subtitle: {
             text: 'Price Movements',
@@ -37,7 +38,7 @@
                 color: '#8c9097'
             },
         },
-        colors: ['#985ffd'],
+        colors: ['#03b562'],
         xaxis: {
             type: 'datetime',
             labels: {
@@ -66,11 +67,11 @@
             horizontalAlign: 'left'
         }
     };
-    const basicchart = new ApexCharts(document.querySelector("#area-basic"), basicoptions);
-    if(basicchart) basicchart.render();
+    var chart = new ApexCharts(document.querySelector("#area-basic"), options);
+    chart.render();
 
     /* spline area chart */
-    const splineoptions = {
+    var options = {
         series: [{
             name: 'series1',
             data: [31, 40, 28, 51, 42, 109, 100]
@@ -82,12 +83,13 @@
             height: 320,
             type: 'area'
         },
-        colors: ["#985ffd", "#ff49cd"],
+        colors: ["#03b562", "#7f67ff"],
         dataLabels: {
             enabled: false
         },
         stroke: {
-            curve: 'smooth'
+            curve: 'smooth',
+            width:2,
         },
         grid: {
             borderColor: '#f2f5f7',
@@ -122,11 +124,11 @@
             },
         },
     };
-    const splinechart = new ApexCharts(document.querySelector("#area-spline"), splineoptions);
-    if(splinechart) splinechart.render();
+    var chart = new ApexCharts(document.querySelector("#area-spline"), options);
+    chart.render();
 
     /* negative values chart */
-    const negativeoptions = {
+    var options = {
         series: [{
             name: 'north',
             data: [{
@@ -297,13 +299,14 @@
         }],
         chart: {
             type: 'area',
-            height: 355
+            height: 325
         },
         dataLabels: {
             enabled: false
         },
         stroke: {
-            curve: 'straight'
+            curve: 'straight',
+            width:2,
         },
 
         title: {
@@ -354,7 +357,7 @@
                 show: false
             }
         },
-        colors: ["#985ffd", "#ff49cd"],
+        colors: ["#03b562", "#7f67ff"],
         fill: {
             opacity: 0.5
         },
@@ -379,11 +382,12 @@
             }
         }
     };
-    const negativechart = new ApexCharts(document.querySelector("#area-negative"), negativeoptions);
-    if(negativechart) negativechart.render();
+
+    var chart = new ApexCharts(document.querySelector("#area-negative"), options);
+    chart.render();
 
     /* selection-github style chart */
-    const githuboptions = {
+    var options = {
         series: [{
             name: 'commits',
             data: githubdata.series
@@ -398,26 +402,23 @@
             },
             events: {
                 mounted: function (chart) {
-                    let commitsEl = document.querySelector('.cmeta span.commits');
-                    let commits = chart.getSeriesTotalXRange(chart.w.globals.minX, chart.w.globals.maxX)
-                    if(commitsEl) {
-                        commitsEl.innerHTML = commits
-                    }
+                    var commitsEl = document.querySelector('.cmeta span.commits');
+                    var commits = chart.getSeriesTotalXRange(chart.w.globals.minX, chart.w.globals.maxX)
+
+                    commitsEl.innerHTML = commits
                 },
                 updated: function (chart) {
-                    let commitsEl = document.querySelector('.cmeta span.commits');
-                    let commits = chart.getSeriesTotalXRange(chart.w.globals.minX, chart.w.globals.maxX)
+                    var commitsEl = document.querySelector('.cmeta span.commits');
+                    var commits = chart.getSeriesTotalXRange(chart.w.globals.minX, chart.w.globals.maxX)
 
-                    if(commitsEl) {
-                        commitsEl.innerHTML = commits
-                    }
+                    commitsEl.innerHTML = commits
                 }
             }
         },
         grid: {
             borderColor: '#f2f5f7',
         },
-        colors: ['#985ffd'],
+        colors: ['#03b562'],
         stroke: {
             width: 0,
             curve: 'smooth'
@@ -446,10 +447,10 @@
             }
         }
     };
-    const githubchart = new ApexCharts(document.querySelector("#chart-months"), githuboptions);
-    if(githubchart) githubchart.render();
+    var chart = new ApexCharts(document.querySelector("#chart-months"), options);
+    chart.render();
 
-    const optionsYears = {
+    var optionsYears = {
         series: [{
             name: 'commits',
             data: githubdata.series
@@ -472,7 +473,7 @@
                 }
             },
         },
-        colors: ['#ff49cd'],
+        colors: ['#7f67ff'],
         dataLabels: {
             enabled: false
         },
@@ -515,23 +516,23 @@
             }
         },
     };
-    const chartYears = new ApexCharts(document.querySelector("#chart-years"), optionsYears);
-    if(chartYears) chartYears.render();
+    var chartYears = new ApexCharts(document.querySelector("#chart-years"), optionsYears);
+    chartYears.render();
 
     /* stacked area chart */
-    const generateDayWiseTimeSeries = function (baseval, count, yrange) {
-        let i = 0; // Changed from const to let since i is incremented
-        const series = [];
+    var generateDayWiseTimeSeries = function (baseval, count, yrange) {
+        var i = 0;
+        var series = [];
         while (i < count) {
-            const x = baseval;
-            const y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+            var x = baseval;
+            var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
             series.push([x, y]);
             baseval += 86400000;
             i++;
         }
         return series;
     }
-    const stackedoptions = {
+    var options = {
         series: [
             {
                 name: 'South',
@@ -561,10 +562,11 @@
             stacked: true,
             events: {
                 selection: function (chart, e) {
+                    console.log(new Date(e.xaxis.min))
                 }
             },
         },
-        colors: ['#985ffd', '#ff49cd', '#e6eaeb'],
+        colors: ['#03b562', '#7f67ff', '#e6eaeb'],
         grid: {
             borderColor: '#f2f5f7',
         },
@@ -572,7 +574,8 @@
             enabled: false
         },
         stroke: {
-            curve: 'smooth'
+            curve: 'smooth',
+            width:2,
         },
         fill: {
             type: 'gradient',
@@ -590,30 +593,30 @@
             type: 'datetime'
         },
     };
-    const stackedchart = new ApexCharts(document.querySelector("#area-stacked"), stackedoptions);
-    if(stackedchart) stackedchart.render();
+    var chart = new ApexCharts(document.querySelector("#area-stacked"), options);
+    chart.render();
 
     /* irregular timeseries */
-    let ts1 = 1388534400000;
-    let ts2 = 1388620800000;
-    let ts3 = 1389052800000;
-    const dataSet = [[], [], []];
-    for (let i = 0; i < 12; i++) {
+    var ts1 = 1388534400000;
+    var ts2 = 1388620800000;
+    var ts3 = 1389052800000;
+    var dataSet = [[], [], []];
+    for (var i = 0; i < 12; i++) {
         ts1 = ts1 + 86400000;
-        const innerArr = [ts1, dataSeries[2][i].value];
+        var innerArr = [ts1, dataSeries[2][i].value];
         dataSet[0].push(innerArr)
     }
-    for (let i = 0; i < 18; i++) {
+    for (var i = 0; i < 18; i++) {
         ts2 = ts2 + 86400000;
-        const innerArr = [ts2, dataSeries[1][i].value];
+        var innerArr = [ts2, dataSeries[1][i].value];
         dataSet[1].push(innerArr)
     }
-    for (let i = 0; i < 12; i++) {
+    for (var i = 0; i < 12; i++) {
         ts3 = ts3 + 86400000;
-        const innerArr = [ts3, dataSeries[0][i].value];
+        var innerArr = [ts3, dataSeries[0][i].value];
         dataSet[2].push(innerArr)
     }
-    const irregularoptions = {
+    var options = {
         series: [{
             name: 'PRODUCT A',
             data: dataSet[0]
@@ -641,7 +644,7 @@
         markers: {
             size: 0,
         },
-        colors: ["#985ffd", "#ff49cd", "#fdaf22"],
+        colors: ["#03b562", "#7f67ff", "#f4a742"],
         fill: {
             type: 'gradient',
             gradient: {
@@ -712,11 +715,11 @@
             offsetX: -10
         }
     };
-    const irregularchart = new ApexCharts(document.querySelector("#area-irregular"), irregularoptions);
-    if(irregularchart) irregularchart.render();
+    var chart = new ApexCharts(document.querySelector("#area-irregular"), options);
+    chart.render();
 
     /* area chart with null values */
-    const nulloptions = {
+    var options = {
         series: [{
             name: 'Network',
             data: [{
@@ -827,7 +830,8 @@
             enabled: false
         },
         stroke: {
-            curve: 'straight'
+            curve: 'straight',
+            width:2,
         },
         fill: {
             opacity: 0.8,
@@ -852,7 +856,7 @@
                 color: '#8c9097'
             },
         },
-        colors: ["#985ffd"],
+        colors: ["#03b562"],
         grid: {
             borderColor: '#f2f5f7',
         },
@@ -891,11 +895,12 @@
             }
         }
     };
-    const nullchart = new ApexCharts(document.querySelector("#area-null"), nulloptions);
-    if(nullchart) nullchart.render();
+
+    var chart = new ApexCharts(document.querySelector("#area-null"), options);
+    chart.render();
 
     /* area chart-datetime x-axis chart */
-    const datetimeoptions = {
+    var options = {
         series: [{
             data: [
                 [1327359600000, 30.95],
@@ -1183,7 +1188,7 @@
                 autoScaleYaxis: true
             }
         },
-        colors: ["#985ffd"],
+        colors: ["#03b562"],
         annotations: {
             yaxis: [{
                 y: 30,
@@ -1210,6 +1215,9 @@
                     }
                 }
             }]
+        },
+        stroke: {
+            width: 2,
         },
         grid: {
             borderColor: '#f2f5f7',
@@ -1261,55 +1269,49 @@
             }
         },
     };
-    const datetimechart = new ApexCharts(document.querySelector("#area-datetime"), datetimeoptions);
-    if(datetimechart) datetimechart.render();
+    var chart = new ApexCharts(document.querySelector("#area-datetime"), options);
+    chart.render();
 
-    const resetCssClasses = function (activeEl) {
-        const els = document.querySelectorAll('button')
+    var resetCssClasses = function (activeEl) {
+        var els = document.querySelectorAll('button')
         Array.prototype.forEach.call(els, function (el) {
             el.classList.remove('active')
         })
         activeEl.target.classList.add('active')
     }
-    const oneMonths = document.querySelector('#one_month')
-    const sixMonths = document.querySelector('#six_months')
-    const oneYear = document.querySelector('#one_year')
-    const AllYears = document.querySelector('#all')
-    if(oneMonths) {
-        oneMonths.addEventListener('click', function (e) {
-        resetCssClasses(e)
-        datetimechart.zoomX(
-            new Date('28 Jan 2013').getTime(),
-            new Date('27 Feb 2013').getTime()
-        )
-        })
-    }
-    if(sixMonths) {
-        sixMonths.addEventListener('click', function (e) {
+    document
+        .querySelector('#one_month')
+        .addEventListener('click', function (e) {
             resetCssClasses(e)
-            datetimechart.zoomX(
+            chart.zoomX(
+                new Date('28 Jan 2013').getTime(),
+                new Date('27 Feb 2013').getTime()
+            )
+        })
+    document
+        .querySelector('#six_months')
+        .addEventListener('click', function (e) {
+            resetCssClasses(e)
+            chart.zoomX(
                 new Date('27 Sep 2012').getTime(),
                 new Date('27 Feb 2013').getTime()
             )
         })
-    }
-    if(oneYear) {
-        oneYear.addEventListener('click', function (e) {
+    document
+        .querySelector('#one_year')
+        .addEventListener('click', function (e) {
             resetCssClasses(e)
-            datetimechart.zoomX(
+            chart.zoomX(
                 new Date('27 Feb 2012').getTime(),
                 new Date('27 Feb 2013').getTime()
             )
         })
-    } 
-    if(AllYears) {
-        AllYears.addEventListener('click', function (e) {
-            resetCssClasses(e)
-            datetimechart.zoomX(
-                new Date('23 Jan 2012').getTime(),
-                new Date('27 Feb 2013').getTime()
-            )
-        })
-    }
+    document.querySelector('#all').addEventListener('click', function (e) {
+        resetCssClasses(e)
+        chart.zoomX(
+            new Date('23 Jan 2012').getTime(),
+            new Date('27 Feb 2013').getTime()
+        )
+    })
 
 })();

@@ -2,7 +2,7 @@
     "use strict";
 
     /* basic column chart */
-    const basicoptions = {
+    var options = {
         series: [{
             name: 'Net Profit',
             data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
@@ -20,7 +20,8 @@
         plotOptions: {
             bar: {
                 horizontal: false,
-                columnWidth: '80%',
+                columnWidth: '50%',
+                borderRadius:2,
                 endingShape: 'rounded'
             },
         },
@@ -30,10 +31,10 @@
         dataLabels: {
             enabled: false
         },
-        colors: ["#985ffd", "#ff49cd", "#fdaf22"],
+        colors: ["#03b562", "#7f67ff", "#fd4963"],
         stroke: {
             show: true,
-            width: 2,
+            width: 3,
             colors: ['transparent']
         },
         xaxis: {
@@ -76,11 +77,11 @@
             }
         }
     };
-    const basicchart = new ApexCharts(document.querySelector("#column-basic"), basicoptions);
-    if(basicchart) basicchart.render();
+    var chart = new ApexCharts(document.querySelector("#column-basic"), options);
+    chart.render();
 
     /* column chart with datalabels */
-    const datalabelsoptions = {
+    var options = {
         series: [{
             name: 'Inflation',
             data: [2.3, 3.1, 4.0, 10.1, 4.0, 3.6, 3.2, 2.3, 1.4, 0.8, 0.5, 0.2]
@@ -94,7 +95,8 @@
         },
         plotOptions: {
             bar: {
-                borderRadius: 10,
+                columnWidth: '30%',
+                borderRadius: 3,
                 dataLabels: {
                     position: 'top', // top, center, bottom
                 },
@@ -111,7 +113,7 @@
                 colors: ["#8c9097"]
             }
         },
-        colors: ["#985ffd"],
+        colors: ["#03b562"],
         xaxis: {
             categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
             position: 'top',
@@ -171,11 +173,11 @@
             }
         }
     };
-    const datalabelschart = new ApexCharts(document.querySelector("#column-datalabels"), datalabelsoptions);
-    if(datalabelschart) datalabelschart.render();
+    var chart = new ApexCharts(document.querySelector("#column-datalabels"), options);
+    chart.render();
 
     /* stacked column chart */
-    const stackedoptions = {
+    var options = {
         series: [{
             name: 'PRODUCT A',
             data: [44, 55, 41, 67, 22, 43]
@@ -203,7 +205,7 @@
         grid: {
             borderColor: '#f2f5f7',
         },
-        colors: ["#985ffd", "#ff49cd", "#fdaf22", "#32d484"],
+        colors: ["#03b562", "#7f67ff", "#fd4963", "#ffa909"],
         responsive: [{
             breakpoint: 480,
             options: {
@@ -216,6 +218,7 @@
         }],
         plotOptions: {
             bar: {
+                columnWidth: '20%',
                 horizontal: false,
             },
         },
@@ -253,11 +256,11 @@
             }
         }
     };
-    const stackedchart = new ApexCharts(document.querySelector("#column-stacked"), stackedoptions);
-    if(stackedchart) stackedchart.render();
+    var chart = new ApexCharts(document.querySelector("#column-stacked"), options);
+    chart.render();
 
     /* 100% stacked column chart */
-    const fullstackedoptions = {
+    var options = {
         series: [{
             name: 'PRODUCT A',
             data: [44, 55, 41, 67, 22, 43, 21, 49]
@@ -274,6 +277,12 @@
             stacked: true,
             stackType: '100%'
         },
+        plotOptions: {
+            bar: {
+                columnWidth: '30%',
+                horizontal: false,
+            },
+        },
         grid: {
             borderColor: '#f2f5f7',
         },
@@ -287,7 +296,7 @@
                 }
             }
         }],
-        colors: ["#985ffd", "#ff49cd", "#fdaf22"],
+        colors: ["#03b562", "#7f67ff", "#fd4963"],
         xaxis: {
             categories: ['2011 Q1', '2011 Q2', '2011 Q3', '2011 Q4', '2012 Q1', '2012 Q2',
                 '2012 Q3', '2012 Q4'
@@ -322,11 +331,11 @@
             offsetY: 50
         },
     };
-    const fullstackedchart = new ApexCharts(document.querySelector("#column-stacked-full"), fullstackedoptions);
-    if(fullstackedchart) fullstackedchart.render();
+    var chart = new ApexCharts(document.querySelector("#column-stacked-full"), options);
+    chart.render();
 
     /* colummn chart with markers */
-    const colummnoptions = {
+    var options = {
         series: [
             {
                 name: 'Actual',
@@ -339,7 +348,7 @@
                                 name: 'Expected',
                                 value: 1400,
                                 strokeHeight: 5,
-                                strokeColor: '#775DD0'
+                                strokeColor: '#03b562'
                             }
                         ]
                     },
@@ -351,7 +360,7 @@
                                 name: 'Expected',
                                 value: 5400,
                                 strokeHeight: 5,
-                                strokeColor: '#775DD0'
+                                strokeColor: '#03b562'
                             }
                         ]
                     },
@@ -363,7 +372,7 @@
                                 name: 'Expected',
                                 value: 5200,
                                 strokeHeight: 5,
-                                strokeColor: '#775DD0'
+                                strokeColor: '#03b562'
                             }
                         ]
                     },
@@ -375,7 +384,7 @@
                                 name: 'Expected',
                                 value: 6500,
                                 strokeHeight: 5,
-                                strokeColor: '#775DD0'
+                                strokeColor: '#03b562'
                             }
                         ]
                     },
@@ -389,7 +398,7 @@
                                 strokeHeight: 13,
                                 strokeWidth: 0,
                                 strokeLineCap: 'round',
-                                strokeColor: '#775DD0'
+                                strokeColor: '#03b562'
                             }
                         ]
                     },
@@ -401,7 +410,7 @@
                                 name: 'Expected',
                                 value: 7500,
                                 strokeHeight: 5,
-                                strokeColor: '#775DD0'
+                                strokeColor: '#03b562'
                             }
                         ]
                     },
@@ -413,7 +422,7 @@
                                 name: 'Expected',
                                 value: 8700,
                                 strokeHeight: 5,
-                                strokeColor: '#775DD0'
+                                strokeColor: '#03b562'
                             }
                         ]
                     },
@@ -426,7 +435,7 @@
                                 value: 7300,
                                 strokeHeight: 2,
                                 strokeDashArray: 2,
-                                strokeColor: '#775DD0'
+                                strokeColor: '#03b562'
                             }
                         ]
                     }
@@ -439,10 +448,10 @@
         },
         plotOptions: {
             bar: {
-                columnWidth: '60%'
+                columnWidth: '30%'
             }
         },
-        colors: ['#ff49cd'],
+        colors: ['#7f67ff'],
         dataLabels: {
             enabled: false
         },
@@ -454,7 +463,7 @@
             showForSingleSeries: true,
             customLegendItems: ['Actual', 'Expected'],
             markers: {
-                fillColors: ['#ff49cd', '#775DD0']
+                fillColors: ['#7f67ff', '#03b562']
             }
         },
         xaxis: {
@@ -480,11 +489,11 @@
             }
         }
     };
-    const colummnchart = new ApexCharts(document.querySelector("#column-markers"), colummnoptions);
-    if(colummnchart) colummnchart.render();
+    var chart = new ApexCharts(document.querySelector("#column-markers"), options);
+    chart.render();
 
     /* column chart with rotated labels */
-    const rotatedoptions = {
+    var options = {
         series: [{
             name: 'Servings',
             data: [44, 55, 41, 67, 22, 43, 21, 33, 45, 31, 87, 65, 35]
@@ -494,11 +503,11 @@
                 x: 'Bananas',
                 seriesIndex: 0,
                 label: {
-                    borderColor: '#775DD0',
+                    borderColor: '#7f67ff',
                     offsetY: 0,
                     style: {
                         color: '#fff',
-                        background: '#775DD0',
+                        background: '#7f67ff',
                     },
                     text: 'Bananas are good',
                 }
@@ -510,14 +519,14 @@
         },
         plotOptions: {
             bar: {
-                borderRadius: 10,
-                columnWidth: '50%',
+                borderRadius: 3,
+                columnWidth: '40%',
             }
         },
         dataLabels: {
-            enabled: false,
+            enabled: false
         },
-        colors: ["#985ffd"],
+        colors: ["#03b562"],
         stroke: {
             width: 2
         },
@@ -528,7 +537,7 @@
             labels: {
                 rotate: -45,
                 rotateAlways: true,
-                offsetY: -50,
+                offsetY: -40,
                 style: {
                     colors: "#8c9097",
                     fontSize: '11px',
@@ -571,11 +580,11 @@
             },
         }
     };
-    const rotatedchart = new ApexCharts(document.querySelector("#column-rotated-labels"), rotatedoptions);
-    if(rotatedchart) rotatedchart.render();
+    var chart = new ApexCharts(document.querySelector("#column-rotated-labels"), options);
+    chart.render();
 
     /* column chart with negative values */
-    const negativeoptions = {
+    var options = {
         series: [{
             name: 'Cash Flow',
             data: [1.45, 5.42, 5.9, -0.42, -12.6, -18.1, -18.2, -14.16, -11.1, -6.09, 0.34, 3.88, 13.07,
@@ -593,20 +602,20 @@
                     ranges: [{
                         from: -100,
                         to: -46,
-                        color: '#32d484'
+                        color: '#7f67ff'
                     }, {
                         from: -45,
                         to: 0,
-                        color: '#ff49cd'
+                        color: '#fd4963'
                     }]
                 },
-                columnWidth: '80%',
+                columnWidth: '60%',
             }
         },
         grid: {
             borderColor: '#f2f5f7',
         },
-        colors: ["#985ffd"],
+        colors: ["#03b562"],
         dataLabels: {
             enabled: false,
         },
@@ -653,11 +662,11 @@
             }
         }
     };
-    const negativechart = new ApexCharts(document.querySelector("#column-negative"), negativeoptions);
-    if(negativechart) negativechart.render();
+    var chart = new ApexCharts(document.querySelector("#column-negative"), options);
+    chart.render();
 
     /* range column chart */
-    const rangeoptions = {
+    var options = {
         series: [{
             data: [{
                 x: 'Team A',
@@ -694,10 +703,11 @@
         grid: {
             borderColor: '#f2f5f7',
         },
-        colors: ["#985ffd", "#ff49cd"],
+        colors: ["#03b562", "#7f67ff"],
         plotOptions: {
             bar: {
-                horizontal: false
+                columnWidth: '30%',
+                horizontal: false,
             }
         },
         xaxis: {
@@ -726,8 +736,8 @@
             enabled: true
         }
     };
-    const rangechart = new ApexCharts(document.querySelector("#column-range"), rangeoptions);
-    if(rangechart) rangechart.render();
+    var chart = new ApexCharts(document.querySelector("#column-range"), options);
+    chart.render();
 
     /* dynamic loaded chart */
     Apex = {
@@ -743,17 +753,17 @@
             show: false
         }
     }
-    const colors = ['#985ffd', '#ff49cd', '#fdaf22', '#32d484', '#00c9ff', '#ff6757', '#ff6757'];
+    var colors = ['#03b562', '#7f67ff', '#fd4963', '#ffa909', '#0fbcf9', 'rgb(254, 124, 88)', '#7b76fe'];
     function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            const temp = array[i];
+        for (var i = array.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = array[i];
             array[i] = array[j];
             array[j] = temp;
         }
         return array;
     }
-    const arrayData = [{
+    var arrayData = [{
         y: 400,
         quarters: [{
             x: 'Q1',
@@ -845,8 +855,8 @@
         }]
     }];
     function makeData() {
-        const dataSet = shuffleArray(arrayData)
-        const dataYearSeries = [{
+        var dataSet = shuffleArray(arrayData)
+        var dataYearSeries = [{
             x: "2011",
             y: dataSet[0].y,
             color: colors[0],
@@ -881,14 +891,14 @@
         return dataYearSeries
     }
     function updateQuarterChart(sourceChart, destChartIDToUpdate) {
-        let series = [];
-        const seriesIndex = 0;
-        const colors = []
+        var series = [];
+        var seriesIndex = 0;
+        var colors = []
         if (sourceChart.w.globals.selectedDataPoints[0]) {
-            const selectedPoints = sourceChart.w.globals.selectedDataPoints;
-            for (let i = 0; i < selectedPoints[seriesIndex].length; i++) {
-                const selectedIndex = selectedPoints[seriesIndex][i];
-                const yearSeries = sourceChart.w.config.series[seriesIndex];
+            var selectedPoints = sourceChart.w.globals.selectedDataPoints;
+            for (var i = 0; i < selectedPoints[seriesIndex].length; i++) {
+                var selectedIndex = selectedPoints[seriesIndex][i];
+                var yearSeries = sourceChart.w.config.series[seriesIndex];
                 series.push({
                     name: yearSeries.data[selectedIndex].x,
                     data: yearSeries.data[selectedIndex].quarters
@@ -908,7 +918,7 @@
             })
         }
     }
-    const loadedoptions = {
+    var options = {
         series: [{
             data: makeData()
         }],
@@ -919,8 +929,8 @@
             type: 'bar',
             events: {
                 dataPointSelection: function (e, chart, opts) {
-                    const quarterChartEl = document.querySelector("#chart-quarter");
-                    const yearChartEl = document.querySelector("#chart-year");
+                    var quarterChartEl = document.querySelector("#chart-quarter");
+                    var yearChartEl = document.querySelector("#chart-year");
 
                     if (opts.selectedDataPoints[0].length === 1) {
                         if (quarterChartEl.classList.contains("active")) {
@@ -935,8 +945,8 @@
                     }
 
                     if (opts.selectedDataPoints[0].length === 0) {
-                        if(yearChartEl) {yearChartEl.classList.remove("chart-quarter-activated")}
-                        if(quarterChartEl)  {quarterChartEl.classList.remove("active");}
+                        yearChartEl.classList.remove("chart-quarter-activated")
+                        quarterChartEl.classList.remove("active");
                     }
 
                 },
@@ -949,7 +959,7 @@
             bar: {
                 distributed: true,
                 horizontal: true,
-                barHeight: '75%',
+                barHeight: '50%',
                 dataLabels: {
                     position: 'bottom'
                 }
@@ -1031,10 +1041,10 @@
         }
     };
 
-    const loadedchart = new ApexCharts(document.querySelector("#chart-year"), loadedoptions);
-    if(loadedchart) loadedchart.render();
+    var chart = new ApexCharts(document.querySelector("#chart-year"), options);
+    chart.render();
 
-    const optionsQuarter = {
+    var optionsQuarter = {
         series: [{
             data: []
         }],
@@ -1107,12 +1117,40 @@
             }
         }
     };
-    const chartQuarter = new ApexCharts(document.querySelector("#chart-quarter"), optionsQuarter);
-    if(chartQuarter) chartQuarter.render();
 
+    var chartQuarter = new ApexCharts(document.querySelector("#chart-quarter"), optionsQuarter);
+    chartQuarter.render();
+
+
+    chart.addEventListener('dataPointSelection', function (e, chart, opts) {
+        var quarterChartEl = document.querySelector("#chart-quarter");
+        var yearChartEl = document.querySelector("#chart-year");
+
+        if (opts.selectedDataPoints[0].length === 1) {
+            if (quarterChartEl.classList.contains("active")) {
+                updateQuarterChart(chart, 'barQuarter')
+            }
+            else {
+                yearChartEl.classList.add("chart-quarter-activated")
+                quarterChartEl.classList.add("active");
+                updateQuarterChart(chart, 'barQuarter')
+            }
+        } else {
+            updateQuarterChart(chart, 'barQuarter')
+        }
+
+        if (opts.selectedDataPoints[0].length === 0) {
+            yearChartEl.classList.remove("chart-quarter-activated")
+            quarterChartEl.classList.remove("active");
+        }
+
+    })
+    chart.addEventListener('updated', function (chart) {
+        updateQuarterChart(chart, 'barQuarter')
+    })
 
     /* distributed columns chart */
-    const distributedoptions = {
+    var options = {
         series: [{
             data: [21, 22, 10, 28, 16, 21, 13, 30]
         }],
@@ -1124,10 +1162,10 @@
                 }
             }
         },
-        colors: ['#985ffd', '#ff49cd', '#fdaf22', '#32d484', '#00c9ff', '#ff6757', 'rgba(53, 181, 170,1)','rgb(190, 43, 235)'],
+        colors: ['#03b562', '#7f67ff', '#fd4963', '#ffa909', '#0fbcf9', 'rgb(254, 124, 88)',"rgb(254, 84, 155)","rgb(0, 216, 216)"],
         plotOptions: {
             bar: {
-                columnWidth: '45%',
+                columnWidth: '25%',
                 distributed: true,
             }
         },
@@ -1170,28 +1208,7 @@
             }
         }
     };
-    const distributedchart = new ApexCharts(document.querySelector("#columns-distributed"), distributedoptions);
-    if(distributedchart) distributedchart.render();
-    // DataPointSelection event
-    distributedchart.addEventListener('dataPointSelection', function (e, chart, opts) {
-        const quarterChartEl = document.querySelector("#chart-quarter");
-        const yearChartEl = document.querySelector("#chart-year");
-        const selected = opts.selectedDataPoints[0];
-    
-        if (selected.length === 1 && !quarterChartEl.classList.contains("active")) {
-            if(yearChartEl) {yearChartEl.classList.add("chart-quarter-activated");}
-            if(quarterChartEl) {quarterChartEl.classList.add("active");}
-        } else if (selected.length === 0) {
-            if(yearChartEl) {yearChartEl.classList.remove("chart-quarter-activated");}
-            if(quarterChartEl) {quarterChartEl.classList.remove("active");}
-        }
-    
-        updateQuarterChart(chart, 'barQuarter');
-    });
-    
-    // Updated event
-    distributedchart.addEventListener('updated', function (chart) {
-        updateQuarterChart(chart, 'barQuarter');
-    });
+    var chart = new ApexCharts(document.querySelector("#columns-distributed"), options);
+    chart.render();
 
 })();

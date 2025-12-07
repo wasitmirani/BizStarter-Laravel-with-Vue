@@ -1,6 +1,6 @@
 (function () {
   "use strict";
-
+  
   /* default multi select */
   const secondElement = new Choices('#choices-multiple-default', { allowSearch: false }).setValue(['Choice 2', 'Choice 3']);
 
@@ -14,12 +14,13 @@
   );
 
   /* multi select with option groups */
-  const multipleDefault = new Choices(document.getElementById('choices-multiple-groups'),
+  const multipleDefault = new Choices(
+    document.getElementById('choices-multiple-groups'),
     { allowHTML: true }
   );
 
   /* email address only */
-  const textEmailFilter = new Choices('#choices-text-email-filter', {
+  var textEmailFilter = new Choices('#choices-text-email-filter', {
     allowHTML: true,
     editItems: true,
     addItemFilter: function (value) {
@@ -33,7 +34,7 @@
   }).setValue(['abc@hotmail.com']);
 
   /* passing through values */
-  const textPresetVal = new Choices('#choices-text-preset-values', {
+  var textPresetVal = new Choices('#choices-text-preset-values', {
     allowHTML: true,
     items: [
       'one',
@@ -48,7 +49,7 @@
   });
 
   /* options added via config with no search */
-  const singleNoSearch = new Choices('#choices-single-no-search', {
+  var singleNoSearch = new Choices('#choices-single-no-search', {
     allowHTML: true,
     searchEnabled: false,
     removeItemButton: true,
@@ -69,7 +70,7 @@
   );
 
   /* passing unique values */
-  const textUniqueVals = new Choices('#choices-text-unique-values', {
+  var textUniqueVals = new Choices('#choices-text-unique-values', {
     allowHTML: true,
     paste: false,
     duplicateItemsAllowed: false,

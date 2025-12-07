@@ -2,14 +2,14 @@
   "use strict";
 
   /* basic map */
-  const map = new GMaps({
+  var map = new GMaps({
     el: '#google-map',
     lat: -12.043333,
     lng: -77.028333
   });
 
   /* overlay map */
-  const map1 = new GMaps({
+  var map1 = new GMaps({
     el: '#google-map-overlay',
     lat: -12.043333,
     lng: -77.028333
@@ -24,7 +24,7 @@
   });
 
   /* layeres map */
-  const map2 = new GMaps({
+  var map2 = new GMaps({
     el: "#map-layers",
     lat: -12.043333,
     lng: -77.028333,
@@ -32,7 +32,7 @@
   });
 
   /* map with markers */
-  const map3 = new GMaps({
+  var map3 = new GMaps({
     el: '#map-markers',
     lat: -12.043333,
     lng: -77.028333
@@ -46,12 +46,13 @@
       author: 'HPNeo'
     },
     click: function (e) {
-      
-       
+      if (console.log)
+        console.log(e);
       alert('You clicked in this marker');
     },
     mouseover: function (e) {
-      
+      if (console.log)
+        console.log(e);
     }
   });
   map3.addMarker({
@@ -76,18 +77,18 @@
   });
 
   /* geo fencing map */
-  const map4 = new GMaps({
+  var map4 = new GMaps({
     el: '#map-geofencing',
     lat: -12.043333,
     lng: -77.028333
   });
-  const path = [
+  var path = [
     [-12.040397656836609, -77.03373871559225],
     [-12.040248585302038, -77.03993927003302],
     [-12.050047116528843, -77.02448169303511],
     [-12.044804866577001, -77.02154422636042]
   ];
-  const polygon = map4.drawPolygon({
+  var polygon = map4.drawPolygon({
     paths: path,
     strokeColor: '#fe5454',
     strokeOpacity: 1,
@@ -95,14 +96,14 @@
     fillColor: '#fe5454',
     fillOpacity: 0.5
   });/*  */
-  const circle = map4.drawCircle({
+  var circle = map4.drawCircle({
     lat: -12.040504866577001,
     lng: -77.02024422636042,
     radius: 350,
-    strokeColor: 'rgba(const(--warning-rgb))',
+    strokeColor: 'rgba(var(--warning-rgb))',
     strokeOpacity: 1,
     strokeWeight: 3,
-    fillColor: 'rgba(const(--warning-rgb))',
+    fillColor: 'rgba(var(--warning-rgb))',
     fillOpacity: 0.5
   });
 

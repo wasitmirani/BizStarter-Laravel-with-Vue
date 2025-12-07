@@ -1,14 +1,12 @@
 /* Image upload */
 let loadFile = function (event) {
-  const reader = new FileReader();
+  var reader = new FileReader();
   
   reader.onload = function () {
-    const output = document.getElementById("profile-img");
+    var output = document.getElementById("profile-img");
     if (event.target.files && event.target.files[0]) {
       if (event.target.files[0].type.match("image.*")) {
-        if(output) {
-          output.src = reader.result;
-        }
+        output.src = reader.result;
       } else {
         event.target.value = "";
         alert("Please select a valid image file.");
@@ -16,6 +14,7 @@ let loadFile = function (event) {
     } else {
       // Handle case where no file is selected (user clicked cancel)
       event.target.value = "";
+      console.log("No file selected.");
     }
   };
   
@@ -26,7 +25,7 @@ let loadFile = function (event) {
 
 // Select the input element and attach the event listener
 let ProfileChange = document.querySelector("#profile-change");
-if(ProfileChange) ProfileChange.addEventListener("change", loadFile);
+ProfileChange.addEventListener("change", loadFile);
   
   /* For Delete Contact */
   let invoicebtn = document.querySelectorAll(".contact-delete");

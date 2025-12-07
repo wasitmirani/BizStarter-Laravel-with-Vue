@@ -1,6 +1,6 @@
 
 function updateTimer() {
-    future = Date.parse("Dec 19, 2026 11:30:00");
+    future = Date.parse("Mar 31, 2025 5:30:00");
     now = new Date();
     diff = future - now;
 
@@ -16,122 +16,32 @@ function updateTimer() {
 
     document.getElementById("timer")
         .innerHTML =
-        '<div class="text-center"><div class=""><p class="mb-1 fs-13 fw-medium">Days</p><h4 class="mb-0 fw-semibold">' + d + '</h4></div></div>' +
-        '<div class="text-center"><div class=""><p class="mb-1 fs-13 fw-medium">Hours</p><h4 class="mb-0 fw-semibold">' + h + '</h4></div></div>' +
-        '<div class="text-center"><div class=""><p class="mb-1 fs-13 fw-medium">Minutes</p><h4 class="mb-0 fw-semibold">' + m + '</h4></div></div>' +
-        '<div class="text-center"><div class=""><p class="mb-1 fs-13 fw-medium">Seconds</p><h4 class="mb-0 fw-semibold">' + s + '</h4></div></div>'
+        '<div><div class="text-center auth-timer primary-dash-border rounded"><h2 class="mb-0  d-block  mt-2 text-default fw-semibold">' + d + '</h2><p class="mt-1 fs-12 fw-medium">DAYS</p></div></div>' +
+        '<div><h3 class="mt-4 custom-main">:</h3></div>'+
+        '<div><div class="text-center auth-timer primary-dash-border rounded"><h2 class="d-block mb-0 mt-2 text-default fw-semibold">' + h + '</h2><p class="mt-1 fs-12 fw-medium">HOURS</p></div></div>' +
+        '<div><h3 class="mt-4 custom-main">:</h3></div>'+
+        '<div><div class="text-center auth-timer primary-dash-border rounded"><h2 class="mb-0 d-block mt-2 text-default fw-semibold">' + m + '</h2><p class="mt-1 fs-12 fw-medium">MINUTES</p></div></div>' +
+        '<div><h3 class="mt-4 custom-main">:</h3></div>'+
+        '<div><div class="text-center auth-timer primary-dash-border rounded"><h2 class="mb-0 d-block mt-2 text-default fw-semibold">' + s + '</h2><p class="mt-1 fs-12 fw-medium">SECONDS</p></div></div>'
 }
 setInterval('updateTimer()', 1000);
 
-particlesJS("particles-js", {
-    "particles": {
-        "number": {
-            "value": 80,
-            "density": {
-                "enable": true,
-                "value_area": 800
-            }
-        },
-        "color": {
-            "value": "#845adf"
-        },
-        "shape": {
-            "type": "circle",
-            "stroke": {
-                "width": 0,
-                "color": "#845adf"
-            },
-            "polygon": {
-                "nb_sides": 5
-            },
-            "image": {
-                "src": "img/github.svg",
-                "width": 100,
-                "height": 100
-            }
-        },
-        "opacity": {
-            "value": 0.5,
-            "random": false,
-            "anim": {
-                "enable": false,
-                "speed": 1,
-                "opacity_min": 0.1,
-                "sync": false
-            }
-        },
-        "size": {
-            "value": 2,
-            "random": true,
-            "anim": {
-                "enable": false,
-                "speed": 40,
-                "size_min": 0.1,
-                "sync": false
-            }
-        },
-        "line_linked": {
-            "enable": true,
-            "distance": 150,
-            "color": "#fff",
-            "opacity": 0,
-            "width": 1
-        },
-        "move": {
-            "enable": true,
-            "speed": 2,
-            "direction": "none",
-            "random": false,
-            "straight": false,
-            "out_mode": "out",
-            "bounce": false,
-            "attract": {
-                "enable": false,
-                "rotateX": 600,
-                "rotateY": 1200
-            }
-        }
-    },
-    "interactivity": {
-        "detect_on": "canvas",
-        "events": {
-            "onhover": {
-                "enable": true,
-                "mode": "grab"
-            },
-            "onclick": {
-                "enable": true,
-                "mode": "push"
-            },
-            "resize": true
-        },
-        "modes": {
-            "grab": {
-                "distance": 150,
-                "line_linked": {
-                    "opacity": 1
-                }
-            },
-            "bubble": {
-                "distance": 400,
-                "size": 40,
-                "duration": 2,
-                "opacity": 8,
-                "speed": 3
-            },
-            "repulse": {
-                "distance": 200,
-                "duration": 0.4
-            },
-            "push": {
-                "particles_nb": 4
-            },
-            "remove": {
-                "particles_nb": 2
-            }
-        }
-    },
-    "retina_detect": true
-});
-requestAnimationFrame(() => {
-});
+
+/* anime js */
+var pathEls = document.querySelectorAll('path');
+for (var i = 0; i < pathEls.length; i++) {
+  var pathEl = pathEls[i];
+  var offset = anime.setDashoffset(pathEl);
+  pathEl.setAttribute('stroke-dashoffset', offset);
+  anime({
+    targets: pathEl,
+    strokeDashoffset: [offset, 0],
+    duration: anime.random(1000, 3000),
+    delay: anime.random(0, 2000),
+    loop: true,
+    direction: 'alternate',
+    easing: 'easeInOutSine',
+    autoplay: true
+  });
+}
+/* anime js */

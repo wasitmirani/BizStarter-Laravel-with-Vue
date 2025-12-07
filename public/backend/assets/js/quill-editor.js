@@ -1,7 +1,7 @@
 (function () {
     'use strict';
     /* quill snow editor */
-    const toolbarOptions = [
+    var toolbarOptions = [
         [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
         [{ 'font': [] }],
         ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -21,7 +21,7 @@
         ['image', 'video'],
         ['clean']                                         // remove formatting button
     ];
-    const quill = new Quill('#editor', {
+    var quill = new Quill('#editor', {
         modules: {
             toolbar: toolbarOptions
         },
@@ -29,7 +29,7 @@
     });
 
     /* quill bubble editor */
-    const quill2 = new Quill('#editor1', {
+    var quill = new Quill('#editor1', {
         modules: {
             toolbar: undefined
         },

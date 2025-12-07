@@ -1,349 +1,51 @@
 
 (function () {
-  "use strict";
+  "use strict"
 
-  /* btc chart */
-  const options = {
-    series: [{
-      data: [105, 112, 80, 145, 98, 148, 110, 87, 102]
-    }],
-    chart: {
-      height: 20,
-      width: 100,
-      type: 'area',
-      zoom: {
-        enabled: false
+/* crypto swiper */
+  var swiper = new Swiper(".swiper-basic", {
+    loop: true,
+    slidesPerView: 1,
+    spaceBetween: 20,
+    autoplay: {
+        delay: 1500,
+        disableOnInteraction: false,
+    },
+    breakpoints: {
+      500: {
+          slidesPerView: 2,
+          spaceBetween: 20,
       },
-      sparkline: {
-        enabled: true
+      768: {
+          slidesPerView: 3,
+          spaceBetween: 20,
       },
-    },
-    tooltip: {
-      enabled: true,
-      theme: "dark",
-      x: {
-        show: false
+      1024: {
+          slidesPerView: 3,
+          spaceBetween: 20,
       },
-      y: {
-        title: {
-          formatter: function (seriesName) {
-            return ''
-          }
-        }
+      1200: {
+          slidesPerView: 3,
+          spaceBetween: 20,
       },
-      marker: {
-        show: false
-      }
-    },
-    dataLabels: {
-      enabled: false
-    },
-    stroke: {
-      curve: 'smooth',
-      width: [1.5],
-    },
-    title: {
-      text: undefined,
-    },
-    grid: {
-      borderColor: 'transparent',
-    },
-    xaxis: {
-      crosshairs: {
-        show: false,
-      }
-    },
-    colors: ["var(--primary-color)"],
-    fill: {
-      type: 'gradient',
-      gradient: {
-        shadeIntensity: 1,
-        opacityFrom: 0.4,
-        opacityTo: 0.1,
-        stops: [0, 90, 100],
-        colorStops: [
-          [
-            {
-              offset: 0,
-              color: "var(--primary01)",
-              opacity: 1
-            },
-            {
-              offset: 75,
-              color: "var(--primary01)",
-              opacity: 1
-            },
-            {
-              offset: 100,
-              color: "var(--primary01)",
-              opacity: 1
-            }
-          ]
-        ]
-      }
-    },
-  };
-  const chart = new ApexCharts(document.querySelector("#btc-chart"), options);
-  if(chart) chart.render();
-  /* btc chart */
-
-  /* eth chart */
-  const options1 = {
-    series: [{
-      data: [112, 87, 105, 102, 145, 98, 110, 148, 80]
-    }],
-    chart: {
-      height: 20,
-      width: 100,
-      type: 'area',
-      zoom: {
-        enabled: false
+      1400: {
+          slidesPerView: 3,
+          spaceBetween: 20,
       },
-      sparkline: {
-        enabled: true
+      1600: {
+          slidesPerView: 4,
+          spaceBetween: 20,
       },
-    },
-    tooltip: {
-      enabled: true,
-      theme: "dark",
-      x: {
-        show: false
+      1800: {
+          slidesPerView: 4,
+          spaceBetween: 20,
       },
-      y: {
-        title: {
-          formatter: function (seriesName) {
-            return ''
-          }
-        }
-      },
-      marker: {
-        show: false
-      }
-    },
-    dataLabels: {
-      enabled: false
-    },
-    stroke: {
-      curve: 'smooth',
-      width: [1.5],
-    },
-    title: {
-      text: undefined,
-    },
-    grid: {
-      borderColor: 'transparent',
-    },
-    xaxis: {
-      crosshairs: {
-        show: false,
-      }
-    },
-    colors: ["rgb(255, 73, 205)"],
-    fill: {
-      type: 'gradient',
-      gradient: {
-        shadeIntensity: 1,
-        opacityFrom: 0.4,
-        opacityTo: 0.1,
-        stops: [0, 90, 100],
-        colorStops: [
-          [
-            {
-              offset: 0,
-              color: "rgba(255, 73, 205, 0.1)",
-              opacity: 1
-            },
-            {
-              offset: 75,
-              color: "rgba(255, 73, 205, 0.1)",
-              opacity: 1
-            },
-            {
-              offset: 100,
-              color: "rgba(255, 73, 205, 0.1)",
-              opacity: 1
-            }
-          ]
-        ]
-      }
-    },
-  };
-  const chart1 = new ApexCharts(document.querySelector("#eth-chart"), options1);
-  if(chart1) chart1.render();
-  /* eth chart */
-
-  /* tether chart */
-  const options2 = {
-    series: [{
-      data: [145, 110, 112, 87, 148, 102, 98, 105, 80]
-    }],
-    chart: {
-      height: 20,
-      width: 100,
-      type: 'area',
-      zoom: {
-        enabled: false
-      },
-      sparkline: {
-        enabled: true
-      },
-    },
-    tooltip: {
-      enabled: true,
-      theme: "dark",
-      x: {
-        show: false
-      },
-      y: {
-        title: {
-          formatter: function (seriesName) {
-            return ''
-          }
-        }
-      },
-      marker: {
-        show: false
-      }
-    },
-    dataLabels: {
-      enabled: false
-    },
-    stroke: {
-      curve: 'smooth',
-      width: [1.5],
-    },
-    title: {
-      text: undefined,
-    },
-    grid: {
-      borderColor: 'transparent',
-    },
-    xaxis: {
-      crosshairs: {
-        show: false,
-      }
-    },
-    colors: ["rgb(50, 212, 132)"],
-    fill: {
-      type: 'gradient',
-      gradient: {
-        shadeIntensity: 1,
-        opacityFrom: 0.4,
-        opacityTo: 0.1,
-        stops: [0, 90, 100],
-        colorStops: [
-          [
-            {
-              offset: 0,
-              color: "rgba(50, 212, 132, 0.1)",
-              opacity: 1
-            },
-            {
-              offset: 75,
-              color: "rgba(50, 212, 132, 0.1)",
-              opacity: 1
-            },
-            {
-              offset: 100,
-              color: "rgba(50, 212, 132, 0.1)",
-              opacity: 1
-            }
-          ]
-        ]
-      }
-    },
-  };
-  const chart2 = new ApexCharts(document.querySelector("#tether-chart"), options2);
-  if(chart2) chart2.render();
-  /* tether chart */
-
-  /* bnb chart */
-  const options3 = {
-    series: [{
-      data: [105, 87, 148, 80, 110, 145, 112, 102, 98]
-    }],
-    chart: {
-      height: 20,
-      width: 100,
-      type: 'area',
-      zoom: {
-        enabled: false
-      },
-      sparkline: {
-        enabled: true
-      },
-    },
-    tooltip: {
-      enabled: true,
-      theme: "dark",
-      x: {
-        show: false
-      },
-      y: {
-        title: {
-          formatter: function (seriesName) {
-            return ''
-          }
-        }
-      },
-      marker: {
-        show: false
-      }
-    },
-    dataLabels: {
-      enabled: false
-    },
-    stroke: {
-      curve: 'smooth',
-      width: [1.5],
-    },
-    title: {
-      text: undefined,
-    },
-    grid: {
-      borderColor: 'transparent',
-    },
-    xaxis: {
-      crosshairs: {
-        show: false,
-      }
-    },
-    colors: ["rgb(253, 175, 34)"],
-    fill: {
-      type: 'gradient',
-      gradient: {
-        shadeIntensity: 1,
-        opacityFrom: 0.4,
-        opacityTo: 0.1,
-        stops: [0, 90, 100],
-        colorStops: [
-          [
-            {
-              offset: 0,
-              color: "rgba(253, 175, 34, 0.1)",
-              opacity: 1
-            },
-            {
-              offset: 75,
-              color: "rgba(253, 175, 34, 0.1)",
-              opacity: 1
-            },
-            {
-              offset: 100,
-              color: "rgba(253, 175, 34, 0.1)",
-              opacity: 1
-            }
-          ]
-        ]
-      }
-    },
-  };
-  const chart3 = new ApexCharts(document.querySelector("#bnb-chart"), options3);
-  if(chart3) chart3.render();
-  /* bnb chart */
+  },
+});
+/* crypto swiper */
 
   /* coin statiistics */
-  const options4 = {
+  var options = {
     series: [
       {
         data: [
@@ -592,7 +294,7 @@
     ],
     chart: {
       type: "candlestick",
-      height: 400,
+      height: 370,
       toolbar: {
         show: false,
       },
@@ -604,8 +306,8 @@
     plotOptions: {
       candlestick: {
         colors: {
-          upward: 'rgb(50, 212, 132)',
-          downward: 'rgb(255, 103, 87)'
+          upward: 'rgba(3, 181, 98,1)',
+          downward: 'rgba(127, 103, 257,1)'
         },
       },
     },
@@ -642,82 +344,646 @@
       },
     },
   };
-  const chart4 = new ApexCharts(document.querySelector("#coin-statistics"), options4);
-  if(chart4) chart4.render();
+  var chart1 = new ApexCharts(document.querySelector("#coin-statistics"), options);
+  chart1.render();
   /* coin statiistics */
 
-  /* Balance Analysis Chart */
-  const options5 = {
-    series: [85, 75],
+  /*total-balance*/
+
+  var options = {
+    series: [{
+      data: [200, 170, 220, 200, 250, 240, 200, 190, 210,230,250,240,210,150,200,250]
+    }],
     chart: {
-      height: 170,
-      type: 'radialBar',
-    },
-    plotOptions: {
-      radialBar: {
-        offsetY: 0,
-        startAngle: 0,
-        endAngle: 360,
-        hollow: {
-          margin: 5,
-          size: '50%',
-          background: '#000000',
-          image: undefined,
-        },
-        dataLabels: {
-          name: {
-            show: true,
-            fontSize: '20px',
-            fontFamily: "Poppins, sans-serif",
-            offsetY: 0
-          },
-          value: {
-            show: true,
-            fontSize: '22px',
-            color: undefined,
-            offsetY: 12,
-            fontWeight: 600,
-            fontFamily: "Poppins, sans-serif",
-            formatter: function (val) {
-              return val + "%";
-            }
-          },
-          total: {
-            show: true,
-            showAlways: true,
-            label: 'Balance',
-            fontSize: '14px',
-            fontWeight: 400,
-            formatter: function (w) {
-              return 254;
-            }
-          }
-        }
+      height: 165,
+      type: 'area',
+      fontFamily: 'Montserrat, sans-serif',
+      foreColor: '#5d6162',
+      zoom: {
+        enabled: false
+      },
+      sparkline: {
+        enabled: true
       }
     },
     tooltip: {
-      enabled: true,  // Ensure tooltips are enabled
+      enabled: true,
+      theme: "dark",
+      x: {
+        show: false
+      },
       y: {
-        formatter: function (val) {
-          return val + '%'; // Format the tooltip value as percentage
+        title: {
+          formatter: function (seriesName) {
+            return ''
+          }
         }
+      },
+      marker: {
+        show: false
       }
+    },
+    dataLabels: {
+      enabled: false
     },
     stroke: {
-      lineCap: 'round'
+      curve: 'smooth',
+      width: [1.5],
+    },
+    fill: {
+      type: 'gradient',
+      gradient: {
+        opacityFrom: 0.5,
+        opacityTo: 0.2,
+        stops: [0, 60],
+        colorStops: [
+          [
+            {
+              offset: 0,
+              color: 'var(--primary01)',
+              opacity: 1
+            },
+            {
+              offset: 50,
+              color: 'var(--primary01)',
+              opacity: 0.1
+            }
+          ],
+        ]
+      },
+    },
+    title: {
+      text: undefined,
     },
     grid: {
-      padding: {
-        bottom: -10,
-        top: -10
+      borderColor: 'transparent',
+    },
+    yaxis: {
+      min:0,
+    },
+    xaxis: {
+      crosshairs: {
+        show: false,
       }
     },
-    colors: ["var(--primary-color)", "rgba(255, 73, 205, 1)"],
-    labels: ['Funding', 'Trading'],
+    colors: ["var(--primary-color)"],
   };
-  const chart5 = new ApexCharts(document.querySelector("#balanceAnalysis"), options5);
-  if(chart5) chart5.render();
+  var chart1 = new ApexCharts(document.querySelector("#total-balance"), options);
+  chart1.render();
 
-  /* Balance Analysis Chart */
+  /*total-balance*/
 
+
+/* Assets Allocation chart */
+var options = {
+  series: [17546, 5764, 6458, 5764],
+  labels: ["Bitcoin", "Ethereum", "Dash", "Litecoin"],
+  chart: {
+      height: 220,
+      type: 'donut',
+  },
+  dataLabels: {
+      enabled: false,
+  },
+
+  legend: {
+      show: false,
+  },
+  stroke: {
+      width: 5,
+      colors: ["rgba(244, 244, 244,1)"],
+  },
+  plotOptions: {
+      pie: {
+          expandOnClick: false,
+          donut: {
+            size: '80%',
+            background: 'transparent',
+            labels: {
+              show: true,
+              name: {
+                show: true,
+                fontSize: '20px',
+                color: '#495057',
+                fontFamily: "Montserrat, sans-serif",
+                offsetY: -10
+              },
+              value: {
+                show: true,
+                fontSize: '22px',
+                color: undefined,
+                offsetY: 10,
+                fontWeight: 600,
+                fontFamily: "Montserrat, sans-serif",
+                formatter: function (val) {
+                  return val + "%"
+                }
+              },
+              total: {
+                show: true,
+                showAlways: true,
+                label: 'Total Assets',
+                fontSize: '14px',
+                fontWeight: 400,
+                color: '#495057',
+              }
+            }
+          }
+      }
+  },
+  colors: ["var(--primary-color)", "rgba(127, 103, 257,1)", "rgb(253, 73, 99)", "rgb(255, 169, 9)"],
+};
+document.querySelector("#asset-allocation").innerHTML = " ";
+var chart2 = new ApexCharts(document.querySelector("#asset-allocation"), options);
+chart2.render();
+/* Assets Allocation chart */
+
+/* Start:: Crypto Currencies Market Value charts */
+var spark4 = {
+  chart: {
+    type: 'line',
+    height: 20,
+    width: 120,
+    sparkline: {
+      enabled: true
+    },
+    dropShadow: {
+      enabled: true,
+      enabledOnSeries: undefined,
+      top: 0,
+      left: 0,
+      blur: 3,
+      color: '#000',
+      opacity: 0.1
+    }
+  },
+  stroke: {
+    show: true,
+    curve: 'smooth',
+    lineCap: 'butt',
+    colors: undefined,
+    width: 1.5,
+    dashArray: 0,
+  },
+  fill: {
+    gradient: {
+      enabled: false
+    }
+  },
+  tooltip: {
+    enabled: false,
+  },
+  series: [{
+    name: 'Value',
+    data: [0, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53, 61, 27, 54, 43, 19, 46]
+  }],
+  yaxis: {
+    min: 0,
+    show: false
+  },
+  xaxis: {
+    axisBorder: {
+      show: false
+    },
+  },
+  yaxis: {
+    axisBorder: {
+      show: false
+    },
+  },
+  colors: ['rgb(3, 181, 98)'],
+
+}
+document.getElementById('bitcoin-price-graph').innerHTML = '';
+var spark4 = new ApexCharts(document.querySelector("#bitcoin-price-graph"), spark4);
+spark4.render();
+
+var spark5 = {
+  chart: {
+    type: 'line',
+    height: 20,
+    width: 120,
+    sparkline: {
+      enabled: true
+    },
+    dropShadow: {
+      enabled: true,
+      enabledOnSeries: undefined,
+      top: 0,
+      left: 0,
+      blur: 3,
+      color: '#000',
+      opacity: 0.1
+    }
+  },
+  stroke: {
+    show: true,
+    curve: 'smooth',
+    lineCap: 'butt',
+    colors: undefined,
+    width: 1.5,
+    dashArray: 0,
+  },
+  fill: {
+    gradient: {
+      enabled: false
+    }
+  },
+  tooltip: {
+    enabled: false,
+  },
+  series: [{
+    name: 'Value',
+    data: [0, 45, 54, 38, 56, 24, 65, 35, 27, 93, 53, 61, 27, 54, 43, 19, 46, 31, 37, 39, 62, 51, 35, 41]
+  }],
+  yaxis: {
+    min: 0,
+    show: false
+  },
+  xaxis: {
+    axisBorder: {
+      show: false
+    },
+  },
+  yaxis: {
+    axisBorder: {
+      show: false
+    },
+  },
+  colors: ['rgb(253, 73, 99)'],
+
+}
+document.getElementById('etherium-price-graph').innerHTML = '';
+var spark5 = new ApexCharts(document.querySelector("#etherium-price-graph"), spark5);
+spark5.render();
+
+var spark6 = {
+  chart: {
+    type: 'line',
+    height: 20,
+    width: 120,
+    sparkline: {
+      enabled: true
+    },
+    dropShadow: {
+      enabled: true,
+      enabledOnSeries: undefined,
+      top: 0,
+      left: 0,
+      blur: 3,
+      color: '#000',
+      opacity: 0.1
+    }
+  },
+  stroke: {
+    show: true,
+    curve: 'smooth',
+    lineCap: 'butt',
+    colors: undefined,
+    width: 1.5,
+    dashArray: 0,
+  },
+  fill: {
+    gradient: {
+      enabled: false
+    }
+  },
+  tooltip: {
+    enabled: false,
+  },
+  series: [{
+    name: 'Value',
+    data: [61, 27, 54, 43, 19, 46, 31, 37, 39, 0, 45, 54, 38, 56, 24, 65, 35, 27, 93, 53, 62, 51, 35, 41]
+  }],
+  yaxis: {
+    min: 0,
+    show: false
+  },
+  xaxis: {
+    axisBorder: {
+      show: false
+    },
+  },
+  yaxis: {
+    axisBorder: {
+      show: false
+    },
+  },
+  colors: ['rgb(3, 181, 98)'],
+
+}
+document.getElementById('dash-price-graph').innerHTML = '';
+var spark6 = new ApexCharts(document.querySelector("#dash-price-graph"), spark6);
+spark6.render();
+
+var spark7 = {
+  chart: {
+    type: 'line',
+    height: 20,
+    width: 120,
+    sparkline: {
+      enabled: true
+    },
+    dropShadow: {
+      enabled: true,
+      enabledOnSeries: undefined,
+      top: 0,
+      left: 0,
+      blur: 3,
+      color: '#000',
+      opacity: 0.1
+    }
+  },
+  stroke: {
+    show: true,
+    curve: 'smooth',
+    lineCap: 'butt',
+    colors: undefined,
+    width: 1.5,
+    dashArray: 0,
+  },
+  fill: {
+    gradient: {
+      enabled: false
+    }
+  },
+  tooltip: {
+    enabled: false,
+  },
+  series: [{
+    name: 'Value',
+    data: [61, 27, 54, 43, 19, 56, 24, 65, 35, 27, 93, 53, 46, 31, 37, 39, 0, 45, 54, 38, 62, 51, 35, 41]
+  }],
+  yaxis: {
+    min: 0,
+    show: false
+  },
+  xaxis: {
+    axisBorder: {
+      show: false
+    },
+  },
+  yaxis: {
+    axisBorder: {
+      show: false
+    },
+  },
+  colors: ['rgb(3, 181, 98)'],
+
+}
+document.getElementById('ripple-price-graph').innerHTML = '';
+var spark7 = new ApexCharts(document.querySelector("#ripple-price-graph"), spark7);
+spark7.render();
+
+var spark8 = {
+  chart: {
+    type: 'line',
+    height: 20,
+    width: 120,
+    sparkline: {
+      enabled: true
+    },
+    dropShadow: {
+      enabled: true,
+      enabledOnSeries: undefined,
+      top: 0,
+      left: 0,
+      blur: 3,
+      color: '#000',
+      opacity: 0.1
+    }
+  },
+  stroke: {
+    show: true,
+    curve: 'smooth',
+    lineCap: 'butt',
+    colors: undefined,
+    width: 1.5,
+    dashArray: 0,
+  },
+  fill: {
+    gradient: {
+      enabled: false
+    }
+  },
+  tooltip: {
+    enabled: false,
+  },
+  series: [{
+    name: 'Value',
+    data: [61, 27, 54, 37, 39, 0, 45, 54, 38, 62, 51, 35, 41, 43, 19, 56, 24, 65, 35, 27, 93, 53, 46, 31]
+  }],
+  yaxis: {
+    min: 0,
+    show: false
+  },
+  xaxis: {
+    axisBorder: {
+      show: false
+    },
+  },
+  yaxis: {
+    axisBorder: {
+      show: false
+    },
+  },
+  colors: ['rgb(253, 73, 99)'],
+
+}
+document.getElementById('iota-price-graph').innerHTML = '';
+var spark8 = new ApexCharts(document.querySelector("#iota-price-graph"), spark8);
+spark8.render();
+
+var spark9 = {
+  chart: {
+    type: 'line',
+    height: 20,
+    width: 120,
+    sparkline: {
+      enabled: true
+    },
+    dropShadow: {
+      enabled: true,
+      enabledOnSeries: undefined,
+      top: 0,
+      left: 0,
+      blur: 3,
+      color: '#000',
+      opacity: 0.1
+    }
+  },
+  stroke: {
+    show: true,
+    curve: 'smooth',
+    lineCap: 'butt',
+    colors: undefined,
+    width: 1.5,
+    dashArray: 0,
+  },
+  fill: {
+    gradient: {
+      enabled: false
+    }
+  },
+  tooltip: {
+    enabled: false,
+  },
+  series: [{
+    name: 'Value',
+    data: [62, 51, 35, 41, 43, 19, 56, 24, 65, 35, 27, 93, 53, 46, 31, 61, 27, 54, 37, 39, 0, 45, 54, 38]
+  }],
+  yaxis: {
+    min: 0,
+    show: false
+  },
+  xaxis: {
+    axisBorder: {
+      show: false
+    },
+  },
+  yaxis: {
+    axisBorder: {
+      show: false
+    },
+  },
+  colors: ['rgb(253, 73, 99)'],
+
+}
+document.getElementById('golem-price-graph').innerHTML = '';
+var spark9 = new ApexCharts(document.querySelector("#golem-price-graph"), spark9);
+spark9.render();
+/* End:: Crypto Currencies Market Value charts */
+
+  /* Daily Average Sales */
+  var options = {
+    series: [60, 80],
+    chart: {
+      type: "donut",
+      width: 70,
+      height: 70,
+      sparkline: {
+        enabled: true,
+      },
+    },
+    stroke: {
+      width: 1,
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    legend: {
+      show: false,
+    },
+    plotOptions: {
+      pie: {
+        expandOnClick: false,
+        donut: {
+          size: "85%",
+          background: "transparent",
+          labels: {
+            show: false,
+          },
+        },
+      },
+    },
+    colors: ["var(--primary-color)", "var(--primary01)"],
+    tooltip: {
+      enabled: false,
+      fixed: {
+        enabled: false,
+      },
+    },
+  };
+  var chart = new ApexCharts(document.querySelector("#avg-sales"), options);
+  chart.render();
+  /* Daily Average Sales */
+
+    /* Daily Average profit */
+    var options = {
+      series: [80, 20],
+      chart: {
+        type: "donut",
+        width: 70,
+        height: 70,
+        sparkline: {
+          enabled: true,
+        },
+      },
+      stroke: {
+        width: 1,
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      legend: {
+        show: false,
+      },
+      plotOptions: {
+        pie: {
+          expandOnClick: false,
+          donut: {
+            size: "85%",
+            background: "transparent",
+            labels: {
+              show: false,
+            },
+          },
+        },
+      },
+      colors: ["rgba(127, 103, 257,1)", "rgba(127, 103, 257,0.1)"],
+      tooltip: {
+        enabled: false,
+        fixed: {
+          enabled: false,
+        },
+      },
+    };
+    var chart = new ApexCharts(document.querySelector("#avg-profit"), options);
+    chart.render();
+    /* Daily Average profit */
+
+       /* Daily Average Returns */
+       var options = {
+        series: [50, 20],
+        chart: {
+          type: "donut",
+          width: 70,
+          height: 70,
+          sparkline: {
+            enabled: true,
+          },
+        },
+        stroke: {
+          width: 1,
+        },
+        dataLabels: {
+          enabled: false,
+        },
+        legend: {
+          show: false,
+        },
+        plotOptions: {
+          pie: {
+            expandOnClick: false,
+            donut: {
+              size: "85%",
+              background: "transparent",
+              labels: {
+                show: false,
+              },
+            },
+          },
+        },
+        colors: ["rgba(253, 73, 99,1)", "rgba(253, 73, 99,0.1)"],
+        tooltip: {
+          enabled: false,
+          fixed: {
+            enabled: false,
+          },
+        },
+      };
+      var chart = new ApexCharts(document.querySelector("#avg-return"), options);
+      chart.render();
+      /* Daily Average returns */
+  
 })();

@@ -1,52 +1,30 @@
 (function () {
     "use strict";
 
-    /* Available Doctors Scroll */
-    const myElement = document.getElementById('available-doctors');
-    if(myElement) {
-      new SimpleBar(myElement, { autoHide: true });
-    }
-    /* Available Doctors Scroll */
-
-    /* Patients Statistics */
-    const Statisticsoptions = {
+     /* Patients Analysis */
+     var options = {
         series: [
             {
-                name: "Treated Patients",
-                data: [44, 42, 57, 86, 58, 55, 70, 43, 23, 54, 77, 34],
+                name: "This Year",
+                data: [98, 110, 80, 145, 105, 112, 87, 150, 102, 98, 110, 80],
+                type: "area",
             },
             {
-                name: "Active Patients",
-                data: [74, 72, 87, 116, 88, 85, 100, 73, 53, 84, 107, 64],
+                name: "Previous Year",
+                data: [75, 55, 65, 28, 75, 25, 52, 30, 30, 54, 40, 59],
+                type: "bar",
             },
-            {
-                name: "New Patients",
-                data: [84, 82, 97, 126, 98, 95, 110, 83, 63, 94, 117, 74],
-            }
         ],
         chart: {
-            stacked: true,
-            type: "bar",
-            height: 260,
-        },
-        grid: {
-            borderColor: "#f5f4f4",
-            strokeDashArray: 5,
-            yaxis: {
-                lines: {
-                    show: true, // Ensure y-axis grids are shown
-                },
+            animations: {
+                enabled: false,
             },
-        },
-        colors: [
-            "var(--primary-color)",
-            "var(--primary06)",
-            "var(--primary03)",
-        ],
-        plotOptions: {
-            bar: {
-                columnWidth: "40%",
-                borderRadius: 4
+            height: 335,
+            zoom: {
+                enabled: false,
+            },
+            toolbar: {
+                show: false,
             },
         },
         dataLabels: {
@@ -54,54 +32,115 @@
         },
         legend: {
             show: true,
-            position: "bottom",
-            horizontalAlign: "center",
-            fontSize: "11px",
-            fontFamily: "Helvetica, Arial",
-            fontWeight: 600,
-            offsetX: 0,
-            offsetY: 10,
-            labels: {
-                colors: '#74767c',
-            },
+            position: "top",
             markers: {
                 size: 4,
                 strokeWidth: 0,
-                strokeColor: "#fff",
+                strokeColor: '#fff',
                 fillColors: undefined,
-                radius: 12,
+                radius: 5,
                 customHTML: undefined,
                 onClick: undefined,
                 offsetX: 0,
-                offsetY: 0,
+                offsetY: 0
+              },
+        },
+        stroke: {
+            show: true,
+            curve: "straight",
+            width: [2, 1.5],
+            dashArray: [4, 0],
+        },
+        grid: {
+            borderColor: "rgba(107 ,114 ,128,0.1)",
+        },
+        plotOptions: {
+            bar: {
+                columnWidth: "30%",
+                borderRadius: 2
+            }
+        },
+        colors: ["var(--primary-color)", "rgba(127, 103, 257 , 1)"],
+        grid: { 
+            borderColor: "#f1f1f1",
+            strokeDashArray: 2,
+            xaxis: {
+                lines: {
+                    show: true
+                }
             },
+            yaxis: {
+                lines: {
+                    show: false
+                }
+            }
+        },
+        markers: {
+            size: [4,0],
+            hover: {
+              size: 9
+            },
+            dropShadow: {
+                enabled: true, 
+                top: 1,
+                left: 1, 
+                blur: 3,
+                opacity: 0.2
+            }
+        },
+        fill: {
+            type: ['gradient', 'solid'],
+            gradient: {
+                shadeIntensity: 1,
+                opacityFrom: 0.4,
+                opacityTo: 0.1,
+                stops: [0, 90, 100],
+                colorStops: [
+                    [
+                        {
+                            offset: 0,
+                            color: "var(--primary01)",
+                            opacity: 0.1
+                        },
+                        {
+                            offset: 75,
+                            color: "var(--primary01)",
+                            opacity: 1
+                        },
+                        {
+                            offset: 100,
+                            color: 'var(--primary02)',
+                            opacity: 1
+                        }
+                    ],
+                    [
+                        {
+                            offset: 0,
+                            color: 'var(--primary02)',
+                            opacity: 1
+                        },
+                        {
+                            offset: 75,
+                            color: 'var(--primary02)',
+                            opacity: 1
+                        },
+                        {
+                            offset: 100,
+                            color: 'var(--primary02)',
+                            opacity: 1
+                        }
+                    ],
+                ]
+            }
         },
         yaxis: {
             title: {
                 style: {
                     color: "#adb5be",
                     fontSize: "14px",
+                    fontFamily: "Inter, sans-serif",
                     fontWeight: 600,
                     cssClass: "apexcharts-yaxis-label",
-                },
-            },
-            axisBorder: {
-                show: true,
-                color: "rgba(119, 119, 142, 0.05)",
-                offsetX: 0,
-                offsetY: 0,
-            },
-            axisTicks: {
-                show: true,
-                borderType: "solid",
-                color: "rgba(119, 119, 142, 0.05)",
-                width: 6,
-                offsetX: 0,
-                offsetY: 0,
-            },
-            labels: {
-                formatter: function (y) {
-                    return y.toFixed(0) + "k";
                 },
             },
         },
@@ -116,19 +155,19 @@
                 "Jun",
                 "Jul",
                 "Aug",
-                "sep",
-                "oct",
-                "nov",
-                "dec",
+                "Sep",
+                "Oct",
+                "Nov",
+                "Dec",
             ],
             axisBorder: {
-                show: false,
+                show: true,
                 color: "rgba(119, 119, 142, 0.05)",
                 offsetX: 0,
                 offsetY: 0,
             },
             axisTicks: {
-                show: false,
+                show: true,
                 borderType: "solid",
                 color: "rgba(119, 119, 142, 0.05)",
                 width: 6,
@@ -137,146 +176,15 @@
             },
             labels: {
                 rotate: -90,
-            },
-        },
-    };
-    const Statisticschart = new ApexCharts(document.querySelector("#patients-statistics"), Statisticsoptions);
-    if(Statisticschart) Statisticschart.render();
-    /* Patients Statistics */
-
-    /* Patients Visits */
-    const Patientsoptions = {
-        series: [89, 75],
-        chart: {
-            height: 228,
-            type: 'radialBar',
-        },
-        plotOptions: {
-            radialBar: {
-                background: '#000',
-                startAngle: -135,
-                endAngle: 135,
-                hollow: {
-                    margin: 15,
-                    size: '60%',
-                    background: '#000'
-                },
-                track: {
-                    background: '#000',
-                    strokeWidth: '20',
-                    margin: 6,
-                },
-                dataLabels: {
-                    show: true,
-                    name: {
-                        show: true,
-                        fontSize: '20px',
-                        color: '#495057',
-                        offsetY: -5
-                    },
-                    value: {
-                        show: true,
-                        fontSize: '22px',
-                        color: undefined,
-                        offsetY: 5,
-                        fontWeight: 600,
-                        formatter: function (val) {
-                            return val + ""
-                        }
-                    },
-                    total: {
-                        show: true,
-                        showAlways: true,
-                        label: 'Total Patients',
-                        fontSize: '14px',
-                        fontWeight: 400,
-                        color: '#495057',
-                    }
-                }
-            }
-        },
-        stroke: {
-            dashArray: 4,
-            width: 5
-        },
-        colors: [
-            "var(--primary-color)",
-            "rgba(var(--secondary-rgb), 1)",
-        ],
-        labels: ['Female', 'Male'],
-    };
-    const Patientschart = new ApexCharts(document.querySelector("#patients-visits"), Patientsoptions);
-    if(Patientschart) Patientschart.render();
-    /* Patients Visits */
-
-    /* Top Departments */
-    const options1 = {
-        series: [
-            {
-                data: [400, 430, 470, 540, 600, 800],
-                name: "Patients",
-            },
-        ],
-        chart: {
-            type: "bar",
-            height: 358,
-            toolbar: {
-                show: false,
-            },
-        },
-        fill: {
-            type: "solid",
-        },
-        plotOptions: {
-            bar: {
-                borderRadius: 3,
-                horizontal: true,
-                columnWidth: "20%",
-                barHeight: "40%",
-            },
-        },
-        colors: ["var(--primary-color)"],
-        grid: {
-            show: false,
-            enabled: false,
-            borderColor: "transparent",
-        },
-        dataLabels: {
-            enabled: false,
-        },
-        xaxis: {
-            categories: [
-                "Dermatologists",
-                "Cardiologist",
-                "Gynecologist",
-                "Dentist",
-                "Neurosurgeon",
-                "Orthopedic ",
-            ],
-            labels: {
-                show: true,
                 style: {
-                    colors: "#adb5be",
-                    fontSize: "11px",
-                    fontWeight: 600,
-                    cssClass: "apexcharts-xaxis-label",
-                },
-            },
-        },
-        yaxis: {
-            labels: {
-                show: true,
-                style: {
-                    colors: "#adb5be",
-                    fontSize: "11px",
-                    fontWeight: 600,
-                    cssClass: "apexcharts-yaxis-label",
+                    colors: "rgb(107 ,114 ,128)",
+                    fontSize: "12px",
                 },
             },
         },
     };
-    const chart1 = new ApexCharts(document.querySelector("#top-departments"), options1);
-    if(chart1) chart1.render();
-    /* Top Departments */
+    var chart = new ApexCharts(document.querySelector("#patients-analysis"), options);
+    chart.render();
+    /* Patients Analysis */
 
 })();

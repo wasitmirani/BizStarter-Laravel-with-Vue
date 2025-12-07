@@ -2,7 +2,7 @@
     "use strict";
 
     /* basic candlestick charts */
-    const basicoptions = {
+    var options = {
         series: [{
             data: [{
                 x: new Date(1538778600000),
@@ -262,8 +262,8 @@
         plotOptions: {
             candlestick: {
                 colors: {
-                    upward: '#985ffd',
-                    downward: '#ff49cd'
+                    upward: '#03b562',
+                    downward: '#7f67ff'
                 }
             }
         },
@@ -297,11 +297,11 @@
             }
         }
     };
-    const basicchart = new ApexCharts(document.querySelector("#candlestick-basic"), basicoptions);
-    if(basicchart) basicchart.render();
+    var chart = new ApexCharts(document.querySelector("#candlestick-basic"), options);
+    chart.render();
 
     /* candlestick synced with a brush chart */
-    const candlestickoptions = {
+    var options = {
         series: [{
             data: seriesData
         }],
@@ -323,8 +323,8 @@
         plotOptions: {
             candlestick: {
                 colors: {
-                    upward: '#985ffd',
-                    downward: '#ff49cd'
+                    upward: '#03b562',
+                    downward: '#7f67ff'
                 }
             }
         },
@@ -352,10 +352,10 @@
             }
         }
     };
-    const candlestickchart = new ApexCharts(document.querySelector("#chart-candlestick"), candlestickoptions);
-    if(candlestickchart) candlestickchart.render();
+    var chart = new ApexCharts(document.querySelector("#chart-candlestick"), options);
+    chart.render();
 
-    const syncedoptionsBar = {
+    var optionsBar = {
         series: [{
             name: 'volume',
             data: seriesDataLinear
@@ -395,11 +395,11 @@
                     ranges: [{
                         from: -1000,
                         to: 0,
-                        color: '#fdaf22'
+                        color: '#fd4963'
                     }, {
                         from: 1,
                         to: 10000,
-                        color: '#ff6757'
+                        color: '#ffa909'
                     }],
 
                 },
@@ -435,11 +435,11 @@
             },
         }
     };
-    const syncedchartBar = new ApexCharts(document.querySelector("#chart-bar"), syncedoptionsBar);
-    if(syncedchartBar) syncedchartBar.render();
+    var chartBar = new ApexCharts(document.querySelector("#chart-bar"), optionsBar);
+    chartBar.render();
 
     /* candlestick with category x-axis chart */
-    const categoryoptions = {
+    var options = {
         series: [{
             name: 'candle',
             data: [
@@ -702,13 +702,13 @@
             xaxis: [
                 {
                     x: 'Oct 06 14:00',
-                    borderColor: '#ff49cd',
+                    borderColor: '#7b76fe',
                     label: {
-                        borderColor: '#ff49cd',
+                        borderColor: '#7b76fe',
                         style: {
                             fontSize: '12px',
                             color: '#fff',
-                            background: '#ff49cd'
+                            background: '#7b76fe'
                         },
                         orientation: 'horizontal',
                         offsetY: 7,
@@ -726,8 +726,8 @@
         plotOptions: {
             candlestick: {
                 colors: {
-                    upward: '#985ffd',
-                    downward: '#ff49cd'
+                    upward: '#03b562',
+                    downward: '#7f67ff'
                 }
             }
         },
@@ -760,11 +760,11 @@
             }
         }
     };
-    const categorychart = new ApexCharts(document.querySelector("#candlestick-categoryx"), categoryoptions);
-    if(categorychart) categorychart.render();
+    var chart = new ApexCharts(document.querySelector("#candlestick-categoryx"), options);
+    chart.render();
 
     /* candle stick and line combo chart */
-    const lineoptions = {
+    var options = {
         series: [{
             name: 'line',
             type: 'line',
@@ -1046,18 +1046,18 @@
             },
         },
         stroke: {
-            width: [3, 1]
+            width: [2, 1]
         },
-        colors: ["#0ca3e7"],
+        colors: ['#fd4963',"#03b562"],
         tooltip: {
             shared: true,
             custom: [function ({ seriesIndex, dataPointIndex, w }) {
                 return w.globals.series[seriesIndex][dataPointIndex]
             }, function ({ seriesIndex, dataPointIndex, w }) {
-                const o = w.globals.seriesCandleO[seriesIndex][dataPointIndex]
-                const h = w.globals.seriesCandleH[seriesIndex][dataPointIndex]
-                const l = w.globals.seriesCandleL[seriesIndex][dataPointIndex]
-                const c = w.globals.seriesCandleC[seriesIndex][dataPointIndex]
+                var o = w.globals.seriesCandleO[seriesIndex][dataPointIndex]
+                var h = w.globals.seriesCandleH[seriesIndex][dataPointIndex]
+                var l = w.globals.seriesCandleL[seriesIndex][dataPointIndex]
+                var c = w.globals.seriesCandleC[seriesIndex][dataPointIndex]
                 return (
                     ''
                 )
@@ -1066,8 +1066,8 @@
         plotOptions: {
             candlestick: {
                 colors: {
-                    upward: '#985ffd',
-                    downward: '#ff49cd'
+                    upward: '#03b562',
+                    downward: '#7f67ff'
                 }
             }
         },
@@ -1095,8 +1095,8 @@
             }
         }
     };
-    const linechart = new ApexCharts(document.querySelector("#candlestick-line"), lineoptions);
-    if(linechart) linechart.render();
+    var chart = new ApexCharts(document.querySelector("#candlestick-line"), options);
+    chart.render();
 
 
 })();

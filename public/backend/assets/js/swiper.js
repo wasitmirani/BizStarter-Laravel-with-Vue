@@ -2,7 +2,7 @@
     'use strict';
 
     // deault swiper
-    const swiper = new Swiper(".swiper-basic", {
+    var swiper = new Swiper(".swiper-basic", {
         loop: true,
         autoplay: {
             delay: 1500,
@@ -11,16 +11,20 @@
     });
 
     // swiper with navigation
-    const swiper1 = new Swiper(".swiper-navigation", {
+    var swiper = new Swiper(".swiper-navigation", {
         navigation: {
             nextEl: ".swiper-button-next",
             prevEl: ".swiper-button-prev",
         },
         loop: true,
+        // autoplay: {
+        //     delay: 1500,
+        //     disableOnInteraction: false,
+        // }
     });
 
     // swiper with pagination
-    const swiper2 = new Swiper(".pagination", {
+    var swiper = new Swiper(".pagination", {
         pagination: {
             el: ".swiper-pagination",
             clickable: true,
@@ -33,7 +37,7 @@
     });
 
     // dynamic pagination
-    const swiper3 = new Swiper(".pagination-dynamic", {
+    var swiper = new Swiper(".pagination-dynamic", {
         pagination: {
             el: ".swiper-pagination",
             dynamicBullets: true,
@@ -47,7 +51,7 @@
     });
 
     // pagination with progress
-    const swiper4 = new Swiper(".pagination-progress", {
+    var swiper = new Swiper(".pagination-progress", {
         pagination: {
             el: ".swiper-pagination",
             type: "progressbar",
@@ -65,7 +69,7 @@
     });
 
     // pagination fraction
-    const swiper5 = new Swiper(".pagination-fraction", {
+    var swiper = new Swiper(".pagination-fraction", {
         pagination: {
             el: ".swiper-pagination",
             type: "fraction",
@@ -83,7 +87,7 @@
     });
 
     // custom pagination
-    const swiper6 = new Swiper(".custom-pagination", {
+    var swiper = new Swiper(".custom-pagination", {
         pagination: {
             el: ".swiper-pagination",
             clickable: true,
@@ -99,7 +103,7 @@
     });
 
     // scrollbar swiper
-    const swiper7 = new Swiper(".scrollbar-swiper", {
+    var swiper = new Swiper(".scrollbar-swiper", {
         scrollbar: {
             el: ".swiper-scrollbar",
             hide: true,
@@ -112,7 +116,7 @@
     });
 
     // vertical swiper
-    const swiper8 = new Swiper(".swiper-vertical", {
+    var swiper = new Swiper(".swiper-vertical", {
         direction: "vertical",
         pagination: {
             el: ".swiper-pagination",
@@ -126,7 +130,7 @@
     });
 
     // mouse wheel control
-    const swiper9 = new Swiper(".vertical-mouse-control", {
+    var swiper = new Swiper(".vertical-mouse-control", {
         direction: "vertical",
         slidesPerView: 1,
         spaceBetween: 30,
@@ -143,7 +147,7 @@
     });
 
     // keyboard control
-    const swiper10 = new Swiper(".keyboard-control", {
+    var swiper = new Swiper(".keyboard-control", {
         slidesPerView: 1,
         spaceBetween: 30,
         keyboard: {
@@ -165,14 +169,14 @@
     });
 
     // nested swiper
-    const swiper11 = new Swiper(".swiper-horizontal1", {
+    var swiper = new Swiper(".swiper-horizontal1", {
         spaceBetween: 50,
         pagination: {
             el: ".swiper-pagination",
             clickable: true,
         },
     });
-    const swiper12 = new Swiper(".swiper-vertical1", {
+    var swiper2 = new Swiper(".swiper-vertical1", {
         direction: "vertical",
         spaceBetween: 50,
         pagination: {
@@ -182,7 +186,7 @@
     });
 
     // effect cube
-    const swiper13 = new Swiper(".swiper-effect-cube", {
+    var swiper = new Swiper(".swiper-effect-cube", {
         effect: "cube",
         grabCursor: true,
         cubeEffect: {
@@ -202,7 +206,7 @@
     });
 
     // swiper fade
-    const swiper14 = new Swiper(".swiper-fade", {
+    var swiper = new Swiper(".swiper-fade", {
         spaceBetween: 30,
         effect: "fade",
         navigation: {
@@ -221,7 +225,7 @@
     });
 
     // swiper flip
-    const swiper15 = new Swiper(".swiper-flip", {
+    var swiper = new Swiper(".swiper-flip", {
         effect: "flip",
         grabCursor: true,
         pagination: {
@@ -239,7 +243,7 @@
     });
 
     // swiper overflow
-    const swiper16 = new Swiper(".swiper-overflow", {
+    var swiper = new Swiper(".swiper-overflow", {
         effect: "coverflow",
         grabCursor: true,
         centeredSlides: true,
@@ -263,20 +267,20 @@
     });
 
     // thumbs gallery
-    const swiper17 = new Swiper(".swiper-view", {
+    var swiper = new Swiper(".swiper-view", {
         spaceBetween: 10,
         slidesPerView: 4,
         freeMode: true,
         watchSlidesProgress: true,
     });
-    const swiper18 = new Swiper(".swiper-preview", {
+    var swiper2 = new Swiper(".swiper-preview", {
         spaceBetween: 10,
         navigation: {
             nextEl: ".swiper-button-next",
             prevEl: ".swiper-button-prev",
         },
         thumbs: {
-            swiper: swiper17,
+            swiper: swiper,
         },
         loop: true,
         autoplay: {

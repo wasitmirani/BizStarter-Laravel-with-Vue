@@ -2,7 +2,7 @@
     "use strict";
 
     /* basic timeline chart */
-    const basicoptions = {
+    var options = {
         series: [
             {
                 data: [
@@ -46,10 +46,10 @@
         },
         plotOptions: {
             bar: {
-                horizontal: true
+                horizontal: true,
             }
         },
-        colors: ["#985ffd"],
+        colors: ["#03b562"],
         xaxis: {
             type: 'datetime',
             labels: {
@@ -74,11 +74,11 @@
             }
         }
     };
-    const basicchart = new ApexCharts(document.querySelector("#timeline-basic"), basicoptions);
-    if(basicchart) basicchart.render();
+    var chart = new ApexCharts(document.querySelector("#timeline-basic"), options);
+    chart.render();
 
     /* multiple colors timeline chart */
-    const multipleoptions = {
+    var options = {
         series: [
             {
                 data: [
@@ -88,7 +88,7 @@
                             new Date('2019-02-27').getTime(),
                             new Date('2019-03-04').getTime()
                         ],
-                        fillColor: '#985ffd'
+                        fillColor: '#03b562'
                     },
                     {
                         x: 'Design',
@@ -96,7 +96,7 @@
                             new Date('2019-03-04').getTime(),
                             new Date('2019-03-08').getTime()
                         ],
-                        fillColor: '#ff49cd'
+                        fillColor: '#7f67ff'
                     },
                     {
                         x: 'Coding',
@@ -104,7 +104,7 @@
                             new Date('2019-03-07').getTime(),
                             new Date('2019-03-10').getTime()
                         ],
-                        fillColor: '#fdaf22'
+                        fillColor: '#fd4963'
                     },
                     {
                         x: 'Testing',
@@ -112,7 +112,7 @@
                             new Date('2019-03-08').getTime(),
                             new Date('2019-03-12').getTime()
                         ],
-                        fillColor: '#32d484'
+                        fillColor: '#ffa909'
                     },
                     {
                         x: 'Deployment',
@@ -120,7 +120,7 @@
                             new Date('2019-03-12').getTime(),
                             new Date('2019-03-17').getTime()
                         ],
-                        fillColor: '#00c9ff'
+                        fillColor: '#0fbcf9'
                     }
                 ]
             }
@@ -141,10 +141,10 @@
         dataLabels: {
             enabled: true,
             formatter: function (val, opts) {
-                const label = opts.w.globals.labels[opts.dataPointIndex]
-                const a = moment(val[0])
-                const b = moment(val[1])
-                const diff = b.diff(a, 'days')
+                var label = opts.w.globals.labels[opts.dataPointIndex]
+                var a = moment(val[0])
+                var b = moment(val[1])
+                var diff = b.diff(a, 'days')
                 return label + ': ' + diff + (diff > 1 ? ' days' : ' day')
             },
             style: {
@@ -170,11 +170,11 @@
             borderColor: '#f2f5f7',
         }
     };
-    const multiplechart = new ApexCharts(document.querySelector("#timeline-colors"), multipleoptions);
-    if(multiplechart) multiplechart.render();
+    var chart = new ApexCharts(document.querySelector("#timeline-colors"), options);
+    chart.render();
 
     /* multi series timeline chart */
-    const multiseriesoptions = {
+    var options = {
         series: [
             {
                 name: 'Bob',
@@ -241,13 +241,13 @@
         dataLabels: {
             enabled: true,
             formatter: function (val) {
-                const a = moment(val[0])
-                const b = moment(val[1])
-                const diff = b.diff(a, 'days')
+                var a = moment(val[0])
+                var b = moment(val[1])
+                var diff = b.diff(a, 'days')
                 return diff + (diff > 1 ? ' days' : ' day')
             }
         },
-        colors: ["#985ffd", "#ff49cd"],
+        colors: ["#03b562", "#7f67ff"],
         grid: {
             borderColor: '#f2f5f7',
         },
@@ -291,11 +291,11 @@
             position: 'top'
         }
     };
-    const multiserieschart = new ApexCharts(document.querySelector("#timeline-multi"), multiseriesoptions);
-    if(multiserieschart) multiserieschart.render();
+    var chart = new ApexCharts(document.querySelector("#timeline-multi"), options);
+    chart.render();
 
     /* advanced timeline chart */
-    const advancedoptions = {
+    var options = {
         series: [
             {
                 name: 'Bob',
@@ -435,7 +435,7 @@
                 barHeight: '80%'
             }
         },
-        colors: ["#985ffd", "#ff49cd", "#fdaf22"],
+        colors: ["#03b562", "#7f67ff", "#fd4963"],
         xaxis: {
             type: 'datetime',
             labels: {
@@ -474,11 +474,11 @@
             horizontalAlign: 'center'
         }
     };
-    const advancedchart = new ApexCharts(document.querySelector("#timeline-advanced"), advancedoptions);
-    if(advancedchart) advancedchart.render();
+    var chart = new ApexCharts(document.querySelector("#timeline-advanced"), options);
+    chart.render();
 
     /* timeline-grouped charts */
-    const groupedoptions = {
+    var options = {
         series: [
             // George Washington
             {
@@ -670,7 +670,7 @@
             }
         },
         colors: [
-            "#985ffd", "#ff49cd", "#f4a742", "#fe5454", "#7b76fe",
+            "#03b562", "#7f67ff", "#fd4963", "#fe5454", "#7b76fe",
             "#3F51B5", "#546E7A", "#D4526E", "#8D5B4C", "#F86624",
             "#D7263D", "#1B998B", "#2E294E", "#F46036", "#E2C044"
         ],
@@ -716,11 +716,11 @@
             },
         },
     };
-    const groupedchart = new ApexCharts(document.querySelector("#timeline-grouped"), groupedoptions);
-    if(groupedchart) groupedchart.render();
+    var chart = new ApexCharts(document.querySelector("#timeline-grouped"), options);
+    chart.render();
 
     /* dumbbell chart */
-    const dumbbelloptions = {
+    var options = {
         series: [
         {
           data: [
@@ -762,12 +762,12 @@
           enabled: false
         }
       },
-      colors: ["#985ffd", "#ff49cd"],
+      colors: ["#03b562", "#7f67ff"],
       plotOptions: {
         bar: {
           horizontal: true,
           isDumbbell: true,
-          dumbbellColors: [["#985ffd", "#ff49cd"]]
+          dumbbellColors: [["#03b562", "#7f67ff"]]
         }
       },
       title: {
@@ -783,7 +783,7 @@
       fill: {
         type: 'gradient',
         gradient: {
-          gradientToColors: ['#ff49cd'],
+          gradientToColors: ['#7f67ff'],
           inverseColors: false,
           stops: [0, 100]
         }
@@ -800,8 +800,9 @@
           }
         }
       }
-    };
-    const dumbbellchart = new ApexCharts(document.querySelector("#dumbbell-chart"), dumbbelloptions);
-    if(dumbbellchart) dumbbellchart.render();
+      };
+
+      var chart = new ApexCharts(document.querySelector("#dumbbell-chart"), options);
+      chart.render();
 
 })();
