@@ -1,20 +1,30 @@
 <script setup lang="ts">
 
+const year = new Date().getFullYear();
+const config = {
+    appName: 'AppNAME',
+};
 </script>
 <template lang="">
-           <!-- Start::main-footer -->
+            <!-- Footer Start -->
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-base">
+                        <div class="text-center md:text-start">
+                            ©
+                            {{ year }}
+                            Paces By
+                            <span class="font-semibold">{{config.appName}}</span>
+                        </div>
 
-            <footer class="footer mt-auto py-3 bg-white text-center">
-                <div class="container">
-                    <span class="text-muted"> Copyright © <span id="year"></span> <a href="javascript:void(0);" class="text-dark fw-medium">Yzen</a>.
-                        Designed with <span class="bi bi-heart-fill text-danger"></span> by <a href="javascript:void(0);">
-                            <span class="fw-medium text-primary">Spruko</span>
-                        </a> All
-                        rights
-                        reserved
-                    </span>
+                        <div class="md:text-end hidden md:block">
+                            10GB of
+                            <span class="font-bold">250GB</span>
+                            Free.
+                        </div>
+                    </div>
                 </div>
             </footer>
-            <!-- End::main-footer -->
+            <!-- Footer End -->
 
 </template>

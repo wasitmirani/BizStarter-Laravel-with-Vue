@@ -1,90 +1,102 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr" data-nav-layout="vertical" data-theme-mode="light" data-header-styles="transparent" data-width="fullwidth" data-menu-styles="transparent" data-page-style="regular" data-toggled="close"  data-vertical-style="default" data-toggled="double-menu-open">
-
-
+<!doctype html>
+<html lang="en" dir="ltr" data-skin="elegant" data-theme="light" data-topbar-color="light" data-menu-color="dark" data-layout-position="fixed" data-layout-width="fluid" data-sidenav-size="offcanvas">
     <head>
+        <meta charset="utf-8">
+<title>{{ $title ?? config('app.name') }}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Paces is a modern, responsive admin dashboard available on ThemeForest. Ideal for building CRM, CMS, project management tools, and custom web applications with a clean UI, flexible layouts, and rich features.">
+<meta name="keywords" content="Paces, admin dashboard, ThemeForest, Bootstrap 5 admin, responsive admin, CRM dashboard, CMS admin, web app UI, admin theme, premium admin template">
+<meta name="author" content="Coderthemes">
 
-        <!-- Meta Data -->
+<!-- App favicon -->
+<link rel="shortcut icon" href="images/favicon.ico">
+ <script>
+    ;(function () {
+        const html = document.documentElement
+        const storageKey = "__THEME_CONFIG__"
+        const savedConfig = sessionStorage.getItem(storageKey)
 
-    <!-- Meta Data -->
-    <meta charset="UTF-8">
-    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>  - {{ config('app.name') }} </title>
-    <meta name="Description" content="{{ config('app.name') }}">
-    <meta name="Author" content="Wasit Mirani  https://github.com/wasitmirani">
-	<meta name="keywords" content="{{ config('app.name') }}">
-    <!-- Google Fonts: Inter, Roboto, Nunito, and Poppins for modern admin look -->
-    <!-- Google Fonts: Inter, Roboto, Nunito, Poppins, and Open Sans for modern admin look -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=Nunito:wght@400;600;700&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-        <!-- Title -->
+        // Default config
+        const defaultConfig = {
+            dir: "ltr",
+            skin: "default",
+            theme: "light",
+            width: "fluid",
+            position: "fixed",
+            orientation: "vertical",
+            "sidenav-size": "on-hover-active",
+            "sidenav-user": false,
+            "topbar-color": "light",
+            "sidenav-color": "dark",
+        }
+
+        // Build config from HTML attributes
+        function getSystemTheme() {
+            return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+        }
+
+        // Build config from HTML attributes
+        const htmlConfig = {
+            dir: html.getAttribute("dir") || defaultConfig.dir,
+            skin: html.getAttribute("data-skin") || defaultConfig.skin,
+            theme: html.getAttribute("data-theme") === "system" ? getSystemTheme() : html.getAttribute("data-theme") || (defaultConfig["theme"] === "system" ? getSystemTheme() : defaultConfig["theme"]),
+            "topbar-color": html.getAttribute("data-topbar-color") || defaultConfig["topbar-color"],
+            "sidenav-color": html.getAttribute("data-menu-color") || defaultConfig["sidenav-color"],
+            "sidenav-size": html.getAttribute("data-sidenav-size") || defaultConfig["sidenav-size"],
+            "sidenav-user": html.hasAttribute("data-sidenav-user") || defaultConfig["sidenav-user"],
+            position: html.getAttribute("data-layout-position") || defaultConfig["position"],
+            width: html.getAttribute("data-layout-width") || defaultConfig["width"],
+        }
+
+        // Save merged config as defaults globally
+        window.defaultConfig = structuredClone(htmlConfig)
+
+        // Load from session if exists
+        let config = savedConfig ? JSON.parse(savedConfig) : htmlConfig
+        window.config = config
+
+        // Apply layout attributes immediately
+        html.setAttribute("dir", config.dir)
+        html.setAttribute("data-skin", config.skin)
+        html.setAttribute("data-theme", config.theme)
+        html.setAttribute("data-topbar-color", config["topbar-color"])
+        html.setAttribute("data-menu-color", config["sidenav-color"])
+        html.setAttribute("data-layout-position", config["position"])
+        html.setAttribute("data-layout-width", config["width"])
+
+        if (config["sidenav-user"] === true) {
+            html.setAttribute("data-sidenav-user", "true")
+        } else {
+            html.removeAttribute("data-sidenav-user")
+        }
+
+        if (config["sidenav-size"]) {
+            let size = config["sidenav-size"]
+
+            if (window.innerWidth <= 1140) {
+                size = "offcanvas"
+            }
+
+            html.setAttribute("data-sidenav-size", size)
+        }
+    })()
+</script>
 
 
-        <!-- Favicon -->
-        <link rel="icon" href="{{asset('/backend//images/brand-logos/favicon.ico')}}" type="image/x-icon">
 
-        <!-- Start::Styles -->
-
-        <!-- Choices JS -->
-        <script src="{{asset('/backend/assets/libs/choices.js/public/assets/scripts/choices.min.js')}}"></script>
-
-        <!-- Main Theme Js -->
-        <script src="{{asset('/backend/assets/js/main.js')}}"></script>
-
-        <!-- Bootstrap Css -->
-        <link id="style" href="{{asset('/backend/assets/libs/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
-
-        <!-- Style Css -->
-        <link href="{{asset('/backend/assets/css/styles.css')}}" rel="stylesheet">
-
-        <!-- Icons Css -->
-        <link href="{{asset('/backend/assets/css/icons.css')}}" rel="stylesheet">
-
-        <!-- Node Waves Css -->
-        <link href="{{asset('/backend/assets/libs/node-waves/waves.min.css')}} " rel="stylesheet">
-
-        <!-- Simplebar Css -->
-        <link href="{{asset('/backend/assets/libs/simplebar/simplebar.min.css')}}" rel="stylesheet">
-
-        <!-- Color Picker Css -->
-        <link rel="stylesheet" href="{{asset('/backend/assets/libs/flatpickr/flatpickr.min.css')}}">
-        <link rel="stylesheet" href="{{asset('/backend/assets/libs/%40simonwep/pickr/themes/nano.min.css')}}">
-
-        <!-- Choices Css -->
-        <link rel="stylesheet" href="{{asset('/backend/assets/libs/choices.js/public/assets/styles/choices.min.css')}}">
-
-        <!-- FlatPickr CSS -->
-        <link rel="stylesheet" href="{{asset('/backend/assets/libs/flatpickr/flatpickr.min.css')}}">
-
-        <!-- Auto Complete CSS -->
-        <link rel="stylesheet" href="{{asset('/backend/assets/libs/%40tarekraafat/autocomplete.js/css/autoComplete.css')}}">
-
-        <!-- Date & Time Picker CSS -->
-        <link rel="stylesheet" href="{{asset('/backend/assets/libs/flatpickr/flatpickr.min.css')}}">        <!-- End::Styles -->
-
-
-        <link rel="stylesheet" href="{{asset('/backend/assets/libs/swiper/swiper-bundle.min.css')}}">
-
-
+      <script type="module" src="/backend/assets/index-BqADLC_c.js"></script>
+      <link rel="modulepreload"  href="/backend/assets/app-COk2rsMN.js">
+      <link rel="modulepreload" href="/backend/assets/custom-table-CE10VYSu.js">
+      <link rel="modulepreload" href="/backend/assets/world-merc-olTKUgBy.js">
+      <link rel="stylesheet" href="/backend/assets/app-mNboU33O.css">
     </head>
-
-<body>
+<body
  <!-- Start::main-switcher -->
     @component('layouts.backend.components.switcher')
 
     @endcomponent
 
-        <!-- End::main-switcher -->
-
-        <!-- Loader -->
-        <div id="loader">
-            <img src="{{asset('/backend/assets/images/media/loader.svg')}}" alt="">
-        </div>
-        <!-- Loader -->
-
-        <!-- PAGE -->
-
-    <div class="page">
+     <div class="wrapper">
         <div id="app">
 
 
@@ -94,57 +106,10 @@
         </div>
         </div>
 
-        <!-- END PAGE-->
 
-        <!-- SCRIPTS -->
-
-        <!-- Scroll To Top -->
-        <div class="scrollToTop">
-            <span class="arrow lh-1"><i class="ti ti-caret-up fs-20"></i></span>
-        </div>
-        <div id="responsive-overlay"></div>
-        <!-- Scroll To Top -->
-
-
-        <!-- SIMPLEBAR JS -->
-
-
-
-<script src="{{asset('/backend/assets/libs/@popperjs/core/umd/popper.min.js')}}"></script>
-
-<!-- Bootstrap JS -->
-<script src="{{asset('/backend/assets/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 
  @vite(['resources/ts/backend/app.ts', 'resources/css/app.css'])
-<script>
-    function loadScript(src) {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                const s = document.createElement('script');
-                s.src = src;
-                s.onload = resolve;
-                document.body.appendChild(s);
-            }, 100);
-        });
-    }
 
-    async function loadAllScripts() {
-        await loadScript("{{asset('/backend/assets/js/defaultmenu.min.js')}}");
-        await loadScript("{{asset('/backend/assets/libs/node-waves/waves.min.js')}}");
-        await loadScript("{{asset('/backend/assets/js/sticky.js')}}");
-        await loadScript("{{asset('/backend/assets/libs/simplebar/simplebar.min.js')}}");
-        await loadScript("{{asset('/backend/assets/js/simplebar.js')}}");
-        await loadScript("{{asset('/backend/assets/libs/%40tarekraafat/autocomplete.js/autoComplete.min.js')}}");
-        await loadScript("{{asset('/backend/assets/libs/%40simonwep/pickr/pickr.es5.min.js')}}");
-        await loadScript("{{asset('/backend/assets/libs/flatpickr/flatpickr.min.js')}}");
-        await loadScript("{{asset('/backend/assets/libs/apexcharts/apexcharts.min.js')}}");
-        await loadScript("{{asset('/backend/assets/js/ecommerce-dashboard.js')}}");
-        await loadScript("{{asset('/backend/assets/js/custom.js')}}");
-        await loadScript("{{asset('/backend/assets/js/custom-switcher.min.js')}}");
-    }
-
-    loadAllScripts();
-</script>
 
     </body>
 

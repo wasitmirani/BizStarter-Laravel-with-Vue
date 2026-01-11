@@ -1,0 +1,1 @@
+import"./app-COk2rsMN.js";import"./custom-table-CE10VYSu.js";const c=document.getElementById("select-all-email");c&&c.addEventListener("change",function(){const e=document.querySelectorAll(".email-item-check");e&&e.length>0&&e.forEach(t=>{t.checked=this.checked})});

@@ -1,0 +1,1 @@
+import"./app-COk2rsMN.js";function o(i){const e=i.target.files[0],t=document.getElementById("preview");if(e&&t){const n=new FileReader;n.onload=function(r){t.src=r.target.result},n.readAsDataURL(e)}}window.previewImage=o;

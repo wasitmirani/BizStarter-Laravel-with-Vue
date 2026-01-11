@@ -1,0 +1,1 @@
+import"./app-COk2rsMN.js";import{S as o}from"./sortable.esm-DdTU3J9A.js";document.addEventListener("DOMContentLoaded",()=>{const e=document.querySelectorAll('[data-plugins="sortable"]');e&&e.length>0&&e.forEach(t=>{new o(t,{animation:150,group:"shared",ghostClass:"sortable-item-ghost",forceFallback:!0,emptyInsertThreshold:100,chosenClass:"sortable-item-active"})})});
