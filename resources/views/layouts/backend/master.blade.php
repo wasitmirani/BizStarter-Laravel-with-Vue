@@ -1,6 +1,6 @@
 <!doctype html>
-<html lang="en" dir="ltr" data-skin="elegant" data-theme="light" data-topbar-color="light" data-menu-color="dark" data-layout-position="fixed" data-layout-width="fluid" data-sidenav-size="offcanvas">
-    <head>
+<html lang="en">
+<head>
         <meta charset="utf-8">
 <title>{{ $title ?? config('app.name') }}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
