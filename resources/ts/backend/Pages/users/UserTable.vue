@@ -49,8 +49,8 @@ const editUser = (item: any) => {
 
 
 const columns = [
-    { key: "name", label: "User" },
-    // { key: "email", label: "Email" },
+    { key: "name", label: "Name" },
+    { key: "email", label: "Email" },
     { key: "user_name", label: "User Name" },
     { key: "updated_at", label: "Status" },
     { key: "last_login", label: "Last Login" },
@@ -60,9 +60,9 @@ const columns = [
 ];
 
 const actions = [
-    { label: "View", icon: "ri-eye-line", action: "view", class: "info", },
-    { label: "Edit", icon: "ri-pencil-line", action: "edit", class: "primary" },
-    { label: "Delete", icon: "ri-delete-bin-line", action: "delete", class: "danger" },
+    { label: "View", icon: "eye", action: "view", class: "info", },
+    { label: "Edit", icon: "edit", action: "edit", class: "primary" },
+    { label: "Delete", icon: "trash", action: "delete", class: "danger" },
 ];
 
 function handleAction({ action, row }: { action: string; row: any }) {
@@ -75,7 +75,7 @@ function handleAction({ action, row }: { action: string; row: any }) {
             console.log('Viewing:', row);
             break;
         case 'edit':
-           
+
             Helpers.router().push({ name: 'edit-user', params: { uuid: row.uuid, slug: row.slug } });
             break;
         case 'delete':
@@ -88,27 +88,19 @@ function handleAction({ action, row }: { action: string; row: any }) {
 }
 </script>
 <template>
-    <div>
 
         <GenericTable :columns="columns" :isLoading="isLoading" :fetchData="getUsers" :rows="users" :actions="actions" @action="handleAction"
             @update:selectedItems="selectedItems = $event">
             <template #name="{ row }">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="lh-1">
-                        <span class="avatar avatar-md me-2 online avatar-rounded shadow">
-                            <img :src="`/backend/assets/images/faces/9.jpg`" alt="">
-                        </span>
-                    </div>
-                    <div>
-                        <span class="d-block fw-semibold">{{ row.name }}</span>
-                        <span class="fs-12 text-muted">{{ row.email }}</span>
-                    </div>
-                </div>
+
+                <div class="flex items-center gap-3">
+                                                    <img :src="`/backend/images/users/user-3.jpg`" alt="Emily Clark" class="size-6 rounded-full">
+                                                    <span>{{ row.name }}</span>
+                                                </div>
             </template>
             <template #updated_at="{ row }">
                 <span :class="`badge rounded-pill bg-dark-transparent`">Active</span>
             </template>
         </GenericTable>
-    </div>
 
 </template>

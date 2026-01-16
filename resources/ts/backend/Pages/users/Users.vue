@@ -49,82 +49,75 @@ Helpers.useDynamicOnMounted(() => {
     <div>
         <!-- Breadcrumb  -->
         <BreadcrumbComponent :current="'Users'" :links="[{ name: 'Dashboard', route: 'dashboard' }]" />
-        <div class="row">
-            <div class="col-xl-12">
 
-                <div class="card custom-card">
+    <div class="container-fluid">
+        <div data-table="" data-table-rows-per-page="8" class="card">
+                            <div class="card-header">
+                                <!-- Search -->
+                                <div class="flex flex-wrap gap-2.5">
+                                    <div class="input-icon-group">
+                                        <i class="iconify tabler--search input-icon"></i>
+                                        <input data-table-search="" type="search" class="form-input w-auto ps-10" placeholder="Search income...">
+                                    </div>
 
-                    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-3">
-                        <div class="card-title d-flex align-items-center gap-2 flex-wrap">
-                            <span>All Users List</span>
-                            <!-- Search -->
-                            <SearchInput
-                                :label="'Search Users'"
-                                :apiPath="`/user`"
-                                @loading="loadingStart"
-                                @filterData="filterData"
-                                @reload="getUsers"
-                                class="ms-3"
-                            />
-                        </div>
-                        <div class="d-flex align-items-center flex-wrap gap-2">
-                            <router-link
-                                :to="{ name: 'create-user' }"
-                                class="btn btn-primary d-flex align-items-center"
-                            >
-                                <i class="ri-add-line me-1 fw-medium align-middle"></i>
-                                <span>Add User</span>
-                            </router-link>
-                            <button class="btn btn-success d-flex align-items-center">
-                                <i class="ri-file-download-line me-1"></i>
-                                <span>Export As CSV</span>
-                            </button>
-                            <div class="dropdown">
-                                <a
-                                    href="javascript:void(0);"
-                                    class="btn btn-light btn-wave waves-effect waves-light d-flex align-items-center"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                >
-                                    <span>Sort By</span>
-                                    <i class="ri-arrow-down-s-line align-middle ms-1"></i>
-                                </a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li v-for="item in sortableFilterOptions" :key="item.value">
-                                        <a class="dropdown-item" href="javascript:void(0);">
-                                            {{ item.label }}
-                                        </a>
-                                    </li>
-                                </ul>
+                                    <!-- Add New Income -->
+                                    <div class="flex gap-1">
+                                        <a href="#incomeModal" class="btn bg-primary text-white hover:bg-primary-hover" aria-haspopup="dialog" aria-expanded="false" aria-controls="incomeModal" data-hs-overlay="#incomeModal"> <i class="iconify tabler--plus"></i> Add Income </a>
+                                    </div>
+
+                                    <!-- Delete Selected -->
+                                    <button data-table-delete-selected="" class="btn bg-danger text-white hover:bg-danger-hover hidden">Delete</button>
+                                </div>
+
+                                <div class="flex flex-wrap items-center gap-2.5 lg:flex-nowrap">
+                                    <div class="flex flex-wrap items-center gap-2.5 md:flex-nowrap">
+                                        <div class="items-center gap-2.5 md:flex">
+                                            <span class="font-semibold me-2.5">Filter By:</span>
+
+                                            <!-- Source Filter -->
+                                            <div class="input-icon-group">
+                                                <i class="iconify tabler--briefcase input-icon"></i>
+                                                <select data-table-filter="income-source" class="form-select">
+                                                    <option value="">Source</option>
+                                                    <option value="Sales">Sales</option>
+                                                    <option value="Services">Services</option>
+                                                    <option value="Consulting">Consulting</option>
+                                                    <option value="Investments">Investments</option>
+                                                    <option value="Affiliate">Affiliate</option>
+                                                    <option value="Other">Other</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- Status Filter -->
+                                        <div class="input-icon-group">
+                                            <i class="iconify tabler--circle-check input-icon"></i>
+                                            <select data-table-filter="status" class="form-select">
+                                                <option value="">Status</option>
+                                                <option value="Received">Received</option>
+                                                <option value="Pending">Pending</option>
+                                                <option value="Failed">Failed</option>
+                                                <option value="Refunded">Refunded</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- Records Per Page -->
+                                        <div class="relative">
+                                            <select data-table-set-rows-per-page="" class="form-select">
+                                                <option value="5">5</option>
+                                                <option value="10" selected="">10</option>
+                                                <option value="15">15</option>
+                                                <option value="20">20</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <OffCanvas
-                                id="hs-overlay-right"
-                                title="Filters"
-                                buttonClass="btn btn-primary btn-wave waves-effect waves-light d-flex align-items-center"
-                                buttonLabel="Filter"
-                            >
-                                <template #button-icon>
-                                    <i class="ri-filter-3-line align-middle me-1"></i>
-                                </template>
-                                <template #body>
-                                    <ul class="ti-list-group ti-list-group-flush mb-0">
-                                        <li class="ti-list-group-item">Filter Option 1</li>
-                                        <li class="ti-list-group-item">Filter Option 2</li>
-                                    </ul>
-                                </template>
-                            </OffCanvas>
-                        </div>
-                    </div>
-                    <div class="card-body p-0">
                         <UserTable :users="users" :getUsers="getUsers" :isLoading="isLoading" />
-                    </div>
-                    <div class="card-footer border-top-0">
+                        </div>
 
-                    </div>
-                </div>
-            </div>
-
-        </div>
         <!--End::row-1 -->
+
+    </div>
     </div>
 </template>

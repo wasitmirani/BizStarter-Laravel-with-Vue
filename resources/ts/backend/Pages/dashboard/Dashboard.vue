@@ -30,7 +30,7 @@
                                     </h3>
                                 </div>
                                 <div class="text-end">
-                                    <img class="xl:block hidden" :src="`/backend/backend/images/svg/email-campaign.svg`"
+                                    <img class="xl:block hidden" :src="`/backend/images/svg/email-campaign.svg`"
                                         width="110" alt="Generic placeholder image">
                                 </div>
                             </div>

@@ -71,15 +71,15 @@ const paginationRange =  Helpers.useDynamicComputed(() => {
 <template>
 
 
-    <div class="table-responsive">
-        <table class="table text-nowrap">
-            <thead>
-                <tr>
-                    <th class="text-center">
-                        <input class="form-check-input" type="checkbox" id="checkboxNoLabeljob1"
-                            :checked="isAllSelected" @change="toggleSelectAll" aria-label="..." />
+    <div class="table-wrapper">
+                                <table class="table-custom table-select table table-hover">
+                                    <thead class="thead-sm">
+               <tr class="bg-light/25 text-2xs uppercase">
+                                            <th class="w-[1%]">
+
+                              <input data-table-select-all="" class="form-checkbox form-checkbox-light size-4.5"   :checked="isAllSelected" @change="toggleSelectAll"  type="checkbox">
                     </th>
-                    <th v-for="column in columns" :key="column.key">{{ column.label }}</th>
+                    <th v-for="column in columns" :key="column.key" data-table-sort="{{ column.key }}" data-column="{{ column.key }}">{{ column.label }}</th>
                     <th v-if="actions.length > 0">Actions</th>
                 </tr>
             </thead>
@@ -91,11 +91,10 @@ const paginationRange =  Helpers.useDynamicComputed(() => {
                 </tr>
                 <tr v-else v-for="row in rows.data" :key="row.id">
                     <td class="text-center" v-if="actions.length > 0">
-                        <input class="form-check-input" type="checkbox" :value="row.id"
-                            :checked="selectedItems.includes(row.id)" @change="toggleSelectItem(row.id)"
-                            aria-label="..." />
+
+                               <input class="form-checkbox form-checkbox-light size-4.5"  :value="row.id" type="checkbox" :checked="selectedItems.includes(row.id)" @change="toggleSelectItem(row.id)">
                     </td>
-                    <td v-for="column in columns" :key="column.key">
+                    <td v-for="column in columns" :key="column.key" >
                         <slot :name="column.key" :row="row" v-if="column.key === 'created_at'">
                             {{ $filters.DateTimeFormat(row[column.key]) }}
                         </slot>
@@ -104,12 +103,12 @@ const paginationRange =  Helpers.useDynamicComputed(() => {
                         </slot>
                     </td>
                     <td v-if="actions.length > 0">
-                        <div class="btn-list">
+                         <div class="flex justify-center gap-1.5">
                             <a v-for="action in actions" :key="action.label" href="javascript:void(0)"
-                                :class="`btn btn-sm btn-${action.class || 'primary'}-light btn-icon`"
+                                :class="`btn border-default-300 hover:border-default-400 btn-icon btn-sm text-default-800 size-7.75 rounded border`"
                                 @click="$emit('action', { action: action.action, row })" data-bs-toggle="tooltip"
                                 data-bs-placement="top" :title="action.label">
-                                <i :class="action.icon"></i>
+                                <i :class="`iconify tabler--${action.icon}  text-base`"></i>
                             </a>
                         </div>
                     </td>
@@ -138,6 +137,7 @@ const paginationRange =  Helpers.useDynamicComputed(() => {
 
             </tbody>
         </table>
+
     </div>
 
     <div class="d-flex justify-content-between align-items-center mt-4  flex-wrap" v-if="!isLoading">
