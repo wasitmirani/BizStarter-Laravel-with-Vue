@@ -5,8 +5,18 @@ import {AxiosService} from '../../Utils/Service';
         return AxiosService.get('/me');
     }
 
-    users = (page: string, per_page?: any) => {
-        return AxiosService.get(`/user?page=${page}${per_page ? `&per_page=${per_page}` : ''}`);
+    users = (params: { page?: string; per_page?: string; search?: string; role?: string; status?: string; sort_by?: string; order?: string; [key: string]: any } = {}) => {
+        const queryParams = new URLSearchParams();
+
+        // Add all non-empty parameters to query string
+        Object.entries(params).forEach(([key, value]) => {
+            if (value !== undefined && value !== null && value !== '') {
+                queryParams.append(key, value.toString());
+            }
+        });
+
+        const queryString = queryParams.toString();
+        return AxiosService.get(`/user${queryString ? `?${queryString}` : ''}`);
     }
 
     store = (user:any) => {

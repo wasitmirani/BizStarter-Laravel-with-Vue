@@ -4,7 +4,7 @@ import GenericTable from '../../Components/GenericTable.vue';
 import { Helpers } from '../../Utils/Helper';
 
 
-const props = defineProps(['users', 'isLoading', 'getUsers'])
+const props = defineProps(['users', 'isLoading', 'getUsers', 'currentFilters'])
 const emit = defineEmits(['user-deleted'])
 const selectedItems = Helpers.useDynamicRef([]);
 const toast = Helpers.useDynamicInject('toast');

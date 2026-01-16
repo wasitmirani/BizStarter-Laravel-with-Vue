@@ -1,46 +1,132 @@
 <script setup lang="ts">
+import { useRoute, useRouter } from 'vue-router';
 import { UserService } from '../../Services/user/UserService';
 import UserTable from './UserTable.vue';
 import UserFilterForm from './UserFilterForm.vue';
 import OffCanvas from "../../Components/OffCanvas.vue";
 import { DropdownOptions } from '../../Utils/DropdownOptions';
 
+const route = useRoute();
+const router = useRouter();
 
 const users = Helpers.useDynamicRef([]);
 const current_page = Helpers.useDynamicRef(1);
 const toast = Helpers.useDynamicInject('toast');
 const isLoading = Helpers.useDynamicRef(false);
-const sortableFilterOptions = DropdownOptions.sortableFilterOptions()
+const sortableFilterOptions = DropdownOptions.sortableFilterOptions();
 
-const getUsers = async (page = 1, per_page = 10) => {
-    current_page.value = page;
+// Reactive filter state
+const filters = Helpers.useDynamicReactive({
+    search: '',
+    role: '',
+    status: '',
+    page: 1,
+    per_page: 10,
+    sort_by: 'name',
+    order: 'asc'
+});
+
+// Function to update URL with all query parameters
+const updateUrlWithFilters = () => {
+    const query = { ...route.query };
+
+    // Update query parameters
+    Object.keys(filters).forEach(key => {
+        const value = filters[key];
+        if (value && value !== '' && !(key === 'page' && value === 1)) {
+            query[key] = value.toString();
+        } else {
+            delete query[key];
+        }
+    });
+
+    router.replace({ query });
+};
+
+// Function to load filters from URL query parameters
+const loadFiltersFromUrl = () => {
+    const query = route.query;
+
+    filters.search = query.search?.toString() || '';
+    filters.role = query.role?.toString() || '';
+    filters.status = query.status?.toString() || '';
+    filters.page = parseInt(query.page?.toString() || '1');
+    filters.per_page = parseInt(query.per_page?.toString() || '10');
+    filters.sort_by = query.sort_by?.toString() || 'name';
+    filters.order = query.order?.toString() || 'asc';
+
+    current_page.value = filters.page;
+};
+
+const getUsers = async (page?: number, per_page?: number) => {
+    // Update filters if parameters provided
+    if (page !== undefined) filters.page = page;
+    if (per_page !== undefined) filters.per_page = per_page;
+
+    current_page.value = filters.page;
     isLoading.value = true;
-    await UserService.users(page.toString(), per_page).then((res) => {
+
+    // Build query parameters for API call
+    const params = {
+        page: filters.page.toString(),
+        per_page: filters.per_page.toString(),
+        search: filters.search || undefined,
+        role: filters.role || undefined,
+        status: filters.status || undefined,
+        sort_by: filters.sort_by || undefined,
+        order: filters.order || undefined,
+    };
+
+    // Remove undefined values
+    Object.keys(params).forEach(key => {
+        if (params[key] === undefined) delete params[key];
+    });
+
+    await UserService.users(params).then((res) => {
         users.value = res.data.result.users;
         // toast.value.showToast(res.status, 'User Data', res.data);
     }).catch((err: any) => {
         console.log("err:", err.response.data.message);
         toast.value.showToast(err.status, 'Error: ' + err.status, err.response.data.message);
-    })
+    });
+
     setTimeout(() => {
         isLoading.value = false;
     }, 1000);
-}
+};
 
+// Function to handle filter changes from UserFilterForm
+const handleFilterChange = (newFilters: any) => {
+    Object.assign(filters, newFilters);
+    filters.page = 1; // Reset to first page when filters change
+    updateUrlWithFilters();
+    getUsers();
+};
 
+// Function to handle search input changes
+const handleSearchChange = (searchTerm: string) => {
+    filters.search = searchTerm;
+    filters.page = 1; // Reset to first page when search changes
+    updateUrlWithFilters();
+    getUsers();
+};
+
+// Function to handle SearchInput query event
+const handleSearchQuery = (query: string) => {
+    handleSearchChange(query);
+};
 
 function loadingStart(value: any) {
     isLoading.value = value;
-
 }
+
 function filterData(data: any) {
     users.value = data.result.users;
 }
 
-
 Helpers.useDynamicOnMounted(() => {
+    loadFiltersFromUrl();
     getUsers();
-
 });
 
 </script>
@@ -55,14 +141,21 @@ Helpers.useDynamicOnMounted(() => {
                 <div class="card-header">
                     <!-- Search -->
                     <div class="flex flex-wrap gap-2.5">
-                        <SearchInput label="Search Users" :apiPath="`/user`" @loading="loadingStart"
-                            @filterData="filterData" @reload="getUsers" />
+                        <!-- Search Input -->
+                        <SearchInput
+                            label="Search Users"
+                            :apiPath="`/user`"
+                            @loading="loadingStart"
+                            @filterData="filterData"
+                            @query="handleSearchQuery"></SearchInput>
 
-                        <!-- Add New Income -->
                         <div class="flex gap-1">
-                            <a href="#incomeModal" class="btn bg-primary text-white hover:bg-primary-hover"
+                              <router-link
+                                :to="{ name: 'create-user' }"
+
+                           class="btn bg-primary text-white hover:bg-primary-hover"
                                 aria-haspopup="dialog" aria-expanded="false" aria-controls="incomeModal"
-                                data-hs-overlay="#incomeModal"> <i class="iconify tabler--plus"></i> Add Income </a>
+                                data-hs-overlay="#incomeModal"> <i class="iconify tabler--plus"></i> Add User </router-link>
                         </div>
 
                         <!-- Delete Selected -->
@@ -70,47 +163,42 @@ Helpers.useDynamicOnMounted(() => {
                             class="btn bg-danger text-white hover:bg-danger-hover hidden">Delete</button>
                     </div>
 
-                    <div class="flex flex-wrap items-center gap-2.5 lg:flex-nowrap">
-                        <div class="flex flex-wrap items-center gap-2.5 md:flex-nowrap">
-                            <div class="items-center gap-2.5 md:flex">
-                                <span class="font-semibold me-2.5">Filter By:</span>
+                    <div class="flex flex-wrap items-center gap-3">
+                        <div class="items-center gap-3 md:flex">
+                            <span class="me-3 font-semibold text-nowrap">Filter By:</span>
 
-                                <!-- Source Filter -->
-                                <div class="input-icon-group">
-                                    <i class="iconify tabler--briefcase input-icon"></i>
-                                    <select data-table-filter="income-source" class="form-select">
-                                        <option value="">Source</option>
-                                        <option value="Sales">Sales</option>
-                                        <option value="Services">Services</option>
-                                        <option value="Consulting">Consulting</option>
-                                        <option value="Investments">Investments</option>
-                                        <option value="Affiliate">Affiliate</option>
-                                        <option value="Other">Other</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Status Filter -->
+                            <!-- Role Type Filter -->
                             <div class="input-icon-group">
-                                <i class="iconify tabler--circle-check input-icon"></i>
-                                <select data-table-filter="status" class="form-select">
-                                    <option value="">Status</option>
-                                    <option value="Received">Received</option>
-                                    <option value="Pending">Pending</option>
-                                    <option value="Failed">Failed</option>
-                                    <option value="Refunded">Refunded</option>
+                                <i class="iconify tabler--user-hexagon input-icon"></i>
+                                <select
+                                    data-table-filter="roles"
+                                    class="form-select"
+                                    v-model="filters.role"
+                                    @change="handleFilterChange(filters)"
+                                >
+                                    <option value="">All Roles</option>
+                                    <option value="Security Officer">Security Officer</option>
+                                    <option value="Project Manager">Project Manager</option>
+                                    <option value="Developer">Developer</option>
+                                    <option value="Support Lead">Support Lead</option>
                                 </select>
                             </div>
+                        </div>
 
-                            <!-- Records Per Page -->
-                            <div class="relative">
-                                <select data-table-set-rows-per-page="" class="form-select">
-                                    <option value="5">5</option>
-                                    <option value="10" selected="">10</option>
-                                    <option value="15">15</option>
-                                    <option value="20">20</option>
-                                </select>
-                            </div>
+                        <!-- Status Filter -->
+                        <div class="input-icon-group">
+                            <i class="iconify tabler--user-check input-icon"></i>
+                            <select
+                                data-table-filter="status"
+                                class="form-select"
+                                v-model="filters.status"
+                                @change="handleFilterChange(filters)"
+                            >
+                                <option value="">All Status</option>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                                <option value="Suspended">Suspended</option>
+                            </select>
                         </div>
                     </div>
 
@@ -121,26 +209,28 @@ Helpers.useDynamicOnMounted(() => {
                                 <i class="iconify tabler--refresh text-lg"></i>
                             </a>
 
-                            <!-- <a href="apps-projects-list.html" class="">
-                                                <i class="iconify tabler--filter text-lg"></i>
-                                            </a> -->
-                            <OffCanvas id="offcanvasRight" title="Filters"
+                            <OffCanvas id="offcanvasRight" title="Advance Filters"
                                 buttonClass="btn bg-primary btn-icon text-white hover:bg-primary-hover"
                                 buttonLabel="Filter">
                                 <template #button-icon>
                                     <i class="iconify tabler--filter text-lg"></i>
                                 </template>
                                 <template #body>
-                                    <ul class="ti-list-group ti-list-group-flush mb-0">
-                                        <li class="ti-list-group-item">Filter Option 1</li>
-                                        <li class="ti-list-group-item">Filter Option 2</li>
-                                    </ul>
+                                    <UserFilterForm
+                                        :initialFilters="filters"
+                                        @filterChange="handleFilterChange"
+                                    />
                                 </template>
                             </OffCanvas>
                         </nav>
                     </div>
                 </div>
-                <UserTable :users="users" :getUsers="getUsers" :isLoading="isLoading" />
+                <UserTable
+                    :users="users"
+                    :getUsers="getUsers"
+                    :isLoading="isLoading"
+                    :currentFilters="filters"
+                />
             </div>
 
             <!--End::row-1 -->

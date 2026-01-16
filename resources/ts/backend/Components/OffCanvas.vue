@@ -62,21 +62,29 @@ defineExpose({
 
         <!-- Off-Canvas Modal -->
         <div :id="id" class="hs-overlay hs-overlay-open:translate-x-0 bg-card border-default-300 fixed end-0 top-0 z-80 h-full w-full max-w-sm translate-x-full transform border-s transition-all duration-300 hidden" role="dialog" :aria-labelledby="`${id}-label`">
-            <div class="flex items-center justify-between p-5">
-                <h3 :id="`${id}-label`">{{ title }}</h3>
+            <!-- Header -->
+            <div class="flex items-center justify-between border-b border-default-200 p-5">
+                <h3 :id="`${id}-label`" class="font-semibold">{{ title }}</h3>
 
                 <button
                     type="button"
                     aria-label="Close"
                     :data-hs-overlay="`#${id}`"
                     aria-expanded="false"
+                    class="text-gray-500 hover:text-gray-700"
                 >
                     <span class="sr-only">Close</span>
                     <i class="iconify tabler--x text-xl"></i>
                 </button>
             </div>
 
+            <!-- Body - Scrollable Content -->
+            <div class="overflow-y-auto flex-1 p-5" style="height: calc(100% - 70px);">
+                <slot name="body">
+                    <!-- <div>Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.</div> -->
 
+                </slot>
+            </div>
         </div>
     </div>
 
