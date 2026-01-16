@@ -3,7 +3,7 @@
 
 
 import { useRoute } from "vue-router";
-import { ref, onMounted,inject, Ref, UnwrapRef, reactive, UnwrapNestedRefs, defineAsyncComponent,computed } from "vue";
+import { ref, onMounted,inject, Ref, UnwrapRef, reactive, UnwrapNestedRefs, defineAsyncComponent,computed, watch } from "vue";
 import router from "../router"
 import Swal from 'sweetalert2'
 import * as moment from "moment";
@@ -47,6 +47,9 @@ class Helper {
     useDynamicComputed<T>(getter: () => T) {
         return computed(getter);
     }
+    useDynamicWatch<T>(source: any, callback: (value: T, oldValue: T) => void) {
+        return watch(source, callback);
+     }
     route = () => {
         return useRoute();
     };
@@ -80,29 +83,28 @@ class Helper {
     setStatusBadge(status:string){
         switch (status) {
             case 'primary':
-                return "primary"
+                return "badge bg-primary/15 text-primary"
                 break;
             case 'success':
-                return "success"
+                return "badge bg-success/15 text-success"
                 break;
             case 'danger':
-                return "danger"
+                return "badge bg-danger/15 text-danger"
                 break;
             case 'warning':
-                return "warning"
+                return "badge bg-warning/15 text-warning"
                 break;
             case 'info':
-                return "info"
+                return "badge bg-info/15 text-info"
                 break;
             case 'dark':
-                return "dark"
+                return "badge bg-dark/15 text-dark"
                 break;
             case 'light':
-                return "light"
+                return "badge bg-light/15 text-dark"
                 break;
             default:
-                return "dark"
-                break;
+                return "badge bg-dark/15 text-white hover:bg-dark-hover"
                 break;
         }
     }

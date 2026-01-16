@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { UserService } from '../../Services/user/UserService';
 import GenericTable from '../../Components/GenericTable.vue';
+import { Helpers } from '../../Utils/Helper';
 
 
 const props = defineProps(['users', 'isLoading', 'getUsers'])
@@ -34,9 +35,9 @@ const deleteUser = (item: any) => {
                     icon: "success"
                 });
                 props.getUsers();
-            }).catch((err:any) => {
+            }).catch((err: any) => {
                 console.log("err:", err.response.status);
-                toast.value.showToast(err.response.status,'Error: '+err.response.status , err.message ?? err.response.message);
+                toast.value.showToast(err.response.status, 'Error: ' + err.response.status, err.message ?? err.response.message);
             })
 
         }
@@ -49,10 +50,11 @@ const editUser = (item: any) => {
 
 
 const columns = [
+    { key: "id", label: "Ref-ID" },
     { key: "name", label: "Name" },
-    { key: "email", label: "Email" },
+    { key: "phone", label: "Phone" },
     { key: "user_name", label: "User Name" },
-    { key: "updated_at", label: "Status" },
+    { key: "status", label: "Status" },
     { key: "last_login", label: "Last Login" },
     { key: "created_at", label: "Created At" },
     //   { key: "updated_at", label: "Updated At" },
@@ -66,9 +68,9 @@ const actions = [
 ];
 
 function handleAction({ action, row }: { action: string; row: any }) {
-    if(! row.uuid){
-                toast.value.showToast(400,'Error','User uuid not found');
-                return;
+    if (!row.uuid) {
+        toast.value.showToast(400, 'Error', 'User uuid not found');
+        return;
     }
     switch (action) {
         case 'view':
@@ -89,18 +91,37 @@ function handleAction({ action, row }: { action: string; row: any }) {
 </script>
 <template>
 
-        <GenericTable :columns="columns" :isLoading="isLoading" :fetchData="getUsers" :rows="users" :actions="actions" @action="handleAction"
-            @update:selectedItems="selectedItems = $event">
-            <template #name="{ row }">
-
+    <GenericTable :columns="columns" :isLoading="isLoading" :fetchData="getUsers" :rows="users" :actions="actions"
+        @action="handleAction" @update:selectedItems="selectedItems = $event">
+        <template #id="{ row }">
+            <td>
+                <span class="text-default-400">#UR00{{ row.id }}</span>
+            </td>
+        </template>
+        <template #name="{ row }">
+            <td>
                 <div class="flex items-center gap-3">
-                                                    <img :src="`/backend/images/users/user-3.jpg`" alt="Emily Clark" class="size-6 rounded-full">
-                                                    <span>{{ row.name }}</span>
-                                                </div>
-            </template>
-            <template #updated_at="{ row }">
-                <span :class="`badge rounded-pill bg-dark-transparent`">Active</span>
-            </template>
-        </GenericTable>
+                    <div>
+                        <img :src="row.thumbnail" alt="" class="size-8 rounded-full">
+                    </div>
+                    <div>
+                        <h5>
+                            <a data-sort="user" href="#!" class="hover:text-primary">{{ row.name }}</a>
+                        </h5>
+                        <p class="text-default-400 text-xs">{{ row.email }}</p>
+                    </div>
+                </div>
+            </td>
+        </template>
+
+        <template #status="{ row }">
+            <span :class="Helpers.setStatusBadge('primary')">Active</span>
+        </template>
+        <template #last_login="{ row }">
+            <span v-if="row.last_login">{{ $filters.DateTimeFormat(row.last_login) }}</span>
+
+            <span v-else class="badge bg-danger/15 text-danger">Never</span>
+        </template>
+    </GenericTable>
 
 </template>

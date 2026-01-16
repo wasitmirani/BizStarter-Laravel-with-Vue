@@ -1,30 +1,82 @@
 <script setup lang="ts">
 import { Helpers } from '../Utils/Helper';
+import { ref, nextTick } from 'vue';
 
-const props = defineProps(['id', 'title', 'buttonLabel','buttonClass'])
+interface Props {
+    id: string;
+    title?: string;
+    buttonLabel?: string;
+    buttonClass?: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    title: 'Offcanvas',
+    buttonLabel: 'Toggle offcanvas',
+    buttonClass: 'btn bg-primary hover:bg-primary-hover text-white'
+});
+
 const offCanvasRef = Helpers.useDynamicRef<HTMLElement | null>(null);
 
 Helpers.useDynamicOnMounted(() => {
- console.log('offCanvasRef', offCanvasRef.value);
+    nextTick(() => {
+        // Reinitialize HSOverlay for the new elements
+        if ((window as any).HSOverlay) {
+            (window as any).HSOverlay.autoInit();
+        }
+    });
+});
+
+// Expose methods for child components to trigger
+const open = () => {
+    const element = document.getElementById(props.id);
+    if (element && (window as any).HSOverlay) {
+        const overlay = (window as any).HSOverlay.getOrCreateInstance(element);
+        if (overlay) {
+            overlay.open();
+        }
+    }
+};
+
+const close = () => {
+    const element = document.getElementById(props.id);
+    if (element && (window as any).HSOverlay) {
+        const overlay = (window as any).HSOverlay.getOrCreateInstance(element);
+        if (overlay) {
+            overlay.close();
+        }
+    }
+};
+
+defineExpose({
+    open,
+    close
 });
 </script>
 <template>
     <div>
-        <!-- Off-Canvas Trigger Button -->
-        <button :class="`${buttonClass} mb-1`" type="button" :data-bs-toggle="'offcanvas'" :data-bs-target="`#${id}`" aria-controls="offcanvasRight">
-            <slot name="button-icon"></slot>
-            {{ buttonLabel }}
+        <button :class="buttonClass" aria-haspopup="dialog" aria-expanded="false" :aria-controls="id" :data-hs-overlay="`#${id}`">
+            <slot name="button-icon">
+                {{ buttonLabel }}
+            </slot>
         </button>
 
         <!-- Off-Canvas Modal -->
-        <div :id="id" class="offcanvas offcanvas-end" tabindex="-1" :aria-labelledby="`offcanvasRightLabel-${id}`">
-            <div class="offcanvas-header border-bottom border-block-end-dashed">
-            <h5 class="offcanvas-title" :id="`offcanvasRightLabel-${id}`">{{ title }}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <div :id="id" class="hs-overlay hs-overlay-open:translate-x-0 bg-card border-default-300 fixed end-0 top-0 z-80 h-full w-full max-w-sm translate-x-full transform border-s transition-all duration-300 hidden" role="dialog" :aria-labelledby="`${id}-label`">
+            <div class="flex items-center justify-between p-5">
+                <h3 :id="`${id}-label`">{{ title }}</h3>
+
+                <button
+                    type="button"
+                    aria-label="Close"
+                    :data-hs-overlay="`#${id}`"
+                    aria-expanded="false"
+                >
+                    <span class="sr-only">Close</span>
+                    <i class="iconify tabler--x text-xl"></i>
+                </button>
             </div>
-            <div class="offcanvas-body p-0">
-            <slot name="body"></slot>
-            </div>
+
+
         </div>
     </div>
 

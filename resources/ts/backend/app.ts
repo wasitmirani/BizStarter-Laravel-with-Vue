@@ -15,13 +15,22 @@ import Avatar from "./Components/Avatar.vue";
 import ValidateInput from "./Components/ValidateInput.vue";
 import OffCanvas from "./Components/OffCanvas.vue";
 import moment from 'moment'
-import VueContentLoading from 'vue-content-loading';
 
 // import GenericInput from "./Components/GenericInputComponent.vue";
 import Uploader from 'vue-media-upload';
 import VueMultiselect from 'vue-multiselect';
 import "vue-multiselect/dist/vue-multiselect.css";
 import router from "./router";
+
+declare module '@vue/runtime-core' {
+  interface ComponentCustomProperties {
+    $filters: {
+      DateTimeFormat(date: String): string;
+      HoursFormat(date: String): string;
+    }
+  }
+}
+
 const pinia = createPinia();
 const app = createApp(App);
 let permissions = JSON.parse(`${localStorage.getItem('permissions')}`);
