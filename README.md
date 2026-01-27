@@ -1,66 +1,158 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel + Vue Boilerplate 🚀
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A modern full-stack starter boilerplate built with **Laravel** and **Vue 3**, designed to help developers quickly build scalable, maintainable, and high-performance web applications.
 
-## About Laravel
+This boilerplate combines Laravel’s powerful backend with a modern Vue SPA frontend powered by Vite, TypeScript, and Tailwind CSS.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🔥 Tech Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Backend
+- Laravel (PHP Framework)
+- RESTful API architecture
+- Eloquent ORM
 
-## Learning Laravel
+### Frontend
+- Vue 3 (Composition API)
+- Vite
+- TypeScript
+- Vue Router
+- Tailwind CSS
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## ✨ Features
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- Laravel backend ready for APIs
+- Vue 3 SPA frontend
+- Vite with Hot Module Replacement (HMR)
+- TypeScript support
+- Tailwind CSS pre-configured
+- Clean and scalable folder structure
+- Environment-based configuration
+- Easy to extend (Auth, Roles, Permissions)
+- Production-ready build setup
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 📋 Requirements
 
-### Premium Partners
+- PHP >= 8.1
+- Composer
+- Node.js >= 16
+- npm or yarn
+- MySQL / PostgreSQL / SQLite
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+---
 
-## Contributing
+## 📦 Installation
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 1. Clone Repository
 
-## Code of Conduct
+```bash
+git clone https://github.com/wasitmirani/laravel-vue-boilerplate.git
+cd laravel-vue-boilerplate
+2. Backend Setup (Laravel)
+Install dependencies:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+composer install
+Create environment file:
 
-## Security Vulnerabilities
+cp .env.example .env
+Generate app key:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+php artisan key:generate
+Configure database in .env:
 
-## License
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=your_database
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+Run migrations:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+php artisan migrate
+3. Frontend Setup (Vue + Vite)
+Install frontend dependencies:
+
+npm install
+▶️ Run the Project
+Development
+Start Laravel server:
+
+php artisan serve
+Start Vite dev server:
+
+npm run dev
+Open in browser:
+
+http://localhost:8000
+🏗 Production Build
+Build frontend assets:
+
+npm run build
+Compiled files will be generated in public/build.
+
+📁 Project Structure
+├── app/                  # Laravel backend logic
+├── routes/               # Web & API routes
+├── resources/
+│   ├── js/               # Vue 3 application
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── router/
+│   │   └── app.ts
+│   ├── css/              # Tailwind styles
+│   └── views/            # Blade templates
+├── database/             # Migrations & seeders
+├── public/               # Public assets
+├── tailwind.config.js
+├── vite.config.ts
+├── tsconfig.json
+├── package.json
+└── composer.json
+🔐 Authentication (Optional)
+You can easily integrate authentication using:
+
+Laravel Breeze
+
+Laravel Sanctum
+
+Laravel Fortify
+
+Custom auth solution
+
+🧪 Testing
+Run backend tests:
+
+php artisan test
+🛠 Customization
+APIs → routes/api.php
+
+Vue pages → resources/js/pages
+
+Components → resources/js/components
+
+Styles → Tailwind CSS utilities
+
+🤝 Contributing
+Fork the repository
+
+Create your feature branch
+
+Commit your changes
+
+Push to your branch
+
+Open a Pull Request
+
+📄 License
+This project is open-source and licensed under the MIT License.
+
+👤 Author
+Wasit Mirani
+Full-Stack Developer
+
+GitHub: https://github.com/wasitmirani
