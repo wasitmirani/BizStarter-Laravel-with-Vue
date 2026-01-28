@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\UserService;
 use App\Http\Controllers\Controller;
+use App\Services\RoleService;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -26,6 +27,7 @@ class UserController extends Controller
     {
         $data=[
             'users' => $this->userService->users($request->all()),
+            'roles'=>app(RoleService::class)->getRolesList(['limit'=>4],['users:id,name']),
         ];
         return responseJson('users fetched successfully',$data,true);
     }

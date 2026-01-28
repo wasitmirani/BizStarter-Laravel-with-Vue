@@ -3,15 +3,7 @@
 namespace App\Services;
 
 
-class SettingService extends BaseService
+class SettingService
 {
 
-    public function __construct() {
-
-    }
-
-    public function getListOptions(){
-
-        // return $this->settingRepository->getListOptions();
-    }
 }

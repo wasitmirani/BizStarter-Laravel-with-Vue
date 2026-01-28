@@ -2,19 +2,31 @@
 
 namespace App\Services;
 
-use App\Models\User;
-use Spatie\Permission\Models\Role;
-
-
-class RoleService{
+use App\Models\Role;
+use App\Services\BaseService;
 
 
 
-    public function getRolesList($params)
+class RoleService extends BaseService
+{
+
+    protected $allowedFilters = [
+        'id',
+        'search',
+        'name',
+        'guard_name',
+    ];
+     protected function model(): ?string
+    {
+        return Role::class;
+    }
+
+    public function getRolesList($params,$relations =[])
     {
         // Assuming Role is an Eloquent model
-      return Role::sorting($params['sort_dir'] ?? 'asc')
-                  ->filters($params->only(['id','search', 'name', 'guard_name']))
+      return $this->model->sorting($params['sort_dir'] ?? 'asc')
+                  ->filters($this->allowedFilters)
+                  ->with($relations)
                   ->retrieve($params['paginated'] ?? false, $params['per_page'] ?? 15);
 
 

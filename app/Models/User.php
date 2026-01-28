@@ -122,6 +122,10 @@ class User extends Authenticatable implements MustVerifyEmail
         });
 
     }
+    public function scopeLimit($query, $limit)
+    {
+        return $query->take($limit);
+    }
 
     public function scopeRetrieve($query,$paginated  = false, $perPage = 15)
     {

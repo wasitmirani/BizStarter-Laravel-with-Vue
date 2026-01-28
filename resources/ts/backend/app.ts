@@ -1,7 +1,7 @@
 import { createApp } from "vue";
 import { createPinia } from 'pinia';
 import App from "./App.vue";
-// import { Helpers } from './Utils/Helper';
+import { Helpers } from './Utils/Helper';
 import VueTelInput from 'vue3-tel-input';
 import 'vue3-tel-input/dist/vue3-tel-input.css';
 import BreadcrumbComponent from "./Components/Breadcrumb.vue";
@@ -70,7 +70,7 @@ app.component('Avatar', Avatar);
 app.component('FlashMessage', FlashMessage);
 app.component('OffCanvas', OffCanvas);
 
-
+app.config.globalProperties.$helpers = Helpers
 app.config.globalProperties.$router = router;
 app.use(VueTelInput);
 

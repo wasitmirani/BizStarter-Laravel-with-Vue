@@ -30,6 +30,11 @@ const routes = [
     setRoute('/settings/users/create', 'create-user', 'users/CreateUser', null),
     setRoute('/settings/users/edit/:uuid', 'edit-user', 'users/CreateUser', null),
     setRoute('/settings/user-account', 'user-account', 'account/Account', null),
+    setRoute('/settings/roles', 'roles', 'roles/Roles', null),
+    setRoute('/settings/roles/create', 'create-role', 'roles/CreateRole', null),
+    setRoute('/settings/roles/edit/:uuid', 'edit-role', 'roles/CreateRole', null),
+    setRoute('/settings/role/details/:uuid', 'role-details', 'roles/RoleDetails', null),
+    setRoute('/settings/permissions', 'permissions', 'permissions/Permissions', null),
 
 
     // {
