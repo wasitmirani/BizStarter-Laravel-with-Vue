@@ -26,5 +26,6 @@ Route::prefix('/app')->group(function () {
         Route::get('/options',[SettingController::class,'getListOptions']);
         Route::get('/languages',[SettingController::class,'getLanguages']);
         Route::get('/timezones',[SettingController::class,'getTimezones']);
+        Route::get('/roles',[RoleController::class,'getRoles']);
     });
 });

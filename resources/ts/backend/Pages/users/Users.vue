@@ -21,9 +21,10 @@ const filters = Helpers.useDynamicReactive({
     role: '',
     status: '',
     page: 1,
-    per_page: 10,
+    per_page: 20,
     sort_by: 'name',
-    order: 'asc'
+    paginated:true,
+    order: 'desc'
 });
 
 // Function to update URL with all query parameters
@@ -54,6 +55,7 @@ const loadFiltersFromUrl = () => {
     filters.per_page = parseInt(query.per_page?.toString() || '10');
     filters.sort_by = query.sort_by?.toString() || 'name';
     filters.order = query.order?.toString() || 'asc';
+    filters.paginated=query.paginated === 'false' ? false : true;
 
     current_page.value = filters.page;
 };
@@ -75,6 +77,7 @@ const getUsers = async (page?: number, per_page?: number) => {
         status: filters.status || undefined,
         sort_by: filters.sort_by || undefined,
         order: filters.order || undefined,
+        paginated: filters.paginated,
     };
 
     // Remove undefined values

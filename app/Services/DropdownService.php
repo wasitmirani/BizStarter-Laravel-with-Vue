@@ -2,10 +2,13 @@
 
 namespace App\Services;
 
-
-
-class DropdownServiceServicios extends BaseService
+class DropdownService
 {
 
-
+    public function getRolesDropdown($params): array
+    {
+        // Assuming RoleService is another service that fetches roles
+        $roles = app(RoleService::class)->getRolesList($params ?? []);
+        return $roles->pluck('name', 'id')->toArray();
+    }
 }

@@ -24,9 +24,8 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $users= $this->userService->all(true);
         $data=[
-            'users' => $users,
+            'users' => $this->userService->users($request->all()),
         ];
         return responseJson('users fetched successfully',$data,true);
     }
@@ -88,7 +87,7 @@ class UserController extends Controller
     {
 
         $user = $this->userService->findByUUIDOrEmail($id);
-    
+
         return responseJson('user fetched successfully',['user'=>$user],true);
     }
 

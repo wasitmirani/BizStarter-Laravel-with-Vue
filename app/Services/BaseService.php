@@ -13,24 +13,35 @@ abstract class BaseService
     /**
      * The model instance
      *
-     * @var Model
+     * @var Model|null
      */
-    protected $model;
+    protected ?Model $model = null;
+
+    /**
+     * Whether the service requires a model
+     *
+     * @var bool
+     */
+    protected bool $requiresModel = true;
 
     /**
      * BaseService constructor.
+     *
+     * @throws Exception
      */
     public function __construct()
     {
-        $this->model = $this->makeModel();
+        if ($this->requiresModel) {
+            $this->model = $this->makeModel();
+        }
     }
 
     /**
-     * Configure the Model
+     * Configure the Model (optional if requiresModel is false)
      *
-     * @return string
+     * @return string|null
      */
-    abstract protected function model(): string;
+    abstract protected function model(): ?string;
 
     /**
      * Make Model instance
@@ -40,14 +51,59 @@ abstract class BaseService
      */
     protected function makeModel(): Model
     {
-        $model = app($this->model());
+        $modelClass = $this->model();
+
+        if (!$modelClass) {
+            throw new Exception("Model class is not defined for this service.");
+        }
+
+        $model = app($modelClass);
 
         if (!$model instanceof Model) {
-            throw new Exception("Class {$this->model()} must be an instance of Illuminate\\Database\\Eloquent\\Model");
+            throw new Exception("Class {$modelClass} must be an instance of Illuminate\\Database\\Eloquent\\Model");
         }
 
         return $model;
     }
+
+    /**
+     * Set the model instance
+     *
+     * @param Model $model
+     * @return $this
+     */
+    public function setModel(Model $model): self
+    {
+        $this->model = $model;
+        return $this;
+    }
+
+    /**
+     * Get the model instance
+     *
+     * @return Model
+     * @throws Exception
+     */
+    protected function getModel(): Model
+    {
+        if (!$this->model instanceof Model) {
+            throw new Exception("Model is not initialized for this service.");
+        }
+
+        return $this->model;
+    }
+
+    /**
+     * Check if model is available
+     *
+     * @return bool
+     */
+    protected function hasModel(): bool
+    {
+        return $this->model instanceof Model;
+    }
+
+    // ========== CRUD METHODS (Model Required) ==========
 
     /**
      * Get all records
@@ -55,10 +111,11 @@ abstract class BaseService
      * @param array $columns
      * @param array $relations
      * @return Collection
+     * @throws Exception
      */
     public function all(array $columns = ['*'], array $relations = []): Collection
     {
-        return $this->model->with($relations)->get($columns);
+        return $this->getModel()->with($relations)->get($columns);
     }
 
     /**
@@ -68,36 +125,39 @@ abstract class BaseService
      * @param array $columns
      * @param array $relations
      * @return LengthAwarePaginator
+     * @throws Exception
      */
     public function paginate(int $perPage = 15, array $columns = ['*'], array $relations = []): LengthAwarePaginator
     {
-        return $this->model->with($relations)->paginate($perPage, $columns);
+        return $this->getModel()->with($relations)->paginate($perPage, $columns);
     }
 
     /**
      * Find record by id
      *
-     * @param int $id
+     * @param int|string $id
      * @param array $columns
      * @param array $relations
      * @return Model|null
+     * @throws Exception
      */
-    public function find(int $id, array $columns = ['*'], array $relations = []): ?Model
+    public function find($id, array $columns = ['*'], array $relations = []): ?Model
     {
-        return $this->model->with($relations)->find($id, $columns);
+        return $this->getModel()->with($relations)->find($id, $columns);
     }
 
     /**
      * Find record by id or fail
      *
-     * @param int $id
+     * @param int|string $id
      * @param array $columns
      * @param array $relations
      * @return Model
+     * @throws Exception
      */
-    public function findOrFail(int $id, array $columns = ['*'], array $relations = []): Model
+    public function findOrFail($id, array $columns = ['*'], array $relations = []): Model
     {
-        return $this->model->with($relations)->findOrFail($id, $columns);
+        return $this->getModel()->with($relations)->findOrFail($id, $columns);
     }
 
     /**
@@ -108,10 +168,11 @@ abstract class BaseService
      * @param array $columns
      * @param array $relations
      * @return Model|null
+     * @throws Exception
      */
     public function findBy(string $column, $value, array $columns = ['*'], array $relations = []): ?Model
     {
-        return $this->model->with($relations)->where($column, $value)->first($columns);
+        return $this->getModel()->with($relations)->where($column, $value)->first($columns);
     }
 
     /**
@@ -122,10 +183,11 @@ abstract class BaseService
      * @param array $columns
      * @param array $relations
      * @return Collection
+     * @throws Exception
      */
     public function getWhere(string $column, $value, array $columns = ['*'], array $relations = []): Collection
     {
-        return $this->model->with($relations)->where($column, $value)->get($columns);
+        return $this->getModel()->with($relations)->where($column, $value)->get($columns);
     }
 
     /**
@@ -133,22 +195,24 @@ abstract class BaseService
      *
      * @param array $data
      * @return Model
+     * @throws Exception
      */
     public function create(array $data): Model
     {
         return DB::transaction(function () use ($data) {
-            return $this->model->create($data);
+            return $this->getModel()->create($data);
         });
     }
 
     /**
      * Update existing record
      *
-     * @param int $id
+     * @param int|string $id
      * @param array $data
      * @return Model
+     * @throws Exception
      */
-    public function update(int $id, array $data): Model
+    public function update($id, array $data): Model
     {
         return DB::transaction(function () use ($id, $data) {
             $record = $this->findOrFail($id);
@@ -160,10 +224,11 @@ abstract class BaseService
     /**
      * Delete record by id
      *
-     * @param int $id
+     * @param int|string $id
      * @return bool
+     * @throws Exception
      */
-    public function delete(int $id): bool
+    public function delete($id): bool
     {
         return DB::transaction(function () use ($id) {
             $record = $this->findOrFail($id);
@@ -177,33 +242,36 @@ abstract class BaseService
      * @param array $attributes
      * @param array $values
      * @return Model
+     * @throws Exception
      */
     public function updateOrCreate(array $attributes, array $values = []): Model
     {
         return DB::transaction(function () use ($attributes, $values) {
-            return $this->model->updateOrCreate($attributes, $values);
+            return $this->getModel()->updateOrCreate($attributes, $values);
         });
     }
 
     /**
      * Check if record exists
      *
-     * @param int $id
+     * @param int|string $id
      * @return bool
+     * @throws Exception
      */
-    public function exists(int $id): bool
+    public function exists($id): bool
     {
-        return $this->model->where('id', $id)->exists();
+        return $this->getModel()->where('id', $id)->exists();
     }
 
     /**
      * Get count of records
      *
      * @return int
+     * @throws Exception
      */
     public function count(): int
     {
-        return $this->model->count();
+        return $this->getModel()->count();
     }
 
     /**
@@ -211,21 +279,12 @@ abstract class BaseService
      *
      * @param array $data
      * @return bool
+     * @throws Exception
      */
     public function bulkInsert(array $data): bool
     {
         return DB::transaction(function () use ($data) {
-            return $this->model->insert($data);
+            return $this->getModel()->insert($data);
         });
-    }
-
-    /**
-     * Get fresh model instance
-     *
-     * @return Model
-     */
-    protected function getModel(): Model
-    {
-        return $this->model;
     }
 }

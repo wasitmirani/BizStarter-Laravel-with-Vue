@@ -2,17 +2,16 @@
 
 namespace App\Services;
 
-use App\Repositories\Contracts\SettingRepositoryInterface;
 
-class SettingService
+class SettingService extends BaseService
 {
 
-    public function __construct(protected SettingRepositoryInterface $settingRepository) {
+    public function __construct() {
 
     }
 
     public function getListOptions(){
-     
-        return $this->settingRepository->getListOptions();
+
+        // return $this->settingRepository->getListOptions();
     }
 }

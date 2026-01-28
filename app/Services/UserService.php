@@ -3,58 +3,35 @@
 namespace App\Services;
 
 use App\Models\User;
+use function Laravel\Prompts\search;
 
-class UserService
+class UserService extends BaseService
 {
 
-    public function __construct(protected User $user) {
-    }
-
-
-    public function store(array $data)
+    protected $allowedFilters = [
+        'id',
+        'search',
+        'email',
+        'phone',
+        'status',
+        'role',
+        'uuid',
+        'is_active',
+        'created_from',
+        'created_between',
+    ];
+    protected function model(): ?string
     {
-        return $this->user->create($data);
+        return User::class;
     }
-
-    public function update($id,array $data)
+    public function users($params)
     {
-        $user = $this->user->find($id);
-        if (!$user) {
-            return null;
-        }
-        $user->fill($data);
-        $user->save();
-        return $user;
+        return $this->model->search($params['search'] ?? $params['query'] ?? null)
+            ->sortingBy($params['sort_by'] ?? 'name', $params['sort_dir'] ?? 'asc')
+            ->filters($this->allowedFilters)
+            ->retrieve($params['paginated'] ?? false, $params['per_page'] ?? 15);
     }
 
-    public function delete($uuid)
-    {
-
-        $user = $this->user->where('uuid', $uuid)->first();
-        if (!$user) {
-            return false;
-        }
-        return (bool) $user->delete();
-    }
-
-    public function all($is_paginate)
-    {
-
-        if ((bool)$is_paginate) {
-            return $this->user->paginate();
-        }
-
-        return $this->user->all();
-    }
-
-    public function find($id)
-    {
-        return $this->user->find($id);
-    }
-
-    public function findByUUIDOrEmail($val){
-        return $this->user->where('uuid', $val)->orWhere('email', $val)->first();
-    }
 
 
 }

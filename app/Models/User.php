@@ -71,6 +71,66 @@ class User extends Authenticatable implements MustVerifyEmail
         return asset($backendPath . 'users/' . $default);
     }
 
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+    public function scopeInactive($query)
+    {
+        return $query->where('is_active', false);
+    }
+    public function scopeSearch($query, ?string $search)
+    {
+       return $search ?  $query->whereAny(['name','first_name', 'last_name', 'email', 'phone'], 'LIKE', $search) : $query;
+
+    }
+    public function scopeSortingBy($query, $column, $direction = 'asc')
+    {
+        return $query->orderBy($column, $direction);
+    }
+
+    public function scopeFilters($query, array $filters)
+    {
+        return $query
+        ->when($filters['id'] ?? false, function ($query, $id) {
+            return $query->where('id', $id);
+        })
+        ->when($filters['uuid'] ?? false, function ($query, $uuid) {
+            return $query->where('uuid', $uuid);
+        })
+        ->when($filters['is_active'] ?? false, function ($query, $isActive) {
+            return $isActive ? $query->active() : $query->inactive();
+        })
+        ->when($filters['search'] ?? false, function ($query, $search) {
+            return $query->search($search);
+        })
+        ->when($filters['email'] ?? false, function ($query, $email) {
+            return $query->where('email', $email);
+        })
+        ->when($filters['phone'] ?? false, function ($query, $phone) {
+            return $query->where('phone', $phone);
+        })
+        ->when($filters['role'] ?? false, function ($query, $role) {
+            return $query->whereHas('roles', function ($q) use ($role) {
+                $q->where('name', $role);
+            });
+        })->when($filters['created_from'] ?? false, function ($query, $createdFrom) {
+            return $query->whereDate('created_at', '>=', $createdFrom);
+        })->when($filters['created_between'] ?? false, function ($query, $range) {
+            [$start, $end] = explode(',', $range);
+            return $query->whereBetween('created_at', [$start, $end]);
+        });
+
+    }
+
+    public function scopeRetrieve($query,$paginated  = false, $perPage = 15)
+    {
+       $paginated = filter_var($paginated, FILTER_VALIDATE_BOOLEAN);
+       return $query->when($paginated,
+        fn($q) => $q->paginate($perPage),
+        fn($q) => $q->get()
+       );
+    }
     public function country()
     {
         return $this->belongsTo(Country::class, 'country_id', 'id');
@@ -81,11 +141,5 @@ class User extends Authenticatable implements MustVerifyEmail
         return DB::table('roles')->orderBy('name', 'ASC')->get();
     }
 
-    // Your service's properties and methods
 
-    // public function createUser(array $data)
-    // {
-    //     // Logic to create a user
-    //     // $this->logActivity('Creating a new user', ['data' => $data]);
-    // }
 }
