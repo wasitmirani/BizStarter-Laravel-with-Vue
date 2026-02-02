@@ -19,29 +19,26 @@ const handleSubmitForm = (formData: any) => {
 
 let user = Helpers.useDynamicReactive({});
 const editmode = ref(false);
-const getUser = ()=>{
-  UserService.user(Helpers.route().params.uuid.toString()).then((res)=>{
-    user = res.data.result.user;
-    editmode.value = true;
-  })
+const getUser = () => {
+
+    UserService.user(Helpers.route().params.uuid.toString()).then((res) => {
+        user = res.data.result.user;
+        editmode.value = true;
+    })
 }
 
- Helpers.useDynamicOnMounted(() => {
-    if(Helpers.route().params.uuid){
+Helpers.useDynamicOnMounted(() => {
+    if (Helpers.route().params.uuid) {
         getUser();
     }
-
-
 });
+
+
 </script>
 
 <template>
+    <BreadcrumbComponent current="Create User" :links="[{ name: 'Dashboard', route: 'dashboard' }, { name: 'Users', route: 'users' }]" />
 
-
-
-    <BreadcrumbComponent current="Create User" :links="[{name:'Dashboard', route:'dashboard'},{name:'Users', route:'users'}]"/>
     <UserForm class="mt-4" />
-
-
 
 </template>

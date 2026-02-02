@@ -74,14 +74,11 @@ function handleAction({ action, row }: { action: string; row: any }) {
     }
     switch (action) {
         case 'view':
-            console.log('Viewing:', row);
             break;
         case 'edit':
-
             Helpers.router().push({ name: 'edit-user', params: { uuid: row.uuid, slug: row.slug } });
             break;
         case 'delete':
-            console.log('Deleting:', row);
             deleteUser(row);
             break;
         default:
