@@ -11,7 +11,10 @@ use Illuminate\Support\Facades\Cache;
 class HelperComponent
 {
 
-    
+
+    public static function useCache(){
+        
+    }
     public static function getCountriesList()
     {
         return Cache::remember('getCountriesList', sessionTimer(), function () {

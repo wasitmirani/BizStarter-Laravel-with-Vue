@@ -9,6 +9,8 @@ use App\Services\UserService;
 use App\Http\Controllers\Controller;
 use App\Services\RoleService;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\CreateUserRequest;
+use App\Services\LoggerService;
 
 
 class UserController extends Controller
@@ -19,9 +21,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     public function __construct(protected UserService $userService) {
-
-    }
+     public function __construct(protected UserService $userService) {}
 
     public function index(Request $request)
     {
@@ -37,24 +37,14 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateUserRequest $createUserRequest)
     {
-        $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required|unique:users,email',
-            'phone'=>'required|unique:users,phone',
-            'thumbnail' => 'required',
-            // 'role'=>'required',
-            'password' => 'required|confirmed',
-            'address' => 'required',
-            'city' => 'required',
-            'state' => 'required',
-            'dob' => 'required',
-            'gender' => 'required',
+        LoggerService::info("User creation attempt", [
+            'data' => collect($createUserRequest->validated())
+            ->except('password')
+            ->toArray()
         ]);
-
-        $user = $this->userService->store($request->all());
+        $user = $this->userService->saveUser($createUserRequest);
         $data=[
             'user' => $user,
         ];
