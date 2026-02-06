@@ -193,4 +193,8 @@ function logDeviceHistory()
     function generateUserName($request){
      return   !empty($request->user_name) ? $request->user_name : strtolower(trim( $request->first_name." ".$request->first_name)) . rand(10, 1000900);
     }
+
+    function   responseMessage(string $msg,int $status_code=422,$status=false):array{
+        return ['message'=>$msg,'status_code'=>$status_code,'status'=>$status];
+    }
 }

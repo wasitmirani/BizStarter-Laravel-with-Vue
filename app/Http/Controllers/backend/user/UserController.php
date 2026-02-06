@@ -11,7 +11,7 @@ use App\Services\RoleService;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\CreateUserRequest;
 use App\Services\LoggerService;
-
+use App\Enums\UserEnums;
 
 class UserController extends Controller
 {
@@ -40,9 +40,7 @@ class UserController extends Controller
     public function store(CreateUserRequest $createUserRequest)
     {
         LoggerService::info("User creation attempt", [
-            'data' => collect($createUserRequest->validated())
-            ->except('password')
-            ->toArray()
+            'data' => $createUserRequest->validated()
         ]);
         $user = $this->userService->saveUser($createUserRequest);
         $data=[
@@ -53,35 +51,28 @@ class UserController extends Controller
     }
 
     public function updatePassword(Request $request){
-        // Validate the request
         $request->validate([
            'current_password' => 'required',
            'new_password' => 'required|min:8|confirmed',
        ]);
 
-       // Get the currently authenticated user
-       $user = $request->user();
-
-       // Check if the current password matches
-       if (!Hash::check($request->current_password, $user->password)) {
-           return response()->json(['error' => 'Current password is incorrect.'], 400);
+       $response = $this->userService->updatePassword();
+       if(!$response['status']){
+        return responseJson(message: $response['message'],status:false,code:$response['status_code']);
        }
 
-       // Update the user's password
-       $user->password = Hash::make($request->new_password);
-       $user->save();
-
-       return response()->json(['message' => 'Password updated successfully.']);
+       return responseJson(message: 'Password updated successfully.',status:true,code:201);
 
    }
 
     public function show($id)
     {
-
-        $user = $this->userService->findByUUIDOrEmail($id);
-
-        return responseJson('user fetched successfully',['user'=>$user],true);
+        if($id){
+            $user = $this->userService->fetch(UserEnums::UUID->value,$id);
+            return responseJson('user fetched successfully',['user'=>$user],true);
     }
+        }
+
 
     public function update(Request $request, $id)
     {
@@ -89,7 +80,7 @@ class UserController extends Controller
         //     'thumbnail' => 'required',
         //     'role'=>'required',
         // ]);
-        $user = $this->userService->update($request->all(), $id);
+        $user = $this->userService->updateUser($id,$request->all());
 
         return responseJson('user updated successfully',['user'=>$user],true);
     }

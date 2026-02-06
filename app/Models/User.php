@@ -96,6 +96,7 @@ class User extends Authenticatable implements MustVerifyEmail
             return $query->where('id', $id);
         })
         ->when($filters['uuid'] ?? false, function ($query, $uuid) {
+       
             return $query->where('uuid', $uuid);
         })
         ->when($filters['is_active'] ?? false, function ($query, $isActive) {
