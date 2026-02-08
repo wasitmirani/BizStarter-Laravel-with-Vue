@@ -19,9 +19,17 @@ class UserService extends BaseService implements UserFilterable
     }
     public function users($params)
     {
-        return $this->model->search($params['search'] ?? $params['query'] ?? null)
-            ->sortingBy($params['sort_by'] ?? 'name', $params['sort_dir'] ?? 'asc')
-            ->filters(self::ALLOWED_FILTERS)
+        return $this->model->when(!isset($params['sort_by']), function ($query) {
+                $query->latest();
+            })
+            ->when(isset($params['sort_by']), function ($query) use ($params) {
+                $query->sortingBy(
+                    $params['sort_by'],
+                    $params['sort_dir'] ?? 'asc'
+                );
+            })
+            // ->search($params['search'] ?? $params['query'] ?? null)
+            // ->filters(self::ALLOWED_FILTERS)
             ->retrieve($params['paginated'] ?? false, $params['per_page'] ?? 15);
     }
 

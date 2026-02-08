@@ -19,6 +19,7 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasApiTokens, HasFactory, LogsActivity,Notifiable,HasRoles,HasThumbnail;
     protected array $guard_name = ['api', 'web'];
     protected $guarded = [];
+    protected $prefix ="UR00";
 
     /**
      * The attributes that are mass assignable.
@@ -81,7 +82,9 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     public function scopeSearch($query, ?string $search)
     {
-       return $search ?  $query->whereAny(['name','first_name', 'last_name', 'email', 'phone'], 'LIKE', $search) : $query;
+       return $search ?  $query->whereAny(['name','first_name', 'last_name', 'email', 'phone'], 'LIKE', $search)
+        ->orWhere('id',str_replace($this->prefix, '', $search))
+       : $query;
 
     }
     public function scopeSortingBy($query, $column, $direction = 'asc')
@@ -93,10 +96,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $query
         ->when($filters['id'] ?? false, function ($query, $id) {
-            return $query->where('id', $id);
+            return $query->where('id', $id)->orWhere('id',str_replace($this->prefix, '', $id));
         })
         ->when($filters['uuid'] ?? false, function ($query, $uuid) {
-       
+
             return $query->where('uuid', $uuid);
         })
         ->when($filters['is_active'] ?? false, function ($query, $isActive) {

@@ -27,9 +27,9 @@ const filters = Helpers.useDynamicReactive({
     status: '',
     page: 1,
     per_page: 20,
-    sort_by: 'name',
+    sort_by: 'id',
     paginated:true,
-    order: 'desc'
+    sort_dir: 'desc'
 });
 
 // Function to update URL with all query parameters
@@ -59,7 +59,7 @@ const loadFiltersFromUrl = () => {
     filters.page = parseInt(query.page?.toString() || '1');
     filters.per_page = parseInt(query.per_page?.toString() || '10');
     filters.sort_by = query.sort_by?.toString() || 'name';
-    filters.order = query.order?.toString() || 'asc';
+    filters.sort_dir = query.sort_dir?.toString() || 'asc';
     filters.paginated=query.paginated === 'false' ? false : true;
 
     current_page.value = filters.page;
@@ -81,7 +81,7 @@ const getUsers = async (page?: number, per_page?: number) => {
         role: filters.role || undefined,
         status: filters.status || undefined,
         sort_by: filters.sort_by || undefined,
-        order: filters.order || undefined,
+        sort_dir: filters.sort_dir || undefined,
         paginated: filters.paginated,
     };
 

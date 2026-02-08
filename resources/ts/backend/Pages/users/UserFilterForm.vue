@@ -9,7 +9,7 @@ interface Props {
         date_from: string;
         date_to: string;
         sort_by: string;
-        order: string;
+        sort_dir: string;
         per_page: string;
     };
 }
@@ -21,8 +21,8 @@ const props = withDefaults(defineProps<Props>(), {
         status: '',
         date_from: '',
         date_to: '',
-        sort_by: 'name',
-        order: 'asc',
+        sort_by: 'id',
+        sort_dir: 'desc',
         per_page: '10',
     })
 });
@@ -37,8 +37,8 @@ const filters = Helpers.useDynamicReactive({
     status: props.initialFilters.status || '',
     date_from: props.initialFilters.date_from || '',
     date_to: props.initialFilters.date_to || '',
-    sort_by: props.initialFilters.sort_by || 'name',
-    order: props.initialFilters.order || 'asc',
+    sort_by: props.initialFilters.sort_by || 'id',
+    sort_dir: props.initialFilters.sort_dir || 'desc',
     per_page: props.initialFilters.per_page || '10',
 });
 
@@ -58,13 +58,14 @@ const statuses = [
 ];
 
 const sortOptions = [
+    { value: 'id', label: 'ID' },
     { value: 'name', label: 'Name' },
     { value: 'email', label: 'Email' },
     { value: 'created_at', label: 'Date Created' },
     { value: 'updated_at', label: 'Last Updated' },
 ];
 
-const orderOptions = [
+const sort_dirOptions = [
     { value: 'asc', label: 'Ascending' },
     { value: 'desc', label: 'Descending' },
 ];
@@ -88,8 +89,8 @@ const resetFilters = () => {
     filters.status = '';
     filters.date_from = '';
     filters.date_to = '';
-    filters.sort_by = 'name';
-    filters.order = 'asc';
+    filters.sort_by = 'id';
+    filters.sort_dir = 'asc';
     filters.per_page = '10';
     emit('filterChange', { ...filters });
 };
@@ -186,14 +187,14 @@ const resetFilters = () => {
                 </select>
             </div>
             <div>
-                <label for="filterOrder" class="form-label text-sm font-medium">Order</label>
+                <label for="filtersort_dir" class="form-label text-sm font-medium">sort_dir</label>
                 <select
-                    id="filterOrder"
-                    v-model="filters.order"
+                    id="filtersort_dir"
+                    v-model="filters.sort_dir"
                     class="form-select w-full"
                 >
                     <option
-                        v-for="option in orderOptions"
+                        v-for="option in sort_dirOptions"
                         :key="option.value"
                         :value="option.value"
                     >
@@ -222,10 +223,10 @@ const resetFilters = () => {
         </div>
 
         <!-- Action Buttons -->
-        <div class="flex gap-2 pt-4 border-t border-default-200">
+        <div class="flex gap-2 pt-4 bsort_dir-t bsort_dir-default-200">
             <button
                 type="submit"
-                class="btn border-primary text-primary hover:bg-primary hover:text-white"
+                class="btn bsort_dir-primary text-primary hover:bg-primary hover:text-white"
             >
                 <i class="iconify tabler--filter me-2"></i>
                 Apply Filters
@@ -233,7 +234,7 @@ const resetFilters = () => {
             <button
                 type="button"
                 @click="resetFilters"
-                class="btn border-danger text-danger hover:bg-danger hover:text-white"
+                class="btn bsort_dir-danger text-danger hover:bg-danger hover:text-white"
             >
                 <i class="iconify tabler--refresh me-2"></i>
                 Reset
