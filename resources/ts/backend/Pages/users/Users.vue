@@ -7,7 +7,7 @@ import OffCanvas from "../../Components/OffCanvas.vue";
 import { DropdownOptions } from '../../Utils/DropdownOptions';
 import RoleCard from '../../Components/RoleCard.vue';
 import { Helpers } from '../../Utils/Helper';
-import { testmethod } from './user.ts';
+import { testmethod } from './user';
 
 const route = useRoute();
 const router = useRouter();
@@ -29,7 +29,9 @@ const filters = Helpers.useDynamicReactive({
     per_page: 20,
     sort_by: 'id',
     paginated:true,
-    sort_dir: 'desc'
+    sort_dir: 'desc',
+    date_from: '',
+    date_to: '',
 });
 
 // Function to update URL with all query parameters
@@ -60,6 +62,8 @@ const loadFiltersFromUrl = () => {
     filters.per_page = parseInt(query.per_page?.toString() || '10');
     filters.sort_by = query.sort_by?.toString() || 'name';
     filters.sort_dir = query.sort_dir?.toString() || 'asc';
+    filters.date_from = query.date_from?.toString() || '';
+    filters.date_to = query.date_to?.toString() || '';
     filters.paginated=query.paginated === 'false' ? false : true;
 
     current_page.value = filters.page;
@@ -82,6 +86,9 @@ const getUsers = async (page?: number, per_page?: number) => {
         status: filters.status || undefined,
         sort_by: filters.sort_by || undefined,
         sort_dir: filters.sort_dir || undefined,
+        date_from: filters.date_from || undefined,
+        date_to: filters.date_to || undefined,
+
         paginated: filters.paginated,
     };
 

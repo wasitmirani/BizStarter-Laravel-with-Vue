@@ -1,100 +1,30 @@
 <script setup lang="ts">
-import { Helpers } from '../../Utils/Helper';
+import {
+    useUserFilter,
+    roles, statuses, sortOptions, sortDirOptions, perPageOptions,
+    defaultFilters,
+    type UserFilters,
+} from './Composables/useUserFilter';
+
+// ─── Props ────────────────────────────────────────────────────────────────────
 
 interface Props {
-    initialFilters?: {
-        search: string;
-        role: string;
-        status: string;
-        date_from: string;
-        date_to: string;
-        sort_by: string;
-        sort_dir: string;
-        per_page: string;
-    };
+    initialFilters?: UserFilters;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    initialFilters: () => ({
-        search: '',
-        role: '',
-        status: '',
-        date_from: '',
-        date_to: '',
-        sort_by: 'id',
-        sort_dir: 'desc',
-        per_page: '10',
-    })
+    initialFilters: () => ({ ...defaultFilters }),
 });
+
+// ─── Emits ────────────────────────────────────────────────────────────────────
 
 const emit = defineEmits<{
-    filterChange: [filters: any]
+    filterChange: [filters: UserFilters]
 }>();
 
-const filters = Helpers.useDynamicReactive({
-    search: props.initialFilters.search || '',
-    role: props.initialFilters.role || '',
-    status: props.initialFilters.status || '',
-    date_from: props.initialFilters.date_from || '',
-    date_to: props.initialFilters.date_to || '',
-    sort_by: props.initialFilters.sort_by || 'id',
-    sort_dir: props.initialFilters.sort_dir || 'desc',
-    per_page: props.initialFilters.per_page || '10',
-});
+// ─── Composable (all logic lives in useUserFilter.ts) ─────────────────────────
 
-const roles = [
-    { value: '', label: 'All Roles' },
-    { value: 'Security Officer', label: 'Security Officer' },
-    { value: 'Project Manager', label: 'Project Manager' },
-    { value: 'Developer', label: 'Developer' },
-    { value: 'Support Lead', label: 'Support Lead' },
-];
-
-const statuses = [
-    { value: '', label: 'All Status' },
-    { value: 'Active', label: 'Active' },
-    { value: 'Inactive', label: 'Inactive' },
-    { value: 'Suspended', label: 'Suspended' },
-];
-
-const sortOptions = [
-    { value: 'id', label: 'ID' },
-    { value: 'name', label: 'Name' },
-    { value: 'email', label: 'Email' },
-    { value: 'created_at', label: 'Date Created' },
-    { value: 'updated_at', label: 'Last Updated' },
-];
-
-const sort_dirOptions = [
-    { value: 'asc', label: 'Ascending' },
-    { value: 'desc', label: 'Descending' },
-];
-
-const perPageOptions = [
-    { value: '5', label: '5' },
-    { value: '10', label: '10' },
-    { value: '15', label: '15' },
-    { value: '20', label: '20' },
-    { value: '50', label: '50' },
-];
-
-const onSubmit = () => {
-    console.log('Filters Applied:', filters);
-    emit('filterChange', { ...filters });
-};
-
-const resetFilters = () => {
-    filters.search = '';
-    filters.role = '';
-    filters.status = '';
-    filters.date_from = '';
-    filters.date_to = '';
-    filters.sort_by = 'id';
-    filters.sort_dir = 'asc';
-    filters.per_page = '10';
-    emit('filterChange', { ...filters });
-};
-
+const { filters, onSubmit, resetFilters } = useUserFilter(props.initialFilters, emit);
 </script>
 <template>
     <form @submit.prevent="onSubmit" class="space-y-4">
@@ -194,7 +124,7 @@ const resetFilters = () => {
                     class="form-select w-full"
                 >
                     <option
-                        v-for="option in sort_dirOptions"
+                        v-for="option in sortDirOptions"
                         :key="option.value"
                         :value="option.value"
                     >

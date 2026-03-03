@@ -1,100 +1,24 @@
 <script setup lang="ts">
-import { Helpers } from '../../Utils/Helper';
-import { DropdownOptions } from '../../Utils/DropdownOptions';
-import { UserService } from '../../Services/user/UserService';
+import { useUserForm } from './Composables/useUserForm';
 
-// add veriables here
-let errors = Helpers.useDynamicRef([]);
-const isLoading = Helpers.useDynamicRef(false)
-const genderDropdownItems = DropdownOptions.genderOptions();
-const maritalStatusDropdownItems = DropdownOptions.maritalStatusOptions();
-const toast = Helpers.useDynamicInject('toast');
-
-let user = Helpers.useDynamicReactive({
-    phone: '',
-    thumbnail: '',
-    company_name: '',
-    first_name: '',
-    last_name: '',
-    email: '',
-    password: '',
-    password_confirmation: '',
-    address: '',
-    dob: '',
-    gender: '',
-    marital_status: '',
-    city: '',
-    state: '',
-    zip_code: '',
-    country: '',
-});
-
-const onSubmit = (type?: string) => {
-    userStore(user);
-};
-const onInput = (phone: any, phoneObject: any, input: any) => {
-    if (phoneObject?.formatted) {
-        user.phone = phoneObject.formatted;
-    }
-}
-
-const addThumbnail = (media: any) => {
-    if (media) {
-        user.thumbnail = media.name;
-    }
-
-}
-
-const userStore = (data: any) => {
-    isLoading.value = true;
-
-      UserService.store(data)
-        .then((res: any) => {
-          toast.value.showToast(res.status, 'User Store', res.data);
-          setTimeout(() => {
-            Helpers.router().push({ name: "users" });
-          }, 300);
-        }).catch((err: any) => {
-          if(err.response.data){
-            errors.value = err.response.data;
-            toast.value.showToast(err.response.status, 'Error: '+err.status,err.response.data);
-          }
-        });
-    setTimeout(() => {
-        isLoading.value = false;
-    }, 1000);
-};
-
-
-
-const showPassword = Helpers.useDynamicRef(false);
-
-const togglePassword = () => {
-    showPassword.value = !showPassword.value;
-};
-
-const generatePassword = () => {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+';
-    let password = '';
-    for (let i = 0; i < 12; i++) {
-        password += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    user.password = password;
-    user.password_confirmation = password;
-};
-
-const copyPassword = async () => {
-    try {
-        await navigator.clipboard.writeText(user.password);
-        toast.value.showToast(200, 'Password Copied', 'Password has been copied to clipboard.');
-    } catch (e) {
-        toast.value.showToast(500, 'Copy Failed', 'Could not copy password.');
-    }
-};
+const {
+    user,
+    errors,
+    isLoading,
+    showPassword,
+    genderDropdownItems,
+    maritalStatusDropdownItems,
+    onSubmit,
+    onInput,
+    addThumbnail,
+    togglePassword,
+    generatePassword,
+    copyPassword,
+} = useUserForm();
 </script>
+
 <template>
     <div class="row gap-x-6">
-
         <div class="col-xl-9">
             <form @submit.prevent="onSubmit">
                 <div class="card custom-card">
@@ -103,25 +27,24 @@ const copyPassword = async () => {
                             <div class="card-body p-0">
                                 <div class="row gy-3 mx-0">
                                     <div class="col-xl-12">
-                                        <h6 class="bg-primary-transparent p-3 py-2 mb-0 rounded fw-semibold">User
-                                            Details
-                                        </h6>
+                                        <h6 class="bg-primary-transparent p-3 py-2 mb-0 rounded fw-semibold">User Details</h6>
                                     </div>
                                     <div class="row mt-4">
+
                                         <div class="col-md-6 mb-3">
                                             <FormInput v-model="user.first_name" label="First Name" name="first_name"
                                                 placeholder="John" type="text" :errors="errors" autofocus />
                                         </div>
                                         <div class="col-md-6 mb-3">
-
                                             <FormInput v-model="user.last_name" label="Last Name" name="last_name"
                                                 placeholder="Last name" type="text" :errors="errors" autofocus />
                                         </div>
                                         <div class="col-md-6 mb-3">
-
                                             <FormInput v-model="user.email" label="Email Address" name="email"
                                                 placeholder="Email Address" type="email" :errors="errors" autofocus />
                                         </div>
+
+                                        <!-- Phone -->
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">Contact Number</label>
                                             <vue-tel-input
@@ -129,12 +52,13 @@ const copyPassword = async () => {
                                                 @input="onInput"
                                                 :enabled-country-code="true"
                                                 :searchable="true"
-                                            ></vue-tel-input>
-
-                                            <div  v-if="errors" class="invalid-feedback">
-                                                    <validate-input :errors="errors?.errors" value="phone" />
+                                            />
+                                            <div v-if="errors" class="invalid-feedback">
+                                                <validate-input :errors="errors" value="phone" />
                                             </div>
                                         </div>
+
+                                        <!-- Password -->
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">Password</label>
                                             <div class="input-group">
@@ -144,21 +68,23 @@ const copyPassword = async () => {
                                                     placeholder="********"
                                                     :type="showPassword ? 'text' : 'password'"
                                                     class="form-control"
-                                                    :class="{ 'is-invalid': errors?.errors?.password }"
+                                                    :class="{ 'is-invalid': errors?.password }"
                                                     autofocus
                                                 >
-                                                <button class="btn btn-outline-primary" type="button" @click="togglePassword" tabindex="-1">
-                                                    <i :class="showPassword ? 'ri-eye-off-line' : 'ri-eye-line'"></i>
+                                                <button class="btn border-primary text-primary hover:bg-primary size-11.25 border hover:text-white" type="button" @click="togglePassword" tabindex="-1">
+                                                    <i :class="showPassword ? 'iconify tabler--eye-off' : 'iconify tabler--eye'"></i>
                                                 </button>
-                                                <button class="btn btn-outline-primary" type="button" @click="generatePassword" tabindex="-1">
-                                                    <i class="ri-key-line"></i>
+                                                <button class="btn border-primary text-primary hover:bg-primary size-11.25 border hover:text-white" type="button" @click="generatePassword" tabindex="-1">
+                                                    <i class="iconify tabler--key"></i>
                                                 </button>
-                                                <button class="btn btn-outline-primary" type="button" @click="copyPassword" tabindex="-1">
-                                                    <i class="ri-file-copy-line"></i>
+                                                <button class="btn border-primary text-primary hover:bg-primary size-11.25 border hover:text-white" type="button" @click="copyPassword" tabindex="-1">
+                                                    <i class="iconify tabler--copy"></i>
                                                 </button>
                                             </div>
-                                            <validate-input class="text-danger" v-if="errors" :errors="errors?.errors" value="password" />
+                                            <validate-input class="text-danger" v-if="errors" :errors="errors" value="password" />
                                         </div>
+
+                                        <!-- Confirm Password -->
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">Confirm Password</label>
                                             <input
@@ -170,19 +96,17 @@ const copyPassword = async () => {
                                                 :class="{ 'is-invalid': errors?.errors?.password_confirmation }"
                                                 autofocus
                                             >
-                                            <validate-input class="text-danger" v-if="errors" :errors="errors?.errors" value="password_confirmation" />
+                                            <validate-input class="text-danger" v-if="errors" :errors="errors" value="password_confirmation" />
                                         </div>
+
+                                        <!-- Address block -->
                                         <div class="col-md-6 mb-3">
                                             <div class="row">
                                                 <div class="col-xl-12 mb-3">
-                                                    <!-- <input type="text" class="form-control" placeholder="Landmark"
-                                                    aria-label="Landmark"> -->
                                                     <label class="form-label">Marital Status</label>
-
                                                     <select v-model="user.marital_status" class="form-select">
                                                         <option disabled value="">Select Marital Status</option>
-                                                        <option v-for="item in maritalStatusDropdownItems"
-                                                            :key="item.value" :value="item.value">
+                                                        <option v-for="item in maritalStatusDropdownItems" :key="item.value" :value="item.value">
                                                             {{ item.value }}
                                                         </option>
                                                     </select>
@@ -191,82 +115,73 @@ const copyPassword = async () => {
                                                     <FormInput v-model="user.address" label="Address" name="address"
                                                         placeholder="Street" type="text" :errors="errors" autofocus />
                                                 </div>
-
                                                 <div class="col-xl-6 mb-3">
-
-                                                        <FormInput v-model="user.city" label="City"
-                                                name="city" placeholder="City" type="text"
-                                                :errors="errors" autofocus />
+                                                    <FormInput v-model="user.city" label="City" name="city"
+                                                        placeholder="City" type="text" :errors="errors" autofocus />
                                                 </div>
                                                 <div class="col-xl-6 mb-3">
-
-                                                    <FormInput v-model="user.state" label="State"
-                                                name="state" placeholder="State" type="text"
-                                                :errors="errors" autofocus />
+                                                    <FormInput v-model="user.state" label="State" name="state"
+                                                        placeholder="State" type="text" :errors="errors" autofocus />
                                                 </div>
                                                 <div class="col-xl-6 mb-3">
-
-                                                        <FormInput v-model="user.zip_code" label="Postal/Zip code"
-                                                name="zip_code" placeholder="Postal/Zip code" type="text"
-                                                :errors="errors" autofocus />
+                                                    <FormInput v-model="user.zip_code" label="Postal/Zip code" name="zip_code"
+                                                        placeholder="Postal/Zip code" type="text" :errors="errors" autofocus />
                                                 </div>
                                                 <div class="col-xl-6 mb-3">
                                                     <label class="form-label">Country</label>
-
-                                                    <select v-model="user.country" id="inputCountry"
-                                                        class="form-select">
+                                                    <select v-model="user.country" id="inputCountry" class="form-select">
                                                         <option disabled value="">Select Country</option>
-
                                                         <option value="PK">PAK</option>
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <!-- Gender & DOB block -->
                                         <div class="col-md-6 mb-3">
                                             <div class="row">
                                                 <div class="col-xl-12 mb-3">
-
                                                     <label class="form-label">Gender</label>
-
-                                                    <select v-model="user.gender" class="form-select"  :class="{ 'is-invalid': errors?.errors?.gender }">
+                                                    <select v-model="user.gender" class="form-select"
+                                                        :class="{ 'is-invalid': errors?.errors?.gender }">
                                                         <option disabled value="">Select Gender</option>
-                                                        <option v-for="item in genderDropdownItems" :key="item.value"
-                                                            :value="item.value">
+                                                        <option v-for="item in genderDropdownItems" :key="item.value" :value="item.value">
                                                             {{ item.value }}
                                                         </option>
                                                     </select>
-
-                                                    <validate-input class="text-danger"  v-if="errors" :errors="errors?.errors" value="gender" />
-
-
+                                                    <validate-input class="text-danger" v-if="errors" :errors="errors" value="gender" />
                                                 </div>
                                                 <div class="col-xl-12 mb-3">
                                                     <label class="form-label">Date Of Birth</label>
                                                     <div class="input-group">
-                                                        <div class="input-group-text text-muted"> <i
-                                                                class="ri-calendar-line"></i> </div>
+                                                        <div class="input-group-text text-muted">
+                                                            <i class="ri-calendar-line"></i>
+                                                        </div>
                                                         <input type="text" class="form-control" v-model="user.dob"
                                                             id="humanfrienndlydate" placeholder="Choose Date">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="card-footer border-top border-block-start-dashed d-sm-flex justify-content-end">
-                        <router-link :to="{ name: 'users' }" class="btn btn-danger btn-wave me-2 mb-2 mb-sm-0"> <i
-                                class="ri-delete-back-2-line"></i> Discard </router-link>
-                        <button class="btn btn-success btn-wave me-2 mb-2 mb-sm-0">Draft User <i
-                                class="ri-draft-line"></i>
+                        <router-link :to="{ name: 'users' }" class="btn bg-danger hover:bg-danger-hover text-white me-2 mb-2 mb-sm-0">
+                            <i class="iconify tabler--arrow-back-up"></i> Discard
+                        </router-link>
+                        <button class="btn bg-secondary hover:bg-secondary-hover text-white me-2 mb-2 mb-sm-0">
+                            Draft User <i class="iconify tabler--folder-open"></i>
                         </button>
-                        <button class="btn btn-primary btn-wave mb-2 mb-sm-0" v-if="!isLoading">Save User <i
-                                class="ri-save-3-line"></i></button>
+                        <button class="btn bg-primary hover:bg-primary-hover text-white" v-if="!isLoading">
+                            Save User <i class="iconify tabler--device-floppy"></i>
+                        </button>
                         <button class="btn btn-primary mb-2 mb-sm-0" type="button" disabled v-if="isLoading">
-                            <span class="spinner-border spinner-border-sm align-middle" role="status"
-                                aria-hidden="true"></span>
+                            <span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span>
                             Loading...
                         </button>
                     </div>
@@ -274,6 +189,7 @@ const copyPassword = async () => {
             </form>
         </div>
 
+        <!-- Profile Picture Uploader -->
         <div class="col-xl-3">
             <div class="card custom-card">
                 <div class="card-body add-products">
@@ -281,8 +197,7 @@ const copyPassword = async () => {
                         <div class="card-body p-0">
                             <div class="row gy-3 mx-0">
                                 <div class="col-xl-12">
-                                    <h6 class="bg-primary-transparent p-3 py-2 mb-0 rounded fw-semibold">Profile Picture
-                                    </h6>
+                                    <h6 class="bg-primary-transparent p-3 py-2 mb-0 rounded fw-semibold">Profile Picture</h6>
                                 </div>
                                 <Uploader server="/upload/user/image" max="1" maxFilesize="2" :warnings="true"
                                     @add="addThumbnail" />
@@ -295,5 +210,6 @@ const copyPassword = async () => {
                 </div>
             </div>
         </div>
+
     </div>
 </template>

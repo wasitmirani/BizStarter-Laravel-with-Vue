@@ -9,6 +9,8 @@ const getMessage = (value:string)=>{
 </script>
 <template>
     <div v-if="errors && errors[value]">
+       
         {{ getMessage(errors[value]) }}
     </div>
+     
 </template>

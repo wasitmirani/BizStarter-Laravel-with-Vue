@@ -6,7 +6,7 @@
         @input="updateValue" @keyup="updateValue" :class="{ 'is-invalid': hasError }" :autofocus="autofocus" />
         <label :for="name">{{ label }}</label>
         <div  v-if="hasError" class="invalid-feedback">
-        <validate-input :errors="errors?.errors" :value="name" />
+        <validate-input :errors="errors" :value="name" />
                                             </div>
     </div>
     <div v-else>
@@ -14,7 +14,8 @@
         <input class="form-control" :type="type" :id="name" :name="name" :placeholder="placeholder" :value="modelValue"
             @input="updateValue" @keyup="updateValue" :class="{ 'is-invalid': hasError }" :autofocus="autofocus" />
             <div  v-if="hasError" class="invalid-feedback">
-        <validate-input :errors="errors?.errors" :value="name" />
+                
+        <validate-input :errors="errors" :value="name" />
                                             </div>
     </div>
 
@@ -61,12 +62,12 @@ export default defineComponent({
     },
     emits: ['update:modelValue'],
     setup(props, { emit }) {
-        const hasError = computed(() => props.errors?.errors?.[props.name]?.length > 0);
+        const hasError = computed(() => props.errors?.[props.name]?.length > 0);
         console.log("hasError", hasError);
-        console.log("errors", props.errors.errors);
+        console.log("errors", props.errors);
 
         const updateValue = (event: Event) => {
-            delete props.errors.errors[props.name];
+            delete props.errors[props.name];
             const target = event.target as HTMLInputElement;
             emit('update:modelValue', target.value);
         };
