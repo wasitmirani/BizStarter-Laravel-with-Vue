@@ -17,6 +17,29 @@ class UserService extends BaseService implements UserFilterable
     {
         return User::class;
     }
+    public function generateUsername(string $firstName, string $lastName): string
+    {
+        // Create base slug from first and last name
+        $base = mapFirstNameLastSlug($firstName, $lastName);
+
+        // Remove any non-alphanumeric characters, including removing dashes
+        $base = preg_replace('/[^a-zA-Z0-9]/', '', $base);
+
+        // Lowercase the base for consistency
+        $base = strtolower($base);
+
+        // Add a random 3-digit number to the end (e.g., wasit001) for uniqueness
+        $randomNumber = str_pad(random_int(1, 999), 3, '0', STR_PAD_LEFT);
+        $username = $base . $randomNumber;
+
+        // If that username exists, increment until a free one is found
+        while ($this->model->where('user_name', $username)->exists()) {
+            $randomNumber = str_pad(random_int(1, 9999), 3, '0', STR_PAD_LEFT);
+            $username = $base . $randomNumber;
+        }
+
+        return $username;
+    }
     public function users($params)
     {
         return $this->model->when(!isset($params['sort_by']), function ($query) {
@@ -36,6 +59,12 @@ class UserService extends BaseService implements UserFilterable
     public function saveUser(array $data = [])
     {
         // Optionally, you may want to handle additional logic here (validation, password hashing, events, etc.)
+        // Merge extradata into $data before creating the user
+        $data = array_merge($data, [
+            'user_name' => $this->generateUsername($data['first_name'], $data['last_name']),
+            'slug' => mapFirstNameLastSlug($data['first_name'], $data['last_name']),
+            'uuid' => genUUID(),
+        ]);
         return $this->model->create($data);
     }
 
