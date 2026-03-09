@@ -65,8 +65,8 @@ class User extends Authenticatable implements MustVerifyEmail
         $default = config('images.defaults.user');
         $backendPath = config('images.paths.backend');
 
-        if ($value && $value !== 'default.png' && Storage::exists('users/' . $value)) {
-            return asset(config('images.paths.storage') . 'users/' . $value);
+        if ($value && $value !== 'default.png' && Storage::disk('public')->exists('images/user/' . $value)) {
+            return asset('storage/images/user/' . $value);
         }
 
         return asset($backendPath . 'users/' . $default);

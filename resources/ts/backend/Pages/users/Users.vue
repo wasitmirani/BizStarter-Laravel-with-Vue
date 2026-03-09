@@ -60,8 +60,8 @@ const loadFiltersFromUrl = () => {
     filters.status = query.status?.toString() || '';
     filters.page = parseInt(query.page?.toString() || '1');
     filters.per_page = parseInt(query.per_page?.toString() || '10');
-    filters.sort_by = query.sort_by?.toString() || 'name';
-    filters.sort_dir = query.sort_dir?.toString() || 'asc';
+    filters.sort_by = query.sort_by?.toString() || 'id';
+    filters.sort_dir = query.sort_dir?.toString() || 'desc';
     filters.date_from = query.date_from?.toString() || '';
     filters.date_to = query.date_to?.toString() || '';
     filters.paginated=query.paginated === 'false' ? false : true;

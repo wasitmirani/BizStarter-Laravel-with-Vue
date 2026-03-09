@@ -42,7 +42,9 @@ class UserController extends Controller
         LoggerService::info("User creation attempt", [
             'data' => $createUserRequest->validated()
         ]);
-        $user = $this->userService->saveUser($createUserRequest);
+        $data =$createUserRequest->validated();
+
+        $user = $this->userService->saveUser($data);
         $data=[
             'user' => $user,
         ];

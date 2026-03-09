@@ -81,28 +81,28 @@ class Helper {
     setStatusBadge(status:string){
         switch (status) {
             case 'primary':
-                return "badge bg-primary/15 text-primary"
+                return "badge bagde-label bg-primary/15 text-primary"
                 break;
             case 'success':
-                return "badge bg-success/15 text-success"
+                return "badge bagde-label bg-success/15 text-success"
                 break;
             case 'danger':
-                return "badge bg-danger/15 text-danger"
+                return "badge bagde-label bg-danger/15 text-danger"
                 break;
             case 'warning':
-                return "badge bg-warning/15 text-warning"
+                return "badge bagde-label bg-warning/15 text-warning"
                 break;
             case 'info':
-                return "badge bg-info/15 text-info"
+                return "badge bagde-label bg-info/15 text-info"
                 break;
             case 'dark':
-                return "badge bg-dark/15 text-dark"
+                return "badge bagde-label bg-dark/15 text-dark"
                 break;
             case 'light':
-                return "badge bg-light/15 text-dark"
+                return "badge bagde-label bg-light/15 text-dark"
                 break;
             default:
-                return "badge bg-dark/15 text-white hover:bg-dark-hover"
+                return "badge bagde-label bg-dark/15 text-white hover:bg-dark-hover"
                 break;
         }
     }

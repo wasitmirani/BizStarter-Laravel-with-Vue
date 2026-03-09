@@ -112,7 +112,7 @@ function handleAction({ action, row }: { action: string; row: any }) {
         </template>
 
         <template #status="{ row }">
-            <span :class="Helpers.setStatusBadge('primary')">Active</span>
+            <span :class="Helpers.setStatusBadge('success')">Active</span>
         </template>
         <template #last_login="{ row }">
             <span v-if="row.last_login">{{ $filters.DateTimeFormat(row.last_login) }}</span>

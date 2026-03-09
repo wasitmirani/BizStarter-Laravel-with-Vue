@@ -33,9 +33,10 @@ class UserService extends BaseService implements UserFilterable
             ->retrieve($params['paginated'] ?? false, $params['per_page'] ?? 15);
     }
 
-    public function saveUser($data = [])
+    public function saveUser(array $data = [])
     {
-      return $this->model->create($data);
+        // Optionally, you may want to handle additional logic here (validation, password hashing, events, etc.)
+        return $this->model->create($data);
     }
 
     public function updatePassword(){

@@ -34,11 +34,7 @@ export function useUserForm() {
     });
 
     // ─── Phone Input ──────────────────────────────────────────────────────────
-    const onInput = (_phone: any, phoneObject: any, _input: any): void => {
-        if (phoneObject?.formatted) {
-            user.phone = phoneObject.formatted;
-        }
-    };
+
 
     // ─── Thumbnail ────────────────────────────────────────────────────────────
     const addThumbnail = (media: any): void => {
@@ -97,7 +93,12 @@ export function useUserForm() {
 
     // ─── Submit ───────────────────────────────────────────────────────────────
     const onSubmit = (_type?: string): void => {
-        userStore(user);
+        // Create a shallow clone to avoid modifying the reactive user directly.
+        const userPayload = {
+            ...user,
+            name: [user.first_name, user.last_name].filter(Boolean).join(' ').trim(),
+        };
+        userStore(userPayload);
     };
 
     return {
@@ -111,7 +112,6 @@ export function useUserForm() {
         maritalStatusDropdownItems,
         // handlers
         onSubmit,
-        onInput,
         addThumbnail,
         togglePassword,
         generatePassword,
