@@ -1,22 +1,45 @@
 <!-- DynamicInput.vue -->
 <template>
-    <div class="form-floating mb-3" v-if="inputStyle === 'float'">
-        <!-- <input type="email" class="form-control" value="Wasit" id="floatingInput" placeholder="name@example.com"> -->
-        <input class="form-control" :type="type" :id="name" :name="name" :placeholder="placeholder" :value="modelValue"
-        @input="updateValue" @keyup="updateValue" :class="{ 'is-invalid': hasError }" :autofocus="autofocus" />
-        <label :for="name">{{ label }}</label>
-        <div  v-if="hasError" class="invalid-feedback">
-        <validate-input :errors="errors" :value="name" />
-                                            </div>
+    <div v-if="inputStyle === 'float'" class="mb-4">
+        <div class="relative">
+            <input
+                class="form-input peer w-full border border-default-300 rounded placeholder-transparent focus:border-primary focus:ring-0"
+                :type="type"
+                :id="name"
+                :name="name"
+                :placeholder="placeholder"
+                :value="modelValue"
+                @input="updateValue"
+                :class="{ 'is-invalid': hasError }"
+                :autofocus="autofocus"
+            />
+            <label
+                :for="name"
+                class="absolute left-3 top-2 text-gray-500 text-sm transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:left-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:left-3 peer-focus:text-sm peer-focus:text-primary bg-white px-1"
+            >
+                {{ label }}
+            </label>
+        </div>
+        <div v-if="hasError" class="text-danger text-xs mt-1">
+            <validate-input :errors="errors" :value="name" />
+        </div>
     </div>
-    <div v-else>
-        <label :for="name" class="form-label">{{ label }}</label>
-        <input class="form-control" :type="type" :id="name" :name="name" :placeholder="placeholder" :value="modelValue"
-            @input="updateValue" @keyup="updateValue" :class="{ 'is-invalid': hasError }" :autofocus="autofocus" />
-            <div  v-if="hasError" class="invalid-feedback">
-                
-        <validate-input :errors="errors" :value="name" />
-                                            </div>
+    <div v-else class="mb-4">
+        <label :for="name" class="form-label text-sm font-medium mb-1 block">{{ label }}</label>
+        <input
+            class="form-input w-full border border-default-300 rounded focus:border-primary focus:ring-0"
+            :type="type"
+            :id="name"
+            :name="name"
+            :placeholder="placeholder"
+            :value="modelValue"
+            @input="updateValue"
+            :class="{ 'is-invalid': hasError }"
+            :autofocus="autofocus"
+        />
+        <div v-if="hasError" class="text-danger text-xs mt-1">
+            <validate-input :errors="errors" :value="name" />
+        </div>
     </div>
 
 </template>

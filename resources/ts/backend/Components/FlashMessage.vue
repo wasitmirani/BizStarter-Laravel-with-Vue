@@ -6,7 +6,7 @@
             <strong class="me-auto">{{ alert.title }}</strong>
             <button type="button" class="btn-close" @click="hideToast" aria-label="Close"></button>
         </div>
-        <div class="toast-body text-dark">
+        <div class="px-4 py-3 text-sm text-gray-900">
             {{ alert.text }}
         </div>
     </div>
@@ -58,28 +58,25 @@ const setMessage = (item: any) => {
         case 200:
         case 201:
             alert.type = 'success';
-            alert.icon = 'ri-check-double-fill ';
+            alert.icon = 'iconify tabler--checked';
             break;
         case 400:
+        case 422:
             alert.type = 'danger';
-            alert.icon = 'ri-error-warning-fill';
+            alert.icon = 'iconify tabler--triangle';
             break;
         case 404:
             alert.type = 'warning';
-            alert.icon = 'ri-alarm-warning-fill';
-            break;
-        case 422:
-            alert.type = 'danger';
-            alert.icon = 'ri-alarm-warning-fill';
+            alert.icon = 'iconify tabler--alert-circle';
             break;
         case 500:
             console.log('500', item);
             alert.type = 'danger';
-            alert.icon = 'ri-bug-fill';
+            alert.icon = 'iconify tabler--bug';
             break;
         default:
             alert.type = 'dark';
-            alert.icon = 'ri-alarm-warning-fill';
+            alert.icon = 'iconify tabler--bug';
             alert.title = 'Error';
             alert.text = 'Something went wrong';
             break;
@@ -91,6 +88,7 @@ defineExpose({ toast, showToast });
 <style scoped>
 .toast {
     position: fixed;
+    background-color: #fff;
     top: 15px;
     right: 5px;
     z-index: 1050;
