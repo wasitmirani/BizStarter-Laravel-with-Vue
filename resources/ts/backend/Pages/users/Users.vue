@@ -106,7 +106,7 @@ Helpers.useDynamicOnMounted(() => {
 
                     <div>
                         <nav class="flex items-center gap-x-1">
-                            <a role="button" @click="getUsers()"
+                    <a role="button" @click="fetchUsers()"
                                 class="btn bg-primary/15 text-primary btn-icon hover:bg-primary hover:text-white">
                                 <i class="iconify tabler--refresh text-lg"></i>
                             </a>
@@ -129,7 +129,7 @@ Helpers.useDynamicOnMounted(() => {
                 </div>
                 <UserTable
                     :users="users"
-                    :getUsers="getUsers"
+                    :getUsers="fetchUsers"
                     :isLoading="isLoading"
                     :currentFilters="filters"
                 />
