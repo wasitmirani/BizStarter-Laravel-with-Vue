@@ -19,8 +19,8 @@ export function useUsers() {
     const isLoading = Helpers.useDynamicRef(false)
     const sortableFilterOptions = computed(() => DropdownOptions.sortableFilterOptions())
 
-    // Reactive filter state
-    const filters = reactive({
+    // Default filter values (single source of truth)
+    const defaultFilters = {
         search: '',
         role: '',
         status: '',
@@ -31,63 +31,22 @@ export function useUsers() {
         sort_dir: 'desc',
         date_from: '',
         date_to: '',
-    })
-
-    // Helper function to build query parametersne
-    const buildQueryParams = () => {
-        const params: Record<string, string | undefined> = {
-            page: filters.page.toString(),
-            per_page: filters.per_page.toString(),
-            search: filters.search || undefined,
-            role: filters.role || undefined,
-            status: filters.status || undefined,
-            sort_by: filters.sort_by || undefined,
-            sort_dir: filters.sort_dir || undefined,
-            date_from: filters.date_from || undefined,
-            date_to: filters.date_to || undefined,
-            paginated: filters.paginated ? 'true' : 'false',
-        }
-
-        // Remove undefined values
-        Object.keys(params).forEach(key => {
-            if (params[key] === undefined) delete params[key]
-        })
-
-        return params
     }
 
-    // Update URL with all query parameters
+    // Reactive filter state
+    const filters = reactive({ ...defaultFilters })
+
+    // Wrapper for generic URL update helper
     const updateUrlWithFilters = () => {
-        const query = { ...route.query }
-
-        // Update query parameters
-        Object.keys(filters).forEach(key => {
-            const value = filters[key as keyof typeof filters]
-            if (value && value !== '' && !(key === 'page' && value === 1)) {
-                query[key] = value.toString()
-            } else {
-                delete query[key]
-            }
+        Helpers.updateUrlWithFilters(route, router, filters, {
+            defaults: defaultFilters,
+            omitDefaults: true,
         })
-
-        router.replace({ query })
     }
 
-    // Load filters from URL query parameters
+    // Load filters from URL query parameters using generic helper
     const loadFiltersFromUrl = () => {
-        const query = route.query
-
-        filters.search = query.search?.toString() || ''
-        filters.role = query.role?.toString() || ''
-        filters.status = query.status?.toString() || ''
-        filters.page = parseInt(query.page?.toString() || '1')
-        filters.per_page = parseInt(query.per_page?.toString() || '10')
-        filters.sort_by = query.sort_by?.toString() || 'id'
-        filters.sort_dir = query.sort_dir?.toString() || 'desc'
-        filters.date_from = query.date_from?.toString() || ''
-        filters.date_to = query.date_to?.toString() || ''
-        filters.paginated = query.paginated !== 'false'
-
+        Helpers.loadFiltersFromQuery(filters, route.query as Record<string, any>)
         currentPage.value = filters.page
     }
 
@@ -100,7 +59,7 @@ export function useUsers() {
         currentPage.value = filters.page
         isLoading.value = true
 
-        const params = buildQueryParams()
+        const params = Helpers.buildQueryFromFilters(filters)
 
         try {
             const res = await UserService.users(params)
@@ -122,7 +81,7 @@ export function useUsers() {
 
     // Handle filter changes
     const handleFilterChange = (newFilters: Partial<typeof filters>) => {
-        Object.assign(filters, newFilters)
+        Helpers.mergeFilterState(filters, newFilters)
         filters.page = 1 // Reset to first page when filters change
         updateUrlWithFilters()
         fetchUsers()
@@ -153,17 +112,7 @@ export function useUsers() {
 
     // Reset filters to default
     const resetFilters = () => {
-        filters.search = ''
-        filters.role = ''
-        filters.status = ''
-        filters.page = 1
-        filters.per_page = 20
-        filters.sort_by = 'id'
-        filters.sort_dir = 'desc'
-        filters.date_from = ''
-        filters.date_to = ''
-        filters.paginated = true
-
+        Object.assign(filters, defaultFilters)
         updateUrlWithFilters()
         fetchUsers()
     }

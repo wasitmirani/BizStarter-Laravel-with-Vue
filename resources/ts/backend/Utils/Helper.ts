@@ -108,8 +108,128 @@ class Helper {
     }
 
     capitalize(str?: string): string {
-    return str ? str.charAt(0).toUpperCase() + str.slice(1) : ''
-  }
+        return str ? str.charAt(0).toUpperCase() + str.slice(1) : ''
+    }
+
+    /**
+     * Build a plain query-object from a reactive filters object.
+     * - Skips empty values (undefined, null, empty string)
+     * - Serializes booleans to "true"/"false"
+     * - Optionally omits keys whose value matches provided defaults
+     */
+    buildQueryFromFilters<T extends Record<string, any>>(
+        filters: T,
+        options?: {
+            defaults?: Partial<T>;
+            omitDefaults?: boolean;
+        }
+    ): Record<string, string> {
+        const query: Record<string, string> = {};
+        const defaults = options?.defaults ?? {};
+        const omitDefaults = options?.omitDefaults ?? false;
+
+        Object.entries(filters).forEach(([key, value]) => {
+            if (value === undefined || value === null || value === '') {
+                return;
+            }
+
+            if (
+                omitDefaults &&
+                Object.prototype.hasOwnProperty.call(defaults, key) &&
+                String(value) === String((defaults as Record<string, any>)[key])
+            ) {
+                return;
+            }
+
+            if (typeof value === 'boolean') {
+                query[key] = value ? 'true' : 'false';
+            } else {
+                query[key] = String(value);
+            }
+        });
+
+        return query;
+    }
+
+    /**
+     * Load values from a route query object into a reactive filters object.
+     * Casting is based on the current type of each filter field:
+     * - number  -> parsed with parseInt (if numeric)
+     * - boolean -> "false"/"0"/"" => false, otherwise true
+     * - other   -> toString()
+     */
+    loadFiltersFromQuery<T extends Record<string, any>>(
+        filters: T,
+        query: Record<string, any>
+    ): void {
+        Object.keys(filters).forEach((key) => {
+            if (!Object.prototype.hasOwnProperty.call(query, key)) {
+                return;
+            }
+
+            const current = (filters as Record<string, any>)[key];
+            const raw = query[key];
+            const value = Array.isArray(raw) ? raw[0] : raw;
+
+            if (value === undefined || value === null) {
+                return;
+            }
+
+            if (typeof current === 'number') {
+                const parsed = parseInt(String(value), 10);
+                if (!isNaN(parsed)) {
+                    (filters as Record<string, any>)[key] = parsed;
+                }
+            } else if (typeof current === 'boolean') {
+                const str = String(value).toLowerCase();
+                (filters as Record<string, any>)[key] = !(
+                    str === 'false' ||
+                    str === '0' ||
+                    str === ''
+                );
+            } else {
+                (filters as Record<string, any>)[key] = String(value);
+            }
+        });
+    }
+
+    /**
+     * Update the current URL's query string using the provided filters.
+     * - Existing non-filter query params are preserved
+     * - Filter keys are removed then re-applied from the filters object
+     */
+    updateUrlWithFilters<T extends Record<string, any>>(
+        route: any,
+        router: any,
+        filters: T,
+        options?: {
+            defaults?: Partial<T>;
+            omitDefaults?: boolean;
+        }
+    ): void {
+        const baseQuery: Record<string, any> = { ...route.query };
+
+        Object.keys(filters).forEach((key) => {
+            if (Object.prototype.hasOwnProperty.call(baseQuery, key)) {
+                delete baseQuery[key];
+            }
+        });
+
+        const filterQuery = this.buildQueryFromFilters(filters, options);
+        router.replace({ query: { ...baseQuery, ...filterQuery } });
+    }
+
+    /**
+     * Generic helper to merge a partial filter state into an existing one.
+     * Useful when new filter fields are added – no extra wiring required.
+     */
+    mergeFilterState<T extends Record<string, any>>(
+        filters: T,
+        patch: Partial<T>
+    ): T {
+        Object.assign(filters, patch);
+        return filters;
+    }
 }
 
 
