@@ -1,150 +1,30 @@
 <script setup lang="ts">
-import { useRoute, useRouter } from 'vue-router';
-import { UserService } from '../../Services/user/UserService';
-import UserTable from './UserTable.vue';
-import UserFilterForm from './UserFilterForm.vue';
-import OffCanvas from "../../Components/OffCanvas.vue";
-import { DropdownOptions } from '../../Utils/DropdownOptions';
-import RoleCard from '../../Components/RoleCard.vue';
-import { Helpers } from '../../Utils/Helper';
-import { testmethod } from './user';
+import { useUsers } from "./Composables/useUser"
+import UserTable from './UserTable.vue'
+import UserFilterForm from './UserFilterForm.vue'
+import OffCanvas from "../../Components/OffCanvas.vue"
+import RoleCard from '../../Components/RoleCard.vue'
+import { Helpers } from '../../Utils/Helper'
 
-const route = useRoute();
-const router = useRouter();
-
-
-const users = Helpers.useDynamicRef([]);
-let roles = Helpers.useDynamicReactive([]);
-const current_page = Helpers.useDynamicRef(1);
-const toast = Helpers.useDynamicInject('toast');
-const isLoading = Helpers.useDynamicRef(false);
-const sortableFilterOptions = DropdownOptions.sortableFilterOptions();
-
-// Reactive filter state
-const filters = Helpers.useDynamicReactive({
-    search: '',
-    role: '',
-    status: '',
-    page: 1,
-    per_page: 20,
-    sort_by: 'id',
-    paginated:true,
-    sort_dir: 'desc',
-    date_from: '',
-    date_to: '',
-});
-
-// Function to update URL with all query parameters
-const updateUrlWithFilters = () => {
-    const query = { ...route.query };
-
-    // Update query parameters
-    Object.keys(filters).forEach(key => {
-        const value = filters[key];
-        if (value && value !== '' && !(key === 'page' && value === 1)) {
-            query[key] = value.toString();
-        } else {
-            delete query[key];
-        }
-    });
-
-    router.replace({ query });
-};
-
-// Function to load filters from URL query parameters
-const loadFiltersFromUrl = () => {
-    const query = route.query;
-
-    filters.search = query.search?.toString() || '';
-    filters.role = query.role?.toString() || '';
-    filters.status = query.status?.toString() || '';
-    filters.page = parseInt(query.page?.toString() || '1');
-    filters.per_page = parseInt(query.per_page?.toString() || '10');
-    filters.sort_by = query.sort_by?.toString() || 'id';
-    filters.sort_dir = query.sort_dir?.toString() || 'desc';
-    filters.date_from = query.date_from?.toString() || '';
-    filters.date_to = query.date_to?.toString() || '';
-    filters.paginated=query.paginated === 'false' ? false : true;
-
-    current_page.value = filters.page;
-};
-
-const getUsers = async (page?: number, per_page?: number) => {
-    // Update filters if parameters provided
-    if (page !== undefined) filters.page = page;
-    if (per_page !== undefined) filters.per_page = per_page;
-
-    current_page.value = filters.page;
-    isLoading.value = true;
-
-    // Build query parameters for API call
-    const params = {
-        page: filters.page.toString(),
-        per_page: filters.per_page.toString(),
-        search: filters.search || undefined,
-        role: filters.role || undefined,
-        status: filters.status || undefined,
-        sort_by: filters.sort_by || undefined,
-        sort_dir: filters.sort_dir || undefined,
-        date_from: filters.date_from || undefined,
-        date_to: filters.date_to || undefined,
-
-        paginated: filters.paginated,
-    };
-
-    // Remove undefined values
-    Object.keys(params).forEach(key => {
-        if (params[key] === undefined) delete params[key];
-    });
-
-    await UserService.users(params).then((res) => {
-        users.value = res.data.result.users;
-        roles = res.data.result.roles;
-        console.log("res:", roles);
-                    // toast.value.showToast(res.status, 'User Data', res.data);
-    }).catch((err: any) => {
-        console.log("err:", err.response.data.message);
-        toast.value.showToast(err.status, 'Error: ' + err.status, err.response.data.message);
-    });
-
-    setTimeout(() => {
-        isLoading.value = false;
-    }, 1000);
-};
-
-// Function to handle filter changes from UserFilterForm
-const handleFilterChange = (newFilters: any) => {
-    Object.assign(filters, newFilters);
-    filters.page = 1; // Reset to first page when filters change
-    updateUrlWithFilters();
-    getUsers();
-};
-
-// Function to handle search input changes
-const handleSearchChange = (searchTerm: string) => {
-    filters.search = searchTerm;
-    filters.page = 1; // Reset to first page when search changes
-    updateUrlWithFilters();
-    getUsers();
-};
-
-// Function to handle SearchInput query event
-const handleSearchQuery = (query: string) => {
-    handleSearchChange(query);
-};
-
-function loadingStart(value: any) {
-    isLoading.value = value;
-}
-
-function filterData(data: any) {
-    users.value = data.result.users;
-}
+const {
+    users,
+    roles,
+    currentPage,
+    isLoading,
+    filters,
+    sortableFilterOptions,
+    fetchUsers,
+    handleFilterChange,
+    handleSearchChange,
+    handleSearchQuery,
+    setLoading,
+    filterData,
+    init
+} = useUsers()
 
 Helpers.useDynamicOnMounted(() => {
-    loadFiltersFromUrl();
-    getUsers();
-});
+    init()
+})
 
 
 </script>

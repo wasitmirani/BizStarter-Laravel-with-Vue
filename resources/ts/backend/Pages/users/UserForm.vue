@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { useUserForm } from './Composables/useUserForm';
 const onInput = (_phone: any, phoneObject: any, _input: any): void => {
-        console.log("phoneObject",phoneObject)
-        if (phoneObject?.formatted) {
-            user.phone = phoneObject.number;
-        }
-    };
+    if (phoneObject?.formatted) {
+        user.phone = phoneObject.number;
+    }
+};
 const { user, errors, isLoading, showPassword, genderDropdownItems, maritalStatusDropdownItems, onSubmit, addThumbnail, togglePassword, generatePassword, copyPassword } = useUserForm();
 
 </script>
@@ -156,6 +155,4 @@ const { user, errors, isLoading, showPassword, genderDropdownItems, maritalStatu
 
         </div>
     </div>
-
-
 </template>
