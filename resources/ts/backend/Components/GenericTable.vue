@@ -5,32 +5,52 @@ import { Helpers } from '../Utils/Helper';
 const route = useRoute();
 const router = useRouter();
 
-const props = defineProps({
-    columns: {
-        type: Array,
-        required: true,
-    },
-    rows: {
-        type: Array,
-        required: true,
-    },
-    isLoading: {
-        type: Boolean,
-        default: false,
-    },
-    actions: {
-        type: Array,
-        default: () => [],
-    },
-    fetchData: {
-        type: Function,
-        required: true,
-    }
-});
+type TableColumn = {
+    key: string;
+    label: string;
+    sortable?: boolean;
+};
 
-const emits = defineEmits(["action", "update:selectedItems"]);
+type TableAction = {
+    label: string;
+    icon: string;
+    action: string;
+    class?: string;
+};
 
-const selectedItems = Helpers.useDynamicRef([]);
+type BulkAction = {
+    label: string;
+    action: string;
+};
+
+type PaginatedRows<T = any> = {
+    data: T[];
+    current_page: number;
+    last_page: number;
+    from: number | null;
+    to: number | null;
+    total: number;
+};
+
+const props = defineProps<{
+    columns: TableColumn[];
+    rows: PaginatedRows;
+    isLoading?: boolean;
+    actions?: TableAction[];
+    fetchData: (page?: number, perPage?: number) => void;
+    filters?: Record<string, unknown>;
+    enableFilterBar?: boolean;
+    enableBulkActions?: boolean;
+    bulkActions?: BulkAction[];
+    preserveStateKey?: string;
+}>();
+
+const emits = defineEmits<{
+    (e: 'action', payload: any): void;
+    (e: 'update:selectedItems', value: (string | number)[]): void;
+}>();
+
+const selectedItems = Helpers.useDynamicRef<(string | number)[]>([]);
 
 // Function to update URL with query parameters
 const updateUrlWithParams = (page?: number, perPage?: number) => {
@@ -67,7 +87,7 @@ const toggleSelectAll = (event: any) => {
     emits('update:selectedItems', selectedItems.value);
 };
 
-const toggleSelectItem = (id: string) => {
+const toggleSelectItem = (id: string | number) => {
     if (selectedItems.value.includes(id)) {
         selectedItems.value = selectedItems.value.filter(item => item !== id);
     } else {
@@ -96,34 +116,85 @@ const paginationRange = Helpers.useDynamicComputed(() => {
 
     return range;
 });
+
+const handleBulkAction = (event: Event) => {
+    const target = event.target as HTMLSelectElement | null;
+    const actionKey = target?.value || '';
+    if (!actionKey || selectedItems.value.length === 0) {
+        return;
+    }
+    emits('action', { action: actionKey, rows: props.rows.data, selected: selectedItems.value });
+};
 </script>
 
 <template>
 
 
+    <div class="flex items-center justify-between mb-3" v-if="enableFilterBar || (enableBulkActions && (bulkActions?.length || 0) > 0)">
+        <div v-if="enableBulkActions && (bulkActions?.length || 0) > 0">
+            <div class="flex items-center gap-2">
+                    <select
+                        class="form-select form-select-sm w-auto"
+                        @change="handleBulkAction"
+                    >
+                        <option value="">{{ selectedItems.length ? `Bulk actions (${selectedItems.length})` : 'Bulk actions' }}</option>
+                        <option
+                            v-for="bulk in bulkActions"
+                            :key="bulk.action"
+                            :value="bulk.action"
+                        >
+                            {{ bulk.label }}
+                        </option>
+                    </select>
+            </div>
+        </div>
+        <div v-if="enableFilterBar" class="ml-auto">
+            <slot name="filters" :filters="filters"></slot>
+        </div>
+    </div>
+
     <div class="table-wrapper">
         <table class="table-custom table-select table table-hover">
             <thead class="thead-sm">
                 <tr class="bg-light/25 text-2xs uppercase">
-                    <th class="w-[1%]">
+                    <th class="w-[1%]" v-if="enableBulkActions">
 
                         <input data-table-select-all="" class="form-checkbox form-checkbox-light size-4.5"
                             :checked="isAllSelected" @change="toggleSelectAll" type="checkbox">
                     </th>
-                    <th v-for="column in columns" :key="column.key" data-table-sort="{{ column.key }}"
-                        data-column="{{ column.key }}">{{ column.label }}</th>
-                    <th v-if="actions.length > 0">Actions</th>
+                    <th v-for="column in columns" :key="column.key" data-column="{{ column.key }}">
+                        <div class="flex flex-col gap-1">
+                            <span>{{ column.label }}</span>
+                            <span v-if="column.sortable" class="inline-flex items-center gap-1 text-[11px] text-default-400">
+                                <button
+                                    type="button"
+                                    class="hover:text-primary"
+                                    @click="$emit('action', { action: 'sort', column: column.key, direction: 'asc' })"
+                                >
+                                    ▲
+                                </button>
+                                <button
+                                    type="button"
+                                    class="hover:text-primary"
+                                    @click="$emit('action', { action: 'sort', column: column.key, direction: 'desc' })"
+                                >
+                                    ▼
+                                </button>
+                            </span>
+                        </div>
+                    </th>
+                    <th v-if="(actions?.length || 0) > 0">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-if="isLoading">
-                    <td :colspan="columns.length + (actions.length > 0 ? 2 : 1)">
+                    <td :colspan="columns.length + ((actions?.length || 0) > 0 ? 2 : 1)">
                         <LoadingBox :showText="true" text="Please wait..." />
 
                     </td>
                 </tr>
                 <tr v-else v-for="row in rows.data" :key="row.id">
-                    <td class="text-center" v-if="actions.length > 0">
+                    <td class="text-center" v-if="(actions?.length || 0) > 0">
 
                         <input class="form-checkbox form-checkbox-light size-4.5" :value="row.id" type="checkbox"
                             :checked="selectedItems.includes(row.id)" @change="toggleSelectItem(row.id)">
@@ -136,7 +207,7 @@ const paginationRange = Helpers.useDynamicComputed(() => {
                             {{ row[column.key] }}
                         </slot>
                     </td>
-                    <td v-if="actions.length > 0">
+                    <td v-if="(actions?.length || 0) > 0">
                         <div class="flex justify-center gap-1.5">
                             <a v-for="action in actions" :key="action.label" href="javascript:void(0)"
                                 :class="`btn border-default-300 hover:border-default-400 btn-icon btn-sm text-default-800 size-7.75 rounded border`"
@@ -148,7 +219,7 @@ const paginationRange = Helpers.useDynamicComputed(() => {
                     </td>
                 </tr>
                 <tr v-if="!isLoading && (!rows.data || rows.data.length === 0)">
-                    <td :colspan="columns.length + (actions.length > 0 ? 2 : 1)" class="text-center">
+                    <td :colspan="columns.length + ((actions?.length || 0) > 0 ? 2 : 1)" class="text-center">
 
                         <div class="alert alert-warning  d-flex align-items-center" role="alert">
                             <svg class="flex-shrink-0 me-2 svg-warning " xmlns="http://www.w3.org/2000/svg"
@@ -188,7 +259,14 @@ const paginationRange = Helpers.useDynamicComputed(() => {
                     </a>
                 </li>
                 <li v-for="page in paginationRange" :key="page" class="page-item" :class="{ active: page === rows.current_page, disabled: page === '...' }">
-                    <a v-if="page !== '...'" href="#" class="page-link" @click.prevent="fetchDataWithUrlUpdate(page)">{{ page }}</a>
+                    <a
+                        v-if="page !== '...'"
+                        href="#"
+                        class="page-link"
+                        @click.prevent="fetchDataWithUrlUpdate(page as number)"
+                    >
+                        {{ page }}
+                    </a>
                     <span v-else class="page-link">...</span>
                 </li>
                 <li class="page-item" :class="{ disabled: rows.current_page === rows.last_page }">

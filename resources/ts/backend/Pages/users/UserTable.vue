@@ -4,10 +4,21 @@ import GenericTable from '../../Components/GenericTable.vue';
 import { Helpers } from '../../Utils/Helper';
 
 
-const props = defineProps(['users', 'isLoading', 'getUsers', 'currentFilters'])
-const emit = defineEmits(['user-deleted'])
-const selectedItems = Helpers.useDynamicRef([]);
-const toast = Helpers.useDynamicInject('toast');
+const props = defineProps<{
+    users: any;
+    isLoading: boolean;
+    getUsers: (page?: number, perPage?: number) => void;
+    currentFilters: Record<string, unknown>;
+}>();
+
+const emit = defineEmits<{
+    (e: 'user-deleted'): void;
+}>();
+
+const selectedItems = Helpers.useDynamicRef<(string | number)[]>([]);
+const toast = Helpers.useDynamicInject<{ showToast: (status: number, title: string, message: string) => void }>('toast', {
+    showToast: () => {},
+});
 
 
 
@@ -67,11 +78,11 @@ const actions = [
     { label: "Delete", icon: "trash", action: "delete", class: "danger" },
 ];
 
-function handleAction({ action, row }: { action: string; row: any }) {
-    if (!row.uuid) {
-        toast.value.showToast(400, 'Error', 'User uuid not found');
-        return;
-    }
+const bulkActions = [
+    { label: 'Delete selected', action: 'bulk-delete' },
+];
+
+function handleAction({ action, row, selected }: { action: string; row?: any; selected?: (string | number)[] }) {
     switch (action) {
         case 'view':
             break;
@@ -79,7 +90,19 @@ function handleAction({ action, row }: { action: string; row: any }) {
             Helpers.router().push({ name: 'edit-user', params: { uuid: row.uuid, slug: row.slug } });
             break;
         case 'delete':
+            if (!row?.uuid) {
+                toast.value.showToast(400, 'Error', 'User uuid not found');
+                return;
+            }
             deleteUser(row);
+            break;
+        case 'bulk-delete':
+            if (!selected || selected.length === 0) {
+                toast.value.showToast(400, 'Error', 'No users selected');
+                return;
+            }
+            // For now just log; can be wired to an API endpoint for bulk delete
+            console.log('Bulk delete users with IDs:', selected);
             break;
         default:
             console.log('Unknown action:', action);
@@ -88,8 +111,18 @@ function handleAction({ action, row }: { action: string; row: any }) {
 </script>
 <template>
 
-    <GenericTable :columns="columns" :isLoading="isLoading" :fetchData="getUsers" :rows="users" :actions="actions"
-        @action="handleAction" @update:selectedItems="selectedItems = $event">
+    <GenericTable
+        :columns="columns"
+        :isLoading="isLoading"
+        :fetchData="getUsers"
+        :rows="users"
+        :actions="actions"
+        :bulkActions="bulkActions"
+        :enableBulkActions="true"
+        :filters="currentFilters"
+        @action="handleAction"
+        @update:selectedItems="selectedItems = $event"
+    >
         <template #id="{ row }">
             <td>
                 <span class="text-default-400">#UR00{{ row.id }}</span>

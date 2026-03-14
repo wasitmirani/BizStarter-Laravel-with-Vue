@@ -42,7 +42,11 @@ class UserService extends BaseService implements UserFilterable
     }
     public function users($params)
     {
-        return $this->model->when(!isset($params['sort_by']), function ($query) {
+        $perPage = (int)($params['per_page'] ?? 15);
+        $perPage = $perPage > 0 ? $perPage : 15;
+
+        return $this->model
+            ->when(!isset($params['sort_by']), function ($query) {
                 $query->latest();
             })
             ->when(isset($params['sort_by']), function ($query) use ($params) {
@@ -51,9 +55,17 @@ class UserService extends BaseService implements UserFilterable
                     $params['sort_dir'] ?? 'asc'
                 );
             })
-            // ->search($params['search'] ?? $params['query'] ?? null)
+            ->when(isset($params['status']) && $params['status'] !== '', function ($query) use ($params) {
+                $query->where('status', $params['status']);
+            })
+            ->when(isset($params['role']) && $params['role'] !== '', function ($query) use ($params) {
+                $query->whereHas('roles', function ($q) use ($params) {
+                    $q->where('name', $params['role']);
+                });
+            })
+             // ->search($params['search'] ?? $params['query'] ?? null)
             // ->filters(self::ALLOWED_FILTERS)
-            ->retrieve($params['paginated'] ?? false, $params['per_page'] ?? 15);
+            ->retrieve($params['paginated'] ?? true, $perPage);
     }
 
     public function saveUser(array $data = [])

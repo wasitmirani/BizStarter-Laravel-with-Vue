@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, provide, onMounted } from 'vue';
+import { ref, provide, onMounted, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
 import Footer from "./partials/Footer.vue";
 import Head from "./partials/Head.vue";
@@ -14,9 +14,38 @@ const isLoading = ref(false);
 const progress = ref(0);
 let progressInterval: number | null = null;
 
+// PWA install prompt state
+const installPromptEvent = ref<any | null>(null);
+const showInstallBanner = ref(false);
+
 const router = useRouter();
 
+const handleBeforeInstallPrompt = (event: Event) => {
+    installPromptEvent.value = (event as any).detail ?? event;
+    showInstallBanner.value = true;
+};
+
+const requestInstall = async () => {
+    if (!installPromptEvent.value) return;
+
+    try {
+        const promptEvent = installPromptEvent.value;
+        const result = await promptEvent.prompt();
+
+        // Some browsers resolve with userChoice, some expose it as a property
+        const choice = result?.outcome ?? promptEvent.userChoice?.outcome;
+        if (choice === 'accepted') {
+            showInstallBanner.value = false;
+            installPromptEvent.value = null;
+        }
+    } catch (error) {
+        console.error('[PWA] Install prompt failed', error);
+    }
+};
+
 onMounted(() => {
+    window.addEventListener('pwa:beforeinstallprompt', handleBeforeInstallPrompt as EventListener);
+
     // Start progress on route change
     router.beforeEach((to, from, next) => {
         startProgress();
@@ -27,6 +56,10 @@ onMounted(() => {
     router.afterEach(() => {
         completeProgress();
     });
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener('pwa:beforeinstallprompt', handleBeforeInstallPrompt as EventListener);
 });
 
 const startProgress = () => {
@@ -95,6 +128,44 @@ const completeProgress = () => {
         <!-- FOOTER -->
 
         <!-- Start::main-footer -->
+
+        <!-- PWA install banner -->
+        <transition name="slide-fade">
+            <div
+                v-if="showInstallBanner"
+                class="fixed bottom-4 right-4 z-[10000] max-w-xs rounded-xl border border-slate-700 bg-slate-900/95 px-4 py-3 shadow-2xl text-sm text-slate-100"
+            >
+                <div class="flex items-start gap-3">
+                    <div class="mt-0.5">
+                        <span class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-400">
+                            <i class="iconify tabler--device-mobile"></i>
+                        </span>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-semibold mb-1">Install admin as an app</p>
+                        <p class="text-xs text-slate-300 mb-2">
+                            Add LarabaseKit admin to your home screen for a faster, full-screen experience.
+                        </p>
+                        <div class="flex items-center justify-end gap-2">
+                            <button
+                                type="button"
+                                class="text-xs text-slate-400 hover:text-slate-200"
+                                @click="showInstallBanner = false"
+                            >
+                                Not now
+                            </button>
+                            <button
+                                type="button"
+                                class="btn bg-primary text-white hover:bg-primary-hover btn-xs"
+                                @click="requestInstall"
+                            >
+                                Install app
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </transition>
     </div>
 </template>
 

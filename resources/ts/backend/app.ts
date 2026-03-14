@@ -21,6 +21,7 @@ import Uploader from 'vue-media-upload';
 import VueMultiselect from 'vue-multiselect';
 import "vue-multiselect/dist/vue-multiselect.css";
 import router from "./router";
+import { registerPWA } from './pwa/registerPWA';
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
@@ -75,3 +76,5 @@ app.config.globalProperties.$router = router;
 app.use(VueTelInput);
 
 app.mount('#app');
+
+registerPWA();

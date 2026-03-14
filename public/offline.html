@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Offline - LarabaseKit Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #020617;
+      color: #e5e7eb;
+    }
+    .card {
+      max-width: 420px;
+      padding: 2rem;
+      border-radius: 0.75rem;
+      background: #020617;
+      box-shadow: 0 10px 40px rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      text-align: center;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    p {
+      font-size: 0.95rem;
+      color: #9ca3af;
+      margin-bottom: 1.2rem;
+    }
+    button {
+      border: none;
+      border-radius: 9999px;
+      padding: 0.6rem 1.4rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+      background: #22c55e;
+      color: #022c22;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(34, 197, 94, 0.35);
+    }
+    button:active {
+      transform: translateY(1px);
+      box-shadow: 0 6px 18px rgba(34, 197, 94, 0.35);
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>You're offline</h1>
+    <p>The admin app can't reach the server right now. Some pages may be unavailable until you're back online.</p>
+    <button type="button" onclick="window.location.reload()">Try again</button>
+  </div>
+</body>
+</html>
+
