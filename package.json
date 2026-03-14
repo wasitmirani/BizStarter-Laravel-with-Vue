@@ -3,7 +3,12 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "electron": "cross-env LARABASEKIT_DESKTOP_URL=http://127.0.0.1:8000/app electron ./electron-main.cjs",
+        "electron:dev": "npm-run-all --parallel dev:laravel dev:frontend electron",
+        "dev:frontend": "vite",
+        "dev:laravel": "php artisan serve",
+        "electron:build": "electron-builder"
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.2",
@@ -20,7 +25,11 @@
         "pusher-js": "^8.4.0-rc2",
         "tailwindcss": "^3.1.0",
         "vite": "^5.0",
-        "vite-plugin-dynamic-import": "^1.5.0"
+        "vite-plugin-dynamic-import": "^1.5.0",
+        "cross-env": "^7.0.3",
+        "electron": "^33.0.0",
+        "electron-builder": "^24.13.3",
+        "npm-run-all": "^4.1.5"
     },
     "dependencies": {
         "lodash": "^4.17.21",

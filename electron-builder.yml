@@ -1,0 +1,27 @@
+appId: com.larabasekit.desktop
+productName: LarabaseKit Admin
+files:
+  - "electron-main.cjs"
+  - "electron-preload.cjs"
+  - "public/**/*"
+  - "vendor/**/*"
+  - "bootstrap/**/*"
+  - "artisan"
+  - "storage/**/*"
+  - "resources/**/*"
+  - "package.json"
+extraMetadata:
+  main: "electron-main.cjs"
+directories:
+  output: "dist-electron"
+asar: true
+win:
+  target:
+    - nsis
+mac:
+  target:
+    - dmg
+linux:
+  target:
+    - AppImage
+
