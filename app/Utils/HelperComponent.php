@@ -13,7 +13,7 @@ class HelperComponent
 
 
     public static function useCache(){
-        
+        asda
     }
     public static function getCountriesList()
     {

@@ -10,12 +10,14 @@
     <meta name="keywords"
         content="Paces, admin dashboard, ThemeForest, Bootstrap 5 admin, responsive admin, CRM dashboard, CMS admin, web app UI, admin theme, premium admin template">
     <meta name="author" content="Coderthemes">
-    <meta name="theme-color" content="#0f172a">
+    <meta name="theme-color" content="#002855">
 
     <!-- App favicon -->
     <link rel="shortcut icon" href="/favicon.ico">
     <link rel="manifest" href="/manifest.webmanifest">
     <link rel="apple-touch-icon" href="/icons/icon-192.png">
+    <link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
     <script>
         ;
         (function() {
@@ -130,11 +132,9 @@
         @yield('content')
 
 
+
     </div>
     </div>
-
-
-
 
     @if(app()->environment('local'))
     @vite(['resources/ts/backend/app.ts', 'resources/css/app.css'])

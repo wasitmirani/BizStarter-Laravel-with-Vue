@@ -31,7 +31,7 @@ export const useDropDownsStore = defineStore('dropdowns', () => {
     try {
       const response = await UserService.roles();
       // Assuming API returns an array of roles in response.data or response.data.result
-      const data = (response?.data?.result ?? response?.data ?? []) as any[];
+      const data = (response?.data?.roles ?? response?.data ?? []) as any[];
       roles.value = data.map((role: any) => ({
         value: role.id ?? role.value ?? role.name,
         label: role.name ?? role.label ?? String(role.id ?? role),

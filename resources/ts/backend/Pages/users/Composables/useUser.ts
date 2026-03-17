@@ -13,9 +13,12 @@ export function useUsers() {
 
     // State
     const users = Helpers.useDynamicRef([])
-    const roles = Helpers.useDynamicReactive([])
+    const roles = computed(() => dropdownsStore.roles)
     const currentPage = Helpers.useDynamicRef(1)
-    const toast = Helpers.useDynamicInject('toast')
+    const toast = Helpers.useDynamicInject<{ showToast: (status: number, title: string, message: string) => void }>(
+        'toast',
+        { showToast: () => {} }
+    )
     const isLoading = Helpers.useDynamicRef(false)
     const sortableFilterOptions = computed(() => DropdownOptions.sortableFilterOptions())
 
@@ -120,6 +123,7 @@ export function useUsers() {
     // Initialize on mount
     const init = () => {
         loadFiltersFromUrl()
+        dropdownsStore.fetchRoles()
         fetchUsers()
     }
 
@@ -145,5 +149,6 @@ export function useUsers() {
         // Utilities
         loadFiltersFromUrl,
         updateUrlWithFilters,
+        dropdownsStore,
     }
 }

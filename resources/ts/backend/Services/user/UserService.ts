@@ -35,7 +35,7 @@ import {AxiosService} from '../../Utils/Service';
         return AxiosService.get('/countries-list?country_id='+id);
     }
     roles = ()=> {
-        return AxiosService.get('/roles-list');
+        return AxiosService.get('/list/roles');
     }
 
 

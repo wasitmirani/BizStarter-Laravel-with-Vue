@@ -36,7 +36,7 @@ Helpers.useDynamicOnMounted(() => {
 
         <div class="container-fluid">
             <div class="mb-base grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-base">
-                <RoleCard :items="roles" v-if="roles?.length > 0"></RoleCard>
+                <!-- <RoleCard :items="roles" v-if="roles?.length > 0"></RoleCard> -->
             </div>
 
             <div data-table="" data-table-rows-per-page="8" class="card">
@@ -79,7 +79,7 @@ Helpers.useDynamicOnMounted(() => {
                                     @change="handleFilterChange(filters)"
                                 >
                                     <option value="">All Roles</option>
-                                    <option value="Security Officer">Security Officer</option>
+                                    <option :value="role.value" v-for="role in roles">{{ role.label }}</option>
                                     <option value="Project Manager">Project Manager</option>
                                     <option value="Developer">Developer</option>
                                     <option value="Support Lead">Support Lead</option>

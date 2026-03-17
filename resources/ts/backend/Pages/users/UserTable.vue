@@ -118,7 +118,7 @@ function handleAction({ action, row, selected }: { action: string; row?: any; se
         :rows="users"
         :actions="actions"
         :bulkActions="bulkActions"
-        :enableBulkActions="true"
+        :enableBulkActions="false"
         :filters="currentFilters"
         @action="handleAction"
         @update:selectedItems="selectedItems = $event"
