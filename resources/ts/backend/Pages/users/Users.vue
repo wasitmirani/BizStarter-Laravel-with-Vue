@@ -47,7 +47,7 @@ Helpers.useDynamicOnMounted(() => {
                         <SearchInput
                             label="Search Users"
                             :apiPath="`/user`"
-                            @loading="loadingStart"
+                            @loading="setLoading"
                             @filterData="filterData"
                             @query="handleSearchQuery"></SearchInput>
 

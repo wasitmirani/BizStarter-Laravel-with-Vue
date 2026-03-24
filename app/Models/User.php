@@ -82,10 +82,22 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     public function scopeSearch($query, ?string $search)
     {
-       return $search ?  $query->whereAny(['name','first_name', 'last_name', 'email', 'phone'], 'LIKE', $search)
-        ->orWhere('id',str_replace($this->prefix, '', $search))
-       : $query;
+        if (!$search) {
+            return $query;
+        }
 
+        $search = trim($search);
+        $id = str_replace($this->prefix, '', $search);
+
+        return $query->where(function ($q) use ($search, $id) {
+            $q->where('name', 'LIKE', "%{$search}%")
+              ->orWhere('first_name', 'LIKE', "%{$search}%")
+              ->orWhere('last_name', 'LIKE', "%{$search}%");
+
+            if (is_numeric($id)) {
+                $q->orWhere('id', $id);
+            }
+        });
     }
     public function scopeSortingBy($query, $column, $direction = 'asc')
     {

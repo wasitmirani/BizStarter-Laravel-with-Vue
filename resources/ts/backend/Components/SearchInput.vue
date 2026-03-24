@@ -1,71 +1,81 @@
 <template>
-
-    <!-- <input class="form-control form-control-sm" type="text" placeholder="Search Here" aria-label=".form-control-sm example"> -->
     <div class="input-icon-group">
         <i class="iconify tabler--search input-icon"></i>
-        <input data-table-search="" type="search" title="Search characters should be greater than two."
-            class="form-input w-auto ps-10" :placeholder="label ?? 'Search...'" v-model="query">
+        <input
+            type="search"
+            class="form-input w-auto ps-10"
+            :placeholder="label || 'Search...'"
+            title="Search characters should be greater than two."
+            v-model="query"
+        />
     </div>
 </template>
 
 <script setup lang="ts">
-import { Helpers } from '../Utils/Helper';
-import axios from 'axios';
-import loadsh from 'lodash';
+import axios from 'axios'
+import debounce from 'lodash/debounce'
+import { ref, watch } from 'vue'
+import { Helpers } from '../Utils/Helper'
+
+const router = Helpers.router()
+const route = Helpers.route()
 
 const props = defineProps<{
-    label: string;
-    apiPath: string;
-}>();
+    label: string
+    apiPath: string
+}>()
 
-const emit = defineEmits(['loading', 'filterData', 'query', 'reload']);
+const emit = defineEmits(['loading', 'filterData', 'query', 'reload'])
 
-const query = Helpers.useDynamicRef<string>('');
-const apiPath = Helpers.useDynamicRef<string>(props.apiPath ?? ''); // Replace with actual URL
+const query = ref('')
+let controller: AbortController | null = null
 
-// Debounced search function
-const searchQuery = loadsh.debounce(() => {
-    setTimeout(() => {
-        search();
-    }, 500);
-}, 500);
+const search = async (value: string) => {
+    if (value.length <= 2) return
 
-async function search() {
-    if (query.value.length > 2) {
-        emit('loading', true);
-        try {
-            const response = await axios.get(`${apiPath.value}?query=${query.value}`);
+    // Cancel previous request
+    if (controller) {
+        controller.abort()
+    }
 
-            emit('filterData', response.data);
-            emit('query', query.value);
-            setTimeout(() => {
-                emit('loading', false);
-            }, 700);
-        } catch (error) {
-            emit('loading', false);
-            // Handle error if needed
-            console.error(error);
+    controller = new AbortController()
+
+    emit('loading', true)
+
+    try {
+        const response = await axios.get(`${props.apiPath}?query=${value}`, {
+            signal: controller.signal
+        })
+
+        emit('filterData', response.data)
+        emit('query', value)
+
+        Helpers.updateUrlWithFilters?.(
+            route,
+            router,
+            { search: value },
+            { omitDefaults: false }
+        )
+    } catch (error: any) {
+        if (error.name !== 'CanceledError') {
+            console.error(error)
         }
+    } finally {
+        emit('loading', false)
     }
 }
 
-// Watcher for query changes
-Helpers.useDynamicWatch(query, (newQuery) => {
-    if (newQuery === '') {
-        emit('query', '');
-        emit('reload');
-    } else {
-        searchQuery();
-    }
-});
+const debouncedSearch = debounce((value: string) => {
+    search(value)
+}, 500)
 
-Helpers.useDynamicOnMounted(() => {
-    // Additional setup if needed
-});
+watch(query, (newValue) => {
+    if (!newValue.trim()) {
+        emit('query', '')
+        emit('reload')
+        return
+    }
+
+    debouncedSearch(newValue)
+})
 </script>
-
-<style scoped>
-.margin-lf {
-    margin-left: 5px;
-}
-</style>
