@@ -72,23 +72,16 @@ Helpers.useDynamicOnMounted(() => {
                             <!-- Role Type Filter -->
                             <div class="input-icon-group">
                                 <i class="iconify tabler--user-hexagon input-icon"></i>
-                                <select
-                                    data-table-filter="roles"
-                                    class="form-select"
-                                    v-model="filters.role"
-                                    @change="handleFilterChange(filters)"
-                                >
+                                <select data-table-filter="roles"  class="form-select" v-model="filters.role" @change="handleFilterChange(filters)">
                                     <option value="">All Roles</option>
-                                    <option :value="role.value" v-for="role in roles">{{ role.label }}</option>
-                                    <option value="Project Manager">Project Manager</option>
-                                    <option value="Developer">Developer</option>
-                                    <option value="Support Lead">Support Lead</option>
+                                    <option :value="role.value" v-for="role in roles">{{ role.label.charAt(0).toUpperCase() + role.label.slice(1) }}</option>
+
                                 </select>
                             </div>
                         </div>
 
                         <!-- Status Filter -->
-                        <div class="input-icon-group">
+                        <!-- <div class="input-icon-group">
                             <i class="iconify tabler--user-check input-icon"></i>
                             <select
                                 data-table-filter="status"
@@ -101,7 +94,7 @@ Helpers.useDynamicOnMounted(() => {
                                 <option value="Inactive">Inactive</option>
                                 <option value="Suspended">Suspended</option>
                             </select>
-                        </div>
+                        </div> -->
                     </div>
 
                     <div>
