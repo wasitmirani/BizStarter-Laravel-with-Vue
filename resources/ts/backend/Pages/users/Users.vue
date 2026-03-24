@@ -4,6 +4,7 @@ import UserTable from './UserTable.vue'
 import UserFilterForm from './UserFilterForm.vue'
 import OffCanvas from "../../Components/OffCanvas.vue"
 import RoleCard from '../../Components/RoleCard.vue'
+import ActiveFilters from '../../Components/ActiveFilters.vue'
 import { Helpers } from '../../Utils/Helper'
 
 const {
@@ -79,6 +80,12 @@ Helpers.useDynamicOnMounted(() => {
                                 </select>
                             </div>
                         </div>
+                         <!-- Active Filters -->
+                    <ActiveFilters
+                        routeName="users"
+                        @filterChange="handleFilterChange"
+                    />
+
 
                         <!-- Status Filter -->
                         <!-- <div class="input-icon-group">
