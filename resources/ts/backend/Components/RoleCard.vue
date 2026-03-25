@@ -1,7 +1,6 @@
 <script setup lang="ts">
-
-const props = defineProps(['items'])
-
+import { Helpers } from '../Utils/Helper';
+const items = Helpers.useDynamicReactive([])
 </script>
 
 <template>
@@ -73,10 +72,10 @@ const props = defineProps(['items'])
                 </li>
             </ul>
 
-            <p class="text-default-400 mb-3 text-sm">Total {{ item.users?.length }} users</p>
+            <p class="text-default-400 mb-3 text-sm">Total {{ item?.users?.length }} users</p>
 
             <div class="mb-base flex items-center -space-x-2">
-                <img :src="user.thumbnail" :alt="user.name"
+                <img :src="user?.thumbnail" :alt="user?.name"
                     class="transitio-all size-8 rounded-full duration-200 hover:-translate-y-1"
                     v-for="user in item?.users" v-if="item?.users">
 
@@ -85,12 +84,12 @@ const props = defineProps(['items'])
             <div class="flex justify-between">
                 <span class="text-default-400 flex items-center gap-1.5 text-xs">
                     <i class="iconify tabler--clock"></i>
-                    {{ $filters.HoursFormat(item.updated_at) }}
+                    {{ $filters.HoursFormat(item?.updated_at) }}
                 </span>
 
                 <div>
-                    <router-link :to="{ name: 'role-details', params: { uuid: item.id } }"
-                        class="btn btn-sm border-primary text-primary hover:bg-primary rounded-full border hover:text-white">Details</router-link>
+                    <!-- <router-link :to="{ name: 'role-details', params: { uuid: "a1q2qweqs" } }"
+                        class="btn btn-sm border-primary text-primary hover:bg-primary rounded-full border hover:text-white">Details</router-link> -->
                 </div>
             </div>
         </div>

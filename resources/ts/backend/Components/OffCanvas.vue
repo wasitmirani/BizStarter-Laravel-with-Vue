@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Helpers } from '../Utils/Helper';
-import { ref, nextTick } from 'vue';
+import { nextTick } from 'vue';
 
 interface Props {
     id: string;

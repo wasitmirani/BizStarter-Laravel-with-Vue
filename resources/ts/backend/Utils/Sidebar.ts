@@ -51,8 +51,9 @@ export default class SidebarMenu {
             this.setMultiMenu('Users Management', 'users ', 'Catalog',
                 [
 
-                    this.setSubMenu('Users', '/settings/users', 'users-view'),
-                    this.setSubMenu('Roles', '/settings/roles', 'roles-view'),
+                    this.setSubMenu('Users', '/management/users', 'users-view'),
+                    this.setSubMenu('Roles', '/management/roles', 'roles-view'),
+                    this.setSubMenu('Permissions & Policy', '/management/permissions', 'permissions-view'),
                 ]
             ),
             this.setSingleMenu('Calendar', 'components', '/calendar', 'calendar-view'),

@@ -39,7 +39,7 @@ Helpers.useDynamicOnMounted(() => {
 
         <div class="container-fluid">
             <div class="mb-base grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-base">
-                <!-- <RoleCard :items="roles" v-if="roles?.length > 0"></RoleCard> -->
+                <RoleCard  v-if="roles?.length > 0"></RoleCard>
             </div>
 
             <div data-table="" data-table-rows-per-page="8" class="card">
