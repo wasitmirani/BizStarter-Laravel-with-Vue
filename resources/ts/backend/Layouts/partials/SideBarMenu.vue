@@ -139,7 +139,9 @@ const getMenuClass = (type: string) => {
 
                                     <li v-else-if="item.type === 'single'" class="menu-item">
                                         <RouterLink :to="item.link" :class="[isActive(item.link) ? 'menu-link !bg-primary !text-white' : 'menu-link']">
-                                            <i :class="`menu-icon ${item.icon}`"></i>
+
+
+                                            <i :class="`menu-icon iconify tabler--${item.icon}`"></i>
                                             <span class="menu-text !bg-inherit" data-lang="{{ item.title }}">{{
                                                 item.title }}</span>
                                         </RouterLink>

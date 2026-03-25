@@ -40,26 +40,27 @@ export default class SidebarMenu {
     getMenuList(): any[] {
         return [
             this.setHeadingMenu('Analytics'),
-            this.setMultiMenu('Dashboards', 'basket', 'dashboard-view',
+            this.setMultiMenu('Dashboards', 'dashboard', 'dashboard-view',
                  [
                     this.setSubMenu('Dashboard', '/dashboard', 'dashboard-view'),
 
                 ]
             ),
 
-            // this.setHeadingMenu('Management & Apps'),
-            this.setMultiMenu('Catalog', 'users ', 'Catalog',
+            this.setHeadingMenu('Management & Apps'),
+            this.setMultiMenu('Users Management', 'users ', 'Catalog',
                 [
-                    this.setSubMenu('Account ', '/settings/user-account', 'account-view'),
+
                     this.setSubMenu('Users', '/settings/users', 'users-view'),
                     this.setSubMenu('Roles', '/settings/roles', 'roles-view'),
                 ]
             ),
-            this.setSingleMenu('Calendar', 'calendar-event', '/calendar', 'calendar-view'),
+            this.setSingleMenu('Calendar', 'components', '/calendar', 'calendar-view'),
             this.setHeadingMenu('Tools & Sessions'),
             this.setMultiMenu('Settings', 'settings', 'Settings',
                 [
                     this.setSubMenu('Account ', '/settings/users-list', 'account-view'),
+                    this.setSubMenu('App Config', '/settings/app-config', 'account-view'),
                     // this.setSubMenu('Users', '/settings/users', 'users-view'),
                     // this.setSubMenu('Roles', '/settings/roles', 'roles-view'),
                 ]
