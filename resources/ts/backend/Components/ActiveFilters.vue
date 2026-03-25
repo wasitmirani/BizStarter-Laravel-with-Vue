@@ -45,7 +45,7 @@ const removeFilter = async (key: string) => {
     )
 
     // emit normalized query so parent updates
-    // emit('filterChange', normalizeQuery(updatedQuery))
+    emit('filterChange', normalizeQuery(updatedQuery))
 }
 
 // clear all filters
