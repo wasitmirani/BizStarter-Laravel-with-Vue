@@ -1,16 +1,20 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="ltr" data-skin="default" data-theme="light" data-topbar-color="light" data-menu-color="light" data-layout-position="fixed" data-layout-width="fluid" data-sidenav-size="default">
+
 
 <head>
     <meta charset="utf-8">
     <title>{{ $title ?? config('app.name') }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description"
-        content="Paces is a modern, responsive admin dashboard available on ThemeForest. Ideal for building CRM, CMS, project management tools, and custom web applications with a clean UI, flexible layouts, and rich features.">
-    <meta name="keywords"
-        content="Paces, admin dashboard, ThemeForest, Bootstrap 5 admin, responsive admin, CRM dashboard, CMS admin, web app UI, admin theme, premium admin template">
-    <meta name="author" content="Coderthemes">
-    <meta name="theme-color" content="#002855">
+    content="{{ config('app.name') }} is an advanced Order Management System (OMS) and Warehouse Management System (WMS) designed to streamline order processing, inventory control, shipment tracking, warehouse operations, and fulfillment workflows.">
+
+<meta name="keywords"
+    content="{{ config('app.name') }}, OMS, WMS, order management system, warehouse management system, inventory management, shipment tracking, logistics software, fulfillment system, courier integration, warehouse dashboard, supply chain management">
+
+<meta name="author" content="Wasit Mirani">
+
+<meta name="theme-color" content="#002855">
 
     <!-- App favicon -->
     <link rel="shortcut icon" href="/favicon.ico">
@@ -121,6 +125,126 @@
     <link rel="modulepreload" href="/backend/assets/custom-table-CE10VYSu.js">
     <link rel="modulepreload" href="/backend/assets/world-merc-olTKUgBy.js">
     <link rel="stylesheet" href="/backend/assets/app-mNboU33O.css">
+    <style>
+        :root,
+:host {
+    --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+    /* Core Colors */
+    --color-black: #000;
+    --color-white: #fff;
+
+    /* Body */
+    --color-body-bg: #f6f7fb;
+    --color-body-color: #4c4c5c;
+    --color-card: var(--color-white);
+
+    /* Primary Theme */
+    --color-primary: #002855;
+    --color-primary-hover: #001f40;
+
+    /* Secondary Colors */
+    --color-secondary: #7b70ef;
+    --color-secondary-hover: #695fcb;
+
+    --color-success: #02bc9c;
+    --color-success-hover: #02a085;
+
+    --color-info: #5bc3e1;
+    --color-info-hover: #4da6bf;
+
+    --color-warning: #f9bf59;
+    --color-warning-hover: #d4a24c;
+
+    --color-danger: #f7577e;
+    --color-danger-hover: #d24a6b;
+
+    --color-purple: #7b70ef;
+    --color-light: #eef2f7;
+    --color-light-hover: #8a969c;
+    --color-dark: #313a46;
+    --color-dark-hover: #343a40;
+
+    /* Charts */
+    --color-chart-primary: #002855;
+    --color-chart-secondary: #7b70ef;
+    --color-chart-alpha: #02bc9c;
+    --color-chart-beta: #f7577e;
+    --color-chart-gamma: #f9bf59;
+    --color-chart-delta: #5bc3e1;
+    --color-chart-zeta: #db9052;
+    --color-chart-gray: #edeff3;
+    --color-chart-dark: #001f40;
+    --color-chart-border-color: #ecf4fc;
+    --color-chart-title-color: #bbcae1;
+
+    /* Default Palette */
+    --color-default-100: #f6f7fb;
+    --color-default-200: #eef2f7;
+    --color-default-300: #e7e9eb;
+    --color-default-400: #9ba6b7;
+    --color-default-500: #a1a9b1;
+    --color-default-600: #8a969c;
+    --color-default-700: #6c757d;
+    --color-default-800: #343a40;
+    --color-default-900: #313a46;
+
+    /* Layout */
+    --topbar-height: 65px;
+    --sidenav-width: 245px;
+    --sidenav-width-md: 200px;
+    --sidenav-width-sm: 75px;
+
+    /* Sidebar */
+    --sidenav-item-font-size: .875rem;
+    --sidenav-item-gap: 12px;
+    --sidenav-item-padding-x: 10px;
+    --sidenav-item-padding-y: 10px;
+    --sidenav-item-font-weight: 500;
+
+    /* Sidebar Behavior */
+    --sidenav-item-hover-color: var(--color-primary);
+    --sidenav-item-active-color: var(--color-primary);
+
+    /* Fonts */
+    --font-body: "Nunito", sans-serif;
+    --font-secondary: "Google Sans", sans-serif;
+    --text-body: .875rem;
+
+    /* Radius / Shadow */
+    --radius: 4px;
+    --shadow: 0px 1px 4px 0px #828fa326;
+}
+
+/* Enterprise Sidebar Recommendation */
+.side-nav .menu-item .menu-link:hover,
+.side-nav .menu-item .menu-link.active {
+    background: rgba(0, 40, 85, 0.08);
+    color: #002855 !important;
+    border-radius: 6px;
+}
+
+/* Active Utility */
+.!bg-primary {
+    background-color: #002855 !important;
+}
+
+.!text-primary {
+    color: #002855 !important;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #002855;
+    border-color: #002855;
+}
+
+.btn-primary:hover {
+    background-color: #001f40;
+    border-color: #001f40;
+}
+        </style>
 </head>
 
 <body

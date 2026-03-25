@@ -4,6 +4,7 @@ import UserTable from './UserTable.vue'
 import UserFilterForm from './UserFilterForm.vue'
 import OffCanvas from "../../Components/OffCanvas.vue"
 import RoleCard from '../../Components/RoleCard.vue'
+import { perPageOptions,  useUserFilter } from './Composables/useUserFilter';
 import ActiveFilters from '../../Components/ActiveFilters.vue'
 import { Helpers } from '../../Utils/Helper'
 
@@ -28,6 +29,7 @@ Helpers.useDynamicOnMounted(() => {
 })
 
 
+
 </script>
 
 <template>
@@ -45,20 +47,14 @@ Helpers.useDynamicOnMounted(() => {
                     <!-- Search -->
                     <div class="flex flex-wrap gap-2.5">
                         <!-- Search Input -->
-                        <SearchInput
-                            label="Search Users"
-                            :apiPath="`/user`"
-                            @loading="setLoading"
-                            @filterData="filterData"
-                            @query="handleSearchQuery"></SearchInput>
+                        <SearchInput label="Search Users" :apiPath="`/user`" @loading="setLoading"
+                            @filterData="filterData" @query="handleSearchQuery"></SearchInput>
 
                         <div class="flex gap-1">
-                              <router-link
-                                :to="{ name: 'create-user' }"
-
-                           class="btn bg-primary text-white hover:bg-primary-hover"
-                                aria-haspopup="dialog" aria-expanded="false" aria-controls="incomeModal"
-                                data-hs-overlay="#incomeModal"> <i class="iconify tabler--plus"></i> Add User </router-link>
+                            <router-link :to="{ name: 'create-user' }"
+                                class="btn bg-primary text-white hover:bg-primary-hover" aria-haspopup="dialog"
+                                aria-expanded="false" aria-controls="incomeModal" data-hs-overlay="#incomeModal"> <i
+                                    class="iconify tabler--plus"></i> Add User </router-link>
                         </div>
 
                         <!-- Delete Selected -->
@@ -73,40 +69,38 @@ Helpers.useDynamicOnMounted(() => {
                             <!-- Role Type Filter -->
                             <div class="input-icon-group">
                                 <i class="iconify tabler--user-hexagon input-icon"></i>
-                                <select data-table-filter="roles"  class="form-select" v-model="filters.role" @change="handleFilterChange(filters)">
+                                <select data-table-filter="roles" class="form-select" v-model="filters.role"
+                                    @change="handleFilterChange(filters)">
                                     <option value="">All Roles</option>
-                                    <option :value="role.value" v-for="role in roles">{{ role.label.charAt(0).toUpperCase() + role.label.slice(1) }}</option>
+                                    <option :value="role.value" v-for="role in roles">{{
+                                        role.label.charAt(0).toUpperCase() + role.label.slice(1) }}</option>
 
                                 </select>
                             </div>
+                            <!-- Role Type Filter -->
+                            <div class="input-icon-group">
+                                <i class="iconify tabler--List input-icon"></i>
+
+                                <select id="filterPerPage" @change="handleFilterChange(filters)" v-model="filters.per_page" class="form-select w-full">
+                                    <option v-for="option in perPageOptions" :key="option.value" :value="option.value">
+                                        {{ option.label }}
+                                    </option>
+                                </select>
+                            </div>
+
                         </div>
-                         <!-- Active Filters -->
-                    <ActiveFilters
-                        routeName="users"
-                        @filterChange="handleFilterChange"
-                    />
+                        <!-- Active Filters -->
+                        <ActiveFilters routeName="users" @filterChange="handleFilterChange($event)"/>
 
 
-                        <!-- Status Filter -->
-                        <!-- <div class="input-icon-group">
-                            <i class="iconify tabler--user-check input-icon"></i>
-                            <select
-                                data-table-filter="status"
-                                class="form-select"
-                                v-model="filters.status"
-                                @change="handleFilterChange(filters)"
-                            >
-                                <option value="">All Status</option>
-                                <option value="Active">Active</option>
-                                <option value="Inactive">Inactive</option>
-                                <option value="Suspended">Suspended</option>
-                            </select>
-                        </div> -->
+
+
+
                     </div>
 
                     <div>
                         <nav class="flex items-center gap-x-1">
-                    <a role="button" @click="fetchUsers()"
+                            <a role="button" @click="fetchUsers()"
                                 class="btn bg-primary/15 text-primary btn-icon hover:bg-primary hover:text-white">
                                 <i class="iconify tabler--refresh text-lg"></i>
                             </a>
@@ -118,21 +112,13 @@ Helpers.useDynamicOnMounted(() => {
                                     <i class="iconify tabler--filter text-lg"></i>
                                 </template>
                                 <template #body>
-                                    <UserFilterForm
-                                        :initialFilters="filters"
-                                        @filterChange="handleFilterChange"
-                                    />
+                                    <UserFilterForm :initialFilters="filters" @filterChange="handleFilterChange" />
                                 </template>
                             </OffCanvas>
                         </nav>
                     </div>
                 </div>
-                <UserTable
-                    :users="users"
-                    :getUsers="fetchUsers"
-                    :isLoading="isLoading"
-                    :currentFilters="filters"
-                />
+                <UserTable :users="users" :getUsers="fetchUsers" :isLoading="isLoading" :currentFilters="filters" />
             </div>
 
             <!--End::row-1 -->

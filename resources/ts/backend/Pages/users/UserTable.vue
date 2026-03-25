@@ -54,7 +54,32 @@ const deleteUser = (item: any) => {
         }
     });
 }
+const bulkDelete = (items: any) => {
+    Helpers.Swal().fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+    }).then((result: any) => {
+        if (result.isConfirmed) {
+            UserService.delete(items.uuid).then((res: any) => {
+                Helpers.Swal().fire({
+                    title: "Deleted!",
+                    text: "User has been deleted.",
+                    icon: "success"
+                });
+                props.getUsers();
+            }).catch((err: any) => {
+                console.log("err:", err.response.status);
+                toast.value.showToast(err.response.status, 'Error: ' + err.response.status, err.message ?? err.response.message);
+            })
 
+        }
+    });
+}
 const editUser = (item: any) => {
     Helpers.router().push({ name: "update-user", params: { uuid: item.uuid } });
 }
@@ -102,7 +127,7 @@ function handleAction({ action, row, selected }: { action: string; row?: any; se
                 return;
             }
             // For now just log; can be wired to an API endpoint for bulk delete
-            console.log('Bulk delete users with IDs:', selected);
+           bulkDelete(selected);
             break;
         default:
             console.log('Unknown action:', action);

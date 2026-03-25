@@ -125,33 +125,52 @@ const handleBulkAction = (event: Event) => {
     }
     emits('action', { action: actionKey, rows: props.rows.data, selected: selectedItems.value });
 };
+const clearSelection = () => {
+  // Reset selected items to empty array, not object
+  selectedItems.value = [];
+};
 </script>
 
 <template>
 
+<div
+  v-if="enableFilterBar || (selectedItems.length > 0 && enableBulkActions && (bulkActions?.length || 0) > 0)"
+  class="flex flex-col md:flex-row md:items-center gap-3 px-4 py-3 bg-white border-b border-gray-200 w-full justify-start"
+>
+  <!-- Bulk Actions -->
+  <div
+    v-if="selectedItems.length > 0 && enableBulkActions && (bulkActions?.length || 0) > 0"
+    class="flex items-center gap-2"
+  >
+    <select
+      class="form-select form-select-sm min-w-[200px] rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/20 transition"
+      @change="handleBulkAction"
+    >
+      <option value="">
+        Bulk actions ({{ selectedItems.length }})
+      </option>
+      <option
+        v-for="bulk in bulkActions"
+        :key="bulk.action"
+        :value="bulk.action"
+      >
+        {{ bulk.label }}
+      </option>
+    </select>
 
-    <div class="flex items-center justify-between mb-3" v-if="enableFilterBar || (enableBulkActions && (bulkActions?.length || 0) > 0)">
-        <div v-if="enableBulkActions && (bulkActions?.length || 0) > 0">
-            <div class="flex items-center gap-2">
-                    <select
-                        class="form-select form-select-sm w-auto"
-                        @change="handleBulkAction"
-                    >
-                        <option value="">{{ selectedItems.length ? `Bulk actions (${selectedItems.length})` : 'Bulk actions' }}</option>
-                        <option
-                            v-for="bulk in bulkActions"
-                            :key="bulk.action"
-                            :value="bulk.action"
-                        >
-                            {{ bulk.label }}
-                        </option>
-                    </select>
-            </div>
-        </div>
-        <div v-if="enableFilterBar" class="ml-auto">
-            <slot name="filters" :filters="filters"></slot>
-        </div>
-    </div>
+    <button
+      @click="clearSelection"
+      class="px-3 py-1 text-sm text-white bg-primary rounded hover:bg-primary-dark transition"
+    >
+      Clear
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <div v-if="enableFilterBar">
+    <slot name="filters" :filters="filters"></slot>
+  </div>
+</div>
 
     <div class="table-wrapper">
         <table class="table-custom table-select table table-hover">

@@ -84,6 +84,7 @@ export function useUsers() {
 
     // Handle filter changes
     const handleFilterChange = (newFilters: Partial<typeof filters>) => {
+        console.log("newFilters",newFilters,"filters",filters);
         Helpers.mergeFilterState(filters, newFilters)
         filters.page = 1 // Reset to first page when filters change
         updateUrlWithFilters()
