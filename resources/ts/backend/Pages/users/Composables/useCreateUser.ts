@@ -1,15 +1,15 @@
 import { Helpers } from '../../../Utils/Helper';
 import { UserService } from '../../../Services/user/UserService';
 
-
 export function useCreateUser() {
-    let draftStatus = Helpers.useDynamicReactive<any>(null);
-    let user = Helpers.useDynamicReactive<any>({});
-    let editmode = Helpers.useDynamicReactive<boolean>(false);
+    const draftStatus = Helpers.useDynamicRef<any>(null);
+    const user = Helpers.useDynamicRef<any>({});
+    const editmode = Helpers.useDynamicRef<any>(false);
+    const loading = Helpers.useDynamicRef<boolean>(false); // Add loading state
 
     const saveDraftHandler = (status?: string): void => {
-        draftStatus = status || 'no status provided';
-        console.log(`Save draft with status: ${draftStatus}`);
+        draftStatus.value = status || 'no status provided';
+        console.log(`Save draft with status: ${draftStatus.value}`);
     };
 
     const handleSubmitForm = (formData: any): void => {
@@ -17,11 +17,19 @@ export function useCreateUser() {
         saveDraftHandler('submitted');
     };
 
-    const getUser = (): void => {
-        UserService.user(Helpers.route().params.uuid.toString()).then((res) => {
-            user= res.data.result.user;
-            editmode = true;
-        });
+    const getUser = async () => {
+        loading.value = true; // Set loading to true before fetching
+        try {
+            const res = await UserService.user(Helpers.route().params.uuid.toString());
+            user.value = res.data.result.user;
+            editmode.value = true;
+            console.log("Editmode", editmode.value);
+        } catch (error) {
+            console.error('Error fetching user:', error);
+            // Optionally handle error (show error message, etc.)
+        } finally {
+            loading.value = false; // Set loading to false after fetch completes
+        }
     };
 
     Helpers.useDynamicOnMounted(() => {
@@ -34,6 +42,7 @@ export function useCreateUser() {
         draftStatus,
         user,
         editmode,
+        loading, // Return loading state
         saveDraftHandler,
         handleSubmitForm,
     };

@@ -112,6 +112,11 @@ function handleAction({ action, row, selected }: { action: string; row?: any; se
         case 'view':
             break;
         case 'edit':
+            if (!row?.uuid){
+                return toast.value.showToast(400, 'Error', 'User uuid not found');
+            }
+
+
             Helpers.router().push({ name: 'edit-user', params: { uuid: row.uuid, slug: row.slug } });
             break;
         case 'delete':

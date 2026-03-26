@@ -5,7 +5,21 @@ const onInput = (_phone: any, phoneObject: any, _input: any): void => {
         user.phone = phoneObject.number;
     }
 };
-const { user, errors, isLoading, showPassword, genderDropdownItems, maritalStatusDropdownItems, onSubmit, addThumbnail, togglePassword, generatePassword, copyPassword } = useUserForm();
+const props = defineProps(['isEditMode', 'userData']);
+
+const {
+    user,
+    errors,
+    isLoading,
+    showPassword,
+    genderDropdownItems,
+    maritalStatusDropdownItems,
+    onSubmit,
+    addThumbnail,
+    togglePassword,
+    generatePassword,
+    copyPassword
+} = useUserForm(props?.userData);
 
 </script>
 
@@ -13,7 +27,7 @@ const { user, errors, isLoading, showPassword, genderDropdownItems, maritalStatu
     <div>
         <div class="w-full flex flex-col card pointer-events-auto">
             <div class="flex justify-between items-center card-body border-b border-default-300">
-                <h3 id="addCustomerModalLabel" class="font-bold flex items-center">User Details</h3>
+                <h3 id="addCustomerModalLabel" class="font-bold flex items-center">{{ isEditMode ? 'Update User Details'  : 'Create User Details' }}  </h3>
 
             </div>
             <form @submit.prevent="onSubmit">
@@ -122,7 +136,7 @@ const { user, errors, isLoading, showPassword, genderDropdownItems, maritalStatu
                             <label class="form-label font-semibold block mb-2">Profile Picture <small>Allowed formats:
                                     JPG, GIF, PNG. Max size: 4MB</small> </label>
                             <Uploader server="/upload/user/image" max="1" maxFilesize="2" :warnings="true"
-                                @add="(files) => addThumbnail(files)" />
+                                @add="(files:any) => addThumbnail(files)" />
                         </div>
                         <div>
 

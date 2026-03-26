@@ -2,7 +2,7 @@ import { UserService } from "../../../Services/user/UserService";
 import { DropdownOptions } from "../../../Utils/DropdownOptions";
 import { Helpers } from "../../../Utils/Helper";
 
-export function useUserForm() {
+export function useUserForm(userData?:any ) {
     // ─── State ────────────────────────────────────────────────────────────────
     let errors = Helpers.useDynamicRef<any>([]);
     const isLoading = Helpers.useDynamicRef(false);
@@ -31,6 +31,7 @@ export function useUserForm() {
         state: '',
         zip_code: '',
         country: '',
+        ...(userData ?? {})
     });
 
     // ─── Phone Input ──────────────────────────────────────────────────────────

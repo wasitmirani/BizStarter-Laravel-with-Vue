@@ -84,8 +84,17 @@ export function useUsers() {
 
     // Handle filter changes
     const handleFilterChange = (newFilters: Partial<typeof filters>) => {
-        console.log("newFilters",newFilters,"filters",filters);
-        Helpers.mergeFilterState(filters, newFilters)
+        // Update filters: Only update filters present in newFilters,
+        // Remaining filters not in newFilters are reset to default
+        Object.keys(filters).forEach((key) => {
+            if (Object.prototype.hasOwnProperty.call(newFilters, key)) {
+                // @ts-ignore
+                filters[key] = newFilters[key]
+            } else {
+                // @ts-ignore
+                filters[key] = defaultFilters[key]
+            }
+        });
         filters.page = 1 // Reset to first page when filters change
         updateUrlWithFilters()
         fetchUsers()
