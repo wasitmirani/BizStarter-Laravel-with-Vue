@@ -27,7 +27,7 @@ class LoggerService
      */
     public static function info(string $message, array $context = []): void
     {
-        Log::info($message, [
+        Log::info( $message . ' By ' . (auth()?->user()?->email ?? 'System'), [
             'data' => self::prepareDataForLogging($context),
             'meta' => self::getMetaData(),
         ]);

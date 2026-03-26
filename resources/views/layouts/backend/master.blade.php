@@ -21,7 +21,7 @@
     <link rel="manifest" href="/manifest.webmanifest">
     <link rel="apple-touch-icon" href="/icons/icon-192.png">
     <link rel="preconnect" href="https://fonts.bunny.net">
-<link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet" />
     <script>
         ;
         (function() {
@@ -125,6 +125,7 @@
     <link rel="modulepreload" href="/backend/assets/custom-table-CE10VYSu.js">
     <link rel="modulepreload" href="/backend/assets/world-merc-olTKUgBy.js">
     <link rel="stylesheet" href="/backend/assets/app-mNboU33O.css">
+
     {{-- <style>
         :root,
 :host {
@@ -245,6 +246,18 @@
     border-color: #001f40;
 }
         </style> --}}
+        <style>
+            body {
+                font-family: 'Instrument Sans', sans-serif !important;
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 1.5;
+            }
+
+            h1, h2, h3, h4, h5 {
+                font-weight: 600;
+            }
+        </style>
 </head>
 
 <body

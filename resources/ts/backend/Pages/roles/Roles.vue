@@ -41,16 +41,10 @@ import { Helpers } from '../../Utils/Helper'
                             <span class="me-3 font-semibold text-nowrap">Filter By:</span>
 
                             <!-- Role Type Filter -->
-                            <div class="input-icon-group">
-                                <i class="iconify tabler--user-hexagon input-icon"></i>
-                                <select data-table-filter="roles" class="form-select"
 
-
-                                </select>
-                            </div>
                             <!-- Role Type Filter -->
                             <div class="input-icon-group">
-                                <i class="iconify tabler--List input-icon"></i>
+                                <i class="iconify tabler--list-details input-icon"></i>
 
                                 <select id="filterPerPage" class="form-select w-full">
 

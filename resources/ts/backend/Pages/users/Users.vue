@@ -79,9 +79,9 @@ Helpers.useDynamicOnMounted(() => {
                             </div>
                             <!-- Role Type Filter -->
                             <div class="input-icon-group">
-                                <i class="iconify tabler--List input-icon"></i>
+                                <i class="iconify tabler--list-details input-icon"></i>
 
-                                <select id="filterPerPage" @change="handleFilterChange(filters)" v-model="filters.per_page" class="form-select w-full">
+                                <select id="filterPerPage"  @change="handleFilterChange(filters)" v-model="filters.per_page" class="form-select w-full">
                                     <option v-for="option in perPageOptions" :key="option.value" :value="option.value">
                                         {{ option.label }}
                                     </option>

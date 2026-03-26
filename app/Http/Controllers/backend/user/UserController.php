@@ -45,10 +45,9 @@ class UserController extends Controller
         $data =$createUserRequest->validated();
 
         $user = $this->userService->saveUser($data);
-        $data=[
-            'user' => $user,
-        ];
-        return responseJson('user created successfully',$data,true);
+
+        LoggerService::info("user created successfully", ['data'=>$user]);
+        return responseJson('user created successfully',$user,true);
 
     }
 

@@ -90,6 +90,7 @@ class UserService extends BaseService implements UserFilterable
        // Update the user's password
        $user->password = Hash::make(request('new_password'));
        $user->save();
+       LoggerService::info("Password updated successfully", ['user'=>$user]);
        return responseMessage('Password updated successfully.',201,status:true);
     }
 
