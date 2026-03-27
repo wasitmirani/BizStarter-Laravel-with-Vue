@@ -106,7 +106,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function scopeFilters($query, array $filters)
     {
-
         return $query
             ->when($filters['id'] ?? null, fn($q, $id) =>
                 $q->where('id', $id)
@@ -128,7 +127,6 @@ class User extends Authenticatable implements MustVerifyEmail
                 $q->where('phone', $phone)
             )
             ->when($filters['date_range'] ?? null, fn($q, $days) =>
-
             $q->where('created_at', '>=', now()->subDays((int) $days)->startOfDay())
             )
             ->when($filters['role'] ?? null, fn($q, $role) =>

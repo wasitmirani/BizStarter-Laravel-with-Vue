@@ -64,7 +64,7 @@ class UserService extends BaseService implements UserFilterable
                 });
             })
              ->search($params['search'] ?? $params['query'] ?? null)
-            ->filters(self::ALLOWED_FILTERS)
+            ->filters($params)
             ->retrieve($params['paginated'] ?? true, $perPage);
     }
 

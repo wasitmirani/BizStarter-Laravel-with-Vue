@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers\backend\user;
 
-use App\Models\User;
-
-use Illuminate\Http\Request;
-use App\Services\UserService;
+use App\Contracts\UserFilterable;
+use App\Enums\UserEnums;
 use App\Http\Controllers\Controller;
-use App\Services\RoleService;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\CreateUserRequest;
 use App\Services\LoggerService;
-use App\Enums\UserEnums;
+use App\Services\RoleService;
+use App\Services\UserService;
+use Illuminate\Http\Request;
 
-class UserController extends Controller
+class UserController extends Controller implements UserFilterable
 {
     /**
      * Display a listing of the resource.
@@ -25,8 +23,9 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
+        $filters = $request->only(self::ALLOWED_FILTERS);
         $data=[
-            'users' => $this->userService->users($request->all()),
+            'users' => $this->userService->users($filters),
             'roles'=>app(RoleService::class)->getRolesList(['limit'=>4],['users:id,name']),
         ];
         return responseJson('users fetched successfully',$data,true);

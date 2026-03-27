@@ -6,18 +6,22 @@ namespace App\Contracts;
 interface UserFilterable
 {
     public const ALLOWED_FILTERS = [
-        'id',
-        'search',
-        'email',
-        'phone',
-        'status',
-        'per_page',
-        'date_range',
-        'role',
-        'uuid',
-        'is_active',
-        'created_from',
-        'created_between',
+        'id' => 'id',
+        'search' => 'search',
+        'query' => 'query',
+        'email' => 'email',
+        'phone' => 'phone',
+        'status' => 'status',
+        'per_page' => 'per_page',
+        'sort_by' => 'sort_by',
+        'sort_dir' => 'sort_dir',
+        'role' => 'role',
+        'uuid' => 'uuid',
+        'is_active' => 'is_active',
+        'date_range' => 'date_range',
+        'paginated' => 'paginated',
+        'created_from' => 'created_from',
+        'created_between' => 'created_between',
     ];
 
 
