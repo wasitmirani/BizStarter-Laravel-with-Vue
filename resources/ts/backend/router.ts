@@ -28,13 +28,14 @@ const routes = [
     setRoute('/dashboard', 'dashboard', 'dashboard/Dashboard', null),
 
     // Managment Routes
-    setRoute('/management/users', 'users', 'users/Users', null),
-    setRoute('/management/users/create', 'create-user', 'users/CreateUser', null),
-    setRoute('/management/users/edit/:uuid', 'edit-user', 'users/CreateUser', null),
-    setRoute('/management/roles', 'roles', 'roles/Roles', null),
-    setRoute('/management/roles/create', 'create-role', 'roles/CreateRole', null),
-    setRoute('/management/roles/edit/:uuid', 'edit-role', 'roles/CreateRole', null),
-    setRoute('/management/role/details/:uuid', 'role-details', 'roles/RoleDetails', null),
+    setRoute('/management/users', 'users', 'users/Users', 'users-list'),
+    setRoute('/management/users/create', 'create-user', 'users/User', 'create-user'),
+    setRoute('/management/users/edit/:uuid', 'edit-user', 'users/User', 'edit-user'),
+    setRoute('/management/users/:username/:uuid', 'show-user', 'users/User','show-user'),
+    setRoute('/management/roles', 'roles', 'roles/Roles', 'roles-list'),
+    setRoute('/management/roles/create', 'create-role', 'roles/Role', 'create-role'),
+    setRoute('/management/roles/edit/:uuid', 'edit-role', 'roles/Role', 'edit-role'),
+    setRoute('/management/role/details/:uuid', 'show-role', 'roles/RoleShow', 'show-role'),
     setRoute('/management/permissions', 'permissions', 'permissions/Permissions', null),
 
 
