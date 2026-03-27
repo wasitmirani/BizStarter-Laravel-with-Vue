@@ -11,6 +11,8 @@ interface UserFilterable
         'email',
         'phone',
         'status',
+        'per_page',
+        'date_range',
         'role',
         'uuid',
         'is_active',
@@ -18,5 +20,5 @@ interface UserFilterable
         'created_between',
     ];
 
-    
+
 }

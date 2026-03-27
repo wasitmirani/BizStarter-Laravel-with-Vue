@@ -76,7 +76,7 @@ Helpers.useDynamicOnMounted(() => {
                             </div>
                             <div class="input-icon-group">
                                             <i class="iconify tabler--calendar input-icon"></i>
-                                            <select data-table-range-filter="date" class="form-select"  v-model="filters.date_range">
+                                            <select data-table-range-filter="date" class="form-select"  @change="handleFilterChange(filters)" v-model="filters.date_range">
                                                 <option value="" >Date Range</option>
 
                                                 <option v-for="item in dateRanges" :key="item.value" :value="item.value">

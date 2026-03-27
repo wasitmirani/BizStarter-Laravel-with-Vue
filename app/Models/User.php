@@ -106,37 +106,40 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function scopeFilters($query, array $filters)
     {
+
         return $query
-        ->when($filters['id'] ?? false, function ($query, $id) {
-            return $query->where('id', $id)->orWhere('id',str_replace($this->prefix, '', $id));
-        })
-        ->when($filters['uuid'] ?? false, function ($query, $uuid) {
+            ->when($filters['id'] ?? null, fn($q, $id) =>
+                $q->where('id', $id)
+                  ->orWhere('id', str_replace($this->prefix, '', $id))
+            )
+            ->when($filters['uuid'] ?? null, fn($q, $uuid) =>
+                $q->where('uuid', $uuid)
+            )
+            ->when($filters['is_active'] ?? null, fn($q, $active) =>
+                $active ? $q->active() : $q->inactive()
+            )
+            ->when($filters['search'] ?? null, fn($q, $search) =>
+                $q->search($search)
+            )
+            ->when($filters['email'] ?? null, fn($q, $email) =>
+                $q->where('email', $email)
+            )
+            ->when($filters['phone'] ?? null, fn($q, $phone) =>
+                $q->where('phone', $phone)
+            )
+            ->when($filters['date_range'] ?? null, fn($q, $days) =>
 
-            return $query->where('uuid', $uuid);
-        })
-        ->when($filters['is_active'] ?? false, function ($query, $isActive) {
-            return $isActive ? $query->active() : $query->inactive();
-        })
-        ->when($filters['search'] ?? false, function ($query, $search) {
-            return $query->search($search);
-        })
-        ->when($filters['email'] ?? false, function ($query, $email) {
-            return $query->where('email', $email);
-        })
-        ->when($filters['phone'] ?? false, function ($query, $phone) {
-            return $query->where('phone', $phone);
-        })
-        ->when($filters['role'] ?? false, function ($query, $role) {
-            return $query->whereHas('roles', function ($q) use ($role) {
-                $q->where('name', $role);
-            });
-        })->when($filters['created_from'] ?? false, function ($query, $createdFrom) {
-            return $query->whereDate('created_at', '>=', $createdFrom);
-        })->when($filters['created_between'] ?? false, function ($query, $range) {
-            [$start, $end] = explode(',', $range);
-            return $query->whereBetween('created_at', [$start, $end]);
-        });
-
+            $q->where('created_at', '>=', now()->subDays((int) $days)->startOfDay())
+            )
+            ->when($filters['role'] ?? null, fn($q, $role) =>
+                $q->whereHas('roles', fn($r) => $r->where('name', $role))
+            )
+            ->when($filters['created_from'] ?? null, fn($q, $from) =>
+                $q->whereDate('created_at', '>=', $from)
+            )
+            ->when($filters['created_between'] ?? null, fn($q, $range) =>
+                $q->whereBetween('created_at', explode(',', $range))
+            );
     }
     public function scopeLimit($query, $limit)
     {
