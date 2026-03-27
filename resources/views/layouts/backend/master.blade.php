@@ -126,7 +126,7 @@
     <link rel="modulepreload" href="/backend/assets/world-merc-olTKUgBy.js">
     <link rel="stylesheet" href="/backend/assets/app-mNboU33O.css">
 
-    {{-- <style>
+    <style>
         :root,
 :host {
     --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -245,7 +245,7 @@
     background-color: #001f40;
     border-color: #001f40;
 }
-        </style> --}}
+        </style>
         <style>
             body {
                 font-family: 'Instrument Sans', sans-serif !important;

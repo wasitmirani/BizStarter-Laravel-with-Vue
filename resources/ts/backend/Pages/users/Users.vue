@@ -4,7 +4,7 @@ import UserTable from './UserTable.vue'
 import UserFilterForm from './UserFilterForm.vue'
 import OffCanvas from "../../Components/OffCanvas.vue"
 import RoleCard from '../../Components/RoleCard.vue'
-import { perPageOptions, useUserFilter } from './Composables/useUserFilter';
+import { perPageOptions, dateRanges } from './Composables/useUserFilter';
 import ActiveFilters from '../../Components/ActiveFilters.vue'
 import { Helpers } from '../../Utils/Helper'
 
@@ -74,6 +74,18 @@ Helpers.useDynamicOnMounted(() => {
 
                                 </select>
                             </div>
+                            <div class="input-icon-group">
+                                            <i class="iconify tabler--calendar input-icon"></i>
+                                            <select data-table-range-filter="date" class="form-select"  v-model="filters.date_range">
+                                                <option value="" >Date Range</option>
+
+                                                <option v-for="item in dateRanges" :key="item.value" :value="item.value">
+                                        {{ item.label }}
+                                    </option>
+
+                                            </select>
+                                        </div>
+
                             <!-- Role Type Filter -->
                             <div class="input-icon-group">
                                 <i class="iconify tabler--list-details input-icon"></i>
@@ -85,6 +97,7 @@ Helpers.useDynamicOnMounted(() => {
                                     </option>
                                 </select>
                             </div>
+
 
                         </div>
                         <!-- Active Filters -->

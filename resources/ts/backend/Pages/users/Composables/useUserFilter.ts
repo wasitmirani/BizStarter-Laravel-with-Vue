@@ -12,6 +12,7 @@ export interface UserFilters {
     sort_by: string;
     sort_dir: string;
     per_page: string;
+    date_range: string;
 }
 
 export interface FilterOption {
@@ -23,10 +24,7 @@ export interface FilterOption {
 
 export const roles: FilterOption[] = [
     { value: '', label: 'All Roles' },
-    { value: 'Security Officer', label: 'Security Officer' },
-    { value: 'Project Manager', label: 'Project Manager' },
-    { value: 'Developer', label: 'Developer' },
-    { value: 'Support Lead', label: 'Support Lead' },
+  
 ];
 
 export const statuses: FilterOption[] = [
@@ -57,6 +55,14 @@ export const perPageOptions: FilterOption[] = [
     { value: '50', label: '50' },
 ];
 
+export const dateRanges: FilterOption[] = [
+    { value: '1', label: 'Today' },
+    { value: '7', label: 'Last 7 Days' },
+    { value: '30', label: 'Last 30 Days' },
+    { value: '60', label: 'Last 60 Days' },
+    { value: '90', label: 'Last 90 Days' },
+    { value: '360', label: 'This Year' },
+];
 // ─── Default Filter Values ────────────────────────────────────────────────────
 
 export const defaultFilters: UserFilters = {
@@ -68,6 +74,7 @@ export const defaultFilters: UserFilters = {
     sort_by: 'id',
     sort_dir: 'desc',
     per_page: '10',
+    date_range:'',
 };
 
 // ─── Composable ───────────────────────────────────────────────────────────────
@@ -86,6 +93,7 @@ export function useUserFilter(
         sort_by:   initialFilters.sort_by   || defaultFilters.sort_by,
         sort_dir:  initialFilters.sort_dir  || defaultFilters.sort_dir,
         per_page:  initialFilters.per_page  || defaultFilters.per_page,
+        date_range: initialFilters.date_range  || defaultFilters.date_range,
     });
 
     const onSubmit = (): void => {

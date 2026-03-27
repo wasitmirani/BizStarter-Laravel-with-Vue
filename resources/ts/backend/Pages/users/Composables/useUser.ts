@@ -34,6 +34,7 @@ export function useUsers() {
         sort_dir: 'desc',
         date_from: '',
         date_to: '',
+        date_range:'',
     }
 
     // Reactive filter state
