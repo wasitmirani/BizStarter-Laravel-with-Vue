@@ -69,15 +69,15 @@ export function useUserForm(userData?:any ) {
     };
 
     // ─── API Call ─────────────────────────────────────────────────────────────
-    const userStore = (data: any): void => {
+    const userStore = async (data: any): void => {
         isLoading.value = true;
 
-        UserService.store(data)
+       await UserService.store(data)
             .then((res: any) => {
                 toast.value.showToast(res.status, 'User Store', res.data);
                 setTimeout(() => {
                     Helpers.router().push({ name: 'users' });
-                }, 300);
+                }, 100);
             })
             .catch((err: any) => {
                 if (err.response.data) {
@@ -89,7 +89,7 @@ export function useUserForm(userData?:any ) {
 
         setTimeout(() => {
             isLoading.value = false;
-        }, 1000);
+        }, 200);
     };
 
     // ─── Submit ───────────────────────────────────────────────────────────────
