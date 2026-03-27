@@ -31,7 +31,7 @@ const routes = [
     setRoute('/management/users', 'users', 'users/Users', 'users-list'),
     setRoute('/management/users/create', 'create-user', 'users/User', 'create-user'),
     setRoute('/management/users/edit/:uuid', 'edit-user', 'users/User', 'edit-user'),
-    setRoute('/management/users/:username/:uuid', 'show-user', 'users/User','show-user'),
+    setRoute('/management/users/:uuid', 'show-user', 'users/UserShow','show-user'),
     setRoute('/management/roles', 'roles', 'roles/Roles', 'roles-list'),
     setRoute('/management/roles/create', 'create-role', 'roles/Role', 'create-role'),
     setRoute('/management/roles/edit/:uuid', 'edit-role', 'roles/Role', 'edit-role'),

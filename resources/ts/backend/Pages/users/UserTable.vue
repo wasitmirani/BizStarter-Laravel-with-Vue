@@ -2,6 +2,7 @@
 import { UserService } from '../../Services/user/UserService';
 import GenericTable from '../../Components/GenericTable.vue';
 import { Helpers } from '../../Utils/Helper';
+import { hasUuid } from '../../Utils/Common';
 
 
 const props = defineProps<{
@@ -107,23 +108,26 @@ const bulkActions = [
     { label: 'Delete selected', action: 'bulk-delete' },
 ];
 
+
+
 function handleAction({ action, row, selected }: { action: string; row?: any; selected?: (string | number)[] }) {
+        // Centralized validation for actions that require a row UUID
+    const actionsRequiringUuid = ['edit', 'delete','view']
+    if (actionsRequiringUuid.includes(action)) {
+        if (!hasUuid(row?.uuid)) {
+            toast.value.showToast(400, 'Error', 'User uuid not found')
+            return
+        }
+    }
     switch (action) {
         case 'view':
+             Helpers.router().push({ name: 'show-user', params: { uuid: row?.uuid} });
             break;
         case 'edit':
-            if (!row?.uuid){
-                return toast.value.showToast(400, 'Error', 'User uuid not found');
-            }
-
-
             Helpers.router().push({ name: 'edit-user', params: { uuid: row.uuid, slug: row.slug } });
             break;
         case 'delete':
-            if (!row?.uuid) {
-                toast.value.showToast(400, 'Error', 'User uuid not found');
-                return;
-            }
+
             deleteUser(row);
             break;
         case 'bulk-delete':
