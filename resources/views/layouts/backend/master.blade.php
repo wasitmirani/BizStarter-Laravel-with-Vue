@@ -15,6 +15,9 @@
 <meta name="author" content="Wasit Mirani">
 
 <meta name="theme-color" content="#002855">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="LarabaseAdmin">
 
     <!-- App favicon -->
     <link rel="shortcut icon" href="/favicon.ico">
@@ -106,26 +109,7 @@
     <link rel="stylesheet" href="/backend/assets/app-mNboU33O.css">
 
 
-    <script type="module" src="/backend/assets/index-BqADLC_c.js"></script>
-    <link rel="modulepreload" href="/backend/assets/app-COk2rsMN.js">
-    <link rel="modulepreload" href="/backend/assets/custom-table-CE10VYSu.js">
-    <link rel="modulepreload" href="/backend/assets/world-merc-olTKUgBy.js">
-    <link rel="stylesheet" href="/backend/assets/app-mNboU33O.css">
-
-
-    <script type="module" src="/backend/assets/index-BqADLC_c.js"></script>
-    <link rel="modulepreload" href="/backend/assets/app-COk2rsMN.js">
-    <link rel="modulepreload" href="/backend/assets/custom-table-CE10VYSu.js">
-    <link rel="modulepreload" href="/backend/assets/world-merc-olTKUgBy.js">
-    <link rel="stylesheet" href="/backend/assets/app-mNboU33O.css">
-
-
-    <script type="module" src="/backend/assets/index-BqADLC_c.js"></script>
-    <link rel="modulepreload" href="/backend/assets/app-COk2rsMN.js">
-    <link rel="modulepreload" href="/backend/assets/custom-table-CE10VYSu.js">
-    <link rel="modulepreload" href="/backend/assets/world-merc-olTKUgBy.js">
-    <link rel="stylesheet" href="/backend/assets/app-mNboU33O.css">
-
+   
     <style>
         :root,
 :host {

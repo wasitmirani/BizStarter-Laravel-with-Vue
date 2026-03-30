@@ -1,18 +1,36 @@
+declare global {
+  interface Window {
+    /** Set when `beforeinstallprompt` fires so late-mounted UI can show the install banner. */
+    __pwaInstallPrompt?: Event & {
+      prompt: () => Promise<{ outcome?: string }>;
+      userChoice?: { outcome: string };
+    };
+  }
+}
+
 export function registerPWA() {
+  const enabled =
+    import.meta.env.PROD === true || import.meta.env.VITE_PWA_DEV === 'true';
+
+  if (!enabled) {
+    return;
+  }
 
   if (!('serviceWorker' in navigator)) {
     console.warn('[PWA] Service workers are not supported in this browser.');
     return;
   }
 
-  // Listen for browser install prompt and forward as a custom event
   window.addEventListener('beforeinstallprompt', (event: Event) => {
     event.preventDefault();
+    const ev = event as Window['__pwaInstallPrompt'];
+    window.__pwaInstallPrompt = ev;
 
-    const customEvent = new CustomEvent('pwa:beforeinstallprompt', {
-      detail: event,
-    });
-    window.dispatchEvent(customEvent);
+    window.dispatchEvent(
+      new CustomEvent('pwa:beforeinstallprompt', {
+        detail: ev,
+      })
+    );
   });
 
   window.addEventListener('load', () => {
@@ -26,4 +44,3 @@ export function registerPWA() {
       });
   });
 }
-

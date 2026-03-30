@@ -44,6 +44,11 @@ const requestInstall = async () => {
 };
 
 onMounted(() => {
+    if (window.__pwaInstallPrompt) {
+        installPromptEvent.value = window.__pwaInstallPrompt;
+        showInstallBanner.value = true;
+    }
+
     window.addEventListener('pwa:beforeinstallprompt', handleBeforeInstallPrompt as EventListener);
 
     // Start progress on route change

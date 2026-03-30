@@ -1,21 +1,48 @@
-const CACHE_VERSION = 'larabasekit-admin-v1';
-const CACHE_NAME = `larabasekit-admin-${CACHE_VERSION}`;
+/**
+ * Lightweight PWA service worker: offline shell + static asset cache only.
+ * Does not cache API/XHR responses (avoids stale data and storage bloat).
+ */
+const CACHE_VERSION = 'v2';
+const CACHE_NAME = `larabase-admin-${CACHE_VERSION}`;
 
-const CORE_ASSETS = [
-  '/',
-  '/app',
+const PRECACHE_URLS = [
   '/offline.html',
   '/manifest.webmanifest',
-  '/favicon.ico'
+  '/favicon.ico',
+  '/icons/icon-192.png',
+  '/icons/icon-512.png',
 ];
+
+function isSameOrigin(url) {
+  return url.origin === self.location.origin;
+}
+
+function isCacheableStatic(request, url) {
+  if (request.method !== 'GET' || !isSameOrigin(url)) {
+    return false;
+  }
+  if (url.pathname === '/manifest.webmanifest') {
+    return true;
+  }
+  const dest = request.destination;
+  return dest === 'style' || dest === 'script' || dest === 'image' || dest === 'font';
+}
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(CORE_ASSETS);
-    })
+    caches
+      .open(CACHE_NAME)
+      .then((cache) =>
+        Promise.allSettled(
+          PRECACHE_URLS.map((path) =>
+            cache.add(path).catch(() => {
+              /* offline.html or icons may be missing in dev; skip */
+            })
+          )
+        )
+      )
+      .then(() => self.skipWaiting())
   );
-  self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
@@ -31,37 +58,34 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Navigation requests: offline fallback
 self.addEventListener('fetch', (event) => {
   const { request } = event;
 
   if (request.mode === 'navigate') {
     event.respondWith(
-      fetch(request).catch(() =>
-        caches.match('/offline.html')
-      )
+      fetch(request).catch(() => caches.match('/offline.html'))
     );
     return;
   }
 
   const url = new URL(request.url);
 
-  // Only handle same-origin requests
-  if (url.origin !== self.location.origin) {
+  if (!isSameOrigin(url)) {
     return;
   }
 
-  // Static assets: cache-first
-  if (request.destination === 'style' ||
-      request.destination === 'script' ||
-      request.destination === 'image' ||
-      CORE_ASSETS.includes(url.pathname)) {
+  // Static assets: cache-first (small cache, faster repeat visits)
+  if (isCacheableStatic(request, url)) {
     event.respondWith(
       caches.match(request).then((cached) => {
-        if (cached) return cached;
+        if (cached) {
+          return cached;
+        }
         return fetch(request).then((response) => {
-          const cloned = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(request, cloned));
+          if (response.ok) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+          }
           return response;
         });
       })
@@ -69,15 +93,6 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Default: network-first for APIs/other
-  event.respondWith(
-    fetch(request)
-      .then((response) => {
-        const cloned = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(request, cloned));
-        return response;
-      })
-      .catch(() => caches.match(request))
-  );
+  // Everything else (API, XHR, HTML partials): network only
+  event.respondWith(fetch(request));
 });
-

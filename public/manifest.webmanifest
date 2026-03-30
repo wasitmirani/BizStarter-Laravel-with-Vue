@@ -1,22 +1,30 @@
 {
+  "id": "/",
   "name": "LarabaseKit Admin",
   "short_name": "LarabaseAdmin",
+  "description": "LarabaseKit admin dashboard — order and warehouse management.",
+  "lang": "en",
+  "dir": "ltr",
   "start_url": "/app",
   "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#0f172a",
+  "display_override": ["standalone", "minimal-ui"],
+  "background_color": "#002855",
+  "theme_color": "#002855",
   "orientation": "portrait-primary",
   "scope": "/",
+  "categories": ["business", "productivity"],
   "icons": [
     {
       "src": "/icons/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "/icons/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }
