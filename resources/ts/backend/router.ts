@@ -24,6 +24,7 @@ const routes = [
         redirect: { name: 'dashboard' }
     },
     setRoute('/:catchAll(.*)', '404', 'errors/404', null),
+    setRoute('/:catchAll(.*)', '404', 'errors/404', null),
     setRoute('/unauthorized/user', '401', 'error/401', null),
     setRoute('/dashboard', 'dashboard', 'dashboard/Dashboard', null),
 

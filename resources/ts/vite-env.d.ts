@@ -8,3 +8,12 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
+
+/** Injected by Laravel Blade on admin/frontend layouts — source of truth for RBAC in the SPA. */
+interface Window {
+  user?: unknown;
+  permissions?: string[];
+  token?: string;
+  /** Theme/layout bootstrap; optional per layout. */
+  config?: Record<string, unknown>;
+}

@@ -1,5 +1,6 @@
 import { createApp } from "vue";
 import { createPinia } from 'pinia';
+import { watch } from 'vue';
 import App from "./App.vue";
 import { Helpers } from './Utils/Helper';
 import VueTelInput from 'vue3-tel-input';
@@ -20,8 +21,11 @@ import moment from 'moment'
 import Uploader from 'vue-media-upload';
 import VueMultiselect from 'vue-multiselect';
 import "vue-multiselect/dist/vue-multiselect.css";
+
+import { useGlobal } from './global-composables';
 import router from "./router";
 import { registerPWA } from './pwa/registerPWA';
+import { usePermissionsStore } from '../shared/stores/permissionsStore';
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
@@ -34,7 +38,6 @@ declare module '@vue/runtime-core' {
 
 const pinia = createPinia();
 const app = createApp(App);
-let permissions = JSON.parse(`${localStorage.getItem('permissions')}`);
 app.config.globalProperties.$filters = {
     DateTimeFormat(date: String) {
       return moment.utc(String(date)).local().format('DD-MMM-YYYY , h:mm a');
@@ -44,20 +47,26 @@ app.config.globalProperties.$filters = {
     },
   }
 
+app.use(pinia);
+
+const permissionsStore = usePermissionsStore();
+permissionsStore.initFromWindow();
 
 app.directive("can", {
-    beforeMount(el, binding, vnode) {
-        if (permissions.includes(binding.value)) {
-            vnode.el.hidden = false;
-        } else {
-            vnode.el.hidden = true;
-        }
-    }
+    mounted(el, binding) {
+        const store = usePermissionsStore();
+        const apply = () => {
+            const required = binding.value as string | undefined;
+            const allowed = store.has(required);
+            el.hidden = !allowed;
+        };
+        apply();
+        watch(() => store.names, apply, { deep: true });
+    },
 });
 
-app.use(pinia);
 app.use(router);
-// app.provide('useGlobal', useGlobal); // Provide the composable
+app.provide('useGlobal', useGlobal);
 app.component('BreadcrumbComponent', BreadcrumbComponent);
 app.component('AddButton', AddButton);
 app.component('Uploader', Uploader);

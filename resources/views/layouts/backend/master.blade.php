@@ -257,6 +257,18 @@
     </div>
     </div>
 
+    @auth
+        <script>
+            window.user = @json(Auth::user()->load(['roles']));
+            window.permissions = @json(Auth::user()->getAllPermissions()->pluck('name')->values());
+        </script>
+    @else
+        <script>
+            window.user = null;
+            window.permissions = [];
+        </script>
+    @endauth
+
     @if(app()->environment('local'))
     @vite(['resources/ts/backend/app.ts', 'resources/css/app.css'])
 @else

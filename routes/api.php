@@ -15,6 +15,12 @@ Route::get('/me', function (Request $request) {
 // Route::get('/me', static fn () => response()->json(['user_name'=>"wasitmirani"]));
 // ->middleware('auth:api')
 Route::prefix('/app')->group(function () {
+    Route::middleware('auth:sanctum')->get('/permissions', function (Request $request) {
+        return response()->json([
+            'permissions' => $request->user()->getAllPermissions()->pluck('name')->values()->all(),
+        ]);
+    });
+
     Route::post('/password/update', [UserController::class, 'updatePassword']);
     Route::resource('user', UserController::class);
     Route::resource('role',RoleController::class);

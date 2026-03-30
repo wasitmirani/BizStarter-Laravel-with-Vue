@@ -9,10 +9,9 @@ setInterval(setSessionToken, 3000);
 // Declare the window object to include auth_token
 declare global {
     interface Window {
-        token: string ;
-        user:any;
-        roles:any;
-        permissions:any; // Adjust the type as needed
+        token: string;
+        user: unknown;
+        roles: unknown;
     }
 }
 class AxiosClass {

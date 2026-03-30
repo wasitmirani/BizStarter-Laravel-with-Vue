@@ -21,14 +21,12 @@
          window.user = {!! json_encode(Auth::user()->load(['roles']), true) !!};
          window.token = "{{auth()->user()->token}}";
          window.config = {'app_name':'{{config('app.name')}}','logo':'{{asset('frontend/assets/img/logo.png')}}',}
-         window.permissions = {!! json_encode(Auth::user()->getPermissionsViaRoles()->pluck('name'), true) !!};
+         window.permissions = {!! json_encode(Auth::user()->getAllPermissions()->pluck('name')->values(), true) !!};
       @else
         window.user = [];
         window.permissions = [];
         window.token="";
      @endauth
-     localStorage.removeItem('permissions');
-     localStorage.setItem('permissions', JSON.stringify(permissions))
   </script>
   
     <!-- endbuild -->

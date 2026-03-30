@@ -19,13 +19,12 @@ export default class SidebarMenu {
             "icon": icon,
             "can": can,
             "type": "multi",
-            "sub_menu": sub_menu, // Initialize an empty array for sub-menu
+            "sub_menu": sub_menu,
         }
     }
     setSubMenu = (title: string,  link: string, can?: string) => {
         return {
             "title": title,
-            // "icon": icon,
             "link": this.per_fix + link,
             "can": can,
 
@@ -40,35 +39,25 @@ export default class SidebarMenu {
     getMenuList(): any[] {
         return [
             this.setHeadingMenu('Analytics'),
-            this.setMultiMenu('Dashboards', 'dashboard', 'dashboard-view',
-                 [
-                    this.setSubMenu('Dashboard', '/dashboard', 'dashboard-view'),
-
+            this.setMultiMenu('Dashboards', 'layout-dashboard', undefined, [
+                    this.setSubMenu('Dashboard', '/dashboard', undefined),
                 ]
             ),
 
             this.setHeadingMenu('Management & Apps'),
-            this.setMultiMenu('Users Management', 'users ', 'Catalog',
-                [
-
-                    this.setSubMenu('Users', '/management/users', 'users-view'),
-                    this.setSubMenu('Roles', '/management/roles', 'roles-view'),
-                    this.setSubMenu('Permissions & Policy', '/management/permissions', 'permissions-view'),
+            this.setMultiMenu('Users Management', 'users', undefined, [
+                    this.setSubMenu('Users', '/management/users', 'users-list'),
+                    this.setSubMenu('Roles', '/management/roles', 'roles-list'),
+                    this.setSubMenu('Permissions & Policy', '/management/permissions', undefined),
                 ]
             ),
-            this.setSingleMenu('Calendar', 'components', '/calendar', 'calendar-view'),
+            this.setSingleMenu('Calendar', 'calendar', '/calendar', undefined),
             this.setHeadingMenu('Tools & Sessions'),
-            this.setMultiMenu('Settings', 'settings', 'Settings',
-                [
-                    this.setSubMenu('Account ', '/settings/users-list', 'account-view'),
-                    this.setSubMenu('App Config', '/settings/app-config', 'account-view'),
-                    // this.setSubMenu('Users', '/settings/users', 'users-view'),
-                    // this.setSubMenu('Roles', '/settings/roles', 'roles-view'),
+            this.setMultiMenu('Settings', 'settings', undefined, [
+                    this.setSubMenu('Account', '/settings/user-account', undefined),
+                    this.setSubMenu('App config', '/settings/app-config', undefined),
                 ]
             ),
-
-
-
         ];
     }
 
