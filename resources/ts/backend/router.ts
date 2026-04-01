@@ -28,6 +28,16 @@ const routes = [
     setRoute('/unauthorized/user', '401', 'error/401', null),
     setRoute('/dashboard', 'dashboard', 'dashboard/Dashboard', null),
 
+    // Catalog Routes
+    setRoute('/categories', 'categories', 'categories/Categories', 'categories-list'),
+    setRoute('/categories/create', 'create-category', 'categories/Category', 'create-category'),
+    setRoute('/categories/edit/:uuid', 'edit-category', 'categories/Category', 'edit-category'),
+    setRoute('/categories/:uuid', 'show-category', 'categories/CategoryShow', 'show-category'),
+    setRoute('/products', 'products', 'products/Products', 'products-list'),
+    setRoute('/products/create', 'create-product', 'products/Product', 'create-product'),
+    setRoute('/products/edit/:uuid', 'edit-product', 'products/Product', 'edit-product'),
+    setRoute('/products/:uuid', 'show-product', 'products/ProductShow', 'show-product'),
+
     // Managment Routes
     setRoute('/management/users', 'users', 'users/Users', 'users-list'),
     setRoute('/management/users/create', 'create-user', 'users/User', 'create-user'),
