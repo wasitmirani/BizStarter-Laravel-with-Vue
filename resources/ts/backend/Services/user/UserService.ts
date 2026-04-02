@@ -38,6 +38,14 @@ import {AxiosService} from '../../Utils/Service';
         return AxiosService.get('/list/roles');
     }
 
+    impersonate = (uuid: string) => {
+        return AxiosService.post(`/user/${uuid}/impersonate`);
+    }
+
+    leaveImpersonate = () => {
+        return AxiosService.post('/impersonate/leave');
+    }
+
 
 };
 

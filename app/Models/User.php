@@ -13,10 +13,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Storage;
 use App\Traits\HasThumbnail;
+use Lab404\Impersonate\Models\Impersonate;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, LogsActivity,Notifiable,HasRoles,HasThumbnail;
+    use HasApiTokens, HasFactory, LogsActivity,Notifiable,HasRoles,HasThumbnail,Impersonate;
     protected array $guard_name = ['api', 'web'];
     protected $guarded = [];
     protected $prefix ="UR00";
@@ -160,6 +161,16 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getRoles(){
 
         return DB::table('roles')->orderBy('name', 'ASC')->get();
+    }
+
+    public function canImpersonate()
+    {
+        return $this->hasRole('admin') ?? false; // or whatever role you want
+    }
+
+    public function canBeImpersonated()
+    {
+        return !$this->hasRole('admin') ?? true;  // admins can't be impersonated by other admins
     }
 
 

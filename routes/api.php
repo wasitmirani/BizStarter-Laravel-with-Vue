@@ -23,6 +23,8 @@ Route::prefix('/app')->group(function () {
 
     Route::post('/password/update', [UserController::class, 'updatePassword']);
     Route::resource('user', UserController::class);
+    Route::post('user/{uuid}/impersonate', [UserController::class, 'impersonate']);
+    Route::post('impersonate/leave', [UserController::class, 'leaveImpersonate']);
     Route::resource('role',RoleController::class);
     Route::prefix('upload')->group(function() {
         Route::post('/{type}/image',[UploadController::class,'uploadSingleImage']);

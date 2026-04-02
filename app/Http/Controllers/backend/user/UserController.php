@@ -10,6 +10,7 @@ use App\Services\LoggerService;
 use App\Services\RoleService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Lab404\Impersonate\Services\ImpersonateManager;
 
 class UserController extends Controller implements UserFilterable
 {
@@ -24,6 +25,16 @@ class UserController extends Controller implements UserFilterable
     public function index(Request $request)
     {
         $filters = $request->only(self::ALLOWED_FILTERS);
+        // $users = $this->userService->users($filters);
+
+        // Add impersonate option for admins
+        // $currentUser = auth()->user();
+        // if ($currentUser) {
+        //     $users->transform(function ($user) use ($currentUser) {
+        //         $user->can_impersonate = $currentUser->canImpersonate() && $user->canBeImpersonated() && $user->id !== $currentUser->id;
+        //         return $user;
+        //     });
+        // }
         $data=[
             'users' => $this->userService->users($filters),
             'roles'=>app(RoleService::class)->getRolesList(['limit'=>4],['users:id,name']),
@@ -91,5 +102,58 @@ class UserController extends Controller implements UserFilterable
         $this->userService->delete($uuid);
 
         return responseJson('user has been deleted successfully',null,true);
+    }
+
+    public function impersonate($uuid)
+    {
+        $currentUser = auth()->user();
+        if (!$currentUser) {
+            return responseJson('Unauthorized', null, false, 401);
+        }
+
+        $user = $this->userService->fetch(UserEnums::UUID->value, $uuid);
+
+        if (!$user) {
+            return responseJson('User not found', null, false, 404);
+        }
+
+        if (!$currentUser->canImpersonate() || !$user->canBeImpersonated()) {
+            return responseJson('Unauthorized', null, false, 403);
+        }
+
+        // Start impersonation
+        $currentUser->impersonate($user);
+
+        // Generate token for the impersonated user
+        $token = $user->createToken('impersonate')->plainTextToken;
+
+        return responseJson('Impersonation started', [
+            'user' => $user,
+            'token' => $token,
+            'impersonator' => $currentUser
+        ], true);
+    }
+
+    public function leaveImpersonate()
+    {
+        $currentUser = auth()->user();
+        if (!$currentUser) {
+            return responseJson('Unauthorized', null, false, 401);
+        }
+
+        if (!$currentUser->isImpersonating()) {
+            return responseJson('Not impersonating', null, false, 400);
+        }
+
+        $impersonator = $currentUser->getImpersonator();
+        $currentUser->leaveImpersonation();
+
+        // Generate token for the impersonator
+        $token = $impersonator->createToken('impersonate')->plainTextToken;
+
+        return responseJson('Impersonation ended', [
+            'user' => $impersonator,
+            'token' => $token
+        ], true);
     }
 }

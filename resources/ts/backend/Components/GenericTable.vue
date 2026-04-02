@@ -16,6 +16,7 @@ type TableAction = {
     icon: string;
     action: string;
     class?: string;
+    condition?: (row: any) => boolean;
 };
 
 type BulkAction = {
@@ -229,6 +230,7 @@ const clearSelection = () => {
                     <td v-if="(actions?.length || 0) > 0">
                         <div class="flex justify-center gap-1.5">
                             <a v-for="action in actions" :key="action.label" href="javascript:void(0)"
+                              
                                 :class="`btn border-default-300 hover:border-default-400 btn-icon btn-sm text-default-800 size-7.75 rounded border`"
                                 @click="$emit('action', { action: action.action, row })" data-bs-toggle="tooltip"
                                 data-bs-placement="top" :title="action.label">

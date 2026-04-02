@@ -86,9 +86,6 @@ export default defineComponent({
     emits: ['update:modelValue'],
     setup(props, { emit }) {
         const hasError = computed(() => props.errors?.[props.name]?.length > 0);
-        console.log("hasError", hasError);
-        console.log("errors", props.errors);
-
         const updateValue = (event: Event) => {
             delete props.errors[props.name];
             const target = event.target as HTMLInputElement;

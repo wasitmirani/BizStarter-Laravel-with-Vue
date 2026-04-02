@@ -3,6 +3,7 @@ import { UserService } from '../../Services/user/UserService';
 import GenericTable from '../../Components/GenericTable.vue';
 import { Helpers } from '../../Utils/Helper';
 import { hasUuid } from '../../Utils/Common';
+import axios from 'axios';
 
 
 const props = defineProps<{
@@ -36,7 +37,7 @@ const deleteUser = (item: any) => {
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
+    cancelButtonColor: "#d33",
         confirmButtonText: "Yes, delete it!"
     }).then((result: any) => {
         if (result.isConfirmed) {
@@ -101,6 +102,7 @@ const columns = [
 const actions = [
     { label: "View", icon: "eye", action: "view", class: "info", },
     { label: "Edit", icon: "edit", action: "edit", class: "primary" },
+    { label: "Impersonate", icon: "user-check", action: "impersonate", class: "warning", condition: (row: any) => row?.can_impersonate  || false },
     { label: "Delete", icon: "trash", action: "delete", class: "danger" },
 ];
 
@@ -112,7 +114,7 @@ const bulkActions = [
 
 function handleAction({ action, row, selected }: { action: string; row?: any; selected?: (string | number)[] }) {
         // Centralized validation for actions that require a row UUID
-    const actionsRequiringUuid = ['edit', 'delete','view']
+    const actionsRequiringUuid = ['edit', 'delete','view', 'impersonate']
     if (actionsRequiringUuid.includes(action)) {
         if (!hasUuid(row?.uuid)) {
             toast.value.showToast(400, 'Error', 'User uuid not found')
@@ -129,6 +131,30 @@ function handleAction({ action, row, selected }: { action: string; row?: any; se
         case 'delete':
 
             deleteUser(row);
+            break;
+        case 'impersonate':
+            // Handle impersonate action
+            UserService.impersonate(row.uuid).then((res: any) => {
+                if (res.data.success) {
+                    // Update the token for impersonation
+                    window.token = res.data.data.token;
+                    window.user = res.data.data.user;
+                    // Update axios default headers
+                    axios.defaults.headers.common["Authorization"] = `Bearer ${window.token}`;
+                    
+                    toast.value.showToast(200, 'Success', `Now impersonating as ${res.data.data.user.name}`);
+                    
+                    // Optionally refresh the page or redirect to dashboard
+                    setTimeout(() => {
+                        window.location.href = '/backend/dashboard';
+                    }, 1000);
+                } else {
+                    toast.value.showToast(400, 'Error', res.data.message || 'Impersonation failed');
+                }
+            }).catch((err: any) => {
+                console.log("Impersonate error:", err);
+                toast.value.showToast(err.response?.status || 500, 'Error', err.response?.data?.message || 'Impersonation failed');
+            });
             break;
         case 'bulk-delete':
             if (!selected || selected.length === 0) {
