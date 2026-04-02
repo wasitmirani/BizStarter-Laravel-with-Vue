@@ -19,7 +19,7 @@ const {
     togglePassword,
     generatePassword,
     copyPassword
-} = useUserForm(props?.userData);
+} = useUserForm(props?.userData, props?.isEditMode);
 
 </script>
 
@@ -134,7 +134,7 @@ const {
                             type="date" :errors="errors" autofocus />
                         <div>
                             <label class="form-label font-semibold block mb-2">Profile Picture <small>Allowed formats:
-                                    JPG, GIF, PNG. Max size: 4MB</small> </label>
+                                    JPG, PNG. Max size: 2MB</small> </label>
                             <Uploader server="/upload/user/image" max="1" maxFilesize="2" :warnings="true"
                                 @add="(files:any) => addThumbnail(files)" />
                         </div>
@@ -155,8 +155,8 @@ const {
                     <button class="btn bg-secondary hover:bg-secondary-hover text-white ">
                         Draft User <i class="iconify tabler--folder-open"></i>
                     </button>
-                    <button class="btn bg-primary hover:bg-primary-hover text-white" v-if="!isLoading">
-                        Save User <i class="iconify tabler--device-floppy"></i>
+                    <button :class="isEditMode ? 'btn bg-success hover:bg-success-hover text-white' : 'btn bg-primary hover:bg-primary-hover text-white'" v-if="!isLoading">
+                        {{ isEditMode ? 'Update User' : 'Save User' }} <i class="iconify tabler--device-floppy"></i>
                     </button>
                     <button class="btn bg-primary hover:bg-success-hover text-white" type="button" disabled
                         v-if="isLoading">

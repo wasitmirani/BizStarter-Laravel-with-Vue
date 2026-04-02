@@ -2,7 +2,7 @@ import { UserService } from "../../../Services/user/UserService";
 import { DropdownOptions } from "../../../Utils/DropdownOptions";
 import { Helpers } from "../../../Utils/Helper";
 
-export function useUserForm(userData?:any ) {
+export function useUserForm(userData?: any, isEditMode: boolean = false) {
     // ─── State ────────────────────────────────────────────────────────────────
     let errors = Helpers.useDynamicRef<any>([]);
     const isLoading = Helpers.useDynamicRef(false);
@@ -74,7 +74,7 @@ export function useUserForm(userData?:any ) {
 
        await UserService.store(data)
             .then((res: any) => {
-                toast.value.showToast(res.status, 'User Store', res.data);
+                toast.value?.showToast?.(res.status, 'User Store', res.data);
                 setTimeout(() => {
                     Helpers.router().push({ name: 'users' });
                 }, 100);
@@ -83,13 +83,43 @@ export function useUserForm(userData?:any ) {
                 if (err.response.data) {
                     errors.value = err.response.data.errors || { general: ['An error occurred.'] };
                     console.log("Errors:", errors.value);
-                    toast.value.showToast(err.response.status, 'Error: ' + err.status, err.response.data);
+                    toast.value?.showToast?.(err.response.status, 'Error: ' + err.status, err.response.data);
                 }
             });
 
         setTimeout(() => {
             isLoading.value = false;
         }, 200);
+    };
+
+    const userUpdate = async (data: any): void => {
+        isLoading.value = true;
+
+        const userId = data?.id;
+        if (!userId) {
+            toast.value?.showToast?.(400, 'Error', 'Missing user id for update');
+            isLoading.value = false;
+            return;
+        }
+
+        await UserService.update(data)
+            .then((res: any) => {
+                toast.value?.showToast?.(res.status, 'User Updated', res.data);
+                setTimeout(() => {
+                    Helpers.router().push({ name: 'users' });
+                }, 100);
+            })
+            .catch((err: any) => {
+                if (err.response?.data) {
+                    errors.value = err.response.data.errors || { general: ['An error occurred.'] };
+                    toast.value?.showToast?.(err.response.status, 'Error: ' + err.status, err.response.data);
+                }
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    isLoading.value = false;
+                }, 200);
+            });
     };
 
     // ─── Submit ───────────────────────────────────────────────────────────────
@@ -99,7 +129,12 @@ export function useUserForm(userData?:any ) {
             ...user,
             name: [user.first_name, user.last_name].filter(Boolean).join(' ').trim(),
         };
-        userStore(userPayload);
+
+        if (isEditMode) {
+            userUpdate(userPayload);
+        } else {
+            userStore(userPayload);
+        }
     };
 
     return {
