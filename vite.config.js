@@ -16,8 +16,8 @@ export default defineConfig({
     laravel({
       input: [
         'resources/css/app.css',
-        'resources/ts/backend/app.ts',
-        'resources/ts/frontend/app.ts',
+        'resources/ts/Backend/app.ts',
+        'resources/ts/Frontend/app.ts',
 
       ],
       refresh: true,

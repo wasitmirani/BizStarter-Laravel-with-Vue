@@ -7,8 +7,8 @@ export default {
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
-        './resources/ts/backend/pages/**/*.vue', // Add this line to include Vue files
-        './resources/ts/frontend/pages/**/*.vue', // Add this line to include Vue files
+        './resources/ts/Backend/pages/**/*.vue', // Add this line to include Vue files
+        './resources/ts/Frontend/pages/**/*.vue', // Add this line to include Vue files
     ],
 
     theme: {
