@@ -2,11 +2,13 @@
 
 namespace App\Services;
 
-use Illuminate\Database\Eloquent\Model;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
-use Exception;
+use Log;
 
 abstract class BaseService
 {
@@ -228,11 +230,16 @@ abstract class BaseService
      * @return bool
      * @throws Exception
      */
-    public function delete($id): bool
+    public function delete($uuid, string $column = 'id'): bool
     {
-        return DB::transaction(function () use ($id) {
-            $record = $this->findOrFail($id);
-            return $record->delete();
+        
+
+        return DB::transaction(function () use ($uuid, $column) {
+            $record = $this->model->where($column, $uuid)->first(); // Use $this->model
+            if (!$record) {
+                throw new ModelNotFoundException("Record not found with {$column}: {$uuid}");
+            }
+            return (bool) $record->delete();
         });
     }
 

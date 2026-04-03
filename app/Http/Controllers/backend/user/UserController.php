@@ -99,7 +99,7 @@ class UserController extends Controller implements UserFilterable
     public function destroy($uuid)
     {
 
-        $this->userService->delete($uuid);
+        $this->userService->delete($uuid,UserEnums::UUID->value);
 
         return responseJson('user has been deleted successfully',null,true);
     }
