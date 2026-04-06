@@ -1,4 +1,4 @@
-import {AxiosService} from '../../Utils/Service';
+import {AxiosService} from '../../Utils/AxiosService';
 
 class Dropdown {
     countries = (id?: string) => AxiosService.get(`/list/countries?country_id=${id}`).then((res)=>res.data);

@@ -25,7 +25,7 @@ import { Helpers } from '../../Utils/Helper'
                             @filterData="filterData" @query="handleSearchQuery"></SearchInput> -->
 
                         <div class="flex gap-1">
-                            <router-link :to="{ name: 'create-user' }"
+                            <router-link :to="{ name: 'create-role' }"
                                 class="btn bg-primary text-white hover:bg-primary-hover" aria-haspopup="dialog"
                                 aria-expanded="false" aria-controls="incomeModal" data-hs-overlay="#incomeModal"> <i
                                     class="iconify tabler--plus"></i> Add Role </router-link>
@@ -63,10 +63,10 @@ import { Helpers } from '../../Utils/Helper'
 
                     <div>
                         <nav class="flex items-center gap-x-1">
-                            <!-- <a role="button" @click="fetchUsers()"
+                            <a role="button" @click="fetchRoles()"
                                 class="btn bg-primary/15 text-primary btn-icon hover:bg-primary hover:text-white">
                                 <i class="iconify tabler--refresh text-lg"></i>
-                            </a> -->
+                            </a>
 
                             <OffCanvas id="offcanvasRight" title="Advance Filters"
                                 buttonClass="btn bg-primary btn-icon text-white hover:bg-primary-hover"
