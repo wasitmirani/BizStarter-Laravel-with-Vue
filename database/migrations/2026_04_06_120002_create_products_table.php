@@ -24,18 +24,28 @@ return new class extends Migration
             $table->string('sku')->unique();
             $table->string('reference_sku');
             $table->string('barcode')->unique();
+            $table->string('uom')->default('pcs'); // UNIT OF MEASURE
             $table->text('description')->nullable();
             $table->decimal('price', 12, 2)->default(0);
             $table->decimal('retail_price', 12, 2)->default(0);
             $table->string('thumbnail')->default('default.png');
+            $table->int('min_expiry_days')->nullable();
+            $table->enum('fulfillment_strategy', ['fifo', 'lifo','fefo'])->nullable()->comment('FIFO: First In First Out, LIFO: Last In First Out, FEFO: First Expired First Out'); 
+            $table->boolean('track_expiry_dates')->default(false);
+            $table->json('tags')->nullable();
             $table->json('meta')->nullable();
-            $table->foreignId('user_id')
+            $table->foreignId('brand_id')
+            ->nullable()
+            ->constrained('brands')
+            ->nullOnDelete();
+            $table->foreignId('tenant_id')
             ->nullable()
             ->constrained('users')
             ->nullOnDelete();
             $table->timestamps();
             $table->softDeletes();
             $table->index(['category_id', 'sort_order','slug','uuid','id']);
+            
         });
     }
 
