@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useCategories } from "./Composables/useCategories"
+import { useCategories } from "./Composables/useCategory"
 import CategoriesTable from './CategoriesTable.vue' 
 import CategoriesFilterForm from './CategoriesFilterForm.vue'
 import OffCanvas from "../../Components/OffCanvas.vue"
