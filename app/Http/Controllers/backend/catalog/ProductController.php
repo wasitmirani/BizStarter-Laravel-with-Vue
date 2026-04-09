@@ -43,6 +43,9 @@ class ProductController extends Controller implements CatalogFilterable
             'tenant_id' => 'nullable|exists:users,id',
             'sort_order' => 'nullable|integer|min:0',
         ]);
+        if (!empty($data['thumbnail'])) {
+            $data['thumbnail'] = basename(parse_url($data['thumbnail'], PHP_URL_PATH) ?: $data['thumbnail']);
+        }
 
         $product = $this->productService->saveProduct($data);
         return responseJson('product created successfully', ['product' => $product], true, 201);
@@ -78,6 +81,9 @@ class ProductController extends Controller implements CatalogFilterable
             'tenant_id' => 'nullable|exists:users,id',
             'sort_order' => 'nullable|integer|min:0',
         ]);
+        if (!empty($data['thumbnail'])) {
+            $data['thumbnail'] = basename(parse_url($data['thumbnail'], PHP_URL_PATH) ?: $data['thumbnail']);
+        }
 
         $product = $this->productService->updateProduct($uuid, $data);
         return responseJson('product updated successfully', ['product' => $product], true);

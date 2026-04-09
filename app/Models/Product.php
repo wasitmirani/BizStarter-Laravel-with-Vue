@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class Product extends Model
 {
@@ -18,6 +19,18 @@ class Product extends Model
         'price' => 'decimal:2',
         'retail_price' => 'decimal:2',
     ];
+
+    public function getThumbnailAttribute($value)
+    {
+        $default = config('images.defaults.product', 'product-default.jpg');
+        $backendPath = config('images.paths.backend', 'backend/images/');
+
+        if ($value && $value !== 'default.png' && Storage::disk('public')->exists('images/product/' . $value)) {
+            return asset('storage/images/product/' . $value);
+        }
+
+        return asset($backendPath . 'products/' . $default);
+    }
 
     public function category()
     {

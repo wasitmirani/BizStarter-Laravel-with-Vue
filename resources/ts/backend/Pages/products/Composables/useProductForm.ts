@@ -4,11 +4,16 @@ import { CatalogService } from "../../../Services/catalog/CatalogService";
 export function useProductForm(productData?: any, isEditMode?: boolean) {
     const errors = Helpers.useDynamicRef<any>({});
     const isLoading = Helpers.useDynamicRef(false);
-    const toast = Helpers.useDynamicInject('toast', null);
+    const toast = Helpers.useDynamicInject<{ showToast: (status: number, title: string, message: string) => void }>(
+        'toast',
+        { showToast: () => {} }
+    );
     const product = Helpers.useDynamicReactive({
         uuid: '',
         name: '',
         slug: '',
+        thumbnail: '',
+        description: '',
         sku: '',
         reference_sku: '',
         barcode: '',
@@ -23,6 +28,20 @@ export function useProductForm(productData?: any, isEditMode?: boolean) {
 
     const categories = Helpers.useDynamicRef<any[]>([]);
     const brands = Helpers.useDynamicRef<any[]>([]);
+    const addThumbnail = (media: any): void => {
+        if (media?.name) {
+            product.thumbnail = media.name;
+        }
+    };
+    const currentThumbnailUrl = Helpers.useDynamicComputed(() => {
+        if (!product.thumbnail) {
+            return '';
+        }
+        if (String(product.thumbnail).startsWith('http')) {
+            return product.thumbnail;
+        }
+        return `/storage/images/product/${product.thumbnail}`;
+    });
 
     const loadOptions = async () => {
         const [categoriesRes, brandsRes] = await Promise.all([
@@ -53,5 +72,5 @@ export function useProductForm(productData?: any, isEditMode?: boolean) {
     };
 
     Helpers.useDynamicOnMounted(loadOptions);
-    return { product, categories, brands, errors, isLoading, onSubmit };
+    return { product, categories, brands, errors, isLoading, onSubmit, addThumbnail, currentThumbnailUrl };
 }

@@ -8,6 +8,7 @@ const props = defineProps<{ products: any; isLoading: boolean; getProducts: (pag
 const columns = [
     { key: "id", label: "ID" },
     { key: "name", label: "Name" },
+    { key: "thumbnail", label: "Thumbnail" },
     { key: "sku", label: "SKU" },
     { key: "price", label: "Price" },
     { key: "created_at", label: "Created At" },
@@ -38,6 +39,9 @@ const handleAction = async ({ action, row }: { action: string; row?: any }) => {
                 <h5 class="hover:text-primary">{{ row.name }}</h5>
                 <p class="text-default-400 text-xs">{{ row.slug }}</p>
             </div>
+        </template>
+        <template #thumbnail="{ row }">
+            <img :src="row.thumbnail" alt="product-thumbnail" class="size-10 rounded object-cover" />
         </template>
     </GenericTable>
 </template>
