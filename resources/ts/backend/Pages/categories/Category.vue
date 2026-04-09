@@ -1,30 +1,26 @@
 <script setup lang="ts">
-import UserForm from './UserForm.vue';
-import { useCreateUser } from './Composables/useCreateUser';
+import CategoriesForm from './CategoriesForm.vue';
+import { useCreateCategory } from './Composables/useCreateCategories';
 import { Helpers } from '../../Utils/Helper';
 
-const { user, editmode, handleSubmitForm, loading } = useCreateUser();
+const { category, editmode, loading } = useCreateCategory();
 
-// Create computed properties to unwrap the reactive values
-const userData = Helpers.useDynamicComputed(() => user.value);
+const categoryData = Helpers.useDynamicComputed(() => category.value);
 const isEditMode = Helpers.useDynamicComputed(() => editmode.value);
 const isLoading = Helpers.useDynamicComputed(() => loading?.value || false);
 </script>
 
 <template>
-    <BreadcrumbComponent :current="isEditMode ? 'Update User' : 'Create User'" :links="[{ name: 'Dashboard', route: 'dashboard' }, { name: 'Users', route: 'users' }]"/>
+    <BreadcrumbComponent :current="isEditMode ? 'Update Category' : 'Create Category'" :links="[{ name: 'Dashboard', route: 'dashboard' }, { name: 'Categories', route: 'categories' }]"/>
 
-    <!-- Loader -->
     <div v-if="isLoading" class="flex justify-center items-center py-12">
-        <LoadingBox :showText="true" text="Loading user data..." />
+        <LoadingBox :showText="true" text="Loading category data..." />
     </div>
 
-    <!-- User Form -->
-    <UserForm
+    <CategoriesForm
         v-else
         class="mt-4"
-        :userData="userData"
+        :categoryData="categoryData"
         :isEditMode="isEditMode"
-        @submit="handleSubmitForm"
     />
 </template>

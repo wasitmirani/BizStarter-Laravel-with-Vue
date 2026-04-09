@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useCategories } from "./Composables/useCategory"
 import CategoriesTable from './CategoriesTable.vue' 
-import CategoriesFilterForm from './CategoriesFilterForm.vue'
 import OffCanvas from "../../Components/OffCanvas.vue"
-import { perPageOptions, dateRanges } from './Composables/useCategoriesFilter';
+import CategoriesFilterForm from './CategoriesFilterForm.vue'
+import { perPageOptions } from './Composables/useCategoryFilter';
 import ActiveFilters from '../../Components/ActiveFilters.vue'
 import { Helpers } from '../../Utils/Helper'
 
@@ -29,59 +29,26 @@ Helpers.useDynamicOnMounted(() => {
 
 <template>
     <div>
-        <!-- Breadcrumb  -->
-        <BreadcrumbComponent :current="'Users'" :links="[{ name: 'Dashboard', route: 'dashboard' }]" />
+        <BreadcrumbComponent :current="'Categories'" :links="[{ name: 'Dashboard', route: 'dashboard' }]" />
 
         <div class="container-fluid">
-            <div class="mb-base grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-base">
-                <RoleCard v-if="roles?.length > 0"></RoleCard>
-            </div>
-
             <div data-table="" data-table-rows-per-page="8" class="card">
                 <div class="card-header">
-                    <!-- Search -->
                     <div class="flex flex-wrap gap-2.5">
-                        <!-- Search Input -->
-                        <SearchInput label="Search Users" :apiPath="`/user`" @loading="setLoading"
+                        <SearchInput label="Search Categories" :apiPath="`/category`" @loading="setLoading"
                             @filterData="filterData" @query="handleSearchQuery"></SearchInput>
                         <div class="flex gap-1">
-                            <router-link :to="{ name: 'create-user' }"
+                            <router-link :to="{ name: 'create-category' }"
                                 class="btn bg-primary text-white hover:bg-primary-hover" aria-haspopup="dialog"
-                                aria-expanded="false" aria-controls="incomeModal" data-hs-overlay="#incomeModal"> <i
-                                    class="iconify tabler--plus"></i> Add User </router-link>
+                                aria-expanded="false" aria-controls="incomeModal" data-hs-overlay="#incomeModal">
+                                <i class="iconify tabler--plus"></i> Add Category
+                            </router-link>
                         </div>
-                        <!-- Delete Selected -->
-                        <button data-table-delete-selected=""
-                            class="btn bg-danger text-white hover:bg-danger-hover hidden">Delete</button>
                     </div>
 
                     <div class="flex flex-wrap items-center gap-3">
                         <div class="items-center gap-3 md:flex">
                             <span class="me-3 font-semibold text-nowrap">Filter By:</span>
-                            <!-- Role Type Filter -->
-                            <div class="input-icon-group">
-                                <i class="iconify tabler--user-hexagon input-icon"></i>
-                                <select data-table-filter="roles" class="form-select" v-model="filters.role"
-                                    @change="handleFilterChange(filters)">
-                                    <option value="">All Roles</option>
-                                    <option :value="role.value" v-for="role in roles">{{
-                                        role.label.charAt(0).toUpperCase() + role.label.slice(1) }}</option>
-
-                                </select>
-                            </div>
-                            <div class="input-icon-group">
-                                            <i class="iconify tabler--calendar input-icon"></i>
-                                            <select data-table-range-filter="date" class="form-select"  @change="handleFilterChange(filters)" v-model="filters.date_range">
-                                                <option value="" >Date Range</option>
-
-                                                <option v-for="item in dateRanges" :key="item.value" :value="item.value">
-                                        {{ item.label }}
-                                    </option>
-
-                                            </select>
-                                        </div>
-
-                            <!-- Role Type Filter -->
                             <div class="input-icon-group">
                                 <i class="iconify tabler--list-details input-icon"></i>
 
@@ -95,12 +62,11 @@ Helpers.useDynamicOnMounted(() => {
 
 
                         </div>
-                        <!-- Active Filters -->
-                        <ActiveFilters routeName="users" @filterChange="handleFilterChange($event)" />
+                        <ActiveFilters routeName="categories" @filterChange="handleFilterChange($event)" />
                     </div>
                     <div>
                         <nav class="flex items-center gap-x-1">
-                            <a role="button" @click="fetchUsers()"
+                            <a role="button" @click="fetchCategories()"
                                 class="btn bg-primary/15 text-primary btn-icon hover:bg-primary hover:text-white">
                                 <i class="iconify tabler--refresh text-lg"></i>
                             </a>
@@ -112,13 +78,13 @@ Helpers.useDynamicOnMounted(() => {
                                     <i class="iconify tabler--filter text-lg"></i>
                                 </template>
                                 <template #body>
-                                    <UserFilterForm :initialFilters="filters" @filterChange="handleFilterChange" />
+                                    <CategoriesFilterForm :initialFilters="filters" @filterChange="handleFilterChange" />
                                 </template>
                             </OffCanvas>
                         </nav>
                     </div>
                 </div>
-                <UserTable :users="users" :getUsers="fetchUsers" :isLoading="isLoading" :currentFilters="filters" />
+                <CategoriesTable :categories="categories" :getCategories="fetchCategories" :isLoading="isLoading" :currentFilters="filters" />
             </div>
         </div>
     </div>

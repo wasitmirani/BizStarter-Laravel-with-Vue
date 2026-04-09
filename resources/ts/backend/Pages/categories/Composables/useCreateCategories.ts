@@ -1,49 +1,31 @@
 import { Helpers } from '../../../Utils/Helper';
-import { UserService } from '../../../Services/user/UserService';
+import { CatalogService } from '../../../Services/catalog/CatalogService';
 
-export function useCreateUser() {
-    const draftStatus = Helpers.useDynamicRef<any>(null);
-    const user = Helpers.useDynamicRef<any>({});
-    const editmode = Helpers.useDynamicRef<any>(false);
-    const loading = Helpers.useDynamicRef<boolean>(false); // Add loading state
+export function useCreateCategory() {
+    const category = Helpers.useDynamicRef<any>({});
+    const editmode = Helpers.useDynamicRef(false);
+    const loading = Helpers.useDynamicRef(false);
 
-    const saveDraftHandler = (status?: string): void => {
-        draftStatus.value = status || 'no status provided';
-        console.log(`Save draft with status: ${draftStatus.value}`);
-    };
-
-    const handleSubmitForm = (formData: any): void => {
-        console.log('Form submitted with data:', formData);
-        saveDraftHandler('submitted');
-    };
-
-    const getUser = async () => {
-        loading.value = true; // Set loading to true before fetching
+    const getCategory = async () => {
+        loading.value = true;
         try {
-            const res = await UserService.user(Helpers.route().params.uuid.toString());
-            user.value = res.data.result.user;
+            const res = await CatalogService.category(Helpers.route().params.uuid.toString());
+            category.value = res?.data?.result?.category ?? {};
             editmode.value = true;
-            console.log("Editmode", editmode.value);
-        } catch (error) {
-            console.error('Error fetching user:', error);
-            // Optionally handle error (show error message, etc.)
         } finally {
-            loading.value = false; // Set loading to false after fetch completes
+            loading.value = false;
         }
     };
 
     Helpers.useDynamicOnMounted(() => {
         if (Helpers.route().params.uuid) {
-            getUser();
+            getCategory();
         }
     });
 
     return {
-        draftStatus,
-        user,
+        category,
         editmode,
-        loading, // Return loading state
-        saveDraftHandler,
-        handleSubmitForm,
+        loading,
     };
 }

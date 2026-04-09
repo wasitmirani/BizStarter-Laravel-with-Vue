@@ -48,6 +48,7 @@ export default class SidebarMenu {
             this.setMultiMenu('Catalog', 'catalog ', 'Catalog',
                 [
                     this.setSubMenu('Categories', '/categories', 'categories-view'),
+                    this.setSubMenu('Brands', '/brands', 'brands-view'),
                     this.setSubMenu('Products', '/products', 'products-view'),
                 ]
             ),

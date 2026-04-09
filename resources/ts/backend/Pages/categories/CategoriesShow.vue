@@ -1,22 +1,23 @@
 <script setup lang="ts">
-import UserForm from './UserForm.vue';
-import { useCreateUser } from './Composables/useCreateUser';
+import { useCreateCategory } from './Composables/useCreateCategories';
 import { Helpers } from '../../Utils/Helper';
 
-const { user, editmode, handleSubmitForm, loading } = useCreateUser();
+const { category, loading } = useCreateCategory();
 
-// Create computed properties to unwrap the reactive values
-const userData = Helpers.useDynamicComputed(() => user.value);
+const categoryData = Helpers.useDynamicComputed(() => category.value);
 const isLoading = Helpers.useDynamicComputed(() => loading?.value || false);
 </script>
 
 <template>
-    <BreadcrumbComponent :current="'User Details'" :links="[{ name: 'Dashboard', route: 'dashboard' }, { name: 'Users', route: 'users' }]"/>
+    <BreadcrumbComponent :current="'Category Details'" :links="[{ name: 'Dashboard', route: 'dashboard' }, { name: 'Categories', route: 'categories' }]"/>
 
-    <!-- Loader -->
     <div v-if="isLoading" class="flex justify-center items-center py-12">
-        <LoadingBox :showText="true" text="Loading user data..." />
+        <LoadingBox :showText="true" text="Loading category data..." />
     </div>
-
-
+    <div v-else class="card p-5">
+        <h4 class="font-semibold mb-3">{{ categoryData.name }}</h4>
+        <p class="mb-2"><b>Slug:</b> {{ categoryData.slug }}</p>
+        <p class="mb-2"><b>Sort Order:</b> {{ categoryData.sort_order }}</p>
+        <p><b>Description:</b> {{ categoryData.description || 'N/A' }}</p>
+    </div>
 </template>

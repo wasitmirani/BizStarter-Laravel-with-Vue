@@ -1,121 +1,46 @@
-import { UserService } from "../../../Services/user/UserService";
-import { DropdownOptions } from "../../../Utils/DropdownOptions";
 import { Helpers } from "../../../Utils/Helper";
+import { CatalogService } from "../../../Services/catalog/CatalogService";
 
-export function useUserForm(userData?:any ) {
-    // ─── State ────────────────────────────────────────────────────────────────
+export function useCategoryForm(categoryData?: any, isEditMode?: boolean) {
     let errors = Helpers.useDynamicRef<any>([]);
     const isLoading = Helpers.useDynamicRef(false);
-    const showPassword = Helpers.useDynamicRef(false);
     const toast = Helpers.useDynamicInject('toast', null);
 
-    // ─── Dropdown Options ─────────────────────────────────────────────────────
-    const genderDropdownItems = DropdownOptions.genderOptions();
-    const maritalStatusDropdownItems = DropdownOptions.maritalStatusOptions();
-
-    // ─── User Reactive Object ─────────────────────────────────────────────────
-    const user = Helpers.useDynamicReactive({
-        phone: '',
-        thumbnail: '',
-        company_name: '',
-        first_name: '',
-        last_name: '',
-        email: '',
-        password: '',
-        password_confirmation: '',
-        address: '',
-        dob: '',
-        gender: '',
-        marital_status: '',
-        city: '',
-        state: '',
-        zip_code: '',
-        country: '',
-        ...(userData ?? {})
+    const category = Helpers.useDynamicReactive({
+        uuid: '',
+        name: '',
+        slug: '',
+        description: '',
+        sort_order: 0,
+        ...((categoryData ?? {}) as object),
     });
 
-    // ─── Phone Input ──────────────────────────────────────────────────────────
-
-
-    // ─── Thumbnail ────────────────────────────────────────────────────────────
-    const addThumbnail = (media: any): void => {
-        if (media) {
-            user.thumbnail = media.name;
-        }
-    };
-
-    // ─── Password Helpers ─────────────────────────────────────────────────────
-    const togglePassword = (): void => {
-        showPassword.value = !showPassword.value;
-    };
-
-    const generatePassword = (): void => {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+';
-        let password = '';
-        for (let i = 0; i < 12; i++) {
-            password += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        user.password = password;
-        user.password_confirmation = password;
-    };
-
-    const copyPassword = async (): Promise<void> => {
-        try {
-            await navigator.clipboard.writeText(user.password);
-            toast.value.showToast(200, 'Password Copied', 'Password has been copied to clipboard.');
-        } catch {
-            toast.value.showToast(500, 'Copy Failed', 'Could not copy password.');
-        }
-    };
-
-    // ─── API Call ─────────────────────────────────────────────────────────────
-    const userStore = async (data: any): void => {
+    const submitCategory = async (data: any): Promise<void> => {
         isLoading.value = true;
-
-       await UserService.store(data)
-            .then((res: any) => {
-                toast.value.showToast(res.status, 'User Store', res.data);
-                setTimeout(() => {
-                    Helpers.router().push({ name: 'users' });
-                }, 100);
-            })
-            .catch((err: any) => {
-                if (err.response.data) {
-                    errors.value = err.response.data.errors || { general: ['An error occurred.'] };
-                    console.log("Errors:", errors.value);
-                    toast.value.showToast(err.response.status, 'Error: ' + err.status, err.response.data);
-                }
-            });
-
-        setTimeout(() => {
+        try {
+            if (isEditMode && category.uuid) {
+                await CatalogService.updateCategory(category.uuid, data);
+            } else {
+                await CatalogService.storeCategory(data);
+            }
+            toast.value?.showToast(200, 'Category', 'Category saved successfully');
+            Helpers.router().push({ name: 'categories' });
+        } catch (err: any) {
+            errors.value = err?.response?.data?.errors ?? { general: ['An error occurred.'] };
+            toast.value?.showToast(err?.response?.status ?? 500, 'Error', err?.response?.data?.message ?? 'Save failed');
+        } finally {
             isLoading.value = false;
-        }, 200);
+        }
     };
 
-    // ─── Submit ───────────────────────────────────────────────────────────────
-    const onSubmit = (_type?: string): void => {
-        // Create a shallow clone to avoid modifying the reactive user directly.
-        const userPayload = {
-            ...user,
-            name: [user.first_name, user.last_name].filter(Boolean).join(' ').trim(),
-        };
-        userStore(userPayload);
+    const onSubmit = (): void => {
+        submitCategory({ ...category });
     };
 
     return {
-        // state
-        user,
+        category,
         errors,
         isLoading,
-        showPassword,
-        // dropdowns
-        genderDropdownItems,
-        maritalStatusDropdownItems,
-        // handlers
         onSubmit,
-        addThumbnail,
-        togglePassword,
-        generatePassword,
-        copyPassword,
     };
 }

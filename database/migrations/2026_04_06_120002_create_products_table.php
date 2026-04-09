@@ -29,7 +29,8 @@ return new class extends Migration
             $table->decimal('price', 12, 2)->default(0);
             $table->decimal('retail_price', 12, 2)->default(0);
             $table->string('thumbnail')->default('default.png');
-            $table->int('min_expiry_days')->nullable();
+            $table->unsignedInteger('min_expiry_days')->nullable();
+            $table->unsignedInteger('sort_order')->default(0);
             $table->enum('fulfillment_strategy', ['fifo', 'lifo','fefo'])->nullable()->comment('FIFO: First In First Out, LIFO: Last In First Out, FEFO: First Expired First Out'); 
             $table->boolean('track_expiry_dates')->default(false);
             $table->json('tags')->nullable();

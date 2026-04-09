@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import {
     useUserFilter,
-    roles, statuses, sortOptions, sortDirOptions, perPageOptions,
+    sortOptions, sortDirOptions, perPageOptions,
     defaultFilters,
     type UserFilters,
-} from './Composables/useUserFilter';
+} from './Composables/useCategoryFilter';
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 
@@ -40,64 +40,6 @@ const { filters, onSubmit, resetFilters } = useUserFilter(props.initialFilters, 
             >
         </div>
 
-        <!-- Role Filter -->
-        <div>
-            <label for="filterRole" class="form-label text-sm font-medium">Role</label>
-            <select
-                id="filterRole"
-                v-model="filters.role"
-                class="form-select w-full"
-            >
-                <option
-                    v-for="role in roles"
-                    :key="role.value"
-                    :value="role.value"
-                >
-                    {{ role.label }}
-                </option>
-            </select>
-        </div>
-
-        <!-- Status Filter -->
-        <div>
-            <label for="filterStatus" class="form-label text-sm font-medium">Status</label>
-            <select
-                id="filterStatus"
-                v-model="filters.status"
-                class="form-select w-full"
-            >
-                <option
-                    v-for="status in statuses"
-                    :key="status.value"
-                    :value="status.value"
-                >
-                    {{ status.label }}
-                </option>
-            </select>
-        </div>
-
-        <!-- Date Range -->
-        <div class="grid grid-cols-2 gap-3">
-            <div>
-                <label for="filterDateFrom" class="form-label text-sm font-medium">From Date</label>
-                <input
-                    type="date"
-                    id="filterDateFrom"
-                    v-model="filters.date_from"
-                    class="form-input w-full"
-                >
-            </div>
-            <div>
-                <label for="filterDateTo" class="form-label text-sm font-medium">To Date</label>
-                <input
-                    type="date"
-                    id="filterDateTo"
-                    v-model="filters.date_to"
-                    class="form-input w-full"
-                >
-            </div>
-        </div>
-
         <!-- Sort Options -->
         <div class="grid grid-cols-2 gap-3">
             <div>
@@ -117,7 +59,7 @@ const { filters, onSubmit, resetFilters } = useUserFilter(props.initialFilters, 
                 </select>
             </div>
             <div>
-                <label for="filtersort_dir" class="form-label text-sm font-medium">sort_dir</label>
+                <label for="filtersort_dir" class="form-label text-sm font-medium">Sort Direction</label>
                 <select
                     id="filtersort_dir"
                     v-model="filters.sort_dir"
@@ -153,10 +95,10 @@ const { filters, onSubmit, resetFilters } = useUserFilter(props.initialFilters, 
         </div>
 
         <!-- Action Buttons -->
-        <div class="flex gap-2 pt-4 bsort_dir-t bsort_dir-default-200">
+        <div class="flex gap-2 pt-4 border-t border-default-200">
             <button
                 type="submit"
-                class="btn bsort_dir-primary text-primary hover:bg-primary hover:text-white"
+                class="btn border-primary text-primary hover:bg-primary hover:text-white"
             >
                 <i class="iconify tabler--filter me-2"></i>
                 Apply Filters
@@ -164,7 +106,7 @@ const { filters, onSubmit, resetFilters } = useUserFilter(props.initialFilters, 
             <button
                 type="button"
                 @click="resetFilters"
-                class="btn bsort_dir-danger text-danger hover:bg-danger hover:text-white"
+                class="btn border-danger text-danger hover:bg-danger hover:text-white"
             >
                 <i class="iconify tabler--refresh me-2"></i>
                 Reset

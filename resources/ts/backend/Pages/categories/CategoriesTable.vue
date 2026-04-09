@@ -1,35 +1,26 @@
 <script setup lang="ts">
-import { UserService } from '../../Services/user/UserService';
+import { CatalogService } from '../../Services/catalog/CatalogService';
 import GenericTable from '../../Components/GenericTable.vue';
 import { Helpers } from '../../Utils/Helper';
 import { hasUuid } from '../../Utils/Common';
 
 
 const props = defineProps<{
-    users: any;
+    categories: any;
     isLoading: boolean;
-    getUsers: (page?: number, perPage?: number) => void;
+    getCategories: (page?: number, perPage?: number) => void;
     currentFilters: Record<string, unknown>;
 }>();
 
 const emit = defineEmits<{
-    (e: 'user-deleted'): void;
+    (e: 'category-deleted'): void;
 }>();
 
 const selectedItems = Helpers.useDynamicRef<(string | number)[]>([]);
 const toast = Helpers.useDynamicInject<{ showToast: (status: number, title: string, message: string) => void }>('toast', {
     showToast: () => {},
 });
-
-
-
-function getUserRole(user: any) {
-    if (user.roles.length > 0) {
-        return user.roles[0].name;
-    }
-    return "No Role";
-}
-const deleteUser = (item: any) => {
+const deleteCategory = (item: any) => {
     Helpers.Swal().fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -40,15 +31,14 @@ const deleteUser = (item: any) => {
         confirmButtonText: "Yes, delete it!"
     }).then((result: any) => {
         if (result.isConfirmed) {
-            UserService.delete(item.uuid).then((res: any) => {
+            CatalogService.deleteCategory(item.uuid).then(() => {
                 Helpers.Swal().fire({
                     title: "Deleted!",
-                    text: "User has been deleted.",
+                    text: "Category has been deleted.",
                     icon: "success"
                 });
-                props.getUsers();
+                props.getCategories();
             }).catch((err: any) => {
-                console.log("err:", err.response.status);
                 toast.value.showToast(err.response.status, 'Error: ' + err.response.status, err.message ?? err.response.message);
             })
 
@@ -66,36 +56,26 @@ const bulkDelete = (items: any) => {
         confirmButtonText: "Yes, delete it!"
     }).then((result: any) => {
         if (result.isConfirmed) {
-            UserService.delete(items.uuid).then((res: any) => {
+            CatalogService.deleteCategory(items.uuid).then(() => {
                 Helpers.Swal().fire({
                     title: "Deleted!",
-                    text: "User has been deleted.",
+                    text: "Category has been deleted.",
                     icon: "success"
                 });
-                props.getUsers();
+                props.getCategories();
             }).catch((err: any) => {
-                console.log("err:", err.response.status);
                 toast.value.showToast(err.response.status, 'Error: ' + err.response.status, err.message ?? err.response.message);
             })
 
         }
     });
 }
-const editUser = (item: any) => {
-    Helpers.router().push({ name: "update-user", params: { uuid: item.uuid } });
-}
-
-
 const columns = [
-    { key: "id", label: "Ref-ID" },
+    { key: "id", label: "ID" },
     { key: "name", label: "Name" },
-    { key: "phone", label: "Phone" },
-    { key: "user_name", label: "User Name" },
-    { key: "status", label: "Status" },
-    { key: "last_login", label: "Last Login" },
+    { key: "slug", label: "Slug" },
+    { key: "sort_order", label: "Sort" },
     { key: "created_at", label: "Created At" },
-    //   { key: "updated_at", label: "Updated At" },
-
 ];
 
 const actions = [
@@ -115,27 +95,25 @@ function handleAction({ action, row, selected }: { action: string; row?: any; se
     const actionsRequiringUuid = ['edit', 'delete','view']
     if (actionsRequiringUuid.includes(action)) {
         if (!hasUuid(row?.uuid)) {
-            toast.value.showToast(400, 'Error', 'User uuid not found')
+            toast.value.showToast(400, 'Error', 'Category uuid not found')
             return
         }
     }
     switch (action) {
         case 'view':
-             Helpers.router().push({ name: 'show-user', params: { uuid: row?.uuid} });
+             Helpers.router().push({ name: 'show-category', params: { uuid: row?.uuid} });
             break;
         case 'edit':
-            Helpers.router().push({ name: 'edit-user', params: { uuid: row.uuid, slug: row.slug } });
+            Helpers.router().push({ name: 'edit-category', params: { uuid: row.uuid, slug: row.slug } });
             break;
         case 'delete':
-
-            deleteUser(row);
+            deleteCategory(row);
             break;
         case 'bulk-delete':
             if (!selected || selected.length === 0) {
-                toast.value.showToast(400, 'Error', 'No users selected');
+                toast.value.showToast(400, 'Error', 'No categories selected');
                 return;
             }
-            // For now just log; can be wired to an API endpoint for bulk delete
            bulkDelete(selected);
             break;
         default:
@@ -148,8 +126,8 @@ function handleAction({ action, row, selected }: { action: string; row?: any; se
     <GenericTable
         :columns="columns"
         :isLoading="isLoading"
-        :fetchData="getUsers"
-        :rows="users"
+        :fetchData="getCategories"
+        :rows="categories"
         :actions="actions"
         :bulkActions="bulkActions"
         :enableBulkActions="true"
@@ -159,32 +137,14 @@ function handleAction({ action, row, selected }: { action: string; row?: any; se
     >
         <template #id="{ row }">
             <td>
-                <span class="text-default-400">#UR00{{ row.id }}</span>
+                <span class="text-default-400">#CT{{ row.id }}</span>
             </td>
         </template>
         <template #name="{ row }">
             <td>
-                <div class="flex items-center gap-3">
-                    <div>
-                        <img :src="row.thumbnail" alt="" class="size-8 rounded-full">
-                    </div>
-                    <div>
-                        <h5>
-                            <a data-sort="user" href="#!" class="hover:text-primary">{{ row.name }}</a>
-                        </h5>
-                        <p class="text-default-400 text-xs">{{ row.email }}</p>
-                    </div>
-                </div>
+                <h5><a data-sort="category" href="#!" class="hover:text-primary">{{ row.name }}</a></h5>
+                <p class="text-default-400 text-xs">{{ row.description }}</p>
             </td>
-        </template>
-
-        <template #status="{ row }">
-            <span :class="Helpers.setStatusBadge('success')">Active</span>
-        </template>
-        <template #last_login="{ row }">
-            <span v-if="row.last_login">{{ $filters.DateTimeFormat(row.last_login) }}</span>
-
-            <span v-else class="badge bg-danger/15 text-danger">Never</span>
         </template>
     </GenericTable>
 

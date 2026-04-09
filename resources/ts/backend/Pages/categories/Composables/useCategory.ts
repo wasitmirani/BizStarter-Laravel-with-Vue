@@ -1,165 +1,67 @@
-// composables/useUsers.ts
-import { ref, reactive, computed } from 'vue'
-import { UserService } from '../../../Services/user/UserService'
-import { DropdownOptions } from '../../../Utils/DropdownOptions'
-import { Helpers } from '../../../Utils/Helper'
-import { useDropDownsStore } from '../../../Stores/DropDownsStore'
+import { reactive } from 'vue';
+import { Helpers } from '../../../Utils/Helper';
+import { CatalogService } from '../../../Services/catalog/CatalogService';
 
+const emptyPagination = {
+    data: [],
+    current_page: 1,
+    last_page: 1,
+    from: 0,
+    to: 0,
+    total: 0,
+};
 
-export function useUsers() {
-    const router =Helpers.router()
+export function useCategories() {
+    const categories = Helpers.useDynamicRef<any>(emptyPagination);
+    const isLoading = Helpers.useDynamicRef(false);
     const route = Helpers.route();
-    const dropdownsStore = useDropDownsStore()
+    const router = Helpers.router();
 
-    // State
-    const users = Helpers.useDynamicRef([])
-    const roles = computed(() => dropdownsStore.roles)
-    const currentPage = Helpers.useDynamicRef(1)
-    const toast = Helpers.useDynamicInject<{ showToast: (status: number, title: string, message: string) => void }>(
-        'toast',
-        { showToast: () => {} }
-    )
-    const isLoading = Helpers.useDynamicRef(false)
-    const sortableFilterOptions = computed(() => DropdownOptions.sortableFilterOptions())
-
-    // Default filter values (single source of truth)
-    const defaultFilters = {
-        search: '',
-        role: '',
-        status: '',
+    const filters = reactive({
         page: 1,
-        per_page: 20,
+        per_page: 10,
+        search: '',
         sort_by: 'id',
-        paginated: true,
         sort_dir: 'desc',
-        date_from: '',
-        date_to: '',
-        date_range:'',
-    }
+    });
 
-    // Reactive filter state
-    const filters = reactive({ ...defaultFilters })
-
-    // Wrapper for generic URL update helper
-    const updateUrlWithFilters = () => {
-        Helpers.updateUrlWithFilters(route, router, filters, {
-            defaults: defaultFilters,
-            omitDefaults: true,
-        })
-    }
-
-    // Load filters from URL query parameters using generic helper
-    const loadFiltersFromUrl = () => {
-        Helpers.loadFiltersFromQuery(filters, route.query as Record<string, any>)
-        currentPage.value = filters.page
-    }
-
-    // Fetch users
-    const fetchUsers = async (page?: number, per_page?: number) => {
-        // Update filters if parameters provided
-        if (page !== undefined) filters.page = page
-        if (per_page !== undefined) filters.per_page = per_page
-
-        currentPage.value = filters.page
-        isLoading.value = true
-
-        const params = Helpers.buildQueryFromFilters(filters)
-
+    const fetchCategories = async (page?: number, perPage?: number) => {
+        if (page) filters.page = page;
+        if (perPage) filters.per_page = perPage;
+        isLoading.value = true;
         try {
-            const res = await UserService.users(params)
-            users.value = res.data.result.users
-            // toast.value.showToast(res.status, 'User Data', res.data)
-        } catch (err: any) {
-            console.log("err:", err.response?.data?.message)
-            toast.value?.showToast(
-                err.status,
-                'Error: ' + err.status,
-                err.response?.data?.message
-            )
+            const res = await CatalogService.categories({ ...filters });
+            categories.value = res?.data?.result?.categories ?? emptyPagination;
         } finally {
-            setTimeout(() => {
-                isLoading.value = false
-            }, 1000)
+            isLoading.value = false;
         }
-    }
+    };
 
-    // Handle filter changes
     const handleFilterChange = (newFilters: Partial<typeof filters>) => {
-        // Update filters: Only update filters present in newFilters,
-        // Remaining filters not in newFilters are reset to default
-        Object.keys(filters).forEach((key) => {
-            if (Object.prototype.hasOwnProperty.call(newFilters, key)) {
-                // @ts-ignore
-                filters[key] = newFilters[key]
-            } else {
-                // @ts-ignore
-                filters[key] = defaultFilters[key]
-            }
-        });
-        filters.page = 1 // Reset to first page when filters change
-        updateUrlWithFilters()
-        fetchUsers()
-    }
+        Object.assign(filters, newFilters);
+        filters.page = 1;
+        router.replace({ query: { ...filters } });
+        fetchCategories();
+    };
 
-    // Handle search input changes
-    const handleSearchChange = (searchTerm: string) => {
-        filters.search = searchTerm
-        filters.page = 1 // Reset to first page when search changes
-        updateUrlWithFilters()
-        fetchUsers()
-    }
+    const handleSearchQuery = (query: string) => handleFilterChange({ search: query });
+    const setLoading = (value: boolean) => (isLoading.value = value);
+    const filterData = (data: any) => (categories.value = data?.result?.categories ?? emptyPagination);
 
-    // Handle search query
-    const handleSearchQuery = (query: string) => {
-        handleSearchChange(query)
-    }
-
-    // Set loading state
-    const setLoading = (value: boolean) => {
-        isLoading.value = value
-    }
-
-    // Filter data handler
-    const filterData = (data: any) => {
-        users.value = data.result.users
-    }
-
-    // Reset filters to default
-    const resetFilters = () => {
-        Object.assign(filters, defaultFilters)
-        updateUrlWithFilters()
-        fetchUsers()
-    }
-
-    // Initialize on mount
     const init = () => {
-        loadFiltersFromUrl()
-        dropdownsStore.fetchRoles()
-        fetchUsers()
-    }
+        Helpers.loadFiltersFromQuery(filters, route.query as Record<string, any>);
+        fetchCategories();
+    };
 
     return {
-        // State
-        users,
-        roles,
-        currentPage,
+        categories,
         isLoading,
         filters,
-        sortableFilterOptions,
-
-        // Methods
-        fetchUsers,
+        fetchCategories,
         handleFilterChange,
-        handleSearchChange,
         handleSearchQuery,
         setLoading,
         filterData,
-        resetFilters,
         init,
-
-        // Utilities
-        loadFiltersFromUrl,
-        updateUrlWithFilters,
-        dropdownsStore,
-    }
+    };
 }

@@ -5,14 +5,9 @@ import { Helpers } from "../../../Utils/Helper";
 
 export interface UserFilters {
     search: string;
-    role: string;
-    status: string;
-    date_from: string;
-    date_to: string;
     sort_by: string;
     sort_dir: string;
-    per_page: string;
-    date_range: string;
+    per_page: number;
 }
 
 export interface FilterOption {
@@ -22,22 +17,9 @@ export interface FilterOption {
 
 // ─── Static Option Lists ──────────────────────────────────────────────────────
 
-export const roles: FilterOption[] = [
-    { value: '', label: 'All Roles' },
-  
-];
-
-export const statuses: FilterOption[] = [
-    { value: '', label: 'All Status' },
-    { value: 'Active', label: 'Active' },
-    { value: 'Inactive', label: 'Inactive' },
-    { value: 'Suspended', label: 'Suspended' },
-];
-
 export const sortOptions: FilterOption[] = [
     { value: 'id', label: 'ID' },
     { value: 'name', label: 'Name' },
-    { value: 'email', label: 'Email' },
     { value: 'created_at', label: 'Date Created' },
     { value: 'updated_at', label: 'Last Updated' },
 ];
@@ -54,27 +36,13 @@ export const perPageOptions: FilterOption[] = [
     { value: '20', label: '20' },
     { value: '50', label: '50' },
 ];
-
-export const dateRanges: FilterOption[] = [
-    { value: '1', label: 'Today' },
-    { value: '7', label: 'Last 7 Days' },
-    { value: '30', label: 'Last 30 Days' },
-    { value: '60', label: 'Last 60 Days' },
-    { value: '90', label: 'Last 90 Days' },
-    { value: '360', label: 'This Year' },
-];
 // ─── Default Filter Values ────────────────────────────────────────────────────
 
 export const defaultFilters: UserFilters = {
     search: '',
-    role: '',
-    status: '',
-    date_from: '',
-    date_to: '',
     sort_by: 'id',
     sort_dir: 'desc',
-    per_page: '10',
-    date_range:'',
+    per_page: 10,
 };
 
 // ─── Composable ───────────────────────────────────────────────────────────────
@@ -86,14 +54,9 @@ export function useUserFilter(
     // Merge incoming props with defaults (props win over defaults)
     const filters = Helpers.useDynamicReactive<UserFilters>({
         search:    initialFilters.search    || defaultFilters.search,
-        role:      initialFilters.role      || defaultFilters.role,
-        status:    initialFilters.status    || defaultFilters.status,
-        date_from: initialFilters.date_from || defaultFilters.date_from,
-        date_to:   initialFilters.date_to   || defaultFilters.date_to,
         sort_by:   initialFilters.sort_by   || defaultFilters.sort_by,
         sort_dir:  initialFilters.sort_dir  || defaultFilters.sort_dir,
         per_page:  initialFilters.per_page  || defaultFilters.per_page,
-        date_range: initialFilters.date_range  || defaultFilters.date_range,
     });
 
     const onSubmit = (): void => {
