@@ -24,7 +24,7 @@ return new class extends Migration
             $table->unsignedInteger('sort_order')->default(0);
             $table->json('meta')->nullable();
             $table->timestamps();
-            $table->softDeletes();
+            $table->softDeletes(); 
             $table->index(['parent_id', 'sort_order','slug','uuid','id']);
         });
     }
