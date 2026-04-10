@@ -1,6 +1,6 @@
 // composables/useUsers.ts
 import { ref, reactive, computed } from 'vue'
-import { UserService } from '../../../Services/user/UserService'
+import  UserService  from '../../../Services/user/UserService'
 import { DropdownOptions } from '../../../Utils/DropdownOptions'
 import { Helpers } from '../../../Utils/Helper'
 import { useDropDownsStore } from '../../../Stores/DropDownsStore'
