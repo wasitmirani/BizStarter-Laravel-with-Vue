@@ -23,7 +23,6 @@ class ProductController extends Controller implements CatalogFilterable
     {
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:products,slug',
             'category_id' => 'nullable|exists:categories,id',
             'brand_id' => 'nullable|exists:brands,id',
             'type' => 'nullable|in:service,digital,physical,bundle',
@@ -61,7 +60,6 @@ class ProductController extends Controller implements CatalogFilterable
     {
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:products,slug,' . $uuid . ',uuid',
             'category_id' => 'nullable|exists:categories,id',
             'brand_id' => 'nullable|exists:brands,id',
             'type' => 'nullable|in:service,digital,physical,bundle',

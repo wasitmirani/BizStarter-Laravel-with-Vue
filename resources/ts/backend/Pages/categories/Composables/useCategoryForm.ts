@@ -9,7 +9,6 @@ export function useCategoryForm(categoryData?: any, isEditMode?: boolean) {
     const category = Helpers.useDynamicReactive({
         uuid: '',
         name: '',
-        slug: '',
         description: '',
         sort_order: 0,
         ...((categoryData ?? {}) as object),

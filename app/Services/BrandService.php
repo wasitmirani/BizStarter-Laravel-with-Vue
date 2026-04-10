@@ -27,7 +27,7 @@ class BrandService extends BaseService
     {
         $payload = array_merge($data, [
             'uuid' => genUUID(),
-            'slug' => setSlug($data['slug'] ?? $data['name']),
+            'slug' => setSlug($data['name']),
         ]);
 
         return $this->model->create($payload);
@@ -36,7 +36,7 @@ class BrandService extends BaseService
     public function updateBrand(string $uuid, array $data): Brand
     {
         $brand = $this->model->where('uuid', $uuid)->firstOrFail();
-        $data['slug'] = setSlug($data['slug'] ?? $data['name'] ?? $brand->name);
+        $data['slug'] = setSlug($data['name'] ?? $brand->name);
         $brand->update($data);
 
         return $brand->fresh();

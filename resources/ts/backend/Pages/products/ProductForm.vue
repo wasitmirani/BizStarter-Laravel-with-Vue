@@ -34,9 +34,6 @@ const handleAddThumbnail = (files: any) => addThumbnail(files);
                                     <FormInput v-model="product.barcode" label="Barcode" name="barcode" placeholder="Enter barcode" type="text" :errors="errors" />
                                 </div>
                                 <div class="col-span-2 md:col-span-1">
-                                    <FormInput v-model="product.slug" label="Slug" name="slug" placeholder="product-slug" type="text" :errors="errors" />
-                                </div>
-                                <div class="col-span-2 md:col-span-1">
                                     <FormInput v-model="product.uom" label="Unit (UOM)" name="uom" placeholder="pcs" type="text" :errors="errors" />
                                 </div>
                                 <div class="col-span-2 md:col-span-1">

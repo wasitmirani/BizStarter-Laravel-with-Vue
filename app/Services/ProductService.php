@@ -28,7 +28,7 @@ class ProductService extends BaseService
     {
         $payload = array_merge($data, [
             'uuid' => genUUID(),
-            'slug' => setSlug($data['slug'] ?? $data['name']),
+            'slug' => setSlug($data['name']),
         ]);
 
         return $this->model->create($payload);
@@ -37,7 +37,7 @@ class ProductService extends BaseService
     public function updateProduct(string $uuid, array $data): Product
     {
         $product = $this->model->where('uuid', $uuid)->firstOrFail();
-        $data['slug'] = setSlug($data['slug'] ?? $data['name'] ?? $product->name);
+        $data['slug'] = setSlug($data['name'] ?? $product->name);
         $product->update($data);
 
         return $product->fresh(['category:id,name,uuid', 'brand:id,name,uuid']);

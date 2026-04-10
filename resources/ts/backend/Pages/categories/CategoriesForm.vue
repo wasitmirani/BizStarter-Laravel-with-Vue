@@ -22,8 +22,6 @@ const {
                     <div class="grid lg:grid-cols-2 grid-cols-1 gap-base">
                         <FormInput v-model="category.name" label="Category Name" name="name" placeholder="Beverages"
                             type="text" :errors="errors" autofocus />
-                        <FormInput v-model="category.slug" label="Slug" name="slug" placeholder="beverages"
-                            type="text" :errors="errors" />
                         <FormInput v-model="category.sort_order" label="Sort Order" name="sort_order" placeholder="0"
                             type="number" :errors="errors" />
                         <FormInput v-model="category.description" label="Description" name="description"

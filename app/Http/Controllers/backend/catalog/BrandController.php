@@ -23,7 +23,6 @@ class BrandController extends Controller implements CatalogFilterable
     {
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:brands,slug',
             'code' => 'nullable|string|max:255|unique:brands,code',
             'description' => 'nullable|string',
             'thumbnail' => 'nullable|string|max:255',
@@ -45,7 +44,6 @@ class BrandController extends Controller implements CatalogFilterable
     {
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:brands,slug,' . $uuid . ',uuid',
             'code' => 'nullable|string|max:255|unique:brands,code,' . $uuid . ',uuid',
             'description' => 'nullable|string',
             'thumbnail' => 'nullable|string|max:255',

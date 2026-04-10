@@ -23,7 +23,6 @@ class CategoryController extends Controller implements CatalogFilterable
     {
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:categories,slug',
             'description' => 'nullable|string',
             'sort_order' => 'nullable|integer|min:0',
             'parent_id' => 'nullable|exists:categories,id',
@@ -44,7 +43,6 @@ class CategoryController extends Controller implements CatalogFilterable
     {
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:categories,slug,' . $uuid . ',uuid',
             'description' => 'nullable|string',
             'sort_order' => 'nullable|integer|min:0',
             'parent_id' => 'nullable|exists:categories,id',

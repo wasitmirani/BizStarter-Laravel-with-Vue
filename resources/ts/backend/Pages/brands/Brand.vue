@@ -2,10 +2,13 @@
 import { Helpers } from '../../Utils/Helper';
 import { CatalogService } from '../../Services/catalog/CatalogService';
 
-const toast = Helpers.useDynamicInject('toast', null);
+const toast = Helpers.useDynamicInject<{ showToast: (status: number, title: string, message: string) => void }>(
+    'toast',
+    { showToast: () => {} }
+);
 const errors = Helpers.useDynamicRef<any>({});
 const isLoading = Helpers.useDynamicRef(false);
-const brand = Helpers.useDynamicReactive<any>({ uuid: '', name: '', slug: '', code: '', description: '' });
+const brand = Helpers.useDynamicReactive<any>({ uuid: '', name: '', code: '', description: '' });
 const isEditMode = Helpers.useDynamicRef(false);
 
 const loadBrand = async () => {
@@ -44,7 +47,6 @@ Helpers.useDynamicOnMounted(loadBrand);
         <form @submit.prevent="onSubmit">
             <div class="card-body grid lg:grid-cols-2 grid-cols-1 gap-base">
                 <FormInput v-model="brand.name" label="Brand Name" name="name" placeholder="Brand name" type="text" :errors="errors" />
-                <FormInput v-model="brand.slug" label="Slug" name="slug" placeholder="brand-slug" type="text" :errors="errors" />
                 <FormInput v-model="brand.code" label="Code" name="code" placeholder="BR001" type="text" :errors="errors" />
                 <FormInput v-model="brand.description" label="Description" name="description" placeholder="Brand description" type="text" :errors="errors" />
             </div>

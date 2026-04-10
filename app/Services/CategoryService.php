@@ -27,7 +27,7 @@ class CategoryService extends BaseService
     {
         $payload = array_merge($data, [
             'uuid' => genUUID(),
-            'slug' => setSlug($data['slug'] ?? $data['name']),
+            'slug' => setSlug($data['name']),
         ]);
 
         return $this->model->create($payload);
@@ -36,7 +36,7 @@ class CategoryService extends BaseService
     public function updateCategory(string $uuid, array $data): Category
     {
         $category = $this->model->where('uuid', $uuid)->firstOrFail();
-        $data['slug'] = setSlug($data['slug'] ?? $data['name'] ?? $category->name);
+        $data['slug'] = setSlug($data['name'] ?? $category->name);
         $category->update($data);
 
         return $category->fresh();

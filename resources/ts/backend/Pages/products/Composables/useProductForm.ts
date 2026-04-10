@@ -11,7 +11,6 @@ export function useProductForm(productData?: any, isEditMode?: boolean) {
     const product = Helpers.useDynamicReactive({
         uuid: '',
         name: '',
-        slug: '',
         thumbnail: '',
         description: '',
         sku: '',
