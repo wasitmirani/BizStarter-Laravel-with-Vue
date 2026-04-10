@@ -39,6 +39,10 @@ const routes = [
     setRoute('/products/create', 'create-product', 'products/Product', 'create-product'),
     setRoute('/products/edit/:uuid', 'edit-product', 'products/Product', 'edit-product'),
     setRoute('/products/:uuid', 'show-product', 'products/ProductShow', 'show-product'),
+    setRoute('/variants', 'variants', 'variants/Variants', 'variants-list'),
+    setRoute('/variants/create', 'create-variant', 'variants/Variant', 'create-variant'),
+    setRoute('/variants/edit/:uuid', 'edit-variant', 'variants/Variant', 'edit-variant'),
+    setRoute('/variants/:uuid', 'show-variant', 'variants/VariantShow', 'show-variant'),
 
     // Managment Routes
     setRoute('/management/users', 'users', 'users/Users', 'users-list'),

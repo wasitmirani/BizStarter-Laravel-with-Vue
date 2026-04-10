@@ -6,16 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 
-class Product extends Model
+class ProductVariant extends Model
 {
     use SoftDeletes;
 
     protected $guarded = [];
 
     protected $casts = [
-        'tags' => 'array',
         'meta' => 'array',
-        'track_expiry_dates' => 'boolean',
+        'is_default' => 'boolean',
         'price' => 'decimal:2',
         'retail_price' => 'decimal:2',
     ];
@@ -32,19 +31,9 @@ class Product extends Model
         return asset($backendPath . 'products/' . $default);
     }
 
-    public function category()
+    public function product()
     {
-        return $this->belongsTo(Category::class);
-    }
-
-    public function brand()
-    {
-        return $this->belongsTo(Brand::class);
-    }
-
-    public function variants()
-    {
-        return $this->hasMany(ProductVariant::class);
+        return $this->belongsTo(Product::class);
     }
 
     public function scopeSearch($query, ?string $search)
@@ -71,10 +60,8 @@ class Product extends Model
         return $query
             ->when($filters['id'] ?? null, fn($q, $id) => $q->where('id', $id))
             ->when($filters['uuid'] ?? null, fn($q, $uuid) => $q->where('uuid', $uuid))
-            ->when($filters['category_id'] ?? null, fn($q, $categoryId) => $q->where('category_id', $categoryId))
-            ->when($filters['brand_id'] ?? null, fn($q, $brandId) => $q->where('brand_id', $brandId))
-            ->when($filters['type'] ?? null, fn($q, $type) => $q->where('type', $type))
-            ->when($filters['tenant_id'] ?? null, fn($q, $tenantId) => $q->where('tenant_id', $tenantId))
+            ->when($filters['product_id'] ?? null, fn($q, $productId) => $q->where('product_id', $productId))
+            ->when($filters['status'] ?? null, fn($q, $status) => $q->where('status', $status))
             ->when($filters['date_range'] ?? null, fn($q, $days) =>
                 $q->where('created_at', '>=', now()->subDays((int) $days)->startOfDay()))
             ->when($filters['search'] ?? ($filters['query'] ?? null), fn($q, $search) => $q->search($search));

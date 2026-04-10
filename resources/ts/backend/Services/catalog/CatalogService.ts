@@ -76,6 +76,27 @@ class Catalog {
         return AxiosService.delete(`/product/${uuid}`);
     }
 
+    variants(params: QueryParams = {}) {
+        const query = toQueryString(params);
+        return AxiosService.get(`/variant${query ? `?${query}` : ''}`);
+    }
+
+    variant(uuid: string) {
+        return AxiosService.get(`/variant/${uuid}`);
+    }
+
+    storeVariant(payload: any) {
+        return AxiosService.post('/variant', payload);
+    }
+
+    updateVariant(uuid: string, payload: any) {
+        return AxiosService.put(`/variant/${uuid}`, payload);
+    }
+
+    deleteVariant(uuid: string) {
+        return AxiosService.delete(`/variant/${uuid}`);
+    }
+
     listCategories() {
         return AxiosService.get('/list/categories');
     }

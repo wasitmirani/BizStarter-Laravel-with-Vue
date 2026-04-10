@@ -16,6 +16,8 @@ interface CatalogFilterable
         'category_id' => 'category_id',
         'brand_id' => 'brand_id',
         'type' => 'type',
+        'product_id' => 'product_id',
+        'status' => 'status',
         'tenant_id' => 'tenant_id',
         'paginated' => 'paginated',
     ];

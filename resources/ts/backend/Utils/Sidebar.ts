@@ -50,6 +50,7 @@ export default class SidebarMenu {
                     this.setSubMenu('Categories', '/categories', 'categories-view'),
                     this.setSubMenu('Brands', '/brands', 'brands-view'),
                     this.setSubMenu('Products', '/products', 'products-view'),
+                    this.setSubMenu('Variants', '/variants', 'variants-view'),
                 ]
             ),
             this.setHeadingMenu('Management & Apps'),

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\backend\catalog\BrandController;
 use App\Http\Controllers\backend\catalog\ProductController;
 use App\Http\Controllers\backend\catalog\CategoryController;
+use App\Http\Controllers\backend\catalog\ProductVariantController;
 use App\Http\Controllers\backend\role\RoleController;
 use App\Http\Controllers\backend\user\UserController;
 use App\Http\Controllers\backend\media\UploadController;
@@ -30,6 +31,7 @@ Route::prefix('/app')->group(function () {
     Route::apiResource('category', CategoryController::class);
     Route::apiResource('brand', BrandController::class);
     Route::apiResource('product', ProductController::class);
+    Route::apiResource('variant', ProductVariantController::class);
     Route::prefix('upload')->group(function() {
         Route::post('/{type}/image',[UploadController::class,'uploadSingleImage']);
     });
