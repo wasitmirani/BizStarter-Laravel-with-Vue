@@ -24,9 +24,25 @@ const routes = [
         redirect: { name: 'dashboard' }
     },
     setRoute('/:catchAll(.*)', '404', 'errors/404', null),
-    setRoute('/:catchAll(.*)', '404', 'errors/404', null),
-    setRoute('/unauthorized/user', '401', 'error/401', null),
+    setRoute('/unauthorized/user', '401', 'errors/401', null),
     setRoute('/dashboard', 'dashboard', 'dashboard/Dashboard', null),
+
+    // Catalog Routes
+    setRoute('/categories', 'categories', 'categories/Categories', 'categories-list'),
+    setRoute('/categories/create', 'create-category', 'categories/Category', 'create-category'),
+    setRoute('/categories/edit/:uuid', 'edit-category', 'categories/Category', 'edit-category'),
+    setRoute('/categories/:uuid', 'show-category', 'categories/CategoryShow', 'show-category'),
+    setRoute('/brands', 'brands', 'brands/Brands', 'brands-list'),
+    setRoute('/brands/create', 'create-brand', 'brands/Brand', 'create-brand'),
+    setRoute('/brands/edit/:uuid', 'edit-brand', 'brands/Brand', 'edit-brand'),
+    setRoute('/products', 'products', 'products/Products', 'products-list'),
+    setRoute('/products/create', 'create-product', 'products/Product', 'create-product'),
+    setRoute('/products/edit/:uuid', 'edit-product', 'products/Product', 'edit-product'),
+    setRoute('/products/:uuid', 'show-product', 'products/ProductShow', 'show-product'),
+    setRoute('/variants', 'variants', 'variants/Variants', 'variants-list'),
+    setRoute('/variants/create', 'create-variant', 'variants/Variant', 'create-variant'),
+    setRoute('/variants/edit/:uuid', 'edit-variant', 'variants/Variant', 'edit-variant'),
+    setRoute('/variants/:uuid', 'show-variant', 'variants/VariantShow', 'show-variant'),
 
     // Managment Routes
     setRoute('/management/users', 'users', 'User/Users', 'users-list'),

@@ -44,6 +44,15 @@ export default class SidebarMenu {
                 ]
             ),
 
+            this.setHeadingMenu('Modules & Apps'),
+            this.setMultiMenu('Catalog', 'catalog ', 'Catalog',
+                [
+                    this.setSubMenu('Categories', '/categories', 'categories-view'),
+                    this.setSubMenu('Brands', '/brands', 'brands-view'),
+                    this.setSubMenu('Products', '/products', 'products-view'),
+                    this.setSubMenu('Variants', '/variants', 'variants-view'),
+                ]
+            ),
             this.setHeadingMenu('Management & Apps'),
             this.setMultiMenu('Users Management', 'users', undefined, [
                     this.setSubMenu('Users', '/management/users', 'users-list'),
