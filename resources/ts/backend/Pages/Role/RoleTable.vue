@@ -90,10 +90,8 @@ const editUser = (item: any) => {
 const columns = [
     { key: "id", label: "Ref-ID" },
     { key: "name", label: "Name" },
-    { key: "phone", label: "Phone" },
-    { key: "user_name", label: "User Name" },
-    { key: "status", label: "Status" },
-    { key: "last_login", label: "Last Login" },
+    { key: "users_count", label: "Users" },
+    {key:'permissions_count', label:'Permissions'},
     { key: "created_at", label: "Created At" },
     //   { key: "updated_at", label: "Updated At" },
 
@@ -102,7 +100,6 @@ const columns = [
 const actions = [
     { label: "View", icon: "eye", action: "view", class: "info", },
     { label: "Edit", icon: "edit", action: "edit", class: "primary" },
-    { label: "Impersonate", icon: "user-check", action: "impersonate", class: "warning", condition: (row: any) => row?.can_impersonate  || false },
     { label: "Delete", icon: "trash", action: "delete", class: "danger" },
 ];
 
@@ -162,7 +159,7 @@ function handleAction({ action, row, selected }: { action: string; row?: any; se
     >
         <template #id="{ row }">
             <td>
-                <span class="text-default-400">#UR00{{ row.id }}</span>
+                <span class="text-default-400">#RL00{{ row.id }}</span>
             </td>
         </template>
         <template #name="{ row }">
@@ -181,14 +178,8 @@ function handleAction({ action, row, selected }: { action: string; row?: any; se
             </td>
         </template>
 
-        <template #status="{ row }">
-            <span :class="Helpers.setStatusBadge('success')">Active</span>
-        </template>
-        <template #last_login="{ row }">
-            <span v-if="row.last_login">{{ $filters.DateTimeFormat(row.last_login) }}</span>
-
-            <span v-else class="badge bg-danger/15 text-danger">Never</span>
-        </template>
+      
+       
     </GenericTable>
 
 </template>
