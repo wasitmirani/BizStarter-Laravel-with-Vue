@@ -8,6 +8,7 @@ export function useUserForm(userData?: any, isEditMode: boolean = false) {
     const isLoading = Helpers.useDynamicRef(false);
     const showPassword = Helpers.useDynamicRef(false);
     const toast = Helpers.useDynamicInject('toast', null);
+    const originalThumbnail = Helpers.useDynamicRef<string>(userData?.thumbnail || '');
 
     // ─── Dropdown Options ─────────────────────────────────────────────────────
     const genderDropdownItems = DropdownOptions.genderOptions();
@@ -42,6 +43,14 @@ export function useUserForm(userData?: any, isEditMode: boolean = false) {
         if (media) {
             user.thumbnail = media.name;
         }
+    };
+
+    const removeThumbnail = (): void => {
+        user.thumbnail = '';
+    };
+
+    const resetThumbnail = (): void => {
+        user.thumbnail = originalThumbnail.value;
     };
 
     // ─── Password Helpers ─────────────────────────────────────────────────────
@@ -149,6 +158,8 @@ export function useUserForm(userData?: any, isEditMode: boolean = false) {
         // handlers
         onSubmit,
         addThumbnail,
+        removeThumbnail,
+        resetThumbnail,
         togglePassword,
         generatePassword,
         copyPassword,

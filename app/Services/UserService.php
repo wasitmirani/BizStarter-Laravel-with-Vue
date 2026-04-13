@@ -104,6 +104,9 @@ class UserService extends BaseService implements UserFilterable
         if(!$user){
         return responseMessage('User not found',404);
         }
+      
+
+
         $user->name = ($data['first_name'].' ' .$data['last_name']);
         $user->first_name =$data['first_name'];
         $user->last_name =$data['last_name'];

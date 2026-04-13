@@ -16,6 +16,8 @@ const {
     maritalStatusDropdownItems,
     onSubmit,
     addThumbnail,
+    removeThumbnail,
+    resetThumbnail,
     togglePassword,
     generatePassword,
     copyPassword
@@ -132,14 +134,41 @@ const {
 
                         <FormInput v-model="user.dob" label="Date Of Birth" name="dob" placeholder="Date Of Birth"
                             type="date" :errors="errors" autofocus />
-                        <div>
-                            <label class="form-label font-semibold block mb-2">Profile Picture <small>Allowed formats:
-                                    JPG, PNG. Max size: 2MB</small> </label>
-                            <Uploader server="/upload/user/image" max="1" maxFilesize="2" :warnings="true"
-                                @add="(files:any) => addThumbnail(files)" />
-                        </div>
-                        <div>
+                        <div class="col-span-2 lg:col-span-3">
+                            <label class="form-label font-semibold block mb-4">Profile Picture 
+                                <small class="text-default-400 text-xs sm:text-sm font-normal ml-2">JPG, PNG • Max 2MB</small> 
+                            </label>
+                            
+                            <!-- Thumbnail Preview Card -->
+                            <div v-if="user.thumbnail" class="mb-4 bg-gradient-to-br from-default-50 to-default-100 border border-default-200 rounded-xl p-4 sm:p-6">
+                                <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
+                                    <!-- Image -->
+                                    <div class="flex-shrink-0">
+                                        <img :src="user.thumbnail" alt="profile-preview" class="size-20 sm:size-28 rounded-xl object-cover shadow-md border-2 border-white" />
+                                    </div>
+                                    
+                                    <!-- Actions -->
+                                    <div class="flex-1 w-full sm:w-auto">
+                                        <p class="text-sm text-default-600 mb-3 text-center sm:text-left">Current profile picture</p>
+                                        <div class="flex gap-2 w-full">
+                                            <button type="button" @click="removeThumbnail" class="flex-1 sm:flex-none btn btn-sm btn-outline-danger">
+                                                <i class="iconify tabler--trash"></i> 
+                                                <span class="ml-1">Remove</span>
+                                            </button>
+                                            <button v-if="isEditMode" type="button" @click="resetThumbnail" class="flex-1 sm:flex-none btn btn-sm btn-outline-secondary">
+                                                <i class="iconify tabler--refresh"></i> 
+                                                <span class="ml-1">Reset</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
+                            <!-- File Uploader -->
+                            <div class="border-2 border-dashed border-primary rounded-xl p-6 sm:p-8 hover:bg-primary/5 transition-colors">
+                                <Uploader server="/upload/user/image" max="1" maxFilesize="2" :warnings="true"
+                                    @add="(files:any) => addThumbnail(files)" />
+                            </div>
                         </div>
 
 
