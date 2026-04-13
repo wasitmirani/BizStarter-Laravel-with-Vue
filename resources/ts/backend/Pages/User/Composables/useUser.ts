@@ -1,6 +1,5 @@
 // composables/useUsers.ts
-import { ref, reactive, computed } from 'vue'
-import { UserService } from '../../../Services/user/UserService'
+import  UserService  from '../../../Services/User/UserService'
 import { DropdownOptions } from '../../../Utils/DropdownOptions'
 import { Helpers } from '../../../Utils/Helper'
 import { useDropDownsStore } from '../../../Stores/DropDownsStore'
@@ -13,14 +12,14 @@ export function useUsers() {
 
     // State
     const users = Helpers.useDynamicRef([])
-    const roles = computed(() => dropdownsStore.roles)
+    const roles = Helpers.useDynamicComputed(() => dropdownsStore.roles ?? []);
     const currentPage = Helpers.useDynamicRef(1)
     const toast = Helpers.useDynamicInject<{ showToast: (status: number, title: string, message: string) => void }>(
         'toast',
         { showToast: () => {} }
     )
     const isLoading = Helpers.useDynamicRef(false)
-    const sortableFilterOptions = computed(() => DropdownOptions.sortableFilterOptions())
+    const sortableFilterOptions =  Helpers.useDynamicComputed(() => DropdownOptions.sortableFilterOptions())
 
     // Default filter values (single source of truth)
     const defaultFilters = {
@@ -38,7 +37,7 @@ export function useUsers() {
     }
 
     // Reactive filter state
-    const filters = reactive({ ...defaultFilters })
+    const filters = Helpers.useDynamicReactive({ ...defaultFilters })
 
     // Wrapper for generic URL update helper
     const updateUrlWithFilters = () => {

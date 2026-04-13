@@ -26,6 +26,8 @@ return new class extends Migration
                     ->restrictOnDelete();
             }
         });
+
+        
     }
 
     public function down(): void

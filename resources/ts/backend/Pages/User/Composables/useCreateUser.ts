@@ -1,5 +1,5 @@
 import { Helpers } from '../../../Utils/Helper';
-import { UserService } from '../../../Services/user/UserService';
+import  UserService  from '../../../Services/User/UserService';
 
 export function useCreateUser() {
     const draftStatus = Helpers.useDynamicRef<any>(null);
