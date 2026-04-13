@@ -32,7 +32,7 @@ class AxiosClass {
         });
     }
 
-    async post<T>(url: string, body: any): Promise<AxiosResponse<T>> {
+    async post<T>(url: string, body?: any): Promise<AxiosResponse<T>> {
         if (token === undefined) {
             await setSessionToken();
         }
