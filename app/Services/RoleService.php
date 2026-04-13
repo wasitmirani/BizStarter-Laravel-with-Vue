@@ -28,7 +28,6 @@ class RoleService extends BaseService
                   ->filters($this->allowedFilters)
                   ->with($relations)
                   ->retrieve($params['paginated'] ?? false, $params['per_page'] ?? 15);
-
-
     }
+    
 }

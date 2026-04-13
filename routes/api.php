@@ -21,11 +21,17 @@ Route::prefix('/app')->group(function () {
         ]);
     });
 
-    Route::post('/password/update', [UserController::class, 'updatePassword']);
+
+    // Users
     Route::resource('user', UserController::class);
+    Route::post('/password/update', [UserController::class, 'updatePassword']);
     Route::post('user/{uuid}/impersonate', [UserController::class, 'impersonate']);
     Route::post('impersonate/leave', [UserController::class, 'leaveImpersonate']);
+
+    // Roles 
     Route::resource('role',RoleController::class);
+
+    // Uploads
     Route::prefix('upload')->group(function() {
         Route::post('/{type}/image',[UploadController::class,'uploadSingleImage']);
     });

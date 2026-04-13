@@ -1,91 +1,194 @@
 <script setup lang="ts">
-import OffCanvas from "../../Components/OffCanvas.vue"
-import ActiveFilters from '../../Components/ActiveFilters.vue'
-import { Helpers } from '../../Utils/Helper'
+import  UserService  from '../../Services/user/UserService';
+import GenericTable from '../../Components/GenericTable.vue';
+import { Helpers } from '../../Utils/Helper';
+import { hasUuid } from '../../Utils/Common';
+import axios from 'axios';
 
 
+const props = defineProps<{
+    roles: any;
+    isLoading: boolean;
+    getRoles: (page?: number, perPage?: number) => void;
+    currentFilters: Record<string, unknown>;
+}>();
+
+const emit = defineEmits<{
+    (e: 'role-deleted'): void;
+}>();
+
+const selectedItems = Helpers.useDynamicRef<(string | number)[]>([]);
+const toast = Helpers.useDynamicInject<{ showToast: (status: number, title: string, message: string) => void }>('toast', {
+    showToast: () => {},
+});
+
+
+
+function getRole(user: any) {
+    if (user.roles.length > 0) {
+        return user.roles[0].name;
+    }
+    return "No Role";
+}
+const deleteUser = (item: any) => {
+    Helpers.Swal().fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+    }).then((result: any) => {
+        if (result.isConfirmed) {
+            UserService.delete(item.uuid).then((res: any) => {
+                Helpers.Swal().fire({
+                    title: "Deleted!",
+                    text: "User has been deleted.",
+                    icon: "success"
+                });
+                props.getRoles();
+            }).catch((err: any) => {
+                console.log("err:", err.response.status);
+                toast.value.showToast(err.response.status, 'Error: ' + err.response.status, err.message ?? err.response.message);
+            })
+
+        }
+    });
+}
+const bulkDelete = (items: any) => {
+    Helpers.Swal().fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+    }).then((result: any) => {
+        if (result.isConfirmed) {
+            UserService.delete(items.uuid).then((res: any) => {
+                Helpers.Swal().fire({
+                    title: "Deleted!",
+                    text: "User has been deleted.",
+                    icon: "success"
+                });
+                props.getRoles();
+            }).catch((err: any) => {
+                console.log("err:", err.response.status);
+                toast.value.showToast(err.response.status, 'Error: ' + err.response.status, err.message ?? err.response.message);
+            })
+
+        }
+    });
+}
+const editUser = (item: any) => {
+    Helpers.router().push({ name: "update-user", params: { uuid: item.uuid } });
+}
+
+
+const columns = [
+    { key: "id", label: "Ref-ID" },
+    { key: "name", label: "Name" },
+    { key: "phone", label: "Phone" },
+    { key: "user_name", label: "User Name" },
+    { key: "status", label: "Status" },
+    { key: "last_login", label: "Last Login" },
+    { key: "created_at", label: "Created At" },
+    //   { key: "updated_at", label: "Updated At" },
+
+];
+
+const actions = [
+    { label: "View", icon: "eye", action: "view", class: "info", },
+    { label: "Edit", icon: "edit", action: "edit", class: "primary" },
+    { label: "Impersonate", icon: "user-check", action: "impersonate", class: "warning", condition: (row: any) => row?.can_impersonate  || false },
+    { label: "Delete", icon: "trash", action: "delete", class: "danger" },
+];
+
+const bulkActions = [
+    { label: 'Delete selected', action: 'bulk-delete' },
+];
+
+
+
+function handleAction({ action, row, selected }: { action: string; row?: any; selected?: (string | number)[] }) {
+        // Centralized validation for actions that require a row UUID
+    const actionsRequiringUuid = ['edit', 'delete','view', 'impersonate']
+    if (actionsRequiringUuid.includes(action)) {
+        if (!hasUuid(row?.uuid)) {
+            toast.value.showToast(400, 'Error', 'User uuid not found')
+            return
+        }
+    }
+    switch (action) {
+        case 'view':
+             Helpers.router().push({ name: 'show-user', params: { uuid: row?.uuid} });
+            break;
+        case 'edit':
+            Helpers.router().push({ name: 'edit-user', params: { uuid: row.uuid, slug: row.slug } });
+            break;
+        case 'delete':
+
+            deleteUser(row);
+            break;
+     
+        case 'bulk-delete':
+            if (!selected || selected.length === 0) {
+                toast.value.showToast(400, 'Error', 'No users selected');
+                return;
+            }
+            // For now just log; can be wired to an API endpoint for bulk delete
+           bulkDelete(selected);
+            break;
+        default:
+            console.log('Unknown action:', action);
+    }
+}
 </script>
-
 <template>
-    <div>
-        <!-- Breadcrumb  -->
-        <BreadcrumbComponent :current="'Users'" :links="[{ name: 'Dashboard', route: 'dashboard' }]" />
 
-        <div class="container-fluid">
-            <div class="mb-base grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-base">
-
-            </div>
-
-            <div data-table="" data-table-rows-per-page="8" class="card">
-                <div class="card-header">
-                    <!-- Search -->
-                    <div class="flex flex-wrap gap-2.5">
-                        <!-- Search Input -->
-                        <!-- <SearchInput label="Search Users" :apiPath="`/user`" @loading="setLoading"
-                            @filterData="filterData" @query="handleSearchQuery"></SearchInput> -->
-
-                        <div class="flex gap-1">
-                            <router-link :to="{ name: 'create-user' }"
-                                class="btn bg-primary text-white hover:bg-primary-hover" aria-haspopup="dialog"
-                                aria-expanded="false" aria-controls="incomeModal" data-hs-overlay="#incomeModal"> <i
-                                    class="iconify tabler--plus"></i> Add Role </router-link>
-                        </div>
-
-                        <!-- Delete Selected -->
-                        <button data-table-delete-selected=""
-                            class="btn bg-danger text-white hover:bg-danger-hover hidden">Delete</button>
-                    </div>
-
-                    <div class="flex flex-wrap items-center gap-3">
-                        <div class="items-center gap-3 md:flex">
-                            <span class="me-3 font-semibold text-nowrap">Filter By:</span>
-
-                            <!-- Role Type Filter -->
-
-                            <!-- Role Type Filter -->
-                            <div class="input-icon-group">
-                                <i class="iconify tabler--list-details input-icon"></i>
-
-                                <select id="filterPerPage" class="form-select w-full">
-
-                                </select>
-                            </div>
-
-                        </div>
-                        <!-- Active Filters -->
-                        <ActiveFilters routeName="roles" />
-
-
-
-
-
-                    </div>
-
+    <GenericTable
+        :columns="columns"
+        :isLoading="isLoading"
+        :fetchData="getRoles"
+        :rows="roles"
+        :actions="actions"
+        :bulkActions="bulkActions"
+        :enableBulkActions="true"
+        :filters="currentFilters"
+        @action="handleAction"
+        @update:selectedItems="selectedItems = $event"
+    >
+        <template #id="{ row }">
+            <td>
+                <span class="text-default-400">#UR00{{ row.id }}</span>
+            </td>
+        </template>
+        <template #name="{ row }">
+            <td>
+                <div class="flex items-center gap-3">
                     <div>
-                        <nav class="flex items-center gap-x-1">
-                            <!-- <a role="button" @click="fetchUsers()"
-                                class="btn bg-primary/15 text-primary btn-icon hover:bg-primary hover:text-white">
-                                <i class="iconify tabler--refresh text-lg"></i>
-                            </a> -->
-
-                            <OffCanvas id="offcanvasRight" title="Advance Filters"
-                                buttonClass="btn bg-primary btn-icon text-white hover:bg-primary-hover"
-                                buttonLabel="Filter">
-                                <template #button-icon>
-                                    <i class="iconify tabler--filter text-lg"></i>
-                                </template>
-                                <template #body>
-                                    <!-- Filter fileds -->
-                                </template>
-                            </OffCanvas>
-                        </nav>
+                        <img :src="row.thumbnail" alt="" class="size-8 rounded-full">
+                    </div>
+                    <div>
+                        <h5>
+                            <a data-sort="user" href="#!" class="hover:text-primary">{{ row.name }}</a>
+                        </h5>
+                        <p class="text-default-400 text-xs">{{ row.email }}</p>
                     </div>
                 </div>
-                <!-- <UserTable :users="users" :getUsers="fetchUsers" :isLoading="isLoading" :currentFilters="filters" /> -->
-            </div>
+            </td>
+        </template>
 
-            <!--End::row-1 -->
+        <template #status="{ row }">
+            <span :class="Helpers.setStatusBadge('success')">Active</span>
+        </template>
+        <template #last_login="{ row }">
+            <span v-if="row.last_login">{{ $filters.DateTimeFormat(row.last_login) }}</span>
 
-        </div>
-    </div>
+            <span v-else class="badge bg-danger/15 text-danger">Never</span>
+        </template>
+    </GenericTable>
+
 </template>
