@@ -18,12 +18,12 @@ const {role,errors,isLoading,onSubmit} = useRoleForm(props?.roleData, props?.isE
                 <div class="card-body">
                     <div class="grid lg:grid-cols-3 grid-cols-2 gap-base">
                         <!-- Full Name -->
-                        <FormInput v-model="role?.name" label="Role Name" name="name" placeholder="Role Name`"
+                        <FormInput v-model="role.name" label="Role Name" name="name" placeholder="Role Name`"
                             type="text" :errors="errors" autofocus />
 
-                        <MultiSelect v-model="role.users" :options="[]" label="Users" name="users"
+                        <MultiSelect v-model="role.users" :options="[{ id: 1, name: 'User 1' }, { id: 2, name: 'User 2' }]" label="Users" name="users"
                             placeholder="Select Users" track-by="id" :errors="errors" multiple />
-                        <MultiSelect v-model="role.permissions" :options="[]" label="Permissions" name="permissions"
+                        <MultiSelect v-model="role.permissions" :options="[{ id: 1, name: 'Permission 1' }, { id: 2, name: 'Permission 2' }]" label="Permissions" name="permissions"
                             placeholder="Select Permissions" track-by="id" :errors="errors" multiple />
                         
                         <div>

@@ -11,8 +11,6 @@
 </template>
 
 <script setup lang="ts">
-
-import VueMultiselect from 'vue-multiselect'
 import { Helpers } from '../Utils/Helper';
 
 // Props
