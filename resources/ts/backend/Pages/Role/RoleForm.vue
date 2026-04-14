@@ -27,7 +27,6 @@ const {role,errors,isLoading,onSubmit} = useRoleForm(props?.roleData, props?.isE
                             placeholder="Select Permissions" track-by="id" :errors="errors" multiple />
                         
                         <div>
-
                         </div>
                     </div>
                 </div>
