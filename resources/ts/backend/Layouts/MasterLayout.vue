@@ -117,9 +117,9 @@ const completeProgress = () => {
         <!-- Start::app-content -->
         <div class="page-content">
             <main>
-                <router-view v-slot="{ Component }">
-                    <Transition name="slide-fade">
-                        <component :is="Component" />
+                <router-view v-slot="{ Component, route }">
+                    <Transition name="slide-fade" mode="out-in">
+                        <component :is="Component" :key="route.fullPath" />
                     </Transition>
                     <!-- Start::row-1 -->
                 </router-view>
@@ -204,10 +204,7 @@ const completeProgress = () => {
 }
 
 /* Existing transition styles */
-.slide-fade-enter-active {
-    transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
-}
-
+.slide-fade-enter-active,
 .slide-fade-leave-active {
     transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
 }
@@ -216,5 +213,11 @@ const completeProgress = () => {
 .slide-fade-leave-to {
     transform: translateX(16px);
     opacity: 0;
+}
+
+.slide-fade-enter-to,
+.slide-fade-leave-from {
+    transform: translateX(0);
+    opacity: 1;
 }
 </style>

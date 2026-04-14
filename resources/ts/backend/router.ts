@@ -45,12 +45,15 @@ const routes = [
     setRoute('/variants/:uuid', 'show-variant', 'variants/VariantShow', 'show-variant'),
 
     // Managment Routes
+    // Users
     setRoute('/management/users', 'users', 'User/Users', 'users-list'),
-    setRoute('/management/users/create', 'create-user', 'User/User', 'create-user'),
-    setRoute('/management/users/edit/:uuid', 'edit-user', 'User/User', 'edit-user'),
-    setRoute('/management/users/:uuid', 'show-user', 'User/UserShow','show-user'),
+    setRoute('/management/user/create', 'create-user', 'User/User', 'create-user'),
+    setRoute('/management/user/edit/:uuid', 'edit-user', 'User/User', 'edit-user'),
+    setRoute('/management/user/:uuid', 'show-user', 'User/UserShow','show-user'),
+
+    // Roles and Permissions
     setRoute('/management/roles', 'roles', 'Role/Roles', 'roles-list'),
-    setRoute('/management/roles/create', 'create-role', 'Role/Role', 'create-role'),
+    setRoute('/management/role/create', 'create-role', 'Role/Role', 'create-role'),
     setRoute('/management/roles/edit/:uuid', 'edit-role', 'Role/Role', 'edit-role'),
     setRoute('/management/role/details/:uuid', 'show-role', 'Role/RoleShow', 'show-role'),
     setRoute('/management/permissions', 'permissions', 'Permission/Permissions', null),

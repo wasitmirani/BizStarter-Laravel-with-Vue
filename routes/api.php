@@ -25,15 +25,21 @@ Route::prefix('/app')->group(function () {
         ]);
     });
 
-    Route::post('/password/update', [UserController::class, 'updatePassword']);
+
+    // Users
     Route::resource('user', UserController::class);
+    Route::post('/password/update', [UserController::class, 'updatePassword']);
     Route::post('user/{uuid}/impersonate', [UserController::class, 'impersonate']);
     Route::post('impersonate/leave', [UserController::class, 'leaveImpersonate']);
+
+    // Roles 
     Route::resource('role',RoleController::class);
-    Route::apiResource('category', CategoryController::class);
-    Route::apiResource('brand', BrandController::class);
-    Route::apiResource('product', ProductController::class);
-    Route::apiResource('variant', ProductVariantController::class);
+    Route::resource('category', CategoryController::class);
+    Route::resource('brand', BrandController::class);
+    Route::resource('product', ProductController::class);
+    Route::resource('variant', ProductVariantController::class);
+
+    // Uploads
     Route::prefix('upload')->group(function() {
         Route::post('/{type}/image',[UploadController::class,'uploadSingleImage']);
     });

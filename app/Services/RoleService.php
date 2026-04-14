@@ -21,14 +21,15 @@ class RoleService extends BaseService
         return Role::class;
     }
 
-    public function getRolesList($params,$relations =[])
+    public function getRolesList($params,$relations =[], $withCount = [])
     {
         // Assuming Role is an Eloquent model
-      return $this->model->sorting($params['sort_dir'] ?? 'asc')
-                  ->filters($this->allowedFilters)
-                  ->with($relations)
-                  ->retrieve($params['paginated'] ?? false, $params['per_page'] ?? 15);
-
-
+        return $this->model
+        ->withCount($withCount)
+        ->sorting($params['sort_dir'] ?? 'asc')
+        ->filters($this->allowedFilters)
+        ->with($relations)
+        ->retrieve($params['paginated'] ?? false, $params['per_page'] ?? 15);
     }
+    
 }
