@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { CatalogService } from '../../Services/catalog/CatalogService';
+// @ts-ignore - Vue SFC default export is resolved at runtime
 import GenericTable from '../../Components/GenericTable.vue';
 import { Helpers } from '../../Utils/Helper';
 
@@ -17,6 +18,7 @@ const columns = [
 const actions = [
     { label: "View", icon: "eye", action: "view", class: "info" },
     { label: "Edit", icon: "edit", action: "edit", class: "primary" },
+    { label: "Add Variants", icon: "list-plus", action: "add-variants", class: "success" },
     { label: "Delete", icon: "trash", action: "delete", class: "danger" },
 ];
 
@@ -24,6 +26,7 @@ const handleAction = async ({ action, row }: { action: string; row?: any }) => {
     if (!row?.uuid && action !== 'sort') return;
     if (action === 'view') Helpers.router().push({ name: 'show-product', params: { uuid: row.uuid } });
     if (action === 'edit') Helpers.router().push({ name: 'edit-product', params: { uuid: row.uuid } });
+    if (action === 'add-variants') Helpers.router().push({ name: 'add-product-variants', params: { uuid: row.uuid } });
     if (action === 'delete') {
         await CatalogService.deleteProduct(row.uuid);
         props.getProducts();

@@ -33,6 +33,7 @@ Route::prefix('/app')->group(function () {
     Route::apiResource('category', CategoryController::class);
     Route::apiResource('brand', BrandController::class);
     Route::apiResource('product', ProductController::class);
+    Route::post('variant/bulk-store', [ProductVariantController::class, 'bulkStore']);
     Route::apiResource('variant', ProductVariantController::class);
     Route::prefix('upload')->group(function() {
         Route::post('/{type}/image',[UploadController::class,'uploadSingleImage']);

@@ -89,6 +89,10 @@ class Catalog {
         return AxiosService.post('/variant', payload);
     }
 
+    bulkStoreVariants(payload: any) {
+        return AxiosService.post('/variant/bulk-store', payload);
+    }
+
     updateVariant(uuid: string, payload: any) {
         return AxiosService.put(`/variant/${uuid}`, payload);
     }

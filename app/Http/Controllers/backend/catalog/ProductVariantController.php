@@ -22,10 +22,12 @@ class ProductVariantController extends Controller implements CatalogFilterable
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'nullable|string|max:255',
             'product_id' => 'required|exists:products,id',
             'sku' => 'required|string|max:255|unique:product_variants,sku',
             'barcode' => 'nullable|string|max:255|unique:product_variants,barcode',
+            'option_name' => 'nullable|string|max:255',
+            'option_value' => 'nullable|string|max:255',
             'price' => 'nullable|numeric|min:0',
             'retail_price' => 'nullable|numeric|min:0',
             'thumbnail' => 'nullable|string|max:255',
@@ -52,10 +54,12 @@ class ProductVariantController extends Controller implements CatalogFilterable
     public function update(Request $request, string $uuid)
     {
         $data = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'nullable|string|max:255',
             'product_id' => 'required|exists:products,id',
             'sku' => 'required|string|max:255|unique:product_variants,sku,' . $uuid . ',uuid',
             'barcode' => 'nullable|string|max:255|unique:product_variants,barcode,' . $uuid . ',uuid',
+            'option_name' => 'nullable|string|max:255',
+            'option_value' => 'nullable|string|max:255',
             'price' => 'nullable|numeric|min:0',
             'retail_price' => 'nullable|numeric|min:0',
             'thumbnail' => 'nullable|string|max:255',
@@ -71,6 +75,28 @@ class ProductVariantController extends Controller implements CatalogFilterable
 
         $variant = $this->productVariantService->updateVariant($uuid, $data);
         return responseJson('variant updated successfully', ['variant' => $variant], true);
+    }
+
+    public function bulkStore(Request $request)
+    {
+        $data = $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'variants' => 'required|array|min:1',
+            'variants.*.name' => 'nullable|string|max:255',
+            'variants.*.sku' => 'required|string|max:255|distinct|unique:product_variants,sku',
+            'variants.*.barcode' => 'nullable|string|max:255|distinct|unique:product_variants,barcode',
+            'variants.*.option_name' => 'nullable|string|max:255',
+            'variants.*.option_value' => 'nullable|string|max:255',
+            'variants.*.price' => 'nullable|numeric|min:0',
+            'variants.*.retail_price' => 'nullable|numeric|min:0',
+            'variants.*.status' => 'nullable|in:active,inactive',
+            'variants.*.sort_order' => 'nullable|integer|min:0',
+            'variants.*.is_default' => 'nullable|boolean',
+        ]);
+
+        $created = $this->productVariantService->saveBulkVariants((int) $data['product_id'], $data['variants']);
+
+        return responseJson('variants created successfully', ['variants' => $created], true, 201);
     }
 
     public function destroy(string $uuid)

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { CatalogService } from '../../Services/catalog/CatalogService';
+// @ts-ignore - Vue SFC default export is resolved at runtime
 import GenericTable from '../../Components/GenericTable.vue';
 import { Helpers } from '../../Utils/Helper';
 
@@ -42,7 +43,10 @@ const handleAction = async ({ action, row }: { action: string; row?: any }) => {
             </div>
         </template>
         <template #product="{ row }">
-            <span>{{ row.product?.name || 'N/A' }}</span>
+            <div>
+                <span>{{ row.product?.name || 'N/A' }}</span>
+                <p class="text-default-400 text-xs mb-0">ID: {{ row.product_id ?? '-' }}</p>
+            </div>
         </template>
         <template #status="{ row }">
             <span class="badge text-2xs font-semibold" :class="row.status === 'active' ? 'bg-success/15 text-success' : 'bg-warning/15 text-warning'">

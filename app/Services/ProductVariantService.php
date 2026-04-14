@@ -24,11 +24,28 @@ class ProductVariantService extends BaseService
             ->retrieve($params['paginated'] ?? true, $perPage);
     }
 
+    protected function buildVariantName(array $data): string
+    {
+        $name = trim((string) ($data['name'] ?? ''));
+        if ($name !== '') {
+            return $name;
+        }
+        $optionName = trim((string) ($data['option_name'] ?? ''));
+        $optionValue = trim((string) ($data['option_value'] ?? ''));
+        if ($optionName !== '' || $optionValue !== '') {
+            return trim($optionName . ': ' . $optionValue, ': ');
+        }
+
+        return trim((string) ($data['sku'] ?? 'Variant')) ?: 'Variant';
+    }
+
     public function saveVariant(array $data): ProductVariant
     {
+        $variantName = $this->buildVariantName($data);
         $payload = array_merge($data, [
             'uuid' => genUUID(),
-            'slug' => setSlug($data['name']),
+            'name' => $variantName,
+            'slug' => setSlug($variantName),
         ]);
 
         return $this->model->create($payload);
@@ -37,10 +54,25 @@ class ProductVariantService extends BaseService
     public function updateVariant(string $uuid, array $data): ProductVariant
     {
         $variant = $this->model->where('uuid', $uuid)->firstOrFail();
-        $data['slug'] = setSlug($data['name'] ?? $variant->name);
+        $variantName = $this->buildVariantName(array_merge($variant->toArray(), $data));
+        $data['name'] = $variantName;
+        $data['slug'] = setSlug($variantName);
         $variant->update($data);
 
         return $variant->fresh(['product:id,name,uuid']);
+    }
+
+    public function saveBulkVariants(int $productId, array $variants): array
+    {
+        $created = [];
+        foreach ($variants as $variantData) {
+            $payload = array_merge($variantData, [
+                'product_id' => $productId,
+            ]);
+            $created[] = $this->saveVariant($payload);
+        }
+
+        return $created;
     }
 
     public function fetchByUuid(string $uuid): ?ProductVariant
