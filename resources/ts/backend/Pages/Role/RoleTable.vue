@@ -129,7 +129,7 @@ function handleAction({ action, row, selected }: { action: string; row?: any; se
 
             deleteUser(row);
             break;
-     
+
         case 'bulk-delete':
             if (!selected || selected.length === 0) {
                 toast.value.showToast(400, 'Error', 'No users selected');
@@ -164,23 +164,17 @@ function handleAction({ action, row, selected }: { action: string; row?: any; se
         </template>
         <template #name="{ row }">
             <td>
-                <!-- <div class="flex items-center gap-3">
-                    <div>
-                        <img :src="row.thumbnail" alt="" class="size-8 rounded-full">
-                    </div>
-                    <div>
-                        <h5>
-                            <a data-sort="user" href="#!" class="hover:text-primary">{{ row.name }}</a>
-                        </h5>
-                        <p class="text-default-400 text-xs">{{ row.email }}</p>
-                    </div>
-                </div> -->
                 <Avatar :name="row.name"  />
             </td>
         </template>
+        <template #users_count="{row}">
+            <span class="badge size-4 rounded-full bg-light text-dark">{{ row.users_count }}</span>
+        </template>
+        <template #permissions_count="{row}">
+            <span class="badge size-4 rounded-full bg-light text-dark">{{ row.permissions_count }}</span>
+        </template>
 
-      
-       
+
     </GenericTable>
 
 </template>

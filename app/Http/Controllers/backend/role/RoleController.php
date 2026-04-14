@@ -20,7 +20,7 @@ class RoleController extends Controller implements UserFilterable
 
         $filters = $request->only(self::ALLOWED_FILTERS);
         $filters['paginated'] = true;
-        $roles =app(RoleService::class)->getRolesList($filters  );
+        $roles =app(RoleService::class)->getRolesList($filters,withCount: ['users','permissions']);
         // app(RoleService::class)->getRolesList(['limit'=>4],['users:id,name'])
          $data=[
             'roles'=>$roles,
