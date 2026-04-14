@@ -29,7 +29,7 @@ class RoleService extends BaseService
         ->sorting($params['sort_dir'] ?? 'asc')
         ->filters($this->allowedFilters)
         ->with($relations)
-        ->retrieve($params['paginated'] ?? false, $params['per_page'] ?? 15);
+        ->retrieve($params['paginated'] ?? false, $this->resolvePerPage($params));
     }
     
 }
