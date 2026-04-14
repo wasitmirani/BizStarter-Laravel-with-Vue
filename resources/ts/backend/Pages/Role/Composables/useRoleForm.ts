@@ -1,8 +1,8 @@
-import  UserService  from "../../../Services/user/UserService";
+import  RoleService  from "../../../Services/Role/RoleService";
 import { DropdownOptions } from "../../../Utils/DropdownOptions";
 import { Helpers } from "../../../Utils/Helper";
 
-export function useUserForm(userData?: any, isEditMode: boolean = false) {
+export function useRoleForm(roleData?: any, isEditMode: boolean = false) {
     // ─── State ────────────────────────────────────────────────────────────────
     let errors = Helpers.useDynamicRef<any>([]);
     const isLoading = Helpers.useDynamicRef(false);
@@ -13,68 +13,21 @@ export function useUserForm(userData?: any, isEditMode: boolean = false) {
     const genderDropdownItems = DropdownOptions.genderOptions();
     const maritalStatusDropdownItems = DropdownOptions.maritalStatusOptions();
 
-    // ─── User Reactive Object ─────────────────────────────────────────────────
-    const user = Helpers.useDynamicReactive({
-        phone: '',
-        thumbnail: '',
-        company_name: '',
-        first_name: '',
-        last_name: '',
-        email: '',
-        password: '',
-        password_confirmation: '',
-        address: '',
-        dob: '',
-        gender: '',
-        marital_status: '',
-        city: '',
-        state: '',
-        zip_code: '',
-        country: '',
-        ...(userData ?? {})
+    // ─── Role Reactive Object ─────────────────────────────────────────────────
+    const role = Helpers.useDynamicReactive({
+        'name': '',
+        'permissions': [],
+        'users':[],
+        ...(roleData ?? {})
     });
 
-    // ─── Phone Input ──────────────────────────────────────────────────────────
-
-
-    // ─── Thumbnail ────────────────────────────────────────────────────────────
-    const addThumbnail = (media: any): void => {
-        if (media) {
-            user.thumbnail = media.name;
-        }
-    };
-
-    // ─── Password Helpers ─────────────────────────────────────────────────────
-    const togglePassword = (): void => {
-        showPassword.value = !showPassword.value;
-    };
-
-    const generatePassword = (): void => {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+';
-        let password = '';
-        for (let i = 0; i < 12; i++) {
-            password += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        user.password = password;
-        user.password_confirmation = password;
-    };
-
-    const copyPassword = async (): Promise<void> => {
-        try {
-            await navigator.clipboard.writeText(user.password);
-            toast.value.showToast(200, 'Password Copied', 'Password has been copied to clipboard.');
-        } catch {
-            toast.value.showToast(500, 'Copy Failed', 'Could not copy password.');
-        }
-    };
-
     // ─── API Call ─────────────────────────────────────────────────────────────
-    const userStore = async (data: any): void => {
+    const roleStore = async (data: any): void => {
         isLoading.value = true;
 
-       await UserService.store(data)
+       await RoleService.store(data)
             .then((res: any) => {
-                toast.value?.showToast?.(res.status, 'User Store', res.data);
+                toast.value?.showToast?.(res.status, 'Role Store', res.data);
                 setTimeout(() => {
                     Helpers.router().push({ name: 'users' });
                 }, 100);
@@ -92,21 +45,21 @@ export function useUserForm(userData?: any, isEditMode: boolean = false) {
         }, 200);
     };
 
-    const userUpdate = async (data: any): void => {
+    const roleUpdate = async (data: any): void => {
         isLoading.value = true;
 
         const userId = data?.id;
         if (!userId) {
-            toast.value?.showToast?.(400, 'Error', 'Missing user id for update');
+            toast.value?.showToast?.(400, 'Error', 'Missing role id for update');
             isLoading.value = false;
             return;
         }
 
-        await UserService.update(data)
+        await RoleService.update(data)
             .then((res: any) => {
-                toast.value?.showToast?.(res.status, 'User Updated', res.data);
+                toast.value?.showToast?.(res.status, 'Role Updated', res.data);
                 setTimeout(() => {
-                    Helpers.router().push({ name: 'users' });
+                    Helpers.router().push({ name: 'roles' });
                 }, 100);
             })
             .catch((err: any) => {
@@ -124,22 +77,22 @@ export function useUserForm(userData?: any, isEditMode: boolean = false) {
 
     // ─── Submit ───────────────────────────────────────────────────────────────
     const onSubmit = (_type?: string): void => {
-        // Create a shallow clone to avoid modifying the reactive user directly.
-        const userPayload = {
-            ...user,
-            name: [user.first_name, user.last_name].filter(Boolean).join(' ').trim(),
+        // Create a shallow clone to avoid modifying the reactive role directly.
+        const rolePayload = {
+            ...role,
+            name: [role.first_name, role.last_name].filter(Boolean).join(' ').trim(),
         };
 
         if (isEditMode) {
-            userUpdate(userPayload);
+            roleUpdate(rolePayload);
         } else {
-            userStore(userPayload);
+            roleStore(rolePayload);
         }
     };
 
     return {
         // state
-        user,
+        role,
         errors,
         isLoading,
         showPassword,
@@ -148,9 +101,6 @@ export function useUserForm(userData?: any, isEditMode: boolean = false) {
         maritalStatusDropdownItems,
         // handlers
         onSubmit,
-        addThumbnail,
-        togglePassword,
-        generatePassword,
-        copyPassword,
+       
     };
 }
