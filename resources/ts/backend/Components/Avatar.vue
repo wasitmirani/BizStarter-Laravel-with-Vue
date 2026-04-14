@@ -1,28 +1,69 @@
 <script setup lang="ts">
-defineProps<{
+import { ref, computed } from 'vue'
+
+const props = withDefaults(defineProps<{
     name?: string
     img?: string
-    profile?: boolean,
-}>()
+    href?: string
+    email?: string
+}>(), {
+    name: '',
+    img: '',
+    href: '',
+    email: ''
+})
+
+const imageError = ref(false)
+
+const initials = computed(() => {
+    return props.name
+        ? props.name.trim().slice(0, 2).toUpperCase()
+        : 'NA'
+})
 </script>
+
 <template>
-    <div v-if="name" class="avatar me-2 -mb-2">
-        <span class="avatar-initial rounded-circle bg-primary">{{ name?.slice(0, 2) }}</span>
+<div class="flex items-center gap-3">
+
+    <!-- Avatar -->
+    <div class="size-8 flex items-center justify-center rounded-full overflow-hidden bg-primary text-white text-xs font-semibold">
+        
+        <!-- Image -->
+        <img 
+            v-if="props.img && !imageError"
+            :src="props.img" 
+            :alt="props.name" 
+            class="w-full h-full object-cover"
+            @error="imageError = true"
+        />
+
+        <!-- Initials fallback -->
+        <span v-else>
+            {{ initials }}
+        </span>
     </div>
-    <div v-else class="avatar avatar-md flex-shrink-0 me-4" v-show="!profile">
-        <div class="avatar-initial rounded-3">
-            <div>
-                <img :src="img" alt="img">
-            </div>
-        </div>
+
+    <!-- User Info -->
+    <div>
+        <h5 class="leading-none">
+            <!-- Link only if href exists -->
+            <a 
+                v-if="props.href"
+                :href="props.href" 
+                class="hover:text-primary"
+            >
+                {{ props.name || 'Unknown' }}
+            </a>
+
+            <span v-else>
+                {{ props.name || 'Unknown' }}
+            </span>
+        </h5>
+
+        <p v-if="props.email" class="text-default-400 text-xs">
+            {{ props.email }}
+        </p>
     </div>
-    <div v-if="profile" class="avatar-wrapper">
-        <div class="avatar avatar-sm me-3">
-            <img :src="img" alt="Avatar" class="rounded-circle">
-        </div>
-    </div>
+
+</div>
 </template>
-
-
-
-<style></style>

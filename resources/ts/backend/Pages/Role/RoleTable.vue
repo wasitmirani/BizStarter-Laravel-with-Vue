@@ -164,7 +164,7 @@ function handleAction({ action, row, selected }: { action: string; row?: any; se
         </template>
         <template #name="{ row }">
             <td>
-                <div class="flex items-center gap-3">
+                <!-- <div class="flex items-center gap-3">
                     <div>
                         <img :src="row.thumbnail" alt="" class="size-8 rounded-full">
                     </div>
@@ -174,7 +174,8 @@ function handleAction({ action, row, selected }: { action: string; row?: any; se
                         </h5>
                         <p class="text-default-400 text-xs">{{ row.email }}</p>
                     </div>
-                </div>
+                </div> -->
+                <Avatar :name="row.name"  />
             </td>
         </template>
 
