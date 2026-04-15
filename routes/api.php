@@ -36,12 +36,12 @@ Route::prefix('/app')->group(function () {
         Route::post('/{type}/image',[UploadController::class,'uploadSingleImage']);
     });
 
-    Route::prefix('/dropdown-list')->group( function(){
-        Route::get('/options',[SettingController::class,'getListOptions']);
-        Route::get('/languages',[SettingController::class,'getLanguages']);
-        Route::get('/timezones',[SettingController::class,'getTimezones']);
-        Route::get('/roles',[RoleController::class,'getRoles']);
-        Route::get('/users',[UserController::class,'getUsers']);
+    Route::prefix('/dropdown')->group( function(){
+        Route::get('/options-list',[SettingController::class,'getListOptions']);
+        Route::get('/languages-list',[SettingController::class,'getLanguages']);
+        Route::get('/timezones-list',[SettingController::class,'getTimezones']);
+        Route::get('/roles-list',[RoleController::class,'getRoles']);
+        Route::get('/users-list',[UserController::class,'getUsers']);
     });
 
 });

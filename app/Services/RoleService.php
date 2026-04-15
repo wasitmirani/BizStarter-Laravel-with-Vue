@@ -31,5 +31,17 @@ class RoleService extends BaseService
         ->with($relations)
         ->retrieve($params['paginated'] ?? false, $this->resolvePerPage($params));
     }
+
+    public function saveRole($data)
+    {
+        $role = $this->model->create($data);
+        if (isset($data['permissions'])) {
+            $role->syncPermissions($data['permissions']);
+        }
+        if (isset($data['users'])) {
+            $role->users()->sync($data['users']);
+        }
+        return $role;
     
+    }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\backend\user;
 use App\Contracts\UserFilterable;
 use App\Enums\UserEnums;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\StoreUserRequest;
 use App\Services\LoggerService;
 use App\Services\RoleService;
 use App\Services\UserService;
@@ -47,12 +47,12 @@ class UserController extends Controller implements UserFilterable
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateUserRequest $createUserRequest)
+    public function store(StoreUserRequest $storeUserRequest)
     {
         LoggerService::info("User creation attempt", [
-            'data' => $createUserRequest->validated()
+            'data' => $storeUserRequest->validated()
         ]);
-        $data =$createUserRequest->validated();
+        $data =$storeUserRequest->validated();
 
         $user = $this->userService->saveUser($data);
 
@@ -155,5 +155,14 @@ class UserController extends Controller implements UserFilterable
             'user' => $impersonator,
             'token' => $token
         ], true);
+    }
+
+    public function getUsers(Request $request){
+        $filters = $request->only(self::ALLOWED_FILTERS);
+        $users = $this->userService->users($filters)->get(['id','name']);
+        $data=[
+            'users'=>$users
+        ];
+        return responseJson('users fetched successfully',$data,true);
     }
 }

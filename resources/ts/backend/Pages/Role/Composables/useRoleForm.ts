@@ -1,8 +1,9 @@
+import DropDownService from "../../../Services/DropDown/DropDownService";
 import  RoleService  from "../../../Services/Role/RoleService";
 import { DropdownOptions } from "../../../Utils/DropdownOptions";
 import { Helpers } from "../../../Utils/Helper";
 
-export function useRoleForm(roleData?: any, isEditMode: boolean = false) {
+export async function useRoleForm(roleData?: any, isEditMode: boolean = false) {
     // ─── State ────────────────────────────────────────────────────────────────
     let errors = Helpers.useDynamicRef<any>([]);
     const isLoading = Helpers.useDynamicRef(false);
@@ -10,8 +11,10 @@ export function useRoleForm(roleData?: any, isEditMode: boolean = false) {
     const toast = Helpers.useDynamicInject('toast', null);
 
     // ─── Dropdown Options ─────────────────────────────────────────────────────
-    const usersDropdownItems = DropdownOptions.getUsersListOptions([]);
-    const permissionsDropdownItems = DropdownOptions.getPermissionsListOptions([]);
+    const users = await DropDownService.getUsers({sort_by: 'name', order: 'asc'});
+    const permissions = await DropDownService.getPermissions({sort_by: 'name', order: 'asc'});
+    const usersDropdownItems = DropdownOptions.getUsersListOptions(users);
+    const permissionsDropdownItems = DropdownOptions.getPermissionsListOptions(permissions);
    
 
     // ─── Role Reactive Object ─────────────────────────────────────────────────
@@ -99,6 +102,7 @@ export function useRoleForm(roleData?: any, isEditMode: boolean = false) {
         showPassword,
         // dropdowns
         usersDropdownItems,
+        permissionsDropdownItems,
         // handlers
         onSubmit,
        

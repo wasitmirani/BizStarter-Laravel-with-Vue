@@ -3,7 +3,7 @@ import {useRoleForm}  from './Composables/useRoleForm';
 
 const props = defineProps(['isEditMode', 'roleData']);
 
-const {role,errors,isLoading,onSubmit} = useRoleForm(props?.roleData, props?.isEditMode);
+const {role,errors,isLoading,onSubmit,usersDropdownItems,permissionsDropdownItems} = useRoleForm(props?.roleData, props?.isEditMode);
 
 </script>
 
@@ -25,7 +25,7 @@ const {role,errors,isLoading,onSubmit} = useRoleForm(props?.roleData, props?.isE
                             placeholder="Select Users" track-by="id" :errors="errors" multiple />
                         <MultiSelect v-model="role.permissions" :options="[{ id: 1, name: 'Permission 1' }, { id: 2, name: 'Permission 2' }]" label="Permissions" name="permissions"
                             placeholder="Select Permissions" track-by="id" :errors="errors" multiple />
-                        
+
                         <div>
                         </div>
                     </div>
@@ -36,9 +36,9 @@ const {role,errors,isLoading,onSubmit} = useRoleForm(props?.roleData, props?.isE
                     <router-link :to="{ name: 'roles' }" class="btn bg-light hover:text-primary">
                         <i class="iconify tabler--arrow-back-up"></i> Discard
                     </router-link>
-                    <button class="btn bg-secondary hover:bg-secondary-hover text-white ">
+                    <!-- <button class="btn bg-secondary hover:bg-secondary-hover text-white ">
                         Draft Role <i class="iconify tabler--folder-open"></i>
-                    </button>
+                    </button> -->
                     <button :class="isEditMode ? 'btn bg-success hover:bg-success-hover text-white' : 'btn bg-primary hover:bg-primary-hover text-white'" v-if="!isLoading">
                         {{ isEditMode ? 'Update Role' : 'Save Role' }} <i class="iconify tabler--device-floppy"></i>
                     </button>
