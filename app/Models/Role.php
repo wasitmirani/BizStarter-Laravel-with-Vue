@@ -10,7 +10,14 @@ class Role extends SpatieRole
 
     // Query scopes, relationships, and other model methods can be added here
 
-
+     protected static function booted()
+    {
+        static::creating(function ($role) {
+            if (auth()->check()) {
+                $role->tenant_id = auth()->user()->tenant_id;
+            }
+        });
+    }
     public function scopeSorting($query, $direction = 'asc')
     {
         return $query->orderBy('name', $direction);

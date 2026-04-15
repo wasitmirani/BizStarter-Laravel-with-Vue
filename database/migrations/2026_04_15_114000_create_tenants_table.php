@@ -22,65 +22,68 @@ return new class extends Migration
             $table->string('code')->unique(); // en
         });
         Schema::create('currencies', function (Blueprint $table) {
-        $table->id();
-        $table->string('name'); // US Dollar
-        $table->string('code')->unique(); // USD
-        $table->string('symbol')->nullable(); // $
-    });
-       Schema::create('tenants', function (Blueprint $table) {
-    $table->id();
+            $table->id();
+            $table->string('name'); // US Dollar
+            $table->string('code')->unique(); // USD
+            $table->string('symbol')->nullable(); // $
+        });
+        Schema::create('tenants', function (Blueprint $table) {
+            $table->id();
 
-    // Basic Info
-    $table->string('name');
-    $table->string('slug')->unique(); // better than name for URLs
-    $table->string('domain')->unique()->nullable();
-    $table->string('database')->unique()->nullable();
+            // Basic Info
+            $table->string('name');
+            $table->string('uuid')->unique()->nullable(); // for external references
+            $table->string('slug')->unique(); // better than name for URLs
+            $table->string('domain')->unique()->nullable();
+            $table->string('database')->unique()->nullable();
 
-    // Status & Control
-    $table->enum('status', ['active', 'inactive', 'suspended'])->default('active');
-    $table->boolean('is_active')->default(true);
+            // Status & Control
+            $table->enum('status', ['active', 'inactive', 'suspended'])->default('active');
+            $table->boolean('is_active')->default(true);
 
-    // Branding
-    $table->string('logo')->nullable();
+            // Branding
+            $table->string('logo')->nullable();
 
-    // Contact Info
-    $table->string('contact_email')->nullable();
-    $table->string('contact_phone')->nullable();
+            // Contact Info
+            $table->string('contact_email')->nullable();
+            $table->string('contact_phone')->nullable();
 
-    // Address
-    $table->string('address')->nullable();
-    $table->string('city')->nullable();
-    $table->string('state')->nullable();
-    $table->string('postal_code')->nullable();
-    $table->string('country')->nullable();
+            // Address
+            $table->string('address')->nullable();
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
+            $table->string('postal_code')->nullable();
+            $table->string('country')->nullable();
 
-    // Localization
-$table->foreignId('timezone_id')->nullable()->constrained()->nullOnDelete();
-$table->foreignId('language_id')->nullable()->constrained()->nullOnDelete();
-$table->foreignId('currency_id')->nullable()->constrained()->nullOnDelete();
+            // Localization
+            $table->foreignId('timezone_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('language_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('currency_id')->nullable()->constrained()->nullOnDelete();
 
-    // Subscription / Billing
-    $table->string('subscription_plan')->nullable();
-    $table->timestamp('trial_ends_at')->nullable();
-    $table->timestamp('subscription_starts_at')->nullable();
-    $table->timestamp('subscription_ends_at')->nullable();
+            // Subscription / Billing
+            $table->string('subscription_plan')->nullable();
+            $table->timestamp('trial_ends_at')->nullable();
+            $table->timestamp('subscription_starts_at')->nullable();
+            $table->timestamp('subscription_ends_at')->nullable();
 
-    // Limits (VERY useful)
-    $table->integer('max_users')->default(10)->nullable();
-    $table->integer('max_roles')->default(5)->nullable();
+            // Limits (VERY useful)
+            $table->integer('max_users')->default(10)->nullable();
+            $table->integer('max_roles')->default(5)->nullable();
 
-    // Metadata (flexible JSON)
-    $table->json('meta')->nullable();
+            // Metadata (flexible JSON)
+            $table->json('meta')->nullable();
 
-    // Audit
-    $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
-    $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
+            // Audit
+            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
 
-    // Soft delete (important for SaaS)
-    $table->softDeletes();
+            // Soft delete (important for SaaS)
+            $table->softDeletes();
 
-    $table->timestamps();
-});
+            $table->timestamps();
+        });
+
+    
     }
 
     /**

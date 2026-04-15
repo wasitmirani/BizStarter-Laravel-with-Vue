@@ -173,5 +173,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return !$this->hasRole('admin') ?? true;  // admins can't be impersonated by other admins
     }
 
+    public function tenant()
+    {
+        return $this->belongsTo(Tenant::class);
+    }
+
+    
+
 
 }
