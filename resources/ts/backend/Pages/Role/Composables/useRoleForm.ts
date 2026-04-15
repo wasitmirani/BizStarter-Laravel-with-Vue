@@ -10,14 +10,15 @@ export function useRoleForm(roleData?: any, isEditMode: boolean = false) {
     const toast = Helpers.useDynamicInject('toast', null);
 
     // ─── Dropdown Options ─────────────────────────────────────────────────────
-    const genderDropdownItems = DropdownOptions.genderOptions();
-    const maritalStatusDropdownItems = DropdownOptions.maritalStatusOptions();
+    const usersDropdownItems = DropdownOptions.getUsersListOptions([]);
+    const permissionsDropdownItems = DropdownOptions.getPermissionsListOptions([]);
+   
 
     // ─── Role Reactive Object ─────────────────────────────────────────────────
     const role = Helpers.useDynamicReactive({
         'name': '',
         'permissions': [],
-        'users':[],
+        'users': [],
         ...(roleData ?? {})
     });
 
@@ -97,8 +98,7 @@ export function useRoleForm(roleData?: any, isEditMode: boolean = false) {
         isLoading,
         showPassword,
         // dropdowns
-        genderDropdownItems,
-        maritalStatusDropdownItems,
+        usersDropdownItems,
         // handlers
         onSubmit,
        
