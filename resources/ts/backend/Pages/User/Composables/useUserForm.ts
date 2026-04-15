@@ -1,4 +1,4 @@
-import  UserService  from "../../../Services/user/UserService";
+import  UserService  from "../../../Services/User/UserService";
 import { DropdownOptions } from "../../../Utils/DropdownOptions";
 import { Helpers } from "../../../Utils/Helper";
 

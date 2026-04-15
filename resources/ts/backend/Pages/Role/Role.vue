@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import UserForm from './UserForm.vue';
+import RoleForm from './RoleForm.vue';
 import { useCreateRole } from './Composables/useCreateRole';
 import { Helpers } from '../../Utils/Helper';
 
-const { user, editmode, handleSubmitForm, loading } = useCreateRole();
+const { role, editmode, handleSubmitForm, loading } = useCreateRole();
 
 // Create computed properties to unwrap the reactive values
-const userData = Helpers.useDynamicComputed(() => user.value);
+const roleData = Helpers.useDynamicComputed(() => role.value);
 const isEditMode = Helpers.useDynamicComputed(() => editmode.value);
 const isLoading = Helpers.useDynamicComputed(() => loading?.value || false);
 </script>
@@ -23,7 +23,7 @@ const isLoading = Helpers.useDynamicComputed(() => loading?.value || false);
     <RoleForm
         v-else
         class="mt-4"
-        :userData="userData"
+        :roleData="roleData"
         :isEditMode="isEditMode"
         @submit="handleSubmitForm"
     />

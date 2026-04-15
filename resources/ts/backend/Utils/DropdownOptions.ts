@@ -29,4 +29,17 @@ export class DropdownOptions {
     static sortableFilterOptions() {
         return sortableFilterDropdownItems;
     }
+
+    static getUsersListOptions(users: any[]) {
+        return users.map(user => ({
+            value: user.id,
+            label: `${user.first_name} ${user.last_name}`
+        }));
+    }
+    static getPermissionsListOptions(permissions: any[]) {
+        return permissions.map(permission => ({
+            value: permission.id,
+            label: permission.name
+        }));
+    }
 }
