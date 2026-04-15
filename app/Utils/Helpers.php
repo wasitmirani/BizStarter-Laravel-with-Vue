@@ -238,3 +238,8 @@ function loadBuiltAssets($entry = 'resources/ts/app.ts') {
 
     return new HtmlString($html);
 }
+
+function tenant()
+{
+    return auth()->user()?->tenant;
+}
