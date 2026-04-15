@@ -407,7 +407,7 @@ watch(
                         <button type="button" class="btn bg-primary text-white btn-sm" @click="applySelectedVariants">
                             <i class="iconify tabler--check"></i> Apply Selection
                         </button>
-                        <button type="button" class="btn bg-light hover:text-primary" data-hs-overlay="#addPurchaseOrderModal" aria-expanded="true" @click="closeLineItemsModal">
+                        <button type="button" class="btn bg-light hover:text-primary btn-sm" data-hs-overlay="#addPurchaseOrderModal" aria-expanded="true" @click="closeLineItemsModal">
                             <i class="iconify tabler--x"></i> Close
                         </button>
                     </div>
