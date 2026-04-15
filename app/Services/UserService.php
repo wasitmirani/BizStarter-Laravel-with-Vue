@@ -42,9 +42,7 @@ class UserService extends BaseService implements UserFilterable
     }
     public function users($params)
     {
-        $perPage = (int)($params['per_page'] ?? 15);
-        $perPage = $perPage > 0 ? $perPage : 15;
-
+      
         return $this->model
             ->when(!isset($params['sort_by']), function ($query) {
                 $query->latest();
@@ -65,7 +63,7 @@ class UserService extends BaseService implements UserFilterable
             })
              ->search($params['search'] ?? $params['query'] ?? null)
             ->filters($params)
-            ->retrieve($params['paginated'] ?? true, $perPage);
+            ->retrieve($params['paginated'] ?? true, $this->resolvePerPage($params));
     }
 
     public function saveUser(array $data = [])

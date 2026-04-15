@@ -1,91 +1,55 @@
 <script setup lang="ts">
-import OffCanvas from "../../Components/OffCanvas.vue"
-import ActiveFilters from '../../Components/ActiveFilters.vue'
-import { Helpers } from '../../Utils/Helper'
+import {useRoleForm}  from './Composables/useRoleForm';
 
+const props = defineProps(['isEditMode', 'roleData']);
+
+const {role,errors,isLoading,onSubmit} = useRoleForm(props?.roleData, props?.isEditMode);
 
 </script>
 
 <template>
     <div>
-        <!-- Breadcrumb  -->
-        <BreadcrumbComponent :current="'Users'" :links="[{ name: 'Dashboard', route: 'dashboard' }]" />
-
-        <div class="container-fluid">
-            <div class="mb-base grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-base">
+        <div class="w-full flex flex-col card pointer-events-auto">
+            <div class="flex justify-between items-center card-body border-b border-default-300">
+                <h3 id="addCustomerModalLabel" class="font-bold flex items-center">{{ isEditMode ? 'Update Role Details'  : 'Create Role Details' }}  </h3>
 
             </div>
+            <form @submit.prevent="onSubmit">
+                <div class="card-body">
+                    <div class="grid lg:grid-cols-3 grid-cols-2 gap-base">
+                        <!-- Full Name -->
+                        <FormInput v-model="role.name" label="Role Name" name="name" placeholder="Role Name`"
+                            type="text" :errors="errors" autofocus />
 
-            <div data-table="" data-table-rows-per-page="8" class="card">
-                <div class="card-header">
-                    <!-- Search -->
-                    <div class="flex flex-wrap gap-2.5">
-                        <!-- Search Input -->
-                        <!-- <SearchInput label="Search Users" :apiPath="`/user`" @loading="setLoading"
-                            @filterData="filterData" @query="handleSearchQuery"></SearchInput> -->
-
-                        <div class="flex gap-1">
-                            <router-link :to="{ name: 'create-user' }"
-                                class="btn bg-primary text-white hover:bg-primary-hover" aria-haspopup="dialog"
-                                aria-expanded="false" aria-controls="incomeModal" data-hs-overlay="#incomeModal"> <i
-                                    class="iconify tabler--plus"></i> Add Role </router-link>
+                        <MultiSelect v-model="role.users" :options="[{ id: 1, name: 'User 1' }, { id: 2, name: 'User 2' }]" label="Users" name="users"
+                            placeholder="Select Users" track-by="id" :errors="errors" multiple />
+                        <MultiSelect v-model="role.permissions" :options="[{ id: 1, name: 'Permission 1' }, { id: 2, name: 'Permission 2' }]" label="Permissions" name="permissions"
+                            placeholder="Select Permissions" track-by="id" :errors="errors" multiple />
+                        
+                        <div>
                         </div>
-
-                        <!-- Delete Selected -->
-                        <button data-table-delete-selected=""
-                            class="btn bg-danger text-white hover:bg-danger-hover hidden">Delete</button>
-                    </div>
-
-                    <div class="flex flex-wrap items-center gap-3">
-                        <div class="items-center gap-3 md:flex">
-                            <span class="me-3 font-semibold text-nowrap">Filter By:</span>
-
-                            <!-- Role Type Filter -->
-
-                            <!-- Role Type Filter -->
-                            <div class="input-icon-group">
-                                <i class="iconify tabler--list-details input-icon"></i>
-
-                                <select id="filterPerPage" class="form-select w-full">
-
-                                </select>
-                            </div>
-
-                        </div>
-                        <!-- Active Filters -->
-                        <ActiveFilters routeName="roles" />
-
-
-
-
-
-                    </div>
-
-                    <div>
-                        <nav class="flex items-center gap-x-1">
-                            <!-- <a role="button" @click="fetchUsers()"
-                                class="btn bg-primary/15 text-primary btn-icon hover:bg-primary hover:text-white">
-                                <i class="iconify tabler--refresh text-lg"></i>
-                            </a> -->
-
-                            <OffCanvas id="offcanvasRight" title="Advance Filters"
-                                buttonClass="btn bg-primary btn-icon text-white hover:bg-primary-hover"
-                                buttonLabel="Filter">
-                                <template #button-icon>
-                                    <i class="iconify tabler--filter text-lg"></i>
-                                </template>
-                                <template #body>
-                                    <!-- Filter fileds -->
-                                </template>
-                            </OffCanvas>
-                        </nav>
                     </div>
                 </div>
-                <!-- <UserTable :users="users" :getUsers="fetchUsers" :isLoading="isLoading" :currentFilters="filters" /> -->
-            </div>
+                <div class="flex justify-end items-center gap-2 p-5 border-t border-default-300">
 
-            <!--End::row-1 -->
 
+                    <router-link :to="{ name: 'roles' }" class="btn bg-light hover:text-primary">
+                        <i class="iconify tabler--arrow-back-up"></i> Discard
+                    </router-link>
+                    <button class="btn bg-secondary hover:bg-secondary-hover text-white ">
+                        Draft Role <i class="iconify tabler--folder-open"></i>
+                    </button>
+                    <button :class="isEditMode ? 'btn bg-success hover:bg-success-hover text-white' : 'btn bg-primary hover:bg-primary-hover text-white'" v-if="!isLoading">
+                        {{ isEditMode ? 'Update Role' : 'Save Role' }} <i class="iconify tabler--device-floppy"></i>
+                    </button>
+                    <button class="btn bg-primary hover:bg-success-hover text-white" type="button" disabled
+                        v-if="isLoading">
+                        <span class="spinner-border spinner-border-sm align-middle" role="status"
+                            aria-hidden="true"></span>
+                        Loading...
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </template>

@@ -26,27 +26,35 @@ Route::prefix('/app')->group(function () {
         ]);
     });
 
-    Route::post('/password/update', [UserController::class, 'updatePassword']);
+
+    // Users
     Route::resource('user', UserController::class);
+    Route::post('/password/update', [UserController::class, 'updatePassword']);
     Route::post('user/{uuid}/impersonate', [UserController::class, 'impersonate']);
     Route::post('impersonate/leave', [UserController::class, 'leaveImpersonate']);
+
+    // Roles
     Route::resource('role',RoleController::class);
-    Route::apiResource('category', CategoryController::class);
-    Route::apiResource('brand', BrandController::class);
-    Route::apiResource('product', ProductController::class);
+    Route::resource('category', CategoryController::class);
+    Route::resource('brand', BrandController::class);
+    Route::resource('product', ProductController::class);
     Route::post('variant/bulk-store', [ProductVariantController::class, 'bulkStore']);
-    Route::apiResource('variant', ProductVariantController::class);
-    Route::apiResource('purchase-order', PurchaseOrderController::class);
+    Route::resource('variant', ProductVariantController::class);
+    Route::resource('purchase-order', PurchaseOrderController::class);
+
+    // Uploads
     Route::prefix('upload')->group(function() {
         Route::post('/{type}/image',[UploadController::class,'uploadSingleImage']);
     });
 
-    Route::prefix('/list')->group( function(){
+    Route::prefix('/dropdown-list')->group( function(){
         Route::get('/options',[SettingController::class,'getListOptions']);
         Route::get('/languages',[SettingController::class,'getLanguages']);
         Route::get('/timezones',[SettingController::class,'getTimezones']);
         Route::get('/roles',[RoleController::class,'getRoles']);
         Route::get('/categories',[CategoryController::class,'index']);
         Route::get('/brands',[BrandController::class,'index']);
+        Route::get('/users',[UserController::class,'getUsers']);
     });
+
 });

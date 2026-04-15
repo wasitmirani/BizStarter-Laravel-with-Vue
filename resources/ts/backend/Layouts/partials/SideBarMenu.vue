@@ -15,12 +15,12 @@ function isActive(link: string) {
 }
 function isAllowed(value: string): boolean {
     console.log("isAllowed", value);
-    return true;
-    // if (permissions.includes(value)) {
-    //     return true;
-    // } else {
-    //     return false;
-    // }
+    // return true;
+    if (permissions.includes(value)) {
+        return true;
+    } else {
+        return false;
+    }
 }
 const getMenuClass = (type: string) => {
     switch (type) {
