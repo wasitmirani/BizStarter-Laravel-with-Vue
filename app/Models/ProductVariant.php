@@ -46,7 +46,14 @@ class ProductVariant extends Model
             $q->where('name', 'LIKE', "%{$search}%")
                 ->orWhere('slug', 'LIKE', "%{$search}%")
                 ->orWhere('sku', 'LIKE', "%{$search}%")
-                ->orWhere('barcode', 'LIKE', "%{$search}%");
+                ->orWhere('barcode', 'LIKE', "%{$search}%")
+                ->orWhere('option_name', 'LIKE', "%{$search}%")
+                ->orWhere('option_value', 'LIKE', "%{$search}%")
+                ->orWhereHas('product', function ($pq) use ($search) {
+                    $pq->where('name', 'LIKE', "%{$search}%")
+                        ->orWhere('slug', 'LIKE', "%{$search}%")
+                        ->orWhere('sku', 'LIKE', "%{$search}%");
+                });
         });
     }
 
