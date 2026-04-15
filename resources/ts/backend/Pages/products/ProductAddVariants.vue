@@ -15,7 +15,9 @@ const rows = Helpers.useDynamicRef<any[]>([
     {
         name: '',
         option_name: '',
-        option_value: '',
+        option_values_input: '',
+        sku_values_input: '',
+        barcode_values_input: '',
         sku: '',
         barcode: '',
         price: 0,
@@ -30,7 +32,9 @@ const addRow = () => {
     rows.value.push({
         name: '',
         option_name: '',
-        option_value: '',
+        option_values_input: '',
+        sku_values_input: '',
+        barcode_values_input: '',
         sku: '',
         barcode: '',
         price: 0,
@@ -62,21 +66,98 @@ const submit = async () => {
     errors.value = {};
     if (!product.value?.id) return;
 
-    const variants = rows.value.map((row) => ({
-        ...row,
-        sku: String(row.sku || '').trim(),
-        barcode: String(row.barcode || '').trim() || null,
-        name: String(row.name || '').trim() || null,
-        option_name: String(row.option_name || '').trim() || null,
-        option_value: String(row.option_value || '').trim() || null,
-        price: Number(row.price || 0),
-        retail_price: Number(row.retail_price || 0),
-        sort_order: Number(row.sort_order || 0),
-        is_default: Boolean(row.is_default),
-    }));
+    const toOptionValues = (value: unknown): string[] =>
+        String(value ?? '')
+            .split(',')
+            .map((item) => item.trim())
+            .filter(Boolean);
 
-    if (variants.some((row) => !row.sku)) {
-        errors.value = { variants: ['SKU is required for every variant row.'] };
+    const toBarcodeValues = (value: unknown): string[] =>
+        String(value ?? '')
+            .split(',')
+            .map((item) => item.trim())
+            .filter(Boolean);
+
+    const toSkuValues = (value: unknown): string[] =>
+        String(value ?? '')
+            .split(',')
+            .map((item) => item.trim())
+            .filter(Boolean);
+
+    const variants = rows.value.map((row, index) => {
+        const optionValues = toOptionValues(row.option_values_input);
+        return {
+            ...row,
+            rowIndex: index,
+            sku: String(row.sku || '').trim(),
+            barcode: String(row.barcode || '').trim() || null,
+            name: String(row.name || '').trim() || null,
+            option_name: String(row.option_name || '').trim() || null,
+            option_values: optionValues,
+            sku_values: toSkuValues(row.sku_values_input),
+            barcode_values: toBarcodeValues(row.barcode_values_input),
+            option_value: optionValues[0] || null,
+            price: Number(row.price || 0),
+            retail_price: Number(row.retail_price || 0),
+            sort_order: Number(row.sort_order || 0),
+            is_default: Boolean(row.is_default),
+        };
+    });
+
+    const firstMissingSku = variants.find((row) => !row.sku);
+    if (firstMissingSku) {
+        errors.value = { variants: [`Row ${firstMissingSku.rowIndex + 1}: Base SKU is required.`] };
+        return;
+    }
+
+    const firstMissingOptionName = variants.find((row) => !row.option_name);
+    if (firstMissingOptionName) {
+        errors.value = { variants: [`Row ${firstMissingOptionName.rowIndex + 1}: Option Name is required.`] };
+        return;
+    }
+
+    const firstMissingValues = variants.find((row) => !row.option_values?.length);
+    if (firstMissingValues) {
+        errors.value = { variants: [`Row ${firstMissingValues.rowIndex + 1}: Please provide at least one option value.`] };
+        return;
+    }
+
+    const firstNegativePrice = variants.find((row) => row.price < 0 || row.retail_price < 0);
+    if (firstNegativePrice) {
+        errors.value = { variants: [`Row ${firstNegativePrice.rowIndex + 1}: Price and Retail cannot be negative.`] };
+        return;
+    }
+
+    const firstDuplicateValuesInRow = variants.find((row) => {
+        const lowered = row.option_values.map((value: string) => value.toLowerCase());
+        return new Set(lowered).size !== lowered.length;
+    });
+    if (firstDuplicateValuesInRow) {
+        errors.value = { variants: [`Row ${firstDuplicateValuesInRow.rowIndex + 1}: Option Values contain duplicates.`] };
+        return;
+    }
+
+    const firstSkuCountMismatch = variants.find((row) =>
+        row.sku_values?.length > 0 && row.sku_values.length !== row.option_values.length
+    );
+    if (firstSkuCountMismatch) {
+        errors.value = {
+            variants: [
+                `Row ${firstSkuCountMismatch.rowIndex + 1}: SKU Values count must match Option Values count.`,
+            ],
+        };
+        return;
+    }
+
+    const firstBarcodeCountMismatch = variants.find((row) =>
+        row.barcode_values?.length > 0 && row.barcode_values.length !== row.option_values.length
+    );
+    if (firstBarcodeCountMismatch) {
+        errors.value = {
+            variants: [
+                `Row ${firstBarcodeCountMismatch.rowIndex + 1}: Barcode Values count must match Option Values count.`,
+            ],
+        };
         return;
     }
 
@@ -108,7 +189,10 @@ Helpers.useDynamicOnMounted(loadProduct);
             <div class="card mb-4">
                 <div class="card-body">
                     <h4 class="card-title mb-1">Product: {{ product?.name || '-' }}</h4>
-                    <p class="text-default-400 mb-0">Add multiple variants for this single product. Use option name/value as your variant configuration flow.</p>
+                    <p class="text-default-400 mb-0">
+                        Add variants in bulk. Use one row per option group (for example Color), and provide comma-separated
+                        values for options and optional SKUs/barcodes.
+                    </p>
                 </div>
             </div>
 
@@ -124,10 +208,11 @@ Helpers.useDynamicOnMounted(loadProduct);
                         <thead>
                             <tr>
                                 <th>Option Name</th>
-                                <th>Option Value</th>
+                                <th>Option Values</th>
+                                <th>SKU Values</th>
+                                <th>Barcode Values</th>
                                 <th>Variant Name</th>
                                 <th>SKU *</th>
-                                <th>Barcode</th>
                                 <th>Price</th>
                                 <th>Retail</th>
                                 <th>Status</th>
@@ -137,11 +222,12 @@ Helpers.useDynamicOnMounted(loadProduct);
                         </thead>
                         <tbody>
                             <tr v-for="(row, index) in rows" :key="index">
-                                <td><input v-model="row.option_name" type="text" class="form-input" placeholder="e.g. Size" /></td>
-                                <td><input v-model="row.option_value" type="text" class="form-input" placeholder="e.g. XL" /></td>
+                                <td><input v-model="row.option_name" type="text" class="form-input" placeholder="e.g. Color" /></td>
+                                <td><input v-model="row.option_values_input" type="text" class="form-input" placeholder="e.g. Red, Blue, Green" /></td>
+                                <td><input v-model="row.sku_values_input" type="text" class="form-input" placeholder="Optional: SKU-RED, SKU-BLUE, SKU-GREEN" /></td>
+                                <td><input v-model="row.barcode_values_input" type="text" class="form-input" placeholder="Optional: BR1, BR2, BR3" /></td>
                                 <td><input v-model="row.name" type="text" class="form-input" placeholder="Optional, auto-built if blank" /></td>
-                                <td><input v-model="row.sku" type="text" class="form-input" placeholder="SKU-001" /></td>
-                                <td><input v-model="row.barcode" type="text" class="form-input" placeholder="Barcode" /></td>
+                                <td><input v-model="row.sku" type="text" class="form-input" placeholder="SHIRT-COLOR" /></td>
                                 <td><input v-model.number="row.price" type="number" class="form-input" min="0" step="0.01" /></td>
                                 <td><input v-model.number="row.retail_price" type="number" class="form-input" min="0" step="0.01" /></td>
                                 <td>
