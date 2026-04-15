@@ -28,7 +28,7 @@ Route::prefix('/app')->group(function () {
     Route::post('user/{uuid}/impersonate', [UserController::class, 'impersonate']);
     Route::post('impersonate/leave', [UserController::class, 'leaveImpersonate']);
 
-    // Roles 
+    // Roles
     Route::resource('role',RoleController::class);
 
     // Uploads
@@ -36,10 +36,12 @@ Route::prefix('/app')->group(function () {
         Route::post('/{type}/image',[UploadController::class,'uploadSingleImage']);
     });
 
-    Route::prefix('/list')->group( function(){
+    Route::prefix('/dropdown-list')->group( function(){
         Route::get('/options',[SettingController::class,'getListOptions']);
         Route::get('/languages',[SettingController::class,'getLanguages']);
         Route::get('/timezones',[SettingController::class,'getTimezones']);
         Route::get('/roles',[RoleController::class,'getRoles']);
+        Route::get('/users',[UserController::class,'getUsers']);
     });
+
 });
