@@ -45,6 +45,12 @@ const routes = [
     setRoute('/variants/edit/:uuid', 'edit-variant', 'variants/Variant', 'edit-variant'),
     setRoute('/variants/:uuid', 'show-variant', 'variants/VariantShow', 'show-variant'),
 
+    // Purchases Routes
+    setRoute('/purchase-orders', 'purchase-orders', 'purchaseOrders/PurchaseOrders', 'purchase-orders-list'),
+    setRoute('/purchase-orders/create', 'create-purchase-order', 'purchaseOrders/PurchaseOrder', 'create-purchase-order'),
+    setRoute('/purchase-orders/edit/:uuid', 'edit-purchase-order', 'purchaseOrders/PurchaseOrder', 'edit-purchase-order'),
+    setRoute('/purchase-orders/:uuid', 'show-purchase-order', 'purchaseOrders/PurchaseOrderShow', 'show-purchase-order'),
+
     // Managment Routes
     setRoute('/management/users', 'users', 'User/Users', 'users-list'),
     setRoute('/management/users/create', 'create-user', 'User/User', 'create-user'),

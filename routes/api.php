@@ -10,6 +10,7 @@ use App\Http\Controllers\backend\role\RoleController;
 use App\Http\Controllers\backend\user\UserController;
 use App\Http\Controllers\backend\media\UploadController;
 use App\Http\Controllers\backend\setting\SettingController;
+use App\Http\Controllers\backend\purchases\PurchaseOrderController;
 
 Route::get('/me', function (Request $request) {
     return $request->user();
@@ -35,6 +36,7 @@ Route::prefix('/app')->group(function () {
     Route::apiResource('product', ProductController::class);
     Route::post('variant/bulk-store', [ProductVariantController::class, 'bulkStore']);
     Route::apiResource('variant', ProductVariantController::class);
+    Route::apiResource('purchase-order', PurchaseOrderController::class);
     Route::prefix('upload')->group(function() {
         Route::post('/{type}/image',[UploadController::class,'uploadSingleImage']);
     });

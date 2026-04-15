@@ -53,6 +53,11 @@ export default class SidebarMenu {
                     this.setSubMenu('Variants', '/variants', 'variants-view'),
                 ]
             ),
+            this.setMultiMenu('Purchases', 'shopping-cart', 'Purchases',
+                [
+                    this.setSubMenu('Purchase Orders', '/purchase-orders', 'purchase-orders-list'),
+                ]
+            ),
             this.setHeadingMenu('Management & Apps'),
             this.setMultiMenu('Users Management', 'users', undefined, [
                     this.setSubMenu('Users', '/management/users', 'users-list'),
