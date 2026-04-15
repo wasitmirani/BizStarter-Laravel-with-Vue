@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\Backend\Media\UploadController;
+use App\Http\Controllers\Backend\Role\RoleController;
+use App\Http\Controllers\Backend\Settings\SettingController;
+use App\Http\Controllers\Backend\User\UserController;
+use App\Http\Controllers\Backend\Permission\PermissionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\backend\role\RoleController;
-use App\Http\Controllers\backend\user\UserController;
-use App\Http\Controllers\backend\media\UploadController;
-use App\Http\Controllers\backend\setting\SettingController;
+use Spatie\Permission\Models\Permission;
 
 Route::get('/me', function (Request $request) {
     return $request->user();
@@ -42,6 +44,7 @@ Route::prefix('/app')->group(function () {
         Route::get('/timezones-list',[SettingController::class,'getTimezones']);
         Route::get('/roles-list',[RoleController::class,'getRoles']);
         Route::get('/users-list',[UserController::class,'getUsers']);
+        Route::get('/permissions-list',[PermissionController::class,'getPermissionsList']);
     });
 
 });

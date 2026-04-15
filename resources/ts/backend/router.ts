@@ -38,8 +38,8 @@ const routes = [
     // Roles and Permissions
     setRoute('/management/roles', 'roles', 'Role/Roles', 'roles-list'),
     setRoute('/management/role/create', 'create-role', 'Role/Role', 'create-role'),
-    setRoute('/management/roles/edit/:uuid', 'edit-role', 'Role/Role', 'edit-role'),
-    setRoute('/management/role/details/:uuid', 'show-role', 'Role/RoleShow', 'show-role'),
+    setRoute('/management/roles/edit/:id', 'edit-role', 'Role/Role', 'edit-role'),
+    setRoute('/management/role/details/:id', 'show-role', 'Role/RoleShow', 'show-role'),
     setRoute('/management/permissions', 'permissions', 'Permission/Permissions', null),
 
 

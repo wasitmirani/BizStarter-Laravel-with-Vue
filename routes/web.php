@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\backend\BackendController;
+use App\Http\Controllers\Backend\BackendController;
 use App\Http\Controllers\frontend\FrontendController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 

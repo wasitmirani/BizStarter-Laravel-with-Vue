@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import  UserService  from '../../Services/user/UserService';
+import RoleService from '../../Services/Role/RoleService';
 import GenericTable from '../../Components/GenericTable.vue';
 import { Helpers } from '../../Utils/Helper';
 import { hasUuid } from '../../Utils/Common';
-import axios from 'axios';
-
+import Avatar from '../../Components/Avatar.vue';
 
 const props = defineProps<{
     roles: any;
@@ -22,40 +21,36 @@ const toast = Helpers.useDynamicInject<{ showToast: (status: number, title: stri
     showToast: () => {},
 });
 
-
-
-function getRole(user: any) {
-    if (user.roles.length > 0) {
-        return user.roles[0].name;
+const deleteRole = (item: any) => {
+    if (item.name.toLowerCase() === 'super-admin') {
+        toast.value.showToast(403, 'Error', 'Cannot delete super-admin role');
+        return;
     }
-    return "No Role";
-}
-const deleteUser = (item: any) => {
+
     Helpers.Swal().fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
+        cancelButtonColor: "#d33",
         confirmButtonText: "Yes, delete it!"
     }).then((result: any) => {
         if (result.isConfirmed) {
-            UserService.delete(item.uuid).then((res: any) => {
+            RoleService.delete(item.id).then((res: any) => {
                 Helpers.Swal().fire({
                     title: "Deleted!",
-                    text: "User has been deleted.",
+                    text: "Role has been deleted.",
                     icon: "success"
                 });
                 props.getRoles();
             }).catch((err: any) => {
-                console.log("err:", err.response.status);
-                toast.value.showToast(err.response.status, 'Error: ' + err.response.status, err.message ?? err.response.message);
+                toast.value.showToast(err.response.status, 'Error: ' + err.response.status, err.response.data?.message ?? err.message);
             })
-
         }
     });
 }
+
 const bulkDelete = (items: any) => {
     Helpers.Swal().fire({
         title: "Are you sure?",
@@ -67,38 +62,27 @@ const bulkDelete = (items: any) => {
         confirmButtonText: "Yes, delete it!"
     }).then((result: any) => {
         if (result.isConfirmed) {
-            UserService.delete(items.uuid).then((res: any) => {
-                Helpers.Swal().fire({
-                    title: "Deleted!",
-                    text: "User has been deleted.",
-                    icon: "success"
+            // Could implement bulk delete by looping through items
+            items.forEach((item: any) => {
+                RoleService.delete(item).catch((err: any) => {
+                    console.error("Error deleting role:", err);
                 });
-                props.getRoles();
-            }).catch((err: any) => {
-                console.log("err:", err.response.status);
-                toast.value.showToast(err.response.status, 'Error: ' + err.response.status, err.message ?? err.response.message);
-            })
-
+            });
+            props.getRoles();
         }
     });
 }
-const editUser = (item: any) => {
-    Helpers.router().push({ name: "update-user", params: { uuid: item.uuid } });
-}
-
 
 const columns = [
     { key: "id", label: "Ref-ID" },
     { key: "name", label: "Name" },
     { key: "users_count", label: "Users" },
-    {key:'permissions_count', label:'Permissions'},
+    { key: 'permissions_count', label: 'Permissions' },
     { key: "created_at", label: "Created At" },
-    //   { key: "updated_at", label: "Updated At" },
-
 ];
 
 const actions = [
-    { label: "View", icon: "eye", action: "view", class: "info", },
+    { label: "View", icon: "eye", action: "view", class: "info" },
     { label: "Edit", icon: "edit", action: "edit", class: "primary" },
     { label: "Delete", icon: "trash", action: "delete", class: "danger" },
 ];
@@ -107,44 +91,31 @@ const bulkActions = [
     { label: 'Delete selected', action: 'bulk-delete' },
 ];
 
-
-
 function handleAction({ action, row, selected }: { action: string; row?: any; selected?: (string | number)[] }) {
-        // Centralized validation for actions that require a row UUID
-    const actionsRequiringUuid = ['edit', 'delete','view', 'impersonate']
-    if (actionsRequiringUuid.includes(action)) {
-        if (!hasUuid(row?.uuid)) {
-            toast.value.showToast(400, 'Error', 'User uuid not found')
-            return
-        }
-    }
     switch (action) {
         case 'view':
-             Helpers.router().push({ name: 'show-user', params: { uuid: row?.uuid} });
+            Helpers.router().push({ name: 'show-role', params: { id: row?.id } });
             break;
         case 'edit':
-            Helpers.router().push({ name: 'edit-user', params: { uuid: row.uuid, slug: row.slug } });
+            Helpers.router().push({ name: 'edit-role', params: { id: row?.id } });
             break;
         case 'delete':
-
-            deleteUser(row);
+            deleteRole(row);
             break;
-
         case 'bulk-delete':
             if (!selected || selected.length === 0) {
-                toast.value.showToast(400, 'Error', 'No users selected');
+                toast.value.showToast(400, 'Error', 'No roles selected');
                 return;
             }
-            // For now just log; can be wired to an API endpoint for bulk delete
-           bulkDelete(selected);
+            bulkDelete(selected);
             break;
         default:
             console.log('Unknown action:', action);
     }
 }
 </script>
-<template>
 
+<template>
     <GenericTable
         :columns="columns"
         :isLoading="isLoading"
@@ -164,17 +135,14 @@ function handleAction({ action, row, selected }: { action: string; row?: any; se
         </template>
         <template #name="{ row }">
             <td>
-                <Avatar :name="row.name"  />
+                <Avatar :name="row.name" />
             </td>
         </template>
-        <template #users_count="{row}">
+        <template #users_count="{ row }">
             <span class="badge size-4 rounded-full bg-light text-dark">{{ row.users_count }}</span>
         </template>
-        <template #permissions_count="{row}">
+        <template #permissions_count="{ row }">
             <span class="badge size-4 rounded-full bg-light text-dark">{{ row.permissions_count }}</span>
         </template>
-
-
     </GenericTable>
-
 </template>

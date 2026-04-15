@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\backend\user;
+namespace App\Http\Controllers\Backend\User;
 
 use App\Contracts\UserFilterable;
 use App\Enums\UserEnums;
@@ -159,8 +159,9 @@ class UserController extends Controller implements UserFilterable
 
     public function getUsers(Request $request){
         $filters = $request->only(self::ALLOWED_FILTERS);
-        $users = $this->userService->users($filters)->get(['id','name']);
-        $data=[
+        $filters = ['paginated'=>false] + $filters;
+        $users = $this->userService->users($filters);
+        $data=[ 
             'users'=>$users
         ];
         return responseJson('users fetched successfully',$data,true);

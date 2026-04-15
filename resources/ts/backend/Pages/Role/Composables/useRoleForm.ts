@@ -1,5 +1,5 @@
 import DropDownService from "../../../Services/DropDown/DropDownService";
-import  RoleService  from "../../../Services/Role/RoleService";
+import RoleService from "../../../Services/Role/RoleService";
 import { DropdownOptions } from "../../../Utils/DropdownOptions";
 import { Helpers } from "../../../Utils/Helper";
 
@@ -7,18 +7,37 @@ export async function useRoleForm(roleData?: any, isEditMode: boolean = false) {
     // ─── State ────────────────────────────────────────────────────────────────
     let errors = Helpers.useDynamicRef<any>([]);
     const isLoading = Helpers.useDynamicRef(false);
-    const showPassword = Helpers.useDynamicRef(false);
     const toast = Helpers.useDynamicInject('toast', null);
 
     // ─── Dropdown Options ─────────────────────────────────────────────────────
-    const users = await DropDownService.getUsers({sort_by: 'name', order: 'asc'});
-    const permissions = await DropDownService.getPermissions({sort_by: 'name', order: 'asc'});
-    const usersDropdownItems = DropdownOptions.getUsersListOptions(users);
-    const permissionsDropdownItems = DropdownOptions.getPermissionsListOptions(permissions);
-   
+    let usersDropdownItems: any[] = [];
+    let permissionsDropdownItems: any[] = [];
+
+    try {
+        const usersResponse = await DropDownService.getUsers({ sort_by: 'name', sort_dir: 'asc' });
+        const usersData = usersResponse?.data?.result?.users || usersResponse?.data?.users || [];
+        console.log("Users API Response:", usersResponse);
+        console.log("Extracted Users Data:", usersData);
+        usersDropdownItems = DropdownOptions.getUsersListOptions(Array.isArray(usersData) ? usersData : []);
+    } catch (error) {
+        console.error("Error fetching users:", error);
+        usersDropdownItems = [];
+    }
+
+    try {
+        const permissionsResponse = await DropDownService.getPermissions({ sort_by: 'name', sort_dir: 'asc' });
+        const permissionsData = permissionsResponse?.data?.result?.permissions || permissionsResponse?.data?.permissions || [];
+        console.log("Permissions API Response:", permissionsResponse);
+        console.log("Extracted Permissions Data:", permissionsData);
+        permissionsDropdownItems = DropdownOptions.getPermissionsListOptions(Array.isArray(permissionsData) ? permissionsData : []);
+    } catch (error) {
+        console.error("Error fetching permissions:", error);
+        permissionsDropdownItems = [];
+    }
 
     // ─── Role Reactive Object ─────────────────────────────────────────────────
     const role = Helpers.useDynamicReactive({
+        'id': null,
         'name': '',
         'permissions': [],
         'users': [],
@@ -29,31 +48,30 @@ export async function useRoleForm(roleData?: any, isEditMode: boolean = false) {
     const roleStore = async (data: any): void => {
         isLoading.value = true;
 
-       await RoleService.store(data)
+        await RoleService.store(data)
             .then((res: any) => {
-                toast.value?.showToast?.(res.status, 'Role Store', res.data);
+                toast.value?.showToast?.(res.status, 'Role Created', res.data);
                 setTimeout(() => {
-                    Helpers.router().push({ name: 'users' });
+                    Helpers.router().push({ name: 'roles' });
                 }, 100);
             })
             .catch((err: any) => {
-                if (err.response.data) {
+                if (err.response?.data) {
                     errors.value = err.response.data.errors || { general: ['An error occurred.'] };
                     console.log("Errors:", errors.value);
-                    toast.value?.showToast?.(err.response.status, 'Error: ' + err.status, err.response.data);
+                    toast.value?.showToast?.(err.response.status, 'Error: ' + err.status, err.response.data?.message || 'Failed to create role');
                 }
+            })
+            .finally(() => {
+                isLoading.value = false;
             });
-
-        setTimeout(() => {
-            isLoading.value = false;
-        }, 200);
     };
 
     const roleUpdate = async (data: any): void => {
         isLoading.value = true;
 
-        const userId = data?.id;
-        if (!userId) {
+        const roleId = data?.id;
+        if (!roleId) {
             toast.value?.showToast?.(400, 'Error', 'Missing role id for update');
             isLoading.value = false;
             return;
@@ -69,13 +87,11 @@ export async function useRoleForm(roleData?: any, isEditMode: boolean = false) {
             .catch((err: any) => {
                 if (err.response?.data) {
                     errors.value = err.response.data.errors || { general: ['An error occurred.'] };
-                    toast.value?.showToast?.(err.response.status, 'Error: ' + err.status, err.response.data);
+                    toast.value?.showToast?.(err.response.status, 'Error: ' + err.status, err.response.data?.message || 'Failed to update role');
                 }
             })
             .finally(() => {
-                setTimeout(() => {
-                    isLoading.value = false;
-                }, 200);
+                isLoading.value = false;
             });
     };
 
@@ -84,7 +100,6 @@ export async function useRoleForm(roleData?: any, isEditMode: boolean = false) {
         // Create a shallow clone to avoid modifying the reactive role directly.
         const rolePayload = {
             ...role,
-            name: [role.first_name, role.last_name].filter(Boolean).join(' ').trim(),
         };
 
         if (isEditMode) {
@@ -99,12 +114,8 @@ export async function useRoleForm(roleData?: any, isEditMode: boolean = false) {
         role,
         errors,
         isLoading,
-        showPassword,
-        // dropdowns
+        onSubmit,
         usersDropdownItems,
         permissionsDropdownItems,
-        // handlers
-        onSubmit,
-       
     };
 }

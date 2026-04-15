@@ -31,13 +31,20 @@ export class DropdownOptions {
     }
 
     static getUsersListOptions(users: any[]) {
+        console.log("users",users)
+        if (!users || users.length === 0) {
+            return [];
+        }
         return users.map(user => ({
             value: user.id,
-            label: `${user.first_name} ${user.last_name}`
+            label: `${user.name}`
         }));
     }
     static getPermissionsListOptions(permissions: any[]) {
-        return permissions.map(permission => ({
+        if (!permissions || permissions.length === 0) {
+            return [];
+        }
+        return permissions?.map(permission => ({
             value: permission.id,
             label: permission.name
         }));

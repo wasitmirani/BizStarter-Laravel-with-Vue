@@ -1,12 +1,12 @@
 import { Helpers } from '../../../Utils/Helper';
-import  RoleService  from '../../../Services/Role/RoleService';
+import RoleService from '../../../Services/Role/RoleService';
 import { DropdownOptions } from "../../../Utils/DropdownOptions";
 
 export function useCreateRole() {
     const draftStatus = Helpers.useDynamicRef<any>(null);
     const role = Helpers.useDynamicRef<any>({});
     const editmode = Helpers.useDynamicRef<any>(false);
-    const loading = Helpers.useDynamicRef<boolean>(false); // Add loading state
+    const loading = Helpers.useDynamicRef<boolean>(false);
 
     const saveDraftHandler = (status?: string): void => {
         draftStatus.value = status || 'no status provided';
@@ -18,24 +18,27 @@ export function useCreateRole() {
         saveDraftHandler('submitted');
     };
 
-    const getUser = async () => {
-        loading.value = true; // Set loading to true before fetching
+    const getRole = async () => {
+        loading.value = true;
         try {
-            const res = await RoleService.role(Helpers.route().params.uuid.toString());
-            role.value = res.data.result.role;
-            editmode.value = true;
-            console.log("Editmode", editmode.value);
+            const roleId = Helpers.route().params.id?.toString();
+            if (roleId) {
+                const res = await RoleService.role(roleId);
+                role.value = res.data.result?.role || res.data.data?.role;
+                editmode.value = true;
+                console.log("Editmode", editmode.value, "Role:", role.value);
+            }
         } catch (error) {
             console.error('Error fetching role:', error);
-            // Optionally handle error (show error message, etc.)
         } finally {
-            loading.value = false; // Set loading to false after fetch completes
+            loading.value = false;
         }
     };
 
     Helpers.useDynamicOnMounted(() => {
-        if (Helpers.route().params.uuid) {
-            getUser();
+        const routeId = Helpers.route().params.id;
+        if (routeId) {
+            getRole();
         }
     });
 
@@ -43,7 +46,7 @@ export function useCreateRole() {
         draftStatus,
         role,
         editmode,
-        loading, // Return loading state
+        loading,
         saveDraftHandler,
         handleSubmitForm,
     };

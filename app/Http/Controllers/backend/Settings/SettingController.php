@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\backend\setting;
+namespace App\Http\Controllers\Backend\Settings;
 
 use App\Http\Controllers\Controller;
 use App\Services\SettingService;
