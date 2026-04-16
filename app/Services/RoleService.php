@@ -44,9 +44,13 @@ class RoleService extends BaseService
         return DB::transaction(function () use ($data) {
             $permissions = $data['permissions'] ?? [];
             $users = $data['users'] ?? [];
-            
             unset($data['permissions'], $data['users']);
-            
+            $data = array_merge($data, [
+                'tenant_id' => tenant('id')->id,
+                'slug' => setSlug($data['name']),
+                'guard_name'=>  'api',
+                'uuid' => genUUID(),
+            ]);
             $role = $this->model->create($data);
             
             if (!empty($permissions)) {

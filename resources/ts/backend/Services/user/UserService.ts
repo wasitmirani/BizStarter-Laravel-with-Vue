@@ -43,7 +43,7 @@ class UserService extends BaseService {
         return AxiosService.get('/countries-list?country_id='+id);
     }
     roles = ()=> {
-        return AxiosService.get('/list/roles');
+        return AxiosService.get('/dropdown/roles-list');
     }
 
     impersonate = (uuid: string) => {

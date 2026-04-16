@@ -5,6 +5,7 @@ use Illuminate\Support\Str;
 use Jenssegers\Agent\Agent;
 use App\Models\BrandingLabel;
 use App\Models\DeviceHistory;
+use App\Models\Tenant;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\HtmlString;
 
@@ -241,5 +242,6 @@ function loadBuiltAssets($entry = 'resources/ts/app.ts') {
 
 function tenant()
 {
+    return Tenant::first();
     return auth()->user()?->tenant;
 }

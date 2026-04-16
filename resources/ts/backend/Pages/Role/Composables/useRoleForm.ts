@@ -2,9 +2,11 @@ import DropDownService from "../../../Services/DropDown/DropDownService";
 import RoleService from "../../../Services/Role/RoleService";
 import { DropdownOptions } from "../../../Utils/DropdownOptions";
 import { Helpers } from "../../../Utils/Helper";
+import { useRouter } from "vue-router";
 
 export  function useRoleForm(roleData?: any, isEditMode: boolean = false) {
     // ─── State ────────────────────────────────────────────────────────────────
+    const router = useRouter();
     let errors = Helpers.useDynamicRef<any>([]);
     const isLoading = Helpers.useDynamicRef(false);
     const toast = Helpers.useDynamicInject('toast', null);
@@ -45,14 +47,24 @@ export  function useRoleForm(roleData?: any, isEditMode: boolean = false) {
     // ─── API Call ─────────────────────────────────────────────────────────────
     const roleStore = async (data: any): void => {
         isLoading.value = true;
-       
-
+       console.log("Role Data Before Store:", data);
+       const users = data.users?.map((user: any) => user.value || user) || [];
+        const permissions = data.permissions?.map((permission: any) => permission.value || permission) || [];
+        data.users = users;
+        data.permissions = permissions;
         await RoleService.store(data)
             .then((res: any) => {
                 toast.value?.showToast?.(res.status, 'Role Created', res.data);
-                setTimeout(() => {
-                    Helpers.router().push({ name: 'roles' });
-                }, 800);
+                console.log("Navigating to roles...", router);
+                try {
+                    router.push({ name: 'roles' }).catch((err) => {
+                        console.error("Navigation error:", err);
+                        Helpers.navigateTo('roles');
+                    });
+                } catch(e) {
+                    console.error("Router push exception:", e);
+                    Helpers.navigateTo('roles');
+                }
             })
             .catch((err: any) => {
                 if (err.response?.data) {
@@ -81,9 +93,16 @@ export  function useRoleForm(roleData?: any, isEditMode: boolean = false) {
         await RoleService.update(data)
             .then((res: any) => {
                 toast.value?.showToast?.(res.status, 'Role Updated', res.data);
-                setTimeout(() => {
-                    Helpers.router().push({ name: 'roles' });
-                }, 800);
+                console.log("Navigating to roles...", router);
+                try {
+                    router.push({ name: 'roles' }).catch((err) => {
+                        console.error("Navigation error:", err);
+                        Helpers.navigateTo('roles');
+                    });
+                } catch(e) {
+                    console.error("Router push exception:", e);
+                    Helpers.navigateTo('roles');
+                }
             })
             .catch((err: any) => {
                 if (err.response?.data) {

@@ -23,9 +23,8 @@ const routes = [
         path: "/app",
         redirect: { name: 'dashboard' }
     },
-    setRoute('/:catchAll(.*)', '404', 'errors/404', null),
-    setRoute('/:catchAll(.*)', '404', 'errors/404', null),
-    setRoute('/unauthorized/user', '401', 'error/401', null),
+
+    setRoute('/unauthorized/user', '401', 'Errors/401', null),
     setRoute('/dashboard', 'dashboard', 'dashboard/Dashboard', null),
 
     // Managment Routes
@@ -46,15 +45,8 @@ const routes = [
     //Settings Routes
     setRoute('/settings/user-account', 'user-account', 'account/Account', null),
 
-
-    // {
-    //     path: per_fix+'/dashboard',
-    //     name: 'dashboard',
-    //     component: import('./Pages/dashboard/DashbordComponent.vue'),
-    //     meta: { permissions: '' ?? null },
-
-    // }
-
+    // Catch-all routes MUST be at the end
+    setRoute('/:catchAll(.*)', '404', 'Errors/404', null),
 
 
 ]

@@ -113,15 +113,14 @@ export function useRoles() {
 
     // Filter data handler
     const filterData = (data: any) => {
-        roles.value = data.result.roles6y
+        roles.value = data?.result?.roles || data?.result || []
     }
 
     // Reset filters to default
     const resetFilters = () => {
         Object.assign(filters, defaultFilters)
         updateUrlWithFilters()
-        fetchRoles
-        ()
+        fetchRoles()
     }
 
     // Initialize on mount

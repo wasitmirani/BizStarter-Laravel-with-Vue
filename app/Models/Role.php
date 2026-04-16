@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Models\Role as SpatieRole;
 
 class Role extends SpatieRole
@@ -31,14 +32,14 @@ class Role extends SpatieRole
         });
 
         // ✅ Global scope for tenant
-        static::addGlobalScope('tenant', function ($query) {
-            if (auth()->check()) {
-                $query->where(function ($q) {
-                    $q->whereNull('tenant_id') // global roles
-                      ->orWhere('tenant_id', auth()->user()->tenant_id);
-                });
-            }
-        });
+        // static::addGlobalScope('tenant', function ($query) {
+        //     if (auth()->check()) {
+        //         $query->where(function ($q) {
+        //             $q->whereNull('tenant_id') // global roles
+        //               ->orWhere('tenant_id', auth()->user()->tenant_id);
+        //         });
+        //     }
+        // });
     }
     public function scopeSorting($query, $direction = 'asc')
     {
