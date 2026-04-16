@@ -3,37 +3,35 @@ import RoleService from "../../../Services/Role/RoleService";
 import { DropdownOptions } from "../../../Utils/DropdownOptions";
 import { Helpers } from "../../../Utils/Helper";
 
-export async function useRoleForm(roleData?: any, isEditMode: boolean = false) {
+export  function useRoleForm(roleData?: any, isEditMode: boolean = false) {
     // ─── State ────────────────────────────────────────────────────────────────
     let errors = Helpers.useDynamicRef<any>([]);
     const isLoading = Helpers.useDynamicRef(false);
     const toast = Helpers.useDynamicInject('toast', null);
 
     // ─── Dropdown Options ─────────────────────────────────────────────────────
-    let usersDropdownItems: any[] = [];
-    let permissionsDropdownItems: any[] = [];
+    const usersDropdownItems = Helpers.useDynamicRef<any>([]);
+    const permissionsDropdownItems = Helpers.useDynamicRef<any>([]);
 
+  const init = async () => {
     try {
         const usersResponse = await DropDownService.getUsers({ sort_by: 'name', sort_dir: 'asc' });
         const usersData = usersResponse?.data?.result?.users || usersResponse?.data?.users || [];
-        console.log("Users API Response:", usersResponse);
-        console.log("Extracted Users Data:", usersData);
-        usersDropdownItems = DropdownOptions.getUsersListOptions(Array.isArray(usersData) ? usersData : []);
-    } catch (error) {
-        console.error("Error fetching users:", error);
-        usersDropdownItems = [];
+
+        usersDropdownItems.value = DropdownOptions.getUsersListOptions(usersData || []);
+    } catch (e) {
+        usersDropdownItems.value = [];
     }
 
     try {
         const permissionsResponse = await DropDownService.getPermissions({ sort_by: 'name', sort_dir: 'asc' });
         const permissionsData = permissionsResponse?.data?.result?.permissions || permissionsResponse?.data?.permissions || [];
-        console.log("Permissions API Response:", permissionsResponse);
-        console.log("Extracted Permissions Data:", permissionsData);
-        permissionsDropdownItems = DropdownOptions.getPermissionsListOptions(Array.isArray(permissionsData) ? permissionsData : []);
-    } catch (error) {
-        console.error("Error fetching permissions:", error);
-        permissionsDropdownItems = [];
+
+        permissionsDropdownItems.value = DropdownOptions.getPermissionsListOptions(permissionsData || []);
+    } catch (e) {
+        permissionsDropdownItems.value = [];
     }
+};
 
     // ─── Role Reactive Object ─────────────────────────────────────────────────
     const role = Helpers.useDynamicReactive({
@@ -47,13 +45,14 @@ export async function useRoleForm(roleData?: any, isEditMode: boolean = false) {
     // ─── API Call ─────────────────────────────────────────────────────────────
     const roleStore = async (data: any): void => {
         isLoading.value = true;
+       
 
         await RoleService.store(data)
             .then((res: any) => {
                 toast.value?.showToast?.(res.status, 'Role Created', res.data);
                 setTimeout(() => {
                     Helpers.router().push({ name: 'roles' });
-                }, 100);
+                }, 800);
             })
             .catch((err: any) => {
                 if (err.response?.data) {
@@ -63,7 +62,9 @@ export async function useRoleForm(roleData?: any, isEditMode: boolean = false) {
                 }
             })
             .finally(() => {
+                  setTimeout(() => {
                 isLoading.value = false;
+            }, 600);
             });
     };
 
@@ -82,7 +83,7 @@ export async function useRoleForm(roleData?: any, isEditMode: boolean = false) {
                 toast.value?.showToast?.(res.status, 'Role Updated', res.data);
                 setTimeout(() => {
                     Helpers.router().push({ name: 'roles' });
-                }, 100);
+                }, 800);
             })
             .catch((err: any) => {
                 if (err.response?.data) {
@@ -108,6 +109,10 @@ export async function useRoleForm(roleData?: any, isEditMode: boolean = false) {
             roleStore(rolePayload);
         }
     };
+
+    Helpers.useDynamicOnMounted(() => {
+        init();
+    });
 
     return {
         // state
