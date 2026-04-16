@@ -270,9 +270,9 @@
     @endauth
 
     @if(app()->environment('local'))
-    @vite(['resources/ts/backend/app.ts', 'resources/css/app.css'])
+    @vite(['resources/ts/Backend/app.ts', 'resources/css/app.css'])
 @else
-    {!! loadBuiltAssets('resources/ts/backend/app.ts') !!}
+    {!! loadBuiltAssets('resources/ts/Backend/app.ts') !!}
 @endif
 
 </body>
