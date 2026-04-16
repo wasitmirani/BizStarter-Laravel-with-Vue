@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
         MasterDataSeeder::class,
         UserStatusSeed::class,
         ]);
+D
     }
 }

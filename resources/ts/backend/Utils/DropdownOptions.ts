@@ -36,7 +36,7 @@ export class DropdownOptions {
             return [];
         }
         return users.map(user => ({
-            value: user.id,
+            value: Number(user.id),
             label: `${user.name}`
         }));
     }
@@ -45,7 +45,7 @@ export class DropdownOptions {
             return [];
         }
         return permissions?.map(permission => ({
-            value: permission.id,
+            value: Number(permission.id),
             label: permission.name
         }));
     }

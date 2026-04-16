@@ -49,80 +49,116 @@ const handleSubmit = () => {
 </script>
 
 <template>
-    <div v-if="!isLoadingForm">
-        <div class="w-full flex flex-col card pointer-events-auto">
-            <div class="flex justify-between items-center card-body border-b border-default-300">
-                <h3 id="addCustomerModalLabel" class="font-bold flex items-center">
-                    {{ isEditMode ? 'Update Role Details' : 'Create Role Details' }}
-                </h3>
-            </div>
-            <form @submit.prevent="handleSubmit">
-                <div class="card-body">
-                    <div class="grid lg:grid-cols-3 grid-cols-2 gap-base">
-                        <!-- Role Name -->
-                        <FormInput 
-                            v-model="role.name" 
-                            label="Role Name" 
-                            name="name" 
-                            placeholder="Enter role name"
-                            type="text" 
-                            :errors="errors" 
-                            autofocus 
-                        />
+        <div v-if="!isLoadingForm">
 
-                        <!-- Users Selection -->
-                        <MultiSelect 
-                            v-model="role.users" 
-                            :options="usersDropdownItems" 
-                            label="Assign Users" 
-                            name="users"
-                            placeholder="Select Users" 
-                            track-by="value" 
-                            label-by="label"
-                            :errors="errors" 
-                            multiple 
-                        />
+    <div class="card pointer-events-auto flex w-full flex-col">
+                            <div class="card-header p-5">
+                                <h3 id="addRoleModalLabel" class="text-sm"> {{ isEditMode ? 'Update Role Details' : 'Create Role Details' }}</h3>
+                                <!-- <button type="button" aria-label="Close" data-hs-overlay="#addRoleModal" aria-expanded="true">
+                                    <i class="iconify tabler--x text-xl"></i>
+                                </button> -->
+                            </div>
+                            <!-- overflow-y-auto -->
+                            <div class="card-body ">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
 
-                        <!-- Permissions Selection -->
-                        <MultiSelect 
-                            v-model="role.permissions" 
-                            :options="permissionsDropdownItems" 
-                            label="Assign Permissions" 
-                            name="permissions"
-                            placeholder="Select Permissions" 
-                            track-by="value" 
-                            label-by="label"
-                            :errors="errors" 
-                            multiple 
-                        />
-                    </div>
-                </div>
+                                    <FormInput
+                                        v-model="role.name"
+                                        label="Role Name"
+                                        name="name"
+                                        placeholder="e.g. Developer, Project Manager"
+                                        type="text"
+                                        :errors="errors"
+                                        autofocus
+                                    />
 
-                <div class="flex justify-end items-center gap-2 p-5 border-t border-default-300">
-                    <router-link :to="{ name: 'roles' }" class="btn bg-light hover:text-primary">
+                                    </div>
+
+                                    <div>
+
+                                        <FormInput
+                                        v-model="role.description"
+                                        label="Description"
+                                        name="description"
+                                        placeholder="Brief description"
+                                        type="text"
+                                        :errors="errors"
+                                        autofocus
+                                    />
+                                    </div>
+
+                                    <div class="md:col-span-2">
+                                        <label for="roleResponsibilities" class="form-label">Key Responsibilities</label>
+                                        <textarea class="form-textarea"  v-model="role.responsibilities" id="roleResponsibilities" rows="4" placeholder="Enter responsibilities separated by commas or lines" required=""></textarea>
+                                        <small class="text-default-400 text-xs">Example: Codebase Maintenance, API Integration, Unit Testing</small>
+                                    </div>
+
+                                    <div>
+                                        <label for="roleUsers" class="form-label">Assign Users</label>
+                                        <MultiSelect
+                                        v-model="role.users"
+                                        :options="usersDropdownItems"
+                                        label="Assign Users"
+                                        placeholder="Select Users"
+                                        trackBy="value"
+                                        optionLabel="label"
+                                        :errors="errors"
+                                        multiple
+                                        />
+                                        <small class="text-default-400 text-xs">Hold Ctrl (Windows) or Cmd (Mac) to select multiple users</small>
+                                    </div>
+                                    <div>
+                                        <label for="roleUsers" class="form-label">Assign Permissions</label>
+                                        <!-- Permissions Selection -->
+                                            <MultiSelect
+                                                v-model="role.permissions"
+                                                :options="permissionsDropdownItems"
+                                                label="Assign Permissions"
+                                                placeholder="Select Permissions"
+                                                trackBy="value"
+                                                optionLabel="label"
+                                                :errors="errors"
+                                                multiple
+                                                />
+                                        <small class="text-default-400 text-xs">Hold Ctrl (Windows) or Cmd (Mac) to select multiple users</small>
+                                    </div>
+
+                                    <!-- <div>
+                                        <label for="roleIcon" class="form-label">Role Icon</label>
+                                        <input type="text" class="form-input" id="roleIcon" placeholder="e.g. shield, briefcase">
+                                        <small class="text-default-400 text-xs">Use icon class from your icon library</small>
+                                    </div> -->
+                                </div>
+                            </div>
+                            <!-- Button Actions -->
+                            <div class="border-default-300 flex items-center justify-end gap-x-2 border-t p-4">
+
+                                <router-link :to="{ name: 'roles' }" class="btn bg-light hover:text-primary">
                         <i class="iconify tabler--arrow-back-up"></i> Discard
                     </router-link>
 
-                    <button 
-                        :class="isEditMode ? 'btn bg-success hover:bg-success-hover text-white' : 'btn bg-primary hover:bg-primary-hover text-white'" 
-                        v-if="!isLoading"
-                        type="submit"
-                    >
-                        {{ isEditMode ? 'Update Role' : 'Save Role' }} <i class="iconify tabler--device-floppy"></i>
-                    </button>
+                        <button
+                            :class="isEditMode ? 'btn bg-success hover:bg-success-hover text-white' : 'btn bg-primary hover:bg-primary-hover text-white'"
+                            v-if="!isLoading"
+                            type="submit"
+                        >
+                            {{ isEditMode ? 'Update Role' : 'Save Role' }} <i class="iconify tabler--device-floppy"></i>
+                        </button>
 
-                    <button 
-                        class="btn bg-primary hover:bg-success-hover text-white" 
-                        type="button" 
-                        disabled
-                        v-if="isLoading"
-                    >
-                        <span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span>
-                        Loading...
-                    </button>
-                </div>
-            </form>
-        </div>
+                        <button
+                            class="btn bg-primary hover:bg-success-hover text-white"
+                            type="button"
+                            disabled
+                            v-if="isLoading"
+                        >
+                            <span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span>
+                            Loading...
+                        </button>
+
+                            </div>
+                        </div>
+
     </div>
     <div v-else class="flex justify-center items-center py-12">
         <div class="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
@@ -130,4 +166,3 @@ const handleSubmit = () => {
         </div>
     </div>
 </template>
-           
