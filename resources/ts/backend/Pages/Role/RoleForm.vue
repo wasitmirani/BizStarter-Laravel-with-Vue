@@ -106,7 +106,8 @@ const handleSubmit = () => {
                                         :errors="errors"
                                         multiple
                                         />
-                                        <small class="text-default-400 text-xs">Hold Ctrl (Windows) or Cmd (Mac) to select multiple users</small>
+                                        <small class="text-default-400 text-xs">    Select users you want to assign to this role
+                                        </small>
                                     </div>
                                     <div>
                                         <label for="roleUsers" class="form-label">Assign Permissions</label>
@@ -121,7 +122,8 @@ const handleSubmit = () => {
                                                 :errors="errors"
                                                 multiple
                                                 />
-                                        <small class="text-default-400 text-xs">Hold Ctrl (Windows) or Cmd (Mac) to select multiple users</small>
+                                        <small class="text-default-400 text-xs">    Select permissions you want to assign to this role
+                                        </small>
                                     </div>
 
                                     <!-- <div>
