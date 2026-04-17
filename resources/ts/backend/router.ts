@@ -25,7 +25,7 @@ const routes = [
     },
 
     setRoute('/unauthorized/user', '401', 'Errors/401', null),
-    setRoute('/dashboard', 'dashboard', 'dashboard/Dashboard', null),
+    setRoute('/dashboard', 'dashboard', 'Dashboard/Dashboard', null),
 
     // Managment Routes
     // Users
