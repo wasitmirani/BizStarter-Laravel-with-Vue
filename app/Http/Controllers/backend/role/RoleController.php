@@ -39,7 +39,7 @@ class RoleController extends Controller implements UserFilterable
     public function show($id)
     {
         try {
-            $role = Role::with(['users', 'permissions'])->findOrFail($id);
+            $role = Role::with(['users:id,name', 'permissions:id,name'])->findOrFail($id);
             return responseJson('Role fetched successfully', ['role' => $role], true);
         } catch (\Exception $e) {
             return responseJson('Role not found', null, false, 404);
@@ -49,7 +49,7 @@ class RoleController extends Controller implements UserFilterable
     public function edit($id)
     {
         try {
-            $role = Role::with(['users', 'permissions'])->findOrFail($id);
+            $role = Role::with(['users:id,name', 'permissions:id,name'])->findOrFail($id);
             
             $users = app(DropdownService::class)->getUsers(['sort_by' => 'name', 'sort_dir' => 'asc']);
             $permissions = app(DropdownService::class)->getPermissions(['sort_by' => 'name', 'sort_dir' => 'asc']);

@@ -111,6 +111,33 @@ class Helper {
         return str ? str.charAt(0).toUpperCase() + str.slice(1) : ''
     }
 
+     useMultiSelectModel = (source: any,key: string,options: Ref<any[]>     ) => {
+    return computed({
+        get() {
+            if (!options.value?.length) return [];
+
+            const current = source[key] || [];
+
+            return options.value.filter((item: any) => {
+                // case: [1,2,3]
+                if (typeof current?.[0] === 'number') {
+                    return current.includes(item.value);
+                }
+
+                // case: [{id,name}] OR [{value,label}]
+                return current.some((c: any) =>
+                    c?.id === item.value || c?.value === item.value
+                );
+            });
+        },
+
+        set(val: any[]) {
+            // store as IDs (clean for API)
+            source[key] = val.map(v => v.value);
+        }
+    });
+}
+
     /**
      * Build a plain query-object from a reactive filters object.
      * - Skips empty values (undefined, null, empty string)

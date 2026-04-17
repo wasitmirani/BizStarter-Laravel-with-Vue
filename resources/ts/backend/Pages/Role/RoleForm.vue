@@ -13,10 +13,12 @@ const {
     permissionsDropdownItems,
 } =  useRoleForm(props?.roleData, props?.isEditMode);
 
+const usersModel  = Helpers.useMultiSelectModel(role, 'users', usersDropdownItems);
+const permissionsModel = Helpers.useMultiSelectModel(role, 'permissions', permissionsDropdownItems);
 </script>
 
 <template>
-    <!-- <div v-if="!isLoading"> -->
+    <div v-if="!isLoading">
 
         <div class="card pointer-events-auto flex w-full flex-col">
             <div class="card-header p-5">
@@ -43,8 +45,8 @@ const {
                  
 
                     <div>
-                        <label for="roleUsers" class="form-label">Assign Users</label>
-                        <MultiSelect v-model="role.users" :options="usersDropdownItems" label="Assign Users"
+                        <label for="roleUsers" class="form-label">Assign Users </label>
+                        <MultiSelect v-model="usersModel" :options="usersDropdownItems" label="Assign Users"
                             placeholder="Select Users" trackBy="value" optionLabel="label" :errors="errors" multiple />
                         <small class="text-default-400 text-xs"> Select users you want to assign to this role
                         </small>
@@ -52,7 +54,7 @@ const {
                     <div>
                         <label for="roleUsers" class="form-label">Assign Permissions</label>
                         <!-- Permissions Selection -->
-                        <MultiSelect v-model="role.permissions" :options="permissionsDropdownItems"
+                        <MultiSelect v-model="permissionsModel" :options="permissionsDropdownItems"
                             label="Assign Permissions" placeholder="Select Permissions" trackBy="value"
                             optionLabel="label" :errors="errors" multiple />
                         <small class="text-default-400 text-xs"> Select permissions you want to assign to this role
@@ -104,10 +106,10 @@ const {
              </form>
         </div>
 
-    <!-- </div> -->
-    <!-- <div v-else class="flex justify-center items-center py-12">
+    </div>
+    <div v-else class="flex justify-center items-center py-12">
         <div class="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
             <span class="sr-only">Loading form data...</span>
         </div>
-    </div> -->
+    </div>
 </template>

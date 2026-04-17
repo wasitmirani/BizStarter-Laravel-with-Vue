@@ -40,7 +40,7 @@ export  function useRoleForm(roleData?: any, isEditMode: boolean = false) {
         'id': null,
         'name': '',
         'permissions': [],
-        'users': [],
+        'users': roleData?.users?.map((user: any) => ({ value: user.id, label: user.name })) || [],
         ...(roleData ?? {})
     });
 
@@ -89,6 +89,11 @@ export  function useRoleForm(roleData?: any, isEditMode: boolean = false) {
             isLoading.value = false;
             return;
         }
+
+        const users = data.users?.map((user: any) => user.value || user) || [];
+        const permissions = data.permissions?.map((permission: any) => permission.value || permission) || [];
+        data.users = users;
+        data.permissions = permissions;
 
         await RoleService.update(data)
             .then((res: any) => {

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Role;
+use App\Models\Tenant;
 use App\Services\BaseService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
@@ -69,15 +70,22 @@ class RoleService extends BaseService
     {
         return DB::transaction(function () use ($id, $data) {
             $role = $this->model->findOrFail($id);
+            $permissions = $data['permissions'] ?? null;
+            $users = $data['users'] ?? null;
             
-            $permissions = $data['permissions'] ?? [];
+            unset($data['permissions'], $data['users']);
             
-            unset($data['permissions']);
+            $role->update([
+                'name' => $data['name'] ?? $role->name,
+                'slug' => setSlug($data['name'] ?? $role->name),
+            ]);
             
-            $role->update($data);
-            
-            if (!empty($permissions)) {
+            if ($permissions !== null) {
                 $role->syncPermissions($permissions);
+            }
+
+            if ($users !== null) {
+                $role->users()->sync($users);
             }
             
             return $role->fresh(['users', 'permissions']);
