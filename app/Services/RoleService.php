@@ -53,15 +53,15 @@ class RoleService extends BaseService
                 'uuid' => genUUID(),
             ]);
             $role = $this->model->create($data);
-            
+
             if (!empty($permissions)) {
                 $role->syncPermissions($permissions);
             }
-            
+
             if (!empty($users)) {
                 $role->users()->sync($users);
             }
-            
+
             return $role->load(['users', 'permissions']);
         });
     }
@@ -72,14 +72,14 @@ class RoleService extends BaseService
             $role = $this->model->findOrFail($id);
             $permissions = $data['permissions'] ?? null;
             $users = $data['users'] ?? null;
-            
+
             unset($data['permissions'], $data['users']);
-            
+
             $role->update([
                 'name' => $data['name'] ?? $role->name,
                 'slug' => setSlug($data['name'] ?? $role->name),
             ]);
-            
+
             if ($permissions !== null) {
                 $role->syncPermissions($permissions);
             }
@@ -87,7 +87,7 @@ class RoleService extends BaseService
             if ($users !== null) {
                 $role->users()->sync($users);
             }
-            
+
             return $role->fresh(['users', 'permissions']);
         });
     }
@@ -95,7 +95,7 @@ class RoleService extends BaseService
     public function getRoleByUuid($uuid, $relations = [])
     {
         try {
-            return $this->model->select('name','id')->with($relations)->where('uuid', $uuid)->first();
+            return $this->model->select('name','id','created_at')->with($relations)->where('uuid', $uuid)->first();
         } catch (ModelNotFoundException $e) {
             throw new \Exception('Role not found');
         }

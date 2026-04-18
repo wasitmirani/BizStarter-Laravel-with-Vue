@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import RoleForm from './RoleForm.vue';
 import { useCreateRole } from './Composables/useCreateRole';
 import { Helpers } from '../../Utils/Helper';
+import RoleCard from '../../Components/RoleCard.vue'
 
 const { role, editmode, handleSubmitForm, loading } = useCreateRole();
 
@@ -19,13 +19,8 @@ const isLoading = Helpers.useDynamicComputed(() => loading?.value || false);
         <LoadingBox :showText="true" text="Loading role data..." />
     </div>
 
-    <!-- Role Form -->
-    <RoleForm
-        v-else
-        class="mt-4"
-        :isShowMode="true"
-        :roleData="roleData"
-        :isEditMode="isEditMode"
-        @submit="handleSubmitForm"
-    />
+    <RoleCard v-if="roleData?.users?.length > 0" :items="roleData" />
+    <div v-else class="flex justify-center items-center py-12">
+        <p class="text-default-400 text-sm">No users found</p>
+    </div>
 </template>

@@ -23,7 +23,7 @@ class RoleController extends Controller implements UserFilterable
         $filters = $request->only(self::ALLOWED_FILTERS);
         $filters['paginated'] = true;
         $roles = app(RoleService::class)->getRolesList($filters, withCount: ['users', 'permissions']);
-        
+
         $data = [
             'roles' => $roles,
         ];
@@ -39,7 +39,7 @@ class RoleController extends Controller implements UserFilterable
     public function show($uuid)
     {
         try {
-            $role = app(RoleService::class)->getRoleByUuid($uuid, ['users:id,name', 'permissions:id,name']);
+            $role = app(RoleService::class)->getRoleByUuid($uuid, ['users:id,name,thumbnail', 'permissions:id,name']);
             return responseJson('Role fetched successfully', ['role' => $role], true);
         } catch (\Exception $e) {
             return responseJson('Role not found', null, false, 404);
@@ -60,12 +60,12 @@ class RoleController extends Controller implements UserFilterable
     {
         try {
             $role = Role::findOrFail($id);
-            
+
             // Prevent deletion of super-admin
             if (strtolower($role->name) === 'super-admin') {
                 return responseJson('Cannot delete super-admin role', null, false, 403);
             }
-            
+
             $role->delete();
             return responseJson('Role deleted successfully', null, true);
         } catch (\Exception $e) {
