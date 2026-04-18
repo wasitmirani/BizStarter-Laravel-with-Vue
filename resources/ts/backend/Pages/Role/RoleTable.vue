@@ -92,12 +92,20 @@ const bulkActions = [
 ];
 
 function handleAction({ action, row, selected }: { action: string; row?: any; selected?: (string | number)[] }) {
+        // Centralized validation for actions that require a row UUID
+    const actionsRequiringUuid = ['edit', 'delete','view']
+    if (actionsRequiringUuid.includes(action)) {
+        if (!hasUuid(row?.uuid)) {
+            toast.value.showToast(400, 'Error', 'Role uuid not found')
+            return
+        }
+    }
     switch (action) {
         case 'view':
-            Helpers.router().push({ name: 'show-role', params: { id: row?.id } });
+            Helpers.router().push({ name: 'show-role', params: { id: row?.uuid } });
             break;
         case 'edit':
-            Helpers.router().push({ name: 'edit-role', params: { id: row?.id } });
+            Helpers.router().push({ name: 'edit-role', params: { id: row?.uuid } });
             break;
         case 'delete':
             deleteRole(row);

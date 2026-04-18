@@ -18,14 +18,14 @@ const permissionsModel = Helpers.useMultiSelectModel(role, 'permissions', permis
 </script>
 
 <template>
-    <div v-if="!isLoading">
+    
 
         <div class="card pointer-events-auto flex w-full flex-col">
             <div class="card-header p-5">
                 <h3 id="addRoleModalLabel" class="text-sm"> {{ isEditMode ? 'Update Role Details' : 'Create Role Details' }}</h3>
               
             </div>
-                       <form @submit.prevent="onSubmit">
+        <form @submit.prevent="onSubmit">
 
             <div class="card-body ">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -105,11 +105,4 @@ const permissionsModel = Helpers.useMultiSelectModel(role, 'permissions', permis
             </div>
              </form>
         </div>
-
-    </div>
-    <div v-else class="flex justify-center items-center py-12">
-        <div class="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
-            <span class="sr-only">Loading form data...</span>
-        </div>
-    </div>
 </template>

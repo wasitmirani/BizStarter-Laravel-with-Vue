@@ -91,4 +91,13 @@ class RoleService extends BaseService
             return $role->fresh(['users', 'permissions']);
         });
     }
+
+    public function getRoleByUuid($uuid, $relations = [])
+    {
+        try {
+            return $this->model->select('name','id')->with($relations)->where('uuid', $uuid)->first();
+        } catch (ModelNotFoundException $e) {
+            throw new \Exception('Role not found');
+        }
+    }
 }
