@@ -21,5 +21,11 @@ class PermissionController extends Controller
             return responseJson('Failed to fetch permissions', null, false, 500);
         }
     }
-    
+
+
+    public function index(Request $request){
+        // Implement pagination, filtering, etc. as needed
+        $permissions = Permission::orderBy('name', 'asc')->paginate(10);
+        return responseJson('Permissions fetched successfully', ['permissions' => $permissions], true);
+    }
 }

@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import RoleService from '../../Services/Role/RoleService';
+import PermissionService from '../../Services/Permission/PermissionService';
 import GenericTable from '../../Components/GenericTable.vue';
 import { Helpers } from '../../Utils/Helper';
 import { hasUuid } from '../../Utils/Common';
 import Avatar from '../../Components/Avatar.vue';
 
 const props = defineProps<{
-    roles: any;
+    permissions: any;
     isLoading: boolean;
-    getRoles: (page?: number, perPage?: number) => void;
+    getPermissions: (page?: number, perPage?: number) => void;
     currentFilters: Record<string, unknown>;
 }>();
 
 const emit = defineEmits<{
-    (e: 'role-deleted'): void;
+    (e: 'permission-deleted'): void;
 }>();
 
 const selectedItems = Helpers.useDynamicRef<(string | number)[]>([]);
@@ -21,11 +21,8 @@ const toast = Helpers.useDynamicInject<{ showToast: (status: number, title: stri
     showToast: () => {},
 });
 
-const deleteRole = (item: any) => {
-    if (item.name.toLowerCase() === 'super-admin') {
-        toast.value.showToast(403, 'Error', 'Cannot delete super-admin role');
-        return;
-    }
+const deletePermission = (item: any) => {
+
 
     Helpers.Swal().fire({
         title: "Are you sure?",
@@ -64,11 +61,11 @@ const bulkDelete = (items: any) => {
         if (result.isConfirmed) {
             // Could implement bulk delete by looping through items
             items.forEach((item: any) => {
-                RoleService.delete(item).catch((err: any) => {
-                    console.error("Error deleting role:", err);
+                PermissionService.delete(item).catch((err: any) => {
+                    console.error("Error deleting permission:", err);
                 });
             });
-            props.getRoles();
+            props.getPermissions();
         }
     });
 }
@@ -77,7 +74,7 @@ const columns = [
     { key: "id", label: "Ref-ID" },
     { key: "name", label: "Name" },
     { key: "users_count", label: "Users" },
-    { key: 'permissions_count', label: 'Permissions' },
+    { key: 'roles_count', label: 'Roles' },
     { key: "created_at", label: "Created At" },
 ];
 
@@ -127,8 +124,8 @@ function handleAction({ action, row, selected }: { action: string; row?: any; se
     <GenericTable
         :columns="columns"
         :isLoading="isLoading"
-        :fetchData="getRoles"
-        :rows="roles"
+        :fetchData="getPermissions"
+        :rows="permissions"
         :actions="actions"
         :bulkActions="bulkActions"
         :enableBulkActions="true"
@@ -137,7 +134,7 @@ function handleAction({ action, row, selected }: { action: string; row?: any; se
         @update:selectedItems="selectedItems = $event"
     >
         <template #id="{ row }">
-                <span class="text-default-400">#RL00{{ row.id }}</span>
+                <span class="text-default-400">#PR00{{ row.id }}</span>
         </template>
         <template #name="{ row }">
                 <Avatar :name="row.name" />
@@ -145,8 +142,8 @@ function handleAction({ action, row, selected }: { action: string; row?: any; se
         <template #users_count="{ row }">
             <span class="badge size-4 rounded-full bg-light text-dark">{{ row.users_count }}</span>
         </template>
-        <template #permissions_count="{ row }">
-            <span class="badge size-4 rounded-full bg-light text-dark">{{ row.permissions_count }}</span>
+        <template #roles_count="{ row }">
+            <span class="badge size-4 rounded-full bg-light text-dark">{{ row.roles_count }}</span>
         </template>
     </GenericTable>
 </template>

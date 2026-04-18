@@ -3,7 +3,6 @@ import { usePermissions } from "./Composables/usePermission";
 import PermissionsTable from './PermissionsTable.vue'
 import PermissionFilterForm from './PermissionFilterForm.vue'
 import OffCanvas from "../../Components/OffCanvas.vue"
-import RoleCard from '../../Components/RoleCard.vue'
 import { perPageOptions, dateRanges } from './Composables/usePermissionFilter';
 import ActiveFilters from '../../Components/ActiveFilters.vue'
 
@@ -36,25 +35,23 @@ Helpers.useDynamicOnMounted(() => {
 <template>
     <div>
         <!-- Breadcrumb  -->
-        <BreadcrumbComponent :current="'Roles'" :links="[{ name: 'Dashboard', route: 'dashboard' }]" />
+        <BreadcrumbComponent :current="'Permissions'" :links="[{ name: 'Dashboard', route: 'dashboard' }]" />
 
         <div class="container-fluid">
-            <div class="mb-base grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-base">
-                <RoleCard v-if="roles?.length > 0"></RoleCard>
-            </div>
+
 
             <div data-table="" data-table-rows-per-page="8" class="card">
                 <div class="card-header">
                     <!-- Search -->
                     <div class="flex flex-wrap gap-2.5">
                         <!-- Search Input -->
-                        <SearchInput label="Search Roles" :apiPath="`/role`" @loading="setLoading"
+                        <SearchInput label="Search Permissions" :apiPath="`/permission`" @loading="setLoading"
                             @filterData="filterData" @query="handleSearchQuery"></SearchInput>
                         <div class="flex gap-1">
                             <router-link :to="{ name: 'create-role' }"
                                 class="btn bg-primary text-white hover:bg-primary-hover" aria-haspopup="dialog"
                                 aria-expanded="false" aria-controls="incomeModal" data-hs-overlay="#incomeModal"> <i
-                                    class="iconify tabler--plus"></i> Add Role </router-link>
+                                    class="iconify tabler--plus"></i> Add Permission </router-link>
                         </div>
                         <!-- Delete Selected -->
                         <button data-table-delete-selected=""
@@ -67,7 +64,7 @@ Helpers.useDynamicOnMounted(() => {
                             <!-- Role Type Filter -->
                             <div class="input-icon-group">
                                 <i class="iconify tabler--user-hexagon input-icon"></i>
-                             
+
                             </div>
                             <div class="input-icon-group">
                                             <i class="iconify tabler--calendar input-icon"></i>
@@ -100,7 +97,7 @@ Helpers.useDynamicOnMounted(() => {
                     </div>
                     <div>
                         <nav class="flex items-center gap-x-1">
-                            <a role="button" @click="fetchRoles()"
+                            <a role="button" @click="fetchPermissions()"
                                 class="btn bg-primary/15 text-primary btn-icon hover:bg-primary hover:text-white">
                                 <i class="iconify tabler--refresh text-lg"></i>
                             </a>
@@ -112,7 +109,7 @@ Helpers.useDynamicOnMounted(() => {
                                     <i class="iconify tabler--filter text-lg"></i>
                                 </template>
                                 <template #body>
-                                    <RoleFilterForm :initialFilters="filters" @filterChange="handleFilterChange" />
+                                    <PermissionFilterForm :initialFilters="filters" @filterChange="handleFilterChange" />
                                 </template>
                             </OffCanvas>
                         </nav>

@@ -2,43 +2,21 @@
 
 namespace App\Models;
 
-use Spatie\Permission\Models\Role as SpatieRole;
+use Spatie\Permission\Models\Permission as SpatiePermission;
 
-class Role extends SpatieRole
+class Permission extends  SpatiePermission
 {
+    //
     protected $guarded = [];
-
-    // Query scopes, relationships, and other model methods can be added here
 
      protected static function booted()
     {
         // ✅ Auto assign tenant
-        static::creating(function ($role) {
-            if (auth()->check() && !$role->tenant_id) {
-                $role->tenant_id = auth()->user()->tenant_id;
+        static::creating(function ($permission) {
+            if (auth()->check() && !$permission->tenant_id) {
+                $permission->tenant_id = auth()->user()->tenant_id;
             }
         });
-
-        // ✅ Prevent tenant from creating super-admin
-        static::creating(function ($role) {
-            if (
-                auth()->check() &&
-                auth()->user()->tenant_id &&
-                strtolower($role->name) === 'super-admin'
-            ) {
-                abort(403, 'Super Admin role is reserved.');
-            }
-        });
-
-        // ✅ Global scope for tenant
-        // static::addGlobalScope('tenant', function ($query) {
-        //     if (auth()->check()) {
-        //         $query->where(function ($q) {
-        //             $q->whereNull('tenant_id') // global roles
-        //               ->orWhere('tenant_id', auth()->user()->tenant_id);
-        //         });
-        //     }
-        // });
     }
     public function scopeSorting($query, $direction = 'asc')
     {
@@ -51,8 +29,7 @@ class Role extends SpatieRole
         }
         return $query;
     }
-
-    public function scopeLimit($query, $limit)
+     public function scopeLimit($query, $limit)
     {
         return $query->take($limit);
     }
