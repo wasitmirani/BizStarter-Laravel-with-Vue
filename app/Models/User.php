@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\InteractsWithListQuery;
 use App\Models\Country;
 use App\Traits\LogsActivity;
 use Laravel\Sanctum\HasApiTokens;
@@ -17,7 +18,7 @@ use Lab404\Impersonate\Models\Impersonate;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, LogsActivity,Notifiable,HasRoles,HasThumbnail,Impersonate;
+    use HasApiTokens, HasFactory, Impersonate, HasRoles, HasThumbnail, InteractsWithListQuery, LogsActivity, Notifiable;
     protected array $guard_name = ['api', 'web'];
     protected $guarded = [];
     protected $prefix ="UR00";
@@ -100,11 +101,6 @@ class User extends Authenticatable implements MustVerifyEmail
             }
         });
     }
-    public function scopeSortingBy($query, $column, $direction = 'asc')
-    {
-        return $query->orderBy($column, $direction);
-    }
-
     public function scopeFilters($query, array $filters)
     {
         return $query
@@ -139,19 +135,6 @@ class User extends Authenticatable implements MustVerifyEmail
             ->when($filters['created_between'] ?? null, fn($q, $range) =>
                 $q->whereBetween('created_at', explode(',', $range))
             );
-    }
-    public function scopeLimit($query, $limit)
-    {
-        return $query->take($limit);
-    }
-
-    public function scopeRetrieve($query,$paginated  = false, $perPage = 15)
-    {
-       $paginated = filter_var($paginated, FILTER_VALIDATE_BOOLEAN);
-       return $query->when($paginated,
-        fn($q) => $q->paginate($perPage),
-        fn($q) => $q->get()
-       );
     }
     public function country()
     {
