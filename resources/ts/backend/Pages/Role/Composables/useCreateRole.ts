@@ -10,11 +10,10 @@ export function useCreateRole() {
 
     const saveDraftHandler = (status?: string): void => {
         draftStatus.value = status || 'no status provided';
-        console.log(`Save draft with status: ${draftStatus.value}`);
     };
 
     const handleSubmitForm = (formData: any): void => {
-        console.log('Form submitted with data:', formData);
+
         saveDraftHandler('submitted');
     };
 
@@ -26,7 +25,7 @@ export function useCreateRole() {
                 const res = await RoleService.role(roleId);
                 role.value = res.data.result?.role || res.data.data?.role;
                 editmode.value = true;
-                console.log("Editmode", editmode.value, "Role:", role.value);
+                
             }
         } catch (error) {
             console.error('Error fetching role:', error);
