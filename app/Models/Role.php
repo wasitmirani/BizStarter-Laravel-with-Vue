@@ -11,6 +11,7 @@ class Role extends SpatieRole
     use HasNameGuardFilters, InteractsWithListQuery;
 
     protected $guarded = [];
+    protected $prefix ="RL00";
 
     // Query scopes, relationships, and other model methods can be added here
 
@@ -43,5 +44,21 @@ class Role extends SpatieRole
         //         });
         //     }
         // });
+
+    }
+    public function scopeSearch($query, ?string $search)
+    {
+        if (!$search) {
+            return $query;
+        }
+        $search = trim($search);
+        $id = str_replace($this->prefix, '', $search);
+
+        return $query->where(function ($q) use ($search, $id) {
+            $q->where('name', 'LIKE', "%{$search}%");
+            if (is_numeric($id)) {
+                $q->orWhere('id', $id);
+            }
+        });
     }
 }

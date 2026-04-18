@@ -87,7 +87,6 @@ class User extends Authenticatable implements MustVerifyEmail
         if (!$search) {
             return $query;
         }
-
         $search = trim($search);
         $id = str_replace($this->prefix, '', $search);
 
@@ -161,7 +160,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(Tenant::class);
     }
 
-    
+
 
 
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Permission;
 use App\Models\Role;
 use App\Models\Tenant;
 use App\Services\BaseService;
@@ -21,7 +22,7 @@ class PermissionService extends BaseService
         return Permission::class;
     }
 
-    public function getRolesList($params, $relations = [], $withCount = [])
+    public function getPermissionsList($params, $relations = [], $withCount = [])
     {
         // Build allowed filters array from params
         $filterData = [];
