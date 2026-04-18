@@ -26,13 +26,13 @@ const initials = computed(() => {
 <div class="flex items-center gap-3">
 
     <!-- Avatar -->
-    <div class="size-8 flex items-center justify-center rounded-full overflow-hidden bg-primary text-white text-xs font-semibold">
-        
+    <div class="size-11 flex items-center justify-center rounded-full overflow-hidden bg-primary text-white text-xs font-semibold">
+
         <!-- Image -->
-        <img 
+        <img
             v-if="props.img && !imageError"
-            :src="props.img" 
-            :alt="props.name" 
+            :src="props.img"
+            :alt="props.name"
             class="w-full h-full object-cover"
             @error="imageError = true"
         />
@@ -47,9 +47,9 @@ const initials = computed(() => {
     <div>
         <h5 class="leading-none">
             <!-- Link only if href exists -->
-            <a 
+            <a
                 v-if="props.href"
-                :href="props.href" 
+                :href="props.href"
                 class="hover:text-primary"
             >
                 {{ props.name || 'Unknown' }}
