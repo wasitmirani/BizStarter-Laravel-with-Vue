@@ -137,14 +137,10 @@ function handleAction({ action, row, selected }: { action: string; row?: any; se
         @update:selectedItems="selectedItems = $event"
     >
         <template #id="{ row }">
-            <td>
                 <span class="text-default-400">#RL00{{ row.id }}</span>
-            </td>
         </template>
         <template #name="{ row }">
-            <td>
                 <Avatar :name="row.name" />
-            </td>
         </template>
         <template #users_count="{ row }">
             <span class="badge size-4 rounded-full bg-light text-dark">{{ row.users_count }}</span>

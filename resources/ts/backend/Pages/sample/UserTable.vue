@@ -138,7 +138,7 @@ function handleAction({ action, row, selected }: { action: string; row?: any; se
                     window.token = res.data.data.token;
                     window.user = res.data.data.user;
                     // Update axios default headers
-                   
+
 
                     toast.value.showToast(200, 'Success', `Now impersonating as ${res.data.data.user.name}`);
 
@@ -182,12 +182,9 @@ function handleAction({ action, row, selected }: { action: string; row?: any; se
         @update:selectedItems="selectedItems = $event"
     >
         <template #id="{ row }">
-            <td>
                 <span class="text-default-400">#UR00{{ row.id }}</span>
-            </td>
         </template>
         <template #name="{ row }">
-            <td>
                 <div class="flex items-center gap-3">
                     <div>
                         <img :src="row.thumbnail" alt="" class="size-8 rounded-full">
@@ -199,7 +196,6 @@ function handleAction({ action, row, selected }: { action: string; row?: any; se
                         <p class="text-default-400 text-xs">{{ row.email }}</p>
                     </div>
                 </div>
-            </td>
         </template>
 
         <template #status="{ row }">

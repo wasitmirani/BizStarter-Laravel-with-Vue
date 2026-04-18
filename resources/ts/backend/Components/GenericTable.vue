@@ -174,7 +174,7 @@ const clearSelection = () => {
 </div>
 
     <div class="table-wrapper">
-        <table class="table-custom table-select table table-hover">
+        <table class="table table-hover">
             <thead class="thead-sm">
                 <tr class="bg-light/25 text-2xs uppercase">
                     <th class="w-[1%]" v-if="enableBulkActions">
@@ -230,7 +230,7 @@ const clearSelection = () => {
                     <td v-if="(actions?.length || 0) > 0">
                         <div class="flex justify-center gap-1.5">
                             <a v-for="action in actions" :key="action.label" href="javascript:void(0)"
-                              
+
                                 :class="`btn border-default-300 hover:border-default-400 btn-icon btn-sm text-default-800 size-7.75 rounded border`"
                                 @click="$emit('action', { action: action.action, row })" data-bs-toggle="tooltip"
                                 data-bs-placement="top" :title="action.label">
