@@ -21,4 +21,5 @@ class PermissionController extends Controller
             return responseJson('Failed to fetch permissions', null, false, 500);
         }
     }
+    
 }

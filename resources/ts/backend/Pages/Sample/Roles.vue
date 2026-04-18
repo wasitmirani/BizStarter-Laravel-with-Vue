@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { useUsers } from "./Composables/useUser"
-import UserTable from './UserTable.vue'
-import UserFilterForm from './UserFilterForm.vue'
+import { useRoles } from "./Composables/useRole"
+import RolesTable from './RolesTable.vue'
+import RoleFilterForm from './RoleFilterForm.vue'
 import OffCanvas from "../../Components/OffCanvas.vue"
 import RoleCard from '../../Components/RoleCard.vue'
-import { perPageOptions, dateRanges } from './Composables/useUserFilter';
+import { perPageOptions, dateRanges } from './Composables/useRoleFilter';
 import ActiveFilters from '../../Components/ActiveFilters.vue'
+
 import { Helpers } from '../../Utils/Helper'
 
 const {
@@ -15,14 +16,14 @@ const {
     isLoading,
     filters,
     sortableFilterOptions,
-    fetchUsers,
+    fetchRoles,
     handleFilterChange,
     handleSearchChange,
     handleSearchQuery,
     setLoading,
     filterData,
     init
-} = useUsers()
+} = useRoles()
 
 Helpers.useDynamicOnMounted(() => {
     init()
@@ -35,7 +36,7 @@ Helpers.useDynamicOnMounted(() => {
 <template>
     <div>
         <!-- Breadcrumb  -->
-        <BreadcrumbComponent :current="'Users'" :links="[{ name: 'Dashboard', route: 'dashboard' }]" />
+        <BreadcrumbComponent :current="'Roles'" :links="[{ name: 'Dashboard', route: 'dashboard' }]" />
 
         <div class="container-fluid">
             <div class="mb-base grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-base">
@@ -47,13 +48,13 @@ Helpers.useDynamicOnMounted(() => {
                     <!-- Search -->
                     <div class="flex flex-wrap gap-2.5">
                         <!-- Search Input -->
-                        <SearchInput label="Search Users" :apiPath="`/user`" @loading="setLoading"
+                        <SearchInput label="Search Roles" :apiPath="`/role`" @loading="setLoading"
                             @filterData="filterData" @query="handleSearchQuery"></SearchInput>
                         <div class="flex gap-1">
-                            <router-link :to="{ name: 'create-user' }"
+                            <router-link :to="{ name: 'create-role' }"
                                 class="btn bg-primary text-white hover:bg-primary-hover" aria-haspopup="dialog"
                                 aria-expanded="false" aria-controls="incomeModal" data-hs-overlay="#incomeModal"> <i
-                                    class="iconify tabler--plus"></i> Add User </router-link>
+                                    class="iconify tabler--plus"></i> Add Role </router-link>
                         </div>
                         <!-- Delete Selected -->
                         <button data-table-delete-selected=""
@@ -66,13 +67,7 @@ Helpers.useDynamicOnMounted(() => {
                             <!-- Role Type Filter -->
                             <div class="input-icon-group">
                                 <i class="iconify tabler--user-hexagon input-icon"></i>
-                                <select data-table-filter="roles" class="form-select" v-model="filters.role"
-                                    @change="handleFilterChange(filters)">
-                                    <option value="">All Roles</option>
-                                    <option :value="role.value" v-for="role in roles">{{
-                                        role.label.charAt(0).toUpperCase() + role.label.slice(1) }}</option>
 
-                                </select>
                             </div>
                             <div class="input-icon-group">
                                             <i class="iconify tabler--calendar input-icon"></i>
@@ -101,11 +96,11 @@ Helpers.useDynamicOnMounted(() => {
 
                         </div>
                         <!-- Active Filters -->
-                        <ActiveFilters routeName="users" @filterChange="handleFilterChange($event)" />
+                        <ActiveFilters routeName="roles" @filterChange="handleFilterChange($event)" />
                     </div>
                     <div>
                         <nav class="flex items-center gap-x-1">
-                            <a role="button" @click="fetchUsers()"
+                            <a role="button" @click="fetchRoles()"
                                 class="btn bg-primary/15 text-primary btn-icon hover:bg-primary hover:text-white">
                                 <i class="iconify tabler--refresh text-lg"></i>
                             </a>
@@ -117,13 +112,13 @@ Helpers.useDynamicOnMounted(() => {
                                     <i class="iconify tabler--filter text-lg"></i>
                                 </template>
                                 <template #body>
-                                    <UserFilterForm :initialFilters="filters" @filterChange="handleFilterChange" />
+                                    <RoleFilterForm :initialFilters="filters" @filterChange="handleFilterChange" />
                                 </template>
                             </OffCanvas>
                         </nav>
                     </div>
                 </div>
-                <UserTable :users="users" :getUsers="fetchUsers" :isLoading="isLoading" :currentFilters="filters" />
+                <RolesTable :roles="roles" :getRoles="fetchRoles" :isLoading="isLoading" :currentFilters="filters" />
             </div>
         </div>
     </div>

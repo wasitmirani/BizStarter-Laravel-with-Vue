@@ -33,6 +33,9 @@ Route::prefix('/app')->group(function () {
     // Roles
     Route::resource('role',RoleController::class);
 
+    // Permissions
+    Route::resource('permission',PermissionController::class);
+
     // Uploads
     Route::prefix('upload')->group(function() {
         Route::post('/{type}/image',[UploadController::class,'uploadSingleImage']);

@@ -28,18 +28,25 @@ const routes = [
     setRoute('/dashboard', 'dashboard', 'Dashboard/Dashboard', null),
 
     // Managment Routes
+    
     // Users
     setRoute('/management/users', 'users', 'User/Users', 'users-list'),
     setRoute('/management/user/create', 'create-user', 'User/User', 'create-user'),
     setRoute('/management/user/edit/:uuid', 'edit-user', 'User/User', 'edit-user'),
     setRoute('/management/user/:uuid', 'show-user', 'User/UserShow','show-user'),
 
-    // Roles and Permissions
+    // Roles
     setRoute('/management/roles', 'roles', 'Role/Roles', 'roles-list'),
     setRoute('/management/role/create', 'create-role', 'Role/Role', 'create-role'),
     setRoute('/management/roles/edit/:id', 'edit-role', 'Role/Role', 'edit-role'),
     setRoute('/management/role/details/:id', 'show-role', 'Role/RoleShow', 'show-role'),
-    setRoute('/management/permissions', 'permissions', 'Permission/Permissions', null),
+
+    // Permissions
+    setRoute('/management/permissions', 'permissions', 'Permission/Permissions', 'permissions-list'),
+    setRoute('/management/permission/create', 'create-permission', 'Permission/Permission', 'create-permission'),
+    setRoute('/management/permission/edit/:id', 'edit-permission', 'Permission/Permission', 'edit-permission'),
+    setRoute('/management/permission/details/:id', 'show-permission', 'Permission/PermissionShow', 'show-permission'),
+
 
 
     //Settings Routes

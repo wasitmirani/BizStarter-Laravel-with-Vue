@@ -1,49 +1,41 @@
-// composables/useUsers.ts
-import { ref, reactive, computed } from 'vue'
-import  UserService  from '../../../Services/user/UserService'
+
+import  RoleService  from '../../../Services/Role/RoleService'
 import { DropdownOptions } from '../../../Utils/DropdownOptions'
 import { Helpers } from '../../../Utils/Helper'
 import { useDropDownsStore } from '../../../Stores/DropDownsStore'
+import {defaultFilters} from "../../../Utils/Constants";
 
 
-export function useUsers() {
+export function useRoles() {
     const router =Helpers.router()
     const route = Helpers.route();
     const dropdownsStore = useDropDownsStore()
 
     // State
-    const users = Helpers.useDynamicRef([])
-    const roles = computed(() => dropdownsStore.roles)
+    const roles = Helpers.useDynamicRef([])
+    const users = Helpers.useDynamicRef([]) // --- IGNORE ---
+
+    // const roles = Helpers.useDynamicComputed(() => dropdownsStore.roles)
     const currentPage = Helpers.useDynamicRef(1)
     const toast = Helpers.useDynamicInject<{ showToast: (status: number, title: string, message: string) => void }>(
         'toast',
         { showToast: () => {} }
     )
     const isLoading = Helpers.useDynamicRef(false)
-    const sortableFilterOptions = computed(() => DropdownOptions.sortableFilterOptions())
+    const sortableFilterOptions = Helpers.useDynamicComputed(() => DropdownOptions.sortableFilterOptions())
 
     // Default filter values (single source of truth)
-    const defaultFilters = {
-        search: '',
-        role: '',
-        status: '',
-        page: 1,
-        per_page: 20,
-        sort_by: 'id',
-        paginated: true,
-        sort_dir: 'desc',
-        date_from: '',
-        date_to: '',
-        date_range:'',
-    }
+    const roleFilters = {
+        ...defaultFilters,
+    };
 
     // Reactive filter state
-    const filters = reactive({ ...defaultFilters })
+    const filters = Helpers.useDynamicReactive({ ...roleFilters })
 
     // Wrapper for generic URL update helper
     const updateUrlWithFilters = () => {
         Helpers.updateUrlWithFilters(route, router, filters, {
-            defaults: defaultFilters,
+            defaults: roleFilters,
             omitDefaults: true,
         })
     }
@@ -54,8 +46,8 @@ export function useUsers() {
         currentPage.value = filters.page
     }
 
-    // Fetch users
-    const fetchUsers = async (page?: number, per_page?: number) => {
+    // Fetch roles
+    const fetchRoles = async (page?: number, per_page?: number) => {
         // Update filters if parameters provided
         if (page !== undefined) filters.page = page
         if (per_page !== undefined) filters.per_page = per_page
@@ -66,9 +58,9 @@ export function useUsers() {
         const params = Helpers.buildQueryFromFilters(filters)
 
         try {
-            const res = await UserService.users(params)
-            users.value = res.data.result.users
-            // toast.value.showToast(res.status, 'User Data', res.data)
+            const res = await RoleService.roles(params)
+            roles.value = res.data.result.roles
+            // toast.value.showToast(res.status, 'Role Data', res.data)
         } catch (err: any) {
             console.log("err:", err.response?.data?.message)
             toast.value?.showToast(
@@ -98,7 +90,7 @@ export function useUsers() {
         });
         filters.page = 1 // Reset to first page when filters change
         updateUrlWithFilters()
-        fetchUsers()
+        fetchRoles()
     }
 
     // Handle search input changes
@@ -106,7 +98,7 @@ export function useUsers() {
         filters.search = searchTerm
         filters.page = 1 // Reset to first page when search changes
         updateUrlWithFilters()
-        fetchUsers()
+        fetchRoles()
     }
 
     // Handle search query
@@ -121,21 +113,21 @@ export function useUsers() {
 
     // Filter data handler
     const filterData = (data: any) => {
-        users.value = data.result.users
+        roles.value = data?.result?.roles || data?.result || []
     }
 
     // Reset filters to default
     const resetFilters = () => {
         Object.assign(filters, defaultFilters)
         updateUrlWithFilters()
-        fetchUsers()
+        fetchRoles()
     }
 
     // Initialize on mount
     const init = () => {
         loadFiltersFromUrl()
         dropdownsStore.fetchRoles()
-        fetchUsers()
+        fetchRoles()
     }
 
     return {
@@ -148,7 +140,7 @@ export function useUsers() {
         sortableFilterOptions,
 
         // Methods
-        fetchUsers,
+        fetchRoles,
         handleFilterChange,
         handleSearchChange,
         handleSearchQuery,
