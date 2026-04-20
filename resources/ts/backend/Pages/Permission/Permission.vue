@@ -1,29 +1,29 @@
 <script setup lang="ts">
-import RoleForm from './RoleForm.vue';
-import { useCreateRole } from './Composables/useCreatePermission';
+import PermissionForm from './PermissionForm.vue';
+import { useCreatePermission } from './Composables/useCreatePermission';
 import { Helpers } from '../../Utils/Helper';
 
-const { role, editmode, handleSubmitForm, loading } = useCreateRole();
+const { permission, editmode, handleSubmitForm, loading } = useCreatePermission();
 
 // Create computed properties to unwrap the reactive values
-const roleData = Helpers.useDynamicComputed(() => role.value);
+const permissionData = Helpers.useDynamicComputed(() => permission.value);
 const isEditMode = Helpers.useDynamicComputed(() => editmode.value);
 const isLoading = Helpers.useDynamicComputed(() => loading?.value || false);
 </script>
 
 <template>
-    <BreadcrumbComponent :current="isEditMode ? 'Update Role' : 'Create Role'" :links="[{ name: 'Dashboard', route: 'dashboard' }, { name: 'Roles', route: 'roles' }]"/>
+    <BreadcrumbComponent :current="isEditMode ? 'Update Permission' : 'Create Permission'" :links="[{ name: 'Dashboard', route: 'dashboard' }, { name: 'Permissions', route: 'permissions' }]"/>
 
     <!-- Loader -->
     <div v-if="isLoading" class="flex justify-center items-center py-12">
-        <LoadingBox :showText="true" text="Loading role data..." />
+        <LoadingBox :showText="true" text="Loading permission data..." />
     </div>
 
-    <!-- Role Form -->
-    <RoleForm
+    <!-- Permission Form -->
+    <PermissionForm
         v-else
         class="mt-4"
-        :roleData="roleData"
+        :permissionData="permissionData"
         :isEditMode="isEditMode"
         @submit="handleSubmitForm"
     />
