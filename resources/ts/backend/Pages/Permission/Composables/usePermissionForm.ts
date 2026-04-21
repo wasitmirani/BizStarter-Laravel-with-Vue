@@ -1,19 +1,18 @@
 import DropDownService from "../../../Services/DropDown/DropDownService";
-import RoleService from "../../../Services/Role/RoleService";
+import PermissionService from "../../../Services/Permission/PermissionService";
 import { DropdownOptions } from "../../../Utils/DropdownOptions";
 import { Helpers } from "../../../Utils/Helper";
-import { useRouter } from "vue-router";
 
-export  function useRoleForm(roleData?: any, isEditMode: boolean = false) {
+export  function usePermissionForm(permission?: any, isEditMode: boolean = false) {
     // ─── State ────────────────────────────────────────────────────────────────
-    const router = useRouter();
+    const router = Helpers.router();
     let errors = Helpers.useDynamicRef<any>([]);
     const isLoading = Helpers.useDynamicRef(false);
     const toast = Helpers.useDynamicInject('toast', null);
 
     // ─── Dropdown Options ─────────────────────────────────────────────────────
     const usersDropdownItems = Helpers.useDynamicRef<any>([]);
-    const permissionsDropdownItems = Helpers.useDynamicRef<any>([]);
+    const rolesDropdownItems = Helpers.useDynamicRef<any>([]);
 
   const init = async () => {
     try {
@@ -26,12 +25,12 @@ export  function useRoleForm(roleData?: any, isEditMode: boolean = false) {
     }
 
     try {
-        const permissionsResponse = await DropDownService.getPermissions({ sort_by: 'name', sort_dir: 'asc' });
-        const permissionsData = permissionsResponse?.data?.result?.permissions || permissionsResponse?.data?.permissions || [];
+        const rolesResponse = await DropDownService.getRoles({ sort_by: 'name', sort_dir: 'asc' });
+        const RolesData = rolesResponse?.data?.result?.roles || rolesResponse?.data?.roles || [];
 
-        permissionsDropdownItems.value = DropdownOptions.getPermissionsListOptions(permissionsData || []);
+        rolesDropdownItems.value = DropdownOptions.getPermissionsListOptions(RolesData || []);
     } catch (e) {
-        permissionsDropdownItems.value = [];
+        rolesDropdownItems.value = [];
     }
 };
 
@@ -39,32 +38,30 @@ export  function useRoleForm(roleData?: any, isEditMode: boolean = false) {
     const role = Helpers.useDynamicReactive({
         'id': null,
         'name': '',
-        'permissions': [],
-        'users': roleData?.users?.map((user: any) => ({ value: user.id, label: user.name })) || [],
-        ...(roleData ?? {})
+        'roles': [],
+        'users':  [],
+        ...(permission ?? {})
     });
 
+    const bindData = (items?:any)=>{
+        if(!items){
+            return [];
+        }
+        return items?.map((item: any) => item.value || item) || [];
+    }
     // ─── API Call ─────────────────────────────────────────────────────────────
-    const roleStore = async (data: any): void => {
+    const permissionStore = async (data: any) => {
         isLoading.value = true;
-       console.log("Role Data Before Store:", data);
-       const users = data.users?.map((user: any) => user.value || user) || [];
-        const permissions = data.permissions?.map((permission: any) => permission.value || permission) || [];
-        data.users = users;
-        data.permissions = permissions;
-        await RoleService.store(data)
+         console.log("permission Data Before Store:", data);
+         data.users = bindData(data?.users)
+         data.roles =  bindData(data?.roles )
+
+        await PermissionService.store(data)
             .then((res: any) => {
-                toast.value?.showToast?.(res.status, 'Role Created', res.data);
-                console.log("Navigating to roles...", router);
-                try {
-                    router.push({ name: 'roles' }).catch((err) => {
-                        console.error("Navigation error:", err);
-                        Helpers.navigateTo('roles');
-                    });
-                } catch(e) {
-                    console.error("Router push exception:", e);
-                    Helpers.navigateTo('roles');
-                }
+                toast.value?.showToast?.(res.status, 'Permission Created', res.data);
+                setTimeout(() => {
+                    Helpers.router().push({ name: 'permissions' });
+                }, 300);
             })
             .catch((err: any) => {
                 if (err.response?.data) {
@@ -80,34 +77,26 @@ export  function useRoleForm(roleData?: any, isEditMode: boolean = false) {
             });
     };
 
-    const roleUpdate = async (data: any): void => {
+    const permissionUpdate = async (data: any) => {
         isLoading.value = true;
 
-        const roleId = data?.id;
-        if (!roleId) {
+        const permissionId = data?.id;
+        if (!permissionId) {
             toast.value?.showToast?.(400, 'Error', 'Missing role id for update');
             isLoading.value = false;
             return;
         }
 
-        const users = data.users?.map((user: any) => user.value || user) || [];
-        const permissions = data.permissions?.map((permission: any) => permission.value || permission) || [];
-        data.users = users;
-        data.permissions = permissions;
+        data.users = bindData(data?.users)
+        data.roles =  bindData(data?.roles )
 
-        await RoleService.update(data)
+        await PermissionService.update(data)
             .then((res: any) => {
                 toast.value?.showToast?.(res.status, 'Role Updated', res.data);
                 console.log("Navigating to roles...", router);
-                try {
-                    router.push({ name: 'roles' }).catch((err) => {
-                        console.error("Navigation error:", err);
-                        Helpers.navigateTo('roles');
-                    });
-                } catch(e) {
-                    console.error("Router push exception:", e);
-                    Helpers.navigateTo('roles');
-                }
+                setTimeout(() => {
+                    Helpers.router().push({ name: 'permissions' });
+                }, 300);
             })
             .catch((err: any) => {
                 if (err.response?.data) {
@@ -123,14 +112,14 @@ export  function useRoleForm(roleData?: any, isEditMode: boolean = false) {
     // ─── Submit ───────────────────────────────────────────────────────────────
     const onSubmit = (_type?: string): void => {
         // Create a shallow clone to avoid modifying the reactive role directly.
-        const rolePayload = {
-            ...role,
+        const permissionPayload = {
+            ...permission,
         };
 
         if (isEditMode) {
-            roleUpdate(rolePayload);
+            permissionUpdate(permissionPayload);
         } else {
-            roleStore(rolePayload);
+            permissionStore(permissionPayload);
         }
     };
 
@@ -140,11 +129,11 @@ export  function useRoleForm(roleData?: any, isEditMode: boolean = false) {
 
     return {
         // state
-        role,
+        permission,
         errors,
         isLoading,
         onSubmit,
         usersDropdownItems,
-        permissionsDropdownItems,
+        rolesDropdownItems,
     };
 }

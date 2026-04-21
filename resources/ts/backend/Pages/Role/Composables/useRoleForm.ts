@@ -55,16 +55,10 @@ export  function useRoleForm(roleData?: any, isEditMode: boolean = false) {
         await RoleService.store(data)
             .then((res: any) => {
                 toast.value?.showToast?.(res.status, 'Role Created', res.data);
-                console.log("Navigating to roles...", router);
-                try {
-                    router.push({ name: 'roles' }).catch((err) => {
-                        console.error("Navigation error:", err);
-                        Helpers.navigateTo('roles');
-                    });
-                } catch(e) {
-                    console.error("Router push exception:", e);
-                    Helpers.navigateTo('roles');
-                }
+
+                setTimeout(() => {
+                    Helpers.router().push({ name: 'roles' });
+                }, 300);
             })
             .catch((err: any) => {
                 if (err.response?.data) {
