@@ -14,7 +14,7 @@ const {
 } =  usePermissionForm(props?.permissionData, props?.isEditMode);
 
 const usersModel  = Helpers.useMultiSelectModel(permission, 'users', usersDropdownItems);
-const rolesModel = Helpers.useMultiSelectModel(permission, 'permissions', rolesDropdownItems);
+const rolesModel = Helpers.useMultiSelectModel(permission, 'roles', rolesDropdownItems);
 </script>
 
 <template>

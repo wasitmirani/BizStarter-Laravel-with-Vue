@@ -41,8 +41,8 @@ class PermissionController extends Controller implements UserFilterable
 
     public function store(StorePermissionRequest $request){
         $data = $request->validated();
-        $role = app(PermissionService::class)->saveRole($data);
-        return responseJson('Permission created successfully', ['role' => $role], true);
+        $permission = app(PermissionService::class)->savePermission($data);
+        return responseJson('Permission created successfully', ['permission' => $permission], true);
     }
 
     public function show($uuid)

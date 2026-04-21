@@ -2,28 +2,55 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StorePermissionRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            //
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+
+                // ❌ block super-admin
+                function ($attribute, $value, $fail) {
+                    if (strtolower($value) === 'super-admin') {
+                        $fail('This permission is reserved.');
+                    }
+                },
+
+                // ✅ tenant-wise unique
+                // Rule::unique('roles', 'name')
+                //     ->where(fn ($q) =>
+                //         $q->where('tenant_id', auth()->user()->tenant_id)
+                //     ),
+            ],
+
+            'users' => ['required', 'array'],
+
+            // ✅ tenant-safe users
+            // 'users.*' => [
+            //     'integer',
+            //     Rule::exists('users', 'id')
+            //         ->where(fn ($q) =>
+            //             $q->where('tenant_id', auth()->user()->tenant_id ?? 1)
+            //         ),
+            // ],
+
+            'roles' => ['nullable', 'array'],
+
+            'roles.*' => [
+                'integer',
+                'exists:roles,id'
+            ],
         ];
     }
 }
