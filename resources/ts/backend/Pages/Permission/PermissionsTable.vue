@@ -34,13 +34,13 @@ const deletePermission = (item: any) => {
         confirmButtonText: "Yes, delete it!"
     }).then((result: any) => {
         if (result.isConfirmed) {
-            RoleService.delete(item.id).then((res: any) => {
+            PermissionService.delete(item.id).then((res: any) => {
                 Helpers.Swal().fire({
                     title: "Deleted!",
-                    text: "Role has been deleted.",
+                    text: "Permission has been deleted.",
                     icon: "success"
                 });
-                props.getRoles();
+                props.getPermissions();
             }).catch((err: any) => {
                 toast.value.showToast(err.response.status, 'Error: ' + err.response.status, err.response.data?.message ?? err.message);
             })
@@ -93,23 +93,23 @@ function handleAction({ action, row, selected }: { action: string; row?: any; se
     const actionsRequiringUuid = ['edit', 'delete','view']
     if (actionsRequiringUuid.includes(action)) {
         if (!hasUuid(row?.uuid)) {
-            toast.value.showToast(400, 'Error', 'Role uuid not found')
+            toast.value.showToast(400, 'Error', 'Permission uuid not found')
             return
         }
     }
     switch (action) {
         case 'view':
-            Helpers.router().push({ name: 'show-role', params: { id: row?.uuid } });
+            Helpers.router().push({ name: 'show-permission', params: { id: row?.uuid } });
             break;
         case 'edit':
-            Helpers.router().push({ name: 'edit-role', params: { id: row?.uuid } });
+            Helpers.router().push({ name: 'edit-permission', params: { id: row?.uuid } });
             break;
         case 'delete':
-            deleteRole(row);
+            deletePermission(row);
             break;
         case 'bulk-delete':
             if (!selected || selected.length === 0) {
-                toast.value.showToast(400, 'Error', 'No roles selected');
+                toast.value.showToast(400, 'Error', 'No permission selected');
                 return;
             }
             bulkDelete(selected);

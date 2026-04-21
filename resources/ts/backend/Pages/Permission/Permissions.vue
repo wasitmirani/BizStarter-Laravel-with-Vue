@@ -48,7 +48,7 @@ Helpers.useDynamicOnMounted(() => {
                         <SearchInput label="Search Permissions" :apiPath="`/permission`" @loading="setLoading"
                             @filterData="filterData" @query="handleSearchQuery"></SearchInput>
                         <div class="flex gap-1">
-                            <router-link :to="{ name: 'create-role' }"
+                            <router-link :to="{ name: 'create-permission' }"
                                 class="btn bg-primary text-white hover:bg-primary-hover" aria-haspopup="dialog"
                                 aria-expanded="false" aria-controls="incomeModal" data-hs-overlay="#incomeModal"> <i
                                     class="iconify tabler--plus"></i> Add Permission </router-link>
@@ -61,7 +61,7 @@ Helpers.useDynamicOnMounted(() => {
                     <div class="flex flex-wrap items-center gap-3">
                         <div class="items-center gap-3 md:flex">
                             <span class="me-3 font-semibold text-nowrap">Filter By:</span>
-                            <!-- Role Type Filter -->
+                            <!-- Permission Type Filter -->
                             <div class="input-icon-group">
                                 <i class="iconify tabler--user-hexagon input-icon"></i>
 
@@ -78,7 +78,7 @@ Helpers.useDynamicOnMounted(() => {
                                             </select>
                                         </div>
 
-                            <!-- Role Type Filter -->
+                            <!-- Permission Type Filter -->
                             <div class="input-icon-group">
                                 <i class="iconify tabler--list-details input-icon"></i>
 
@@ -93,7 +93,7 @@ Helpers.useDynamicOnMounted(() => {
 
                         </div>
                         <!-- Active Filters -->
-                        <ActiveFilters routeName="roles" @filterChange="handleFilterChange($event)" />
+                        <ActiveFilters routeName="permissions" @filterChange="handleFilterChange($event)" />
                     </div>
                     <div>
                         <nav class="flex items-center gap-x-1">
