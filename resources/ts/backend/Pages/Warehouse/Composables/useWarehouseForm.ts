@@ -4,7 +4,10 @@ import { Helpers } from "../../../Utils/Helper";
 export function useWarehouseForm(initialWarehouse?: any, isEditMode: boolean = false) {
     const errors = Helpers.useDynamicRef<any>([]);
     const isLoading = Helpers.useDynamicRef(false);
-    const toast = Helpers.useDynamicInject("toast", null);
+    const toast = Helpers.useDynamicInject<{ showToast: (status: number, title: string, message: string) => void }>(
+        "toast",
+        { showToast: () => {} }
+    );
 
     const warehouse = Helpers.useDynamicReactive({
         id: null,
@@ -36,15 +39,32 @@ export function useWarehouseForm(initialWarehouse?: any, isEditMode: boolean = f
         ...(initialWarehouse ?? {}),
     });
 
+    const countryOptions = [
+        { value: "PK", label: "Pakistan" },
+        { value: "IN", label: "India" },
+        { value: "US", label: "United States" },
+        { value: "AE", label: "United Arab Emirates" },
+        { value: "SA", label: "Saudi Arabia" },
+        { value: "GB", label: "United Kingdom" },
+    ];
+
+    const countryModel = Helpers.useDynamicRef<any>(null);
+
+    Helpers.useDynamicOnMounted(() => {
+        if (warehouse.country) {
+            countryModel.value = countryOptions.find((item) => item.value === warehouse.country) || null;
+        }
+    });
+
     const onStore = async (data: any) => {
         isLoading.value = true;
         try {
-            const res = await WarehouseService.store(data);
-            toast.value?.showToast?.(res.status, "Warehouse Created", res.data?.message || "Warehouse created");
+            const res: any = await WarehouseService.store(data);
+            toast.value.showToast(res.status, "Warehouse Created", res.data?.message || "Warehouse created");
             Helpers.router().push({ name: "warehouses" });
         } catch (err: any) {
             errors.value = err.response?.data?.errors || { general: ["Failed to create warehouse"] };
-            toast.value?.showToast?.(err.response?.status || 500, "Error", err.response?.data?.message || "Failed to create warehouse");
+            toast.value.showToast(err.response?.status || 500, "Error", err.response?.data?.message || "Failed to create warehouse");
         } finally {
             isLoading.value = false;
         }
@@ -53,19 +73,22 @@ export function useWarehouseForm(initialWarehouse?: any, isEditMode: boolean = f
     const onUpdate = async (data: any) => {
         isLoading.value = true;
         try {
-            const res = await WarehouseService.update(data);
-            toast.value?.showToast?.(res.status, "Warehouse Updated", res.data?.message || "Warehouse updated");
+            const res: any = await WarehouseService.update(data);
+            toast.value.showToast(res.status, "Warehouse Updated", res.data?.message || "Warehouse updated");
             Helpers.router().push({ name: "warehouses" });
         } catch (err: any) {
             errors.value = err.response?.data?.errors || { general: ["Failed to update warehouse"] };
-            toast.value?.showToast?.(err.response?.status || 500, "Error", err.response?.data?.message || "Failed to update warehouse");
+            toast.value.showToast(err.response?.status || 500, "Error", err.response?.data?.message || "Failed to update warehouse");
         } finally {
             isLoading.value = false;
         }
     };
 
     const onSubmit = () => {
-        const payload = { ...warehouse };
+        const payload = {
+            ...warehouse,
+            country: countryModel.value?.value || "",
+        };
         if (isEditMode) {
             onUpdate(payload);
             return;
@@ -78,5 +101,7 @@ export function useWarehouseForm(initialWarehouse?: any, isEditMode: boolean = f
         errors,
         isLoading,
         onSubmit,
+        countryModel,
+        countryOptions,
     };
 }
