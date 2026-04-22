@@ -29,6 +29,13 @@ trait HasNameGuardFilters
         return $query
             ->when($filters['id'] ?? false, fn (Builder $q) => $q->where('id', $filters['id']))
             ->when($filters['search'] ?? false, fn (Builder $q) => $q->search($filters['search']))
+            ->when($filters['date_range'] ?? null, fn($q, $days) => $q->where('created_at', '>=', now()->subDays((int) $days)->startOfDay()))
+            ->when($filters['created_from'] ?? null, fn($q, $from) =>
+                $q->whereDate('created_at', '>=', $from)
+            )
+            ->when($filters['created_between'] ?? null, fn($q, $range) =>
+                $q->whereBetween('created_at', explode(',', $range))
+            )
             ->when($filters['guard_name'] ?? false, fn (Builder $q) => $q->where('guard_name', $filters['guard_name']));
     }
 }

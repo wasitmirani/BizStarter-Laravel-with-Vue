@@ -24,18 +24,11 @@ class RoleService extends BaseService
 
     public function getRolesList($params, $relations = [], $withCount = [])
     {
-        // Build allowed filters array from params
-        $filterData = [];
-        foreach ($this->allowedFilters as $filter) {
-            if (isset($params[$filter])) {
-                $filterData[$filter] = $params[$filter];
-            }
-        }
 
         return $this->model
             ->withCount($withCount)
             ->sorting($params['sort_dir'] ?? 'asc')
-            ->filters($filterData)
+            ->filters($params)
             ->with($relations)
             ->retrieve($params['paginated'] ?? false, $this->resolvePerPage($params));
     }
