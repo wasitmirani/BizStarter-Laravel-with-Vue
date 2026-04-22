@@ -53,8 +53,6 @@ return new class extends Migration
             $table->string('city')->nullable();
             $table->string('state')->nullable();
             $table->string('postal_code')->nullable();
-            $table->string('country')->nullable();
-
             // Localization
             $table->foreignId('timezone_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('language_id')->nullable()->constrained()->nullOnDelete();
@@ -83,7 +81,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-    
+
     }
 
     /**
