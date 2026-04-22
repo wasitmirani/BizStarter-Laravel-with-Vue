@@ -102,14 +102,15 @@
 
 
 
-    <script type="module" src="/backend/assets/index-BqADLC_c.js"></script>
-    <link rel="modulepreload" href="/backend/assets/app-COk2rsMN.js">
-    <link rel="modulepreload" href="/backend/assets/custom-table-CE10VYSu.js">
-    <link rel="modulepreload" href="/backend/assets/world-merc-olTKUgBy.js">
-    <link rel="stylesheet" href="/backend/assets/app-mNboU33O.css">
+    <script type="module" src="{{ asset('/backend/assets/index-BqADLC_c.js') }}"></script>
+    <link rel="modulepreload" href="{{ asset('/backend/assets/app-COk2rsMN.js') }}  ">
+    <link rel="modulepreload" href="{{ asset('/backend/assets/custom-table-CE10VYSu.js') }}">
+    <link rel="modulepreload" href="{{ asset('/backend/assets/world-merc-olTKUgBy.js') }}">
+    <link rel="stylesheet" href="{{ asset('/backend/assets/app-mNboU33O.css') }}">
+    <script src="{{ asset('/backend/assets/demo.js') }}"></script>
 
 
-   
+
     <style>
         :root,
 :host {
@@ -270,9 +271,9 @@
     @endauth
 
     @if(app()->environment('local'))
-    @vite(['resources/ts/backend/app.ts', 'resources/css/app.css'])
+    @vite(['resources/ts/Backend/app.ts', 'resources/css/app.css'])
 @else
-    {!! loadBuiltAssets('resources/ts/backend/app.ts') !!}
+    {!! loadBuiltAssets('resources/ts/Backend/app.ts') !!}
 @endif
 
 </body>

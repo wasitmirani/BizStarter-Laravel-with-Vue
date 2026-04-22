@@ -3,9 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class DeviceHistory extends Model
+class DeviceHistory extends BaseModel
 {
     use HasFactory;
 

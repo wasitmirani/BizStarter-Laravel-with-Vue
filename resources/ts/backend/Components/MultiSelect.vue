@@ -4,8 +4,9 @@
       v-model="selectedOption"
       :placeholder="placeholder"
       :track-by="trackBy"
-      :label="label"
+      :label="optionLabel"
       :options="options"
+      :multiple="multiple"
     />
   </div>
 </template>
@@ -18,8 +19,10 @@ const props = defineProps<{
   modelValue: any
   placeholder?: string
   trackBy?: string
-  label?: string
+  optionLabel?: string   // ✅ rename this
+  label?: string         // ✅ UI label
   options: any[]
+  multiple:boolean,
 }>()
 
 // Emits

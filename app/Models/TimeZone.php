@@ -3,9 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class TimeZone extends Model
+class TimeZone extends BaseModel
 {
     use HasFactory;
     protected $tabel = "time_zones";

@@ -56,6 +56,7 @@ permissionsStore.initFromWindow();
 app.directive("can", {
     mounted(el, binding) {
         const store = usePermissionsStore();
+        console.log("Permissions Store in v-can directive:", store);
         const apply = () => {
             const required = binding.value as string | undefined;
             const allowed = store.has(required);

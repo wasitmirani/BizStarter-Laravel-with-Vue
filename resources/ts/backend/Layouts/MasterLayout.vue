@@ -117,11 +117,12 @@ const completeProgress = () => {
         <!-- Start::app-content -->
         <div class="page-content">
             <main>
-                <router-view v-slot="{ Component, route }">
-                    <Transition name="slide-fade" mode="out-in">
+                <!-- <Transition name="slide-fade" mode="out-in">
                         <component :is="Component" :key="route.fullPath" />
                     </Transition>
-                    <!-- Start::row-1 -->
+                    <!-- Start::row-1  v-slot="{ Component, route }" --> 
+                <router-view>
+                    
                 </router-view>
                 <FlashMessage ref="toast" />
             </main>
