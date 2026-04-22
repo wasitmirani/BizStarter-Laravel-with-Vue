@@ -51,7 +51,7 @@ export default class SidebarMenu {
                     this.setSubMenu('Permissions & Policy', '/management/permissions', undefined),
                 ]
             ),
-            this.setSingleMenu('Warehouses', 'calendar','/management/warehouses', 'warehouses-list'),
+            this.setSingleMenu('Warehouses', 'building','/management/warehouses', 'warehouses-list'),
 
             this.setHeadingMenu('Tools & Sessions'),
 
