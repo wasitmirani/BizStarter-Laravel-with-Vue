@@ -120,6 +120,9 @@ class UserService extends BaseService implements BaseFilterable
         $user->state = $data['state'];
         $user->zip_code = $data['zip_code'];
         $user->phone = $data['phone'];
+        $user->country_id = $data['country_id'] ?? null;
+        $user->timezone_id = $data['timezone_id'] ?? null;
+        $user->language_id = $data['language_id'] ?? null;
 
         $user->save();
 

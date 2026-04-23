@@ -3,7 +3,7 @@
 
 
 import { useRoute } from "vue-router";
-import { ref, onMounted,inject, Ref, UnwrapRef, reactive, UnwrapNestedRefs, defineAsyncComponent,computed, watch } from "vue";
+import { ref, onMounted,inject, Ref, UnwrapRef, reactive, UnwrapNestedRefs, defineAsyncComponent,computed, watch,ComputedRef  } from "vue";
 import router from "../router"
 import Swal from 'sweetalert2'
 import * as moment from "moment";
@@ -42,9 +42,35 @@ class Helper {
             return component;
         }));
     }
-    useDynamicComputed<T>(getter: () => T) {
-        return computed(getter);
+     // ─────────────────────────────────────────
+  // Readonly computed
+  // ─────────────────────────────────────────
+   useDynamicComputed<T>(getter: () => T): ComputedRef<T>;
+
+  // ─────────────────────────────────────────
+  // Writable computed (get/set)
+  // ─────────────────────────────────────────
+   useDynamicComputed<T>(options: {
+    get: () => T;
+    set: (value: T) => void;
+  }): ComputedRef<T>;
+
+  // ─────────────────────────────────────────
+  // Implementation
+  // ─────────────────────────────────────────
+   useDynamicComputed<T>(input: any) {
+    if (typeof input === 'function') {
+      return computed(input);
     }
+
+    return computed({
+      get: input.get,
+      set: input.set,
+    });
+  }
+
+  // (optional) add more helpers here
+
     useDynamicWatch<T>(source: any, callback: (value: T, oldValue: T) => void) {
         return watch(source, callback);
      }

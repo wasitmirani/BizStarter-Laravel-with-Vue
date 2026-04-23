@@ -20,9 +20,8 @@ class DropdownService
 
     public function countries($params=[])
     {
-        return Cache::remember('countries:list', now()->addDays(1), function () {
-            return Country::select('id', 'name')
-                ->orderBy('name', 'asc')
+        return Cache::remember('countries:list2', now()->addDays(1), function () {
+            return Country::orderBy('name', 'asc')
                 ->get();
         });
     }

@@ -1,3 +1,6 @@
+<script setup lang="ts">
+alert("dashboard")
+</script>
 <template>
     <div class="page-title-head">
         <h4 class="page-main-title">eCommerce</h4>

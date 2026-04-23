@@ -1,8 +1,23 @@
-import  UserService  from "../../../Services/User/UserService";
-import { DropdownOptions } from "../../../Utils/DropdownOptions";
-import { Helpers } from "../../../Utils/Helper";
+import  UserService  from '@/Backend/Services/User/UserService';
+import { DropdownOptions } from '@/Backend/Utils/DropdownOptions';
+import { Helpers } from '@/Backend/Utils/Helper'
+import { useDropDownsStore } from '@/Backend/Stores/DropDownsStore';
+import { storeToRefs } from 'pinia';
+import { computed, onMounted } from 'vue';
+
 
 export function useUserForm(userData?: any, isEditMode: boolean = false) {
+      // ─── Store ─────────────────────────────────────────
+    const dropdownStore = useDropDownsStore();
+
+    const { countries, timezones, languages, currencies } =
+    storeToRefs(dropdownStore);
+
+    Helpers.useDynamicOnMounted(async () => {
+    await dropdownStore.fetchDropdowns();
+
+    console.log("countries", countries.value); // ✅ correct
+    });
     // ─── State ────────────────────────────────────────────────────────────────
     let errors = Helpers.useDynamicRef<any>([]);
     const isLoading = Helpers.useDynamicRef(false);
@@ -13,6 +28,7 @@ export function useUserForm(userData?: any, isEditMode: boolean = false) {
     // ─── Dropdown Options ─────────────────────────────────────────────────────
     const genderDropdownItems = DropdownOptions.genderOptions();
     const maritalStatusDropdownItems = DropdownOptions.maritalStatusOptions();
+
 
     // ─── User Reactive Object ─────────────────────────────────────────────────
     const user = Helpers.useDynamicReactive({
@@ -32,7 +48,38 @@ export function useUserForm(userData?: any, isEditMode: boolean = false) {
         state: '',
         zip_code: '',
         country: '',
+        country_id: null as string | number | null,
+        timezone_id: null as string | number | null,
+        language_id: null as string | number | null,
         ...(userData ?? {})
+    });
+
+    const findOptionByValue = (options: any[], value: unknown) =>
+        options.find((item: any) => String(item.value) === String(value)) ?? null;
+
+    const countryOptions =  Helpers.useDynamicComputed(() => countries.value ?? []);
+    const timezoneOptions = Helpers.useDynamicComputed(() => timezones.value ?? []);
+    const languageOptions = Helpers.useDynamicComputed(() => languages.value ?? []);
+
+    const countryModel = Helpers.useDynamicComputed({
+        get: () => findOptionByValue(countryOptions.value, user.country_id ?? user.country),
+        set: (selected: any) => {
+            user.country_id = selected?.value ?? null;
+        },
+    });
+
+    const timezoneModel = Helpers.useDynamicComputed({
+        get: () => findOptionByValue(timezoneOptions.value, user.timezone_id),
+        set: (selected: any) => {
+            user.timezone_id = selected?.value ?? null;
+        },
+    });
+
+    const languageModel = Helpers.useDynamicComputed({
+        get: () => findOptionByValue(languageOptions.value, user.language_id),
+        set: (selected: any) => {
+            user.language_id = selected?.value ?? null;
+        },
     });
 
     // ─── Phone Input ──────────────────────────────────────────────────────────
@@ -155,6 +202,18 @@ export function useUserForm(userData?: any, isEditMode: boolean = false) {
         // dropdowns
         genderDropdownItems,
         maritalStatusDropdownItems,
+
+         // dropdowns (reactive ✅)
+         countries,
+         timezones,
+         languages,
+         currencies,
+         countryModel,
+         timezoneModel,
+         languageModel,
+         countryOptions,
+         timezoneOptions,
+         languageOptions,
         // handlers
         onSubmit,
         addThumbnail,

@@ -106,7 +106,7 @@
     <link rel="modulepreload" href="{{ asset('/backend/assets/app-COk2rsMN.js') }}  ">
     <link rel="modulepreload" href="{{ asset('/backend/assets/custom-table-CE10VYSu.js') }}">
     <link rel="modulepreload" href="{{ asset('/backend/assets/world-merc-olTKUgBy.js') }}">
-    <link rel="stylesheet" href="{{ asset('/backend/assets/app-mNboU33O.css') }}">
+    <link rel="stylesheet" href="{{ asset('/backend/assets/app-mNboU33O.css') }}"/>
     <script src="{{ asset('/backend/assets/demo.js') }}"></script>
 
 

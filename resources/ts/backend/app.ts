@@ -15,7 +15,7 @@ import LoadingBox from "./Components/LoadingBox.vue";
 import Avatar from "./Components/Avatar.vue";
 import ValidateInput from "./Components/ValidateInput.vue";
 import OffCanvas from "./Components/OffCanvas.vue";
-import MultiSelect from "./Components/MultiSelect.vue";
+import BaseMultiSelect from "./Components/BaseMultiSelect.vue";
 import moment from 'moment'
 
 // import GenericInput from "./Components/GenericInputComponent.vue";
@@ -81,7 +81,7 @@ app.component('VueMultiselect', VueMultiselect);
 app.component('Avatar', Avatar);
 app.component('FlashMessage', FlashMessage);
 app.component('OffCanvas', OffCanvas);
-app.component('MultiSelect', MultiSelect);
+app.component('BaseMultiSelect', BaseMultiSelect);
 
 app.config.globalProperties.$helpers = Helpers
 app.config.globalProperties.$router = router;

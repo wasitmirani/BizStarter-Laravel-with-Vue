@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { Helpers } from '../Utils/Helper';
 import UserService from '../Services/User/UserService';
-import { DropdownService } from '../Services/Settings/SettingsService';
+import DropDownService  from '../Services/DropDown/DropDownService';
 
 export interface DropdownItem {
   value: string | number;
@@ -50,13 +50,14 @@ export const useDropDownsStore = defineStore('dropdowns', () => {
     if (dropdownsLoaded.value) return;
 
     try {
-      const response = await DropdownService.getAll();
-      const data = response?.data ?? {};
+      const response = await DropDownService.getAll();
+      const data = response?.data.result ?? {};
 
       // Countries
       countries.value = (data.countries ?? []).map((item: any) => ({
         value: item.id ?? item.code ?? item.value,
         label: item.name ?? item.label ?? item.code,
+        flag: item.flag ?? item.flag ?? '',
       }));
 
       // Timezones
@@ -68,7 +69,7 @@ export const useDropDownsStore = defineStore('dropdowns', () => {
       // Languages
       languages.value = (data.languages ?? []).map((item: any) => ({
         value: item.id ?? item.code ?? item.value,
-        label: item.name ?? item.label ?? item.code,
+        label: (item.name ? `${item.name} | ${item.code ?? ''}` : item.code) ?? (item.label ? `${item.label} ${item.code ?? ''}` : item.code),
       }));
 
       // Currencies

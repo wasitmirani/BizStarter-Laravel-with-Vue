@@ -35,6 +35,9 @@ class StoreUserRequest extends FormRequest
             'state' => 'required',
             'dob' => 'required',
             'gender' => 'required',
+            'country_id' => 'nullable|exists:countries,id',
+            'timezone_id' => 'nullable|exists:timezones,id',
+            'language_id' => 'nullable|exists:languages,id',
         ];
     }
 }
