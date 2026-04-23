@@ -65,8 +65,10 @@ export default class SidebarMenu {
                     this.setSubMenu('Permissions & Policy', '/management/permissions', undefined),
                 ]
             ),
-            this.setSingleMenu('Calendar', 'calendar', '/calendar', undefined),
+            this.setSingleMenu('Warehouses', 'building','/management/warehouses', 'warehouses-list'),
+
             this.setHeadingMenu('Tools & Sessions'),
+
             this.setMultiMenu('Settings', 'settings', undefined, [
                     this.setSubMenu('Account', '/settings/user-account', undefined),
                     this.setSubMenu('App config', '/settings/app-config', undefined),

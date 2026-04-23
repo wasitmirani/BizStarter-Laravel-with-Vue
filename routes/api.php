@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Backend\Media\UploadController;
+use App\Http\Controllers\Backend\Warehouse\WarehouseController;
 use App\Http\Controllers\Backend\Role\RoleController;
 use App\Http\Controllers\Backend\Settings\SettingController;
 use App\Http\Controllers\Backend\User\UserController;
@@ -47,6 +48,7 @@ Route::prefix('/app')->group(function () {
 
     // Permissions
     Route::resource('permission',PermissionController::class);
+    Route::resource('warehouse', WarehouseController::class);
 
     // Uploads
     Route::prefix('upload')->group(function() {

@@ -71,6 +71,12 @@ const routes = [
     setRoute('/management/permission/edit/:id', 'edit-permission', 'Permission/Permission', 'edit-permission'),
     setRoute('/management/permission/details/:id', 'show-permission', 'Permission/PermissionShow', 'show-permission'),
 
+    // Warehouses
+    setRoute('/management/warehouses', 'warehouses', 'Warehouse/Warehouses', 'warehouses-list'),
+    setRoute('/management/warehouse/create', 'create-warehouse', 'Warehouse/Warehouse', 'create-warehouse'),
+    setRoute('/management/warehouse/edit/:id', 'edit-warehouse', 'Warehouse/Warehouse', 'edit-warehouse'),
+    setRoute('/management/warehouse/details/:id', 'show-warehouse', 'Warehouse/WarehouseShow', 'show-warehouse'),
+
 
 
     //Settings Routes
