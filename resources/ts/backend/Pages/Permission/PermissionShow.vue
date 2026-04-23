@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useCreateRole } from './Composables/useCreatePermission';
+import { useCreatePermission } from './Composables/useCreatePermission';
 import { Helpers } from '../../Utils/Helper';
 import RoleCard from '../../Components/RoleCard.vue'
 
-const { role, editmode, handleSubmitForm, loading } = useCreateRole();
+const { role, editmode, handleSubmitForm, loading } = useCreatePermission();
 
 // Create computed properties to unwrap the reactive values
 const roleData = Helpers.useDynamicComputed(() => role.value);
