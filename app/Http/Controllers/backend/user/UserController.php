@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Backend\User;
 
-use App\Contracts\UserFilterable;
+use App\Contracts\BaseFilterable;
 use App\Enums\UserEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
@@ -12,7 +12,7 @@ use App\Services\UserService;
 use Illuminate\Http\Request;
 use Lab404\Impersonate\Services\ImpersonateManager;
 
-class UserController extends Controller implements UserFilterable
+class UserController extends Controller implements BaseFilterable
 {
     /**
      * Display a listing of the resource.
@@ -161,7 +161,7 @@ class UserController extends Controller implements UserFilterable
         $filters = $request->only(self::ALLOWED_FILTERS);
         $filters = ['paginated'=>false] + $filters;
         $users = $this->userService->users($filters);
-        $data=[ 
+        $data=[
             'users'=>$users
         ];
         return responseJson('users fetched successfully',$data,true);

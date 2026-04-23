@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Backend\Warehouse;
 
-use App\Contracts\UserFilterable;
+use App\Contracts\BaseFilterable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreWarehouseRequest;
 use App\Http\Requests\UpdateWarehouseRequest;
@@ -10,7 +10,7 @@ use App\Models\Warehouse;
 use App\Services\WarehouseService;
 use Illuminate\Http\Request;
 
-class WarehouseController extends Controller implements UserFilterable
+class WarehouseController extends Controller implements BaseFilterable
 {
     public function index(Request $request)
     {
