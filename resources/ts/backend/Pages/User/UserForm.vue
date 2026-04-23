@@ -14,6 +14,13 @@ const {
     showPassword,
     genderDropdownItems,
     maritalStatusDropdownItems,
+    countryModel,
+    timezoneModel,
+    languageModel,
+    countryOptions,
+    timezoneOptions,
+    languageOptions,
+
     onSubmit,
     addThumbnail,
     removeThumbnail,
@@ -112,12 +119,68 @@ const {
 
                         <div>
                             <label class="form-label">Country</label>
-                            <select v-model="user.country" id="inputCountry" class="form-input">
-                                <option disabled value="">Select Country</option>
-                                <option value="PK">PAK</option>
-                            </select>
+                            <BaseMultiSelect
+                            v-model="countryModel"
+                            :options="countryOptions"
+                            optionLabel="label"
+                            trackBy="value"
+                            placeholder="Select Country"
+                            >
+                            <!-- 🔥 OPTION SLOT (dropdown) -->
+                            <template #option="{ option }">
+                                <div class="flex items-center gap-2">
+                                <img
+                                    v-if="option.flag"
+                                    :src="option.flag"
+                                    class="w-5 h-4 rounded-sm"
+                                />
+                                <span>{{ option.label }}</span>
+                                </div>
+                            </template>
+
+                            <!-- 🔥 SELECTED VALUE -->
+                            <template #singleLabel="{ option }">
+                                <div class="flex items-center gap-2">
+                                <img
+                                    v-if="option.flag"
+                                    :src="option.flag"
+                                    class="w-5 h-4 rounded-sm"
+                                />
+                                <span>{{ option.label }}</span>
+                                </div>
+                            </template>
+
+                            </BaseMultiSelect>
 
 
+                            <validate-input class="text-danger" v-if="errors" :errors="errors" value="country_id" />
+                        </div>
+
+                        <div>
+                            <label class="form-label">Timezone</label>
+                            <BaseMultiSelect
+                            v-model="timezoneModel"
+                            :options="timezoneOptions"
+                            optionLabel="label"
+                            trackBy="value"
+                            placeholder="Select Timezone"
+                            :multiple="false"
+                            />
+                            <validate-input class="text-danger" v-if="errors" :errors="errors" value="timezone_id" />
+                        </div>
+
+                        <div>
+                            <label class="form-label">Language</label>
+
+                            <BaseMultiSelect
+                            v-model="languageModel"
+                            :options="languageOptions"
+                            optionLabel="label"
+                            trackBy="value"
+                            placeholder="Select Language"
+                            :multiple="false"
+                            />
+                            <validate-input class="text-danger" v-if="errors" :errors="errors" value="language_id" />
                         </div>
 
                         <div>
@@ -135,10 +198,10 @@ const {
                         <FormInput v-model="user.dob" label="Date Of Birth" name="dob" placeholder="Date Of Birth"
                             type="date" :errors="errors" autofocus />
                         <div class="col-span-2 lg:col-span-3">
-                            <label class="form-label font-semibold block mb-4">Profile Picture 
-                                <small class="text-default-400 text-xs sm:text-sm font-normal ml-2">JPG, PNG • Max 2MB</small> 
+                            <label class="form-label font-semibold block mb-4">Profile Picture
+                                <small class="text-default-400 text-xs sm:text-sm font-normal ml-2">JPG, PNG • Max 2MB</small>
                             </label>
-                            
+
                             <!-- Thumbnail Preview Card -->
                             <div v-if="user.thumbnail" class="mb-4 bg-gradient-to-br from-default-50 to-default-100 border border-default-200 rounded-xl p-4 sm:p-6">
                                 <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
@@ -146,17 +209,17 @@ const {
                                     <div class="flex-shrink-0">
                                         <img :src="user.thumbnail" alt="profile-preview" class="size-20 sm:size-28 rounded-xl object-cover shadow-md border-2 border-white" />
                                     </div>
-                                    
+
                                     <!-- Actions -->
                                     <div class="flex-1 w-full sm:w-auto">
                                         <p class="text-sm text-default-600 mb-3 text-center sm:text-left">Current profile picture</p>
                                         <div class="flex gap-2 w-full">
                                             <button type="button" @click="removeThumbnail" class="flex-1 sm:flex-none btn btn-sm btn-outline-danger">
-                                                <i class="iconify tabler--trash"></i> 
+                                                <i class="iconify tabler--trash"></i>
                                                 <span class="ml-1">Remove</span>
                                             </button>
                                             <button v-if="isEditMode" type="button" @click="resetThumbnail" class="flex-1 sm:flex-none btn btn-sm btn-outline-secondary">
-                                                <i class="iconify tabler--refresh"></i> 
+                                                <i class="iconify tabler--refresh"></i>
                                                 <span class="ml-1">Reset</span>
                                             </button>
                                         </div>

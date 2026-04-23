@@ -12,9 +12,16 @@ class SettingController extends Controller
     public function __construct(protected SettingService $settingService) {
 
     }
-    public function getListOptions(){
-       
-        return responseJson('fatech setting list options',['options'=>$this->settingService->getListOptions(),true,200]);
+    public function getListOptions()
+    {
+        return responseJson(
+            'Fetch setting list options',
+            ['options' => $this->settingService->getListOptions()],
+            true,
+            200
+        );
     }
-  
+
+
+
 }

@@ -21,7 +21,11 @@ const { warehouse, errors, isLoading, onSubmit, countryModel, countryOptions } =
             <div class="card-body">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <FormInput v-model="warehouse.name" label="Warehouse Name" name="name" type="text" :errors="errors" autofocus />
+<<<<<<< HEAD
                     <FormInput v-model="warehouse.label" label="Label" name="label" type="text" :errors="errors" />
+=======
+                 
+>>>>>>> main
                     <FormInput v-model="warehouse.email" label="Email" name="email" type="email" :errors="errors" />
                     <div>
                         <label class="form-label">Phone Number</label>

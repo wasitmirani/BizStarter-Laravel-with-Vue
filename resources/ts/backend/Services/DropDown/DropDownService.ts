@@ -12,16 +12,16 @@ class DropDownService extends BaseService {
         params: { search?: string; [key: string]: any } = {}
     ): Promise<T> => {
         const queryParams = new URLSearchParams();
-        
+
         Object.entries(params).forEach(([key, value]) => {
             if (value !== undefined && value !== null && value !== '') {
                 queryParams.append(key, value.toString());
             }
         });
-        
+
         const queryString = queryParams.toString();
         const url = `/dropdown/${listType}-list${queryString ? `?${queryString}` : ''}`;
-        
+
         return AxiosService.get(url);
     }
 
@@ -29,7 +29,8 @@ class DropDownService extends BaseService {
     getUsers = (params?: any) => this.getList('users', params);
     getPermissions = (params?: any) => this.getList('permissions', params);
     getRoles = (params?: any) => this.getList('roles', params);
-    
+    getAll = (params?: any) => this.getList('options', params);
+
     // Or just use getList directly
 }
 
