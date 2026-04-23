@@ -13,8 +13,12 @@ class SettingController extends Controller
 
     }
     public function getListOptions(){
-       
+
         return responseJson('fatech setting list options',['options'=>$this->settingService->getListOptions(),true,200]);
     }
-  
+
+    public function getCountries(){
+        
+    }
+
 }

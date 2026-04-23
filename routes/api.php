@@ -45,6 +45,7 @@ Route::prefix('/app')->group(function () {
         Route::get('/options-list',[SettingController::class,'getListOptions']);
         Route::get('/languages-list',[SettingController::class,'getLanguages']);
         Route::get('/timezones-list',[SettingController::class,'getTimezones']);
+        Route::get('/countries-list',[SettingController::class,'getCountries'])
         Route::get('/roles-list',[RoleController::class,'getRoles']);
         Route::get('/users-list',[UserController::class,'getUsers']);
         Route::get('/permissions-list',[PermissionController::class,'getPermissionsList']);

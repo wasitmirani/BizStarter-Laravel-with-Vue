@@ -4,12 +4,12 @@ namespace App\Services;
 
 use App\Models\User;
 use function Laravel\Prompts\search;
-use App\Contracts\UserFilterable;
+use App\Contracts\BaseFilterable;
 use App\Services\LoggerService;
 use Illuminate\Support\Facades\Hash;
 use App\Enums\UserEnums;
 
-class UserService extends BaseService implements UserFilterable
+class UserService extends BaseService implements BaseFilterable
 {
 
     protected LoggerService $logger;
@@ -42,7 +42,7 @@ class UserService extends BaseService implements UserFilterable
     }
     public function users($params)
     {
-      
+
         return $this->model
             ->when(!isset($params['sort_by']), function ($query) {
                 $query->latest();
@@ -102,7 +102,7 @@ class UserService extends BaseService implements UserFilterable
         if(!$user){
         return responseMessage('User not found',404);
         }
-      
+
 
 
         $user->name = ($data['first_name'].' ' .$data['last_name']);

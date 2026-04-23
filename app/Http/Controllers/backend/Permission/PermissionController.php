@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Backend\Permission;
 
-use App\Contracts\UserFilterable;
+use App\Contracts\BaseFilterable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePermissionRequest;
 use App\Http\Requests\UpdatePermissionRequest;
@@ -10,7 +10,7 @@ use App\Services\PermissionService;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 
-class PermissionController extends Controller implements UserFilterable
+class PermissionController extends Controller implements BaseFilterable
 {
     public function getPermissionsList(Request $request){
         try {

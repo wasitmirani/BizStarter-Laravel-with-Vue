@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Backend\Role;
 
-use App\Contracts\UserFilterable;
+use App\Contracts\BaseFilterable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
@@ -11,7 +11,7 @@ use App\Services\DropdownService;
 use App\Services\RoleService;
 use Illuminate\Http\Request;
 
-class RoleController extends Controller implements UserFilterable
+class RoleController extends Controller implements BaseFilterable
 {
     public function getRoles(Request $request)
     {

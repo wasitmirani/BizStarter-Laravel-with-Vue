@@ -3,7 +3,7 @@
 namespace App\Contracts;
 
 
-interface UserFilterable
+interface BaseFilterable
 {
     public const ALLOWED_FILTERS = [
         'id' => 'id',
