@@ -7,7 +7,7 @@ use function Laravel\Prompts\search;
 use App\Contracts\BaseFilterable;
 use App\Services\LoggerService;
 use Illuminate\Support\Facades\Hash;
-use App\Enums\UserEnums;
+use App\Enums\UserEnum ;
 
 class UserService extends BaseService implements BaseFilterable
 {

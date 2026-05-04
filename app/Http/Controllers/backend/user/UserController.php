@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Backend\User;
 
 use App\Contracts\BaseFilterable;
-use App\Enums\UserEnums;
+use App\Enums\UserEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Services\LoggerService;
@@ -79,7 +79,7 @@ class UserController extends Controller implements BaseFilterable
     public function show($id)
     {
         if($id){
-            $user = $this->userService->fetch(UserEnums::UUID->value,$id);
+            $user = $this->userService->fetch(UserEnum::UUID->value,$id);
             return responseJson('user fetched successfully',['user'=>$user],true);
     }
         }
@@ -99,7 +99,7 @@ class UserController extends Controller implements BaseFilterable
     public function destroy($uuid)
     {
 
-        $this->userService->delete($uuid,UserEnums::UUID->value);
+        $this->userService->delete($uuid,UserEnum::UUID->value);
 
         return responseJson('user has been deleted successfully',null,true);
     }
@@ -111,7 +111,7 @@ class UserController extends Controller implements BaseFilterable
             return responseJson('Unauthorized', null, false, 401);
         }
 
-        $user = $this->userService->fetch(UserEnums::UUID->value, $uuid);
+        $user = $this->userService->fetch(UserEnum::UUID->value, $uuid);
 
         if (!$user) {
             return responseJson('User not found', null, false, 404);
