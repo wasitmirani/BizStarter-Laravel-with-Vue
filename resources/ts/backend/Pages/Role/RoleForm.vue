@@ -13,6 +13,7 @@ const {
     permissionsDropdownItems,
 } =  useRoleForm(props?.roleData, props?.isEditMode);
 
+
 const usersModel  = Helpers.useMultiSelectModel(role, 'users', usersDropdownItems);
 const permissionsModel = Helpers.useMultiSelectModel(role, 'permissions', permissionsDropdownItems);
 </script>
@@ -46,7 +47,7 @@ const permissionsModel = Helpers.useMultiSelectModel(role, 'permissions', permis
 
                     <div>
                         <label for="roleUsers" class="form-label">Assign Users </label>
-                        <MultiSelect v-model="usersModel" :options="usersDropdownItems" label="Assign Users"
+                        <BaseMultiSelect v-model="usersModel" :options="usersDropdownItems" label="Assign Users"
                             placeholder="Select Users" trackBy="value" optionLabel="label" :errors="errors" multiple />
                         <small class="text-default-400 text-xs"> Select users you want to assign to this role
                         </small>
@@ -54,7 +55,7 @@ const permissionsModel = Helpers.useMultiSelectModel(role, 'permissions', permis
                     <div>
                         <label for="roleUsers" class="form-label">Assign Permissions</label>
                         <!-- Permissions Selection -->
-                        <MultiSelect v-model="permissionsModel" :options="permissionsDropdownItems"
+                        <BaseMultiSelect v-model="permissionsModel" :options="permissionsDropdownItems"
                             label="Assign Permissions" placeholder="Select Permissions" trackBy="value"
                             optionLabel="label" :errors="errors" multiple />
                         <small class="text-default-400 text-xs"> Select permissions you want to assign to this role

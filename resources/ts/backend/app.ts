@@ -20,8 +20,7 @@ import moment from 'moment'
 
 // import GenericInput from "./Components/GenericInputComponent.vue";
 import Uploader from 'vue-media-upload';
-import VueMultiselect from 'vue-multiselect';
-import "vue-multiselect/dist/vue-multiselect.css";
+
 
 import { useGlobal } from './global-composables';
 import router from "./router";
@@ -77,7 +76,7 @@ app.component('FormInput', FormInput);
 app.component('LoadingBox', LoadingBox);
 app.component('validate-input', ValidateInput);
 app.component('Tooltip', Tooltip);
-app.component('VueMultiselect', VueMultiselect);
+
 app.component('Avatar', Avatar);
 app.component('FlashMessage', FlashMessage);
 app.component('OffCanvas', OffCanvas);

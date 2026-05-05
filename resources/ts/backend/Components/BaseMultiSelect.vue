@@ -1,9 +1,10 @@
 <template>
     <VueMultiselect
+      v-bind="forwardedAttrs"
       v-model="model"
       :placeholder="placeholder"
       :track-by="trackBy"
-      :label="optionLabel"
+      :label="resolvedOptionLabel"
       :options="options"
       :multiple="multiple"
     >
@@ -17,7 +18,10 @@
   </template>
 
   <script setup lang="ts">
-  import { computed } from 'vue';
+  import { computed, useAttrs } from 'vue';
+  import VueMultiselect from 'vue-multiselect';
+  import "vue-multiselect/dist/vue-multiselect.css";
+  defineOptions({ inheritAttrs: false })
 
   const props = defineProps<{
     modelValue: any
@@ -29,9 +33,17 @@
   }>()
 
   const emit = defineEmits(['update:modelValue'])
+  const attrs = useAttrs()
 
   const model = computed({
     get: () => props.modelValue,
     set: (val) => emit('update:modelValue', val),
+  })
+
+  const resolvedOptionLabel = computed(() => props.optionLabel || 'label')
+
+  const forwardedAttrs = computed(() => {
+    const { label, ...rest } = attrs
+    return rest
   })
   </script>

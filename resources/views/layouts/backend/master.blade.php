@@ -258,17 +258,69 @@
     </div>
     </div>
 
-    @auth
-        <script>
-            window.user = @json(Auth::user()->load(['roles']));
-            window.permissions = @json(Auth::user()->getAllPermissions()->pluck('name')->values());
-        </script>
-    @else
-        <script>
-            window.user = null;
-            window.permissions = [];
-        </script>
-    @endauth
+    @php
+        $authUser = null;
+        $permissions = [];
+
+        if (Auth::check()) {
+            $user = Auth::user()->loadMissing(['roles:id,name']);
+
+            $authUser = [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'roles' => $user->roles->map(fn ($role) => [
+                    'id' => $role->id,
+                    'name' => $role->name,
+                ])->values(),
+            ];
+
+            $permissions = $user->getAllPermissions()->pluck('name')->values();
+        }
+    @endphp
+
+    <script>
+        (function () {
+            const appContext = Object.freeze({
+                auth: Object.freeze({
+                    user: @json($authUser),
+                    permissions: @json($permissions),
+                }),
+                config: Object.freeze(@json([
+                    'appName' => config('app.name'),
+                    'appEnv' => app()->environment(),
+                    'appUrl' => config('app.url'),
+                    'locale' => app()->getLocale(),
+                    'fallbackLocale' => config('app.fallback_locale'),
+                    'theme' => [
+                        'layout' => 'backend',
+                    ],
+                ])),
+                layout: Object.freeze(window.config ?? {}),
+            });
+
+            Object.defineProperty(window, "__APP_CONTEXT__", {
+                value: appContext,
+                writable: false,
+                configurable: false,
+            });
+
+            // Backward compatibility for legacy code paths.
+            Object.defineProperty(window, "user", {
+                get() {
+                    return window.__APP_CONTEXT__.auth.user;
+                },
+                configurable: true,
+            });
+
+            Object.defineProperty(window, "permissions", {
+                get() {
+                    return window.__APP_CONTEXT__.auth.permissions;
+                },
+                configurable: true,
+            });
+        })();
+    </script>
 
     @if(app()->environment('local'))
     @vite(['resources/ts/Backend/app.ts', 'resources/css/app.css'])

@@ -22,10 +22,10 @@
                         <div class="card rounded-2xl">
                             <div class="card-body p-7.5">
                                 <div class="mb-4 flex flex-col items-center justify-center text-center">
-                                    <a href="index.html" class="auth-logo">
+                                    <router-link to="/app" class="auth-logo">
                                         <img :src="`/backend/images/logo-black.png`"  alt="logo" class="flex dark:hidden">
                                         <img :src="`/backend/images/logo.png`" alt="dark logo" class="hidden dark:flex">
-                                    </a>
+                                    </router-link>
                                 </div>
                                 <div class="p-3 text-center">
                                     <div class="from-primary my-4 bg-linear-to-r to-danger bg-clip-text text-7xl font-bold text-transparent">404</div>

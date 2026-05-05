@@ -118,7 +118,7 @@ const {
                             placeholder="Postal/Zip code" type="text" :errors="errors" autofocus />
 
                         <div>
-                            <label class="form-label">Country</label>
+                            <label class="form-label">Country </label>
                             <BaseMultiSelect
                             v-model="countryModel"
                             :options="countryOptions"

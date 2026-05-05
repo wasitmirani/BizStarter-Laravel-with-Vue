@@ -46,7 +46,7 @@ const rolesModel = Helpers.useMultiSelectModel(permission, 'roles', rolesDropdow
 
                     <div>
                         <label for="permissionUsers" class="form-label">Assign Users </label>
-                        <MultiSelect v-model="usersModel" :options="usersDropdownItems" label="Assign Users"
+                        <BaseMultiSelect v-model="usersModel" :options="usersDropdownItems" label="Assign Users"
                             placeholder="Select Users" trackBy="value" optionLabel="label" :errors="errors" multiple />
                         <small class="text-default-400 text-xs"> Select users you want to assign to this permission
                         </small>
@@ -54,7 +54,7 @@ const rolesModel = Helpers.useMultiSelectModel(permission, 'roles', rolesDropdow
                     <div>
                         <label for="roleUsers" class="form-label">Assign Roles</label>
                         <!-- Permissions Selection -->
-                        <MultiSelect v-model="rolesModel" :options="rolesDropdownItems"
+                        <BaseMultiSelect v-model="rolesModel" :options="rolesDropdownItems"
                             label="Assign Permissions" placeholder="Select Roles" trackBy="value"
                             optionLabel="label" :errors="errors" multiple />
                         <small class="text-default-400 text-xs"> Select Roles you want to assign to this role
