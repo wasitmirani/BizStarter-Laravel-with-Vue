@@ -23,8 +23,8 @@ class PurchaseOrderController extends Controller implements CatalogFilterable
     public function store(Request $request)
     {
         $data = $request->validate([
-            'supplier_id' => 'nullable|integer',
-            'warehouse_id' => 'nullable|integer',
+            'supplier_id' => 'nullable|integer|exists:suppliers,id',
+            'warehouse_id' => 'nullable|integer|exists:warehouses,id',
             'order_date' => 'required|date',
             'expected_date' => 'nullable|date|after_or_equal:order_date',
             'payment_term' => 'nullable|string|max:255',
@@ -64,8 +64,8 @@ class PurchaseOrderController extends Controller implements CatalogFilterable
     public function update(Request $request, string $uuid)
     {
         $data = $request->validate([
-            'supplier_id' => 'nullable|integer',
-            'warehouse_id' => 'nullable|integer',
+            'supplier_id' => 'nullable|integer|exists:suppliers,id',
+            'warehouse_id' => 'nullable|integer|exists:warehouses,id',
             'order_date' => 'required|date',
             'expected_date' => 'nullable|date|after_or_equal:order_date',
             'payment_term' => 'nullable|string|max:255',

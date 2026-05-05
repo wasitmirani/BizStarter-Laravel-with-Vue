@@ -31,7 +31,7 @@ const data = Helpers.useDynamicComputed(() => purchaseOrder.value);
             <div class="flex justify-between items-center">
                 <div>
                     <h4 class="font-semibold mb-1">{{ data.po_number }}</h4>
-                    <p class="text-default-400 mb-0">Supplier ID: {{ data.supplier_id || '-' }}</p>
+                    <p class="text-default-400 mb-0">Supplier: {{ data.supplier?.name || (`#${data.supplier_id || '-'}`) }}</p>
                 </div>
                 <router-link :to="{ name: 'edit-purchase-order', params: { uuid: data.uuid } }" class="btn bg-primary text-white">Edit</router-link>
             </div>
@@ -42,7 +42,7 @@ const data = Helpers.useDynamicComputed(() => purchaseOrder.value);
                 <h5 class="mb-3">Purchase Order Info</h5>
                 <p><b>Order Date:</b> {{ data.order_date || '-' }}</p>
                 <p><b>Expected Date:</b> {{ data.expected_date || '-' }}</p>
-                <p><b>Warehouse ID:</b> {{ data.warehouse_id || '-' }}</p>
+                <p><b>Warehouse:</b> {{ data.warehouse?.name || (`#${data.warehouse_id || '-'}`) }}</p>
                 <p><b>Payment Term:</b> {{ data.payment_term || '-' }}</p>
                 <p><b>Payment Type:</b> {{ data.payment_type || '-' }}</p>
                 <p><b>Supplier Reference ID:</b> {{ data.supplier_reference_id || '-' }}</p>

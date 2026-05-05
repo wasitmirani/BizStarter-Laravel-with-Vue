@@ -3,6 +3,8 @@ import { computed, watch } from 'vue';
 import { Helpers } from '../../Utils/Helper';
 import { CatalogService } from '../../Services/catalog/CatalogService';
 import { PurchasesService } from '../../Services/purchases/PurchasesService';
+import WarehouseService from '../../Services/Warehouse/WarehouseService';
+import DropDownService from '../../Services/DropDown/DropDownService';
 import { useCreatePurchaseOrder } from './Composables/useCreatePurchaseOrder';
 
 const toast = Helpers.useDynamicInject<{ showToast: (status: number, title: string, message: string) => void }>(
@@ -14,6 +16,8 @@ const { purchaseOrder: fetchedPurchaseOrder, editmode, loading } = useCreatePurc
 const errors = Helpers.useDynamicRef<any>({});
 const isSaving = Helpers.useDynamicRef(false);
 const variants = Helpers.useDynamicRef<any[]>([]);
+const suppliers = Helpers.useDynamicRef<any[]>([]);
+const warehouses = Helpers.useDynamicRef<any[]>([]);
 const showLineItemsModal = Helpers.useDynamicRef(false);
 const variantSearch = Helpers.useDynamicRef('');
 const modalSelectedVariantIds = Helpers.useDynamicRef<number[]>([]);
@@ -42,6 +46,16 @@ const isLoading = Helpers.useDynamicComputed(() => loading.value);
 const loadVariants = async () => {
     const res = await CatalogService.variants({ paginated: true, per_page: 10 });
     variants.value = res?.data?.result?.variants?.data ?? res?.data?.result?.variants ?? [];
+};
+
+const loadSuppliers = async () => {
+    const res = await DropDownService.getSuppliers();
+    suppliers.value = res?.data?.result?.suppliers ?? [];
+};
+
+const loadWarehouses = async () => {
+    const res = await WarehouseService.warehouses({ paginated: false, sort_by: 'id', sort_dir: 'desc' });
+    warehouses.value = res?.data?.result?.warehouses?.data ?? res?.data?.result?.warehouses ?? [];
 };
 
 const hydrateForm = () => {
@@ -238,6 +252,8 @@ const submit = async () => {
 
 Helpers.useDynamicOnMounted(async () => {
     await loadVariants();
+    await loadSuppliers();
+    await loadWarehouses();
     hydrateForm();
     tagsInput.value = Array.isArray(form.tags) ? form.tags.join(', ') : '';
 });
@@ -263,7 +279,15 @@ watch(
                 <div class="card">
                     <div class="card-header"><h4 class="card-title mb-0">Supplier Info</h4></div>
                     <div class="card-body grid md:grid-cols-2 gap-base">
-                        <FormInput v-model="form.supplier_id" label="Supplier ID" name="supplier_id" placeholder="Supplier id" type="number" :errors="errors" />
+                        <div>
+                            <label class="form-label">Supplier</label>
+                            <select v-model="form.supplier_id" class="form-select">
+                                <option :value="null">Select Supplier</option>
+                                <option v-for="supplier in suppliers" :key="supplier.id" :value="supplier.id">
+                                    {{ supplier.name }} ({{ supplier.phone || supplier.email || 'No contact' }})
+                                </option>
+                            </select>
+                        </div>
                         <FormInput v-model="form.supplier_reference_id" label="Supplier Reference ID" name="supplier_reference_id" placeholder="Supplier reference" type="text" :errors="errors" />
                         <FormInput v-model="tagsInput" label="Tags (comma separated)" name="tags" placeholder="urgent, local" type="text" :errors="errors" />
                     </div>
@@ -272,7 +296,15 @@ watch(
                 <div class="card">
                     <div class="card-header"><h4 class="card-title mb-0">Purchase Order Info</h4></div>
                     <div class="card-body grid md:grid-cols-2 gap-base">
-                        <FormInput v-model="form.warehouse_id" label="Warehouse ID (nullable)" name="warehouse_id" placeholder="Warehouse id" type="number" :errors="errors" />
+                        <div>
+                            <label class="form-label">Warehouse</label>
+                            <select v-model="form.warehouse_id" class="form-select">
+                                <option :value="null">Select Warehouse</option>
+                                <option v-for="warehouse in warehouses" :key="warehouse.id" :value="warehouse.id">
+                                    {{ warehouse.name }} ({{ warehouse.city || 'N/A' }})
+                                </option>
+                            </select>
+                        </div>
                         <FormInput v-model="form.order_date" label="Order Date" name="order_date" type="date" :errors="errors" />
                         <FormInput v-model="form.expected_date" label="Expected Date" name="expected_date" type="date" :errors="errors" />
                         <FormInput v-model="form.payment_term" label="Payment Term" name="payment_term" placeholder="e.g. Net 30" type="text" :errors="errors" />

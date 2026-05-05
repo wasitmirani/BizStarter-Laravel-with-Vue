@@ -20,6 +20,7 @@ class PurchaseOrderService extends BaseService
 
         return $this->model
             ->withCount('items')
+            ->with(['supplier:id,uuid,name,email,phone', 'warehouse:id,uuid,name,city'])
             ->when(!isset($params['sort_by']), fn($q) => $q->latest())
             ->when(isset($params['sort_by']), fn($q) => $q->sortingBy($params['sort_by'], $params['sort_dir'] ?? 'desc'))
             ->filters($params)
@@ -92,7 +93,11 @@ class PurchaseOrderService extends BaseService
             $purchaseOrder = $this->model->create($payload);
             $purchaseOrder->items()->createMany($normalizedItems);
 
-            return $purchaseOrder->fresh(['items.variant:id,uuid,name,sku,price,product_id']);
+            return $purchaseOrder->fresh([
+                'supplier:id,uuid,name,email,phone',
+                'warehouse:id,uuid,name,city',
+                'items.variant:id,uuid,name,sku,price,product_id',
+            ]);
         });
     }
 
@@ -111,13 +116,24 @@ class PurchaseOrderService extends BaseService
             $purchaseOrder->items()->delete();
             $purchaseOrder->items()->createMany($normalizedItems);
 
-            return $purchaseOrder->fresh(['items.variant:id,uuid,name,sku,price,product_id']);
+            return $purchaseOrder->fresh([
+                'supplier:id,uuid,name,email,phone',
+                'warehouse:id,uuid,name,city',
+                'items.variant:id,uuid,name,sku,price,product_id',
+            ]);
         });
     }
 
     public function fetchByUuid(string $uuid): ?PurchaseOrder
     {
-        return $this->model->with(['items.variant:id,uuid,name,sku,price,product_id'])->where('uuid', $uuid)->first();
+        return $this->model
+            ->with([
+                'supplier:id,uuid,name,email,phone',
+                'warehouse:id,uuid,name,city',
+                'items.variant:id,uuid,name,sku,price,product_id',
+            ])
+            ->where('uuid', $uuid)
+            ->first();
     }
 
     public function deleteByUuid(string $uuid): bool

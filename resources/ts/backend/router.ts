@@ -50,6 +50,10 @@ const routes = [
     setRoute('/purchase-orders/create', 'create-purchase-order', 'purchaseOrders/PurchaseOrder', 'create-purchase-order'),
     setRoute('/purchase-orders/edit/:uuid', 'edit-purchase-order', 'purchaseOrders/PurchaseOrder', 'edit-purchase-order'),
     setRoute('/purchase-orders/:uuid', 'show-purchase-order', 'purchaseOrders/PurchaseOrderShow', 'show-purchase-order'),
+    setRoute('/purchase/suppliers', 'suppliers', 'Supplier/Suppliers', 'suppliers-list'),
+    setRoute('/purchase/supplier/create', 'create-supplier', 'Supplier/Supplier', 'create-supplier'),
+    setRoute('/purchase/supplier/edit/:id', 'edit-supplier', 'Supplier/Supplier', 'edit-supplier'),
+    setRoute('/purchase/supplier/details/:id', 'show-supplier', 'Supplier/SupplierShow', 'show-supplier'),
 
     // Managment Routes
     

@@ -10,7 +10,7 @@ Helpers.useDynamicOnMounted(init);
 
 const columns = [
     { key: 'po_number', label: 'PO Number' },
-    { key: 'supplier_id', label: 'Supplier ID' },
+    { key: 'supplier_name', label: 'Supplier' },
     { key: 'order_date', label: 'Order Date' },
     { key: 'expected_date', label: 'Expected Date' },
     { key: 'total', label: 'Total' },
@@ -44,6 +44,9 @@ const handleAction = async ({ action, row }: { action: string; row?: any }) => {
                     <router-link :to="{ name: 'create-purchase-order' }" class="btn bg-primary text-white hover:bg-primary-hover"><i class="iconify tabler--plus"></i> Add Purchase Order</router-link>
                 </div>
                 <GenericTable :columns="columns" :rows="purchaseOrders" :isLoading="isLoading" :fetchData="fetchPurchaseOrders" :actions="actions" :filters="filters" @action="handleAction">
+                    <template #supplier_name="{ row }">
+                        {{ row.supplier?.name || `#${row.supplier_id || '-'}` }}
+                    </template>
                     <template #total="{ row }">
                         {{ Number(row.total || 0).toFixed(2) }}
                     </template>

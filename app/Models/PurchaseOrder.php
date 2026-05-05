@@ -27,6 +27,16 @@ class PurchaseOrder extends Model
         return $this->hasMany(PurchaseOrderItem::class)->orderBy('sort_order');
     }
 
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class, 'supplier_id');
+    }
+
+    public function warehouse()
+    {
+        return $this->belongsTo(Warehouse::class, 'warehouse_id');
+    }
+
     public function scopeSearch($query, ?string $search)
     {
         if (!$search) {

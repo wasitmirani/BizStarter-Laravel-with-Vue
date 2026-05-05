@@ -29,6 +29,7 @@ class DropDownService extends BaseService {
     getUsers = (params?: any) => this.getList('users', params);
     getPermissions = (params?: any) => this.getList('permissions', params);
     getRoles = (params?: any) => this.getList('roles', params);
+    getSuppliers = (params?: any) => this.getList('suppliers', params);
     
     // Or just use getList directly
 }

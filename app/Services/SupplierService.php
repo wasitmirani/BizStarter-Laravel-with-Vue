@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
-use App\Models\Warehouse;
+use App\Models\Supplier;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
-class WarehouseService extends BaseService
+class SupplierService extends BaseService
 {
     protected $allowedFilters = [
         'id',
@@ -17,10 +17,10 @@ class WarehouseService extends BaseService
 
     protected function model(): ?string
     {
-        return Warehouse::class;
+        return Supplier::class;
     }
 
-    public function getWarehousesList($params, $relations = [], $withCount = [])
+    public function getSuppliersList($params, $relations = [], $withCount = [])
     {
         return $this->model
             ->withCount($withCount)
@@ -30,41 +30,41 @@ class WarehouseService extends BaseService
             ->retrieve($params['paginated'] ?? false, $this->resolvePerPage($params));
     }
 
-    public function saveWarehouse(array $data)
+    public function saveSupplier(array $data)
     {
         return DB::transaction(function () use ($data) {
-            $warehouseData = array_merge($data, [
+            $supplierData = array_merge($data, [
                 'tenant_id' => tenant('id')->id ?? null,
                 'slug' => $this->generateUniqueSlug($data['name']),
                 'uuid' => $this->generateUniqueUuid(),
             ]);
 
-            return $this->model->create($warehouseData);
+            return $this->model->create($supplierData);
         });
     }
 
-    public function updateWarehouse(int $id, array $data)
+    public function updateSupplier(int $id, array $data)
     {
         return DB::transaction(function () use ($id, $data) {
-            $warehouse = $this->model->findOrFail($id);
+            $supplier = $this->model->findOrFail($id);
 
             $updateData = $data;
             if (!empty($data['name'])) {
                 $updateData['slug'] = $this->generateUniqueSlug($data['name'], $id);
             }
 
-            $warehouse->update($updateData);
+            $supplier->update($updateData);
 
-            return $warehouse->fresh();
+            return $supplier->fresh();
         });
     }
 
-    public function getWarehouseByUuid(string $uuid)
+    public function getSupplierByUuid(string $uuid)
     {
         try {
             return $this->model->where('uuid', $uuid)->first();
         } catch (ModelNotFoundException $e) {
-            throw new \Exception('Warehouse not found');
+            throw new \Exception('Supplier not found');
         }
     }
 
