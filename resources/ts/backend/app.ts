@@ -32,7 +32,9 @@ declare module '@vue/runtime-core' {
     $filters: {
       DateTimeFormat(date: String): string;
       HoursFormat(date: String): string;
-    }
+    };
+    $authUser: AppContextUser;
+    $appConfig: Readonly<AppContext['config']> | undefined;
   }
 }
 
@@ -46,6 +48,10 @@ app.config.globalProperties.$filters = {
       return moment.utc(String(date)).local().fromNow();
     },
   }
+
+const appContext = typeof window !== 'undefined' ? window.__APP_CONTEXT__ : undefined;
+app.config.globalProperties.$authUser = appContext?.auth.user ?? null;
+app.config.globalProperties.$appConfig = appContext?.config;
 
 app.use(pinia);
 

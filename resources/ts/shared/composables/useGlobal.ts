@@ -7,9 +7,10 @@ export type UseGlobalReturn = {
     router: ReturnType<typeof useRouter>;
     route: ReturnType<typeof useRoute>;
     /** Authenticated user from Blade (`window.user`), or null. */
-    user: ComputedRef<unknown>;
+    user: ComputedRef<AppContextUser>;
     /** Optional layout/config bag from Blade (`window.config`). */
-    appConfig: ComputedRef<Record<string, unknown> | undefined>;
+    appConfig: ComputedRef<AppContext['config'] | undefined>;
+    layoutConfig: ComputedRef<Readonly<Record<string, unknown>> | undefined>;
     /** Reactive list of permission names (Spatie). */
     permissionNames: Ref<string[]>;
     /** Check a single permission (same logic as `v-can`). */
@@ -29,13 +30,21 @@ export function useGlobal(): UseGlobalReturn {
     const { names: permissionNames } = storeToRefs(permissionsStore);
 
     const user = computed(() =>
-        typeof window !== 'undefined' ? (window.user ?? null) : null
+        typeof window !== 'undefined' ? (window.__APP_CONTEXT__?.auth.user ?? window.user ?? null) : null
     );
 
-    const appConfig = computed((): Record<string, unknown> | undefined => {
+    const appConfig = computed((): AppContext['config'] | undefined => {
         if (typeof window === 'undefined') return undefined;
-        const cfg = (window as Window & { config?: Record<string, unknown> }).config;
-        return cfg && typeof cfg === 'object' ? cfg : undefined;
+        const fromContext = window.__APP_CONTEXT__?.config;
+        if (fromContext && typeof fromContext === 'object') {
+            return fromContext;
+        }
+        return undefined;
+    });
+
+    const layoutConfig = computed(() => {
+        if (typeof window === 'undefined') return undefined;
+        return window.__APP_CONTEXT__?.layout;
     });
 
     function hasPermission(permission?: string): boolean {
@@ -47,6 +56,7 @@ export function useGlobal(): UseGlobalReturn {
         route,
         user,
         appConfig,
+        layoutConfig,
         permissionNames,
         hasPermission,
         refreshPermissions: () => permissionsStore.refreshFromApi(),

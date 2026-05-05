@@ -50,7 +50,7 @@ onBeforeUnmount(() => {
                                         <span class="text-default-400 text-sm uppercase font-medium">Good
                                             Day,</span>
                                         <br>
-                                        <b>David Dev!</b>
+                                        <b>David Dev! {{ $appConfig?.appName }}</b>
                                     </h3>
                                 </div>
                                 <div class="text-end">

@@ -5,7 +5,7 @@ import axios from 'axios';
 /** Permissions hydrated from Blade (`window.permissions`) or `/api/app/permissions`. */
 export function readBootstrapPermissions(): string[] {
     if (typeof window === 'undefined') return [];
-    const raw = (window as Window & { permissions?: unknown }).permissions;
+    const raw = window.__APP_CONTEXT__?.auth.permissions ?? (window as Window & { permissions?: unknown }).permissions;
     if (!Array.isArray(raw)) return [];
     return raw.map(String);
 }
