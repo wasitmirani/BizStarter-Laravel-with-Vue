@@ -28,8 +28,11 @@
                                     </router-link>
                                 </div>
                                 <div class="p-3 text-center">
-                                    <div class="from-primary my-4 bg-linear-to-r to-danger bg-clip-text text-7xl font-bold text-transparent">404</div>
-                                    <h3 class="mb-2 text-xl font-bold uppercase"> Page Not Found ⚠️</h3>
+                                    <div class="my-4">
+                                        <img :src="`/backend/images/404.png`"  alt="404" class="flex dark:hidden">
+                                        <img :src="`/backend/images/404-dark.png`"  alt="404-dark" class="hidden dark:flex">
+                                    </div>
+                                    <!-- <h3 class="mb-2 text-xl font-bold uppercase"> Page Not Found ⚠️</h3> -->
                                     <p class="text-default-400">we couldn't find the page you are looking for.</p>
                                     <div class="flex justify-center gap-3 mt-7.5">
                                         <!-- <router-link  to="/" class="btn border border-secondary text-secondary hover:text-white hover:bg-secondary"> Go Back</router-link> -->
