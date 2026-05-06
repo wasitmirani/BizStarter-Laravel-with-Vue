@@ -37,6 +37,7 @@ Route::prefix('/app')->group(function () {
     Route::resource('category', CategoryController::class);
     Route::resource('brand', BrandController::class);
     Route::resource('product', ProductController::class);
+    Route::post('variant/bulk-store', [ProductVariantController::class, 'bulkStore']);
     Route::resource('variant', ProductVariantController::class);
 
     // Uploads
