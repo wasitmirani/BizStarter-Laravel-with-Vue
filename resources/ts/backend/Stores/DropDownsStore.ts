@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { Helpers } from '../Utils/Helper';
-import { UserService } from '../Services/user/UserService';
-import { DropdownService } from '../Services/settings/settingsService';
+import  UserService from '../Services/User/UserService';
+import { DropdownService } from '../Services/Settings/SettingsService';
 
 export interface DropdownItem {
   value: string | number;

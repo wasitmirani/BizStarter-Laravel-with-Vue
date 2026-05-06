@@ -42,9 +42,7 @@ class UserService extends BaseService implements UserFilterable
     }
     public function users($params)
     {
-        $perPage = (int)($params['per_page'] ?? 15);
-        $perPage = $perPage > 0 ? $perPage : 15;
-
+      
         return $this->model
             ->when(!isset($params['sort_by']), function ($query) {
                 $query->latest();
@@ -65,7 +63,7 @@ class UserService extends BaseService implements UserFilterable
             })
              ->search($params['search'] ?? $params['query'] ?? null)
             ->filters($params)
-            ->retrieve($params['paginated'] ?? true, $perPage);
+            ->retrieve($params['paginated'] ?? true, $this->resolvePerPage($params));
     }
 
     public function saveUser(array $data = [])
@@ -104,10 +102,25 @@ class UserService extends BaseService implements UserFilterable
         if(!$user){
         return responseMessage('User not found',404);
         }
-        $user->name = $data['name'];
+      
+
+
+        $user->name = ($data['first_name'].' ' .$data['last_name']);
+        $user->first_name =$data['first_name'];
+        $user->last_name =$data['last_name'];
+        $imageUrl = !empty($data['thumbnail']) ?  $data['thumbnail'] : $user->thumbnail;
+        $thumbnail = basename($imageUrl);
+
         $user->address = $data['address'];
         $user->dob = $data['dob'];
         $user->gender = $data['gender'];
+        $user->marital_status = $data['marital_status'];
+        $user->thumbnail =$thumbnail;
+        $user->city = $data['city'];
+        $user->state = $data['state'];
+        $user->zip_code = $data['zip_code'];
+        $user->phone = $data['phone'];
+
         $user->save();
 
       return $user;

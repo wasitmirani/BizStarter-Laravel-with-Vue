@@ -1,18 +1,20 @@
 
-import { RoleService } from '../../../Services/Role/RoleService'
+import  RoleService  from '../../../Services/Role/RoleService'
 import { DropdownOptions } from '../../../Utils/DropdownOptions'
 import { Helpers } from '../../../Utils/Helper'
 import { useDropDownsStore } from '../../../Stores/DropDownsStore'
 import {defaultFilters} from "../../../Utils/Constants";
 
 
-export function useUsers() {
+export function useRoles() {
     const router =Helpers.router()
     const route = Helpers.route();
     const dropdownsStore = useDropDownsStore()
 
     // State
     const roles = Helpers.useDynamicRef([])
+    const users = Helpers.useDynamicRef([]) // --- IGNORE ---
+
     // const roles = Helpers.useDynamicComputed(() => dropdownsStore.roles)
     const currentPage = Helpers.useDynamicRef(1)
     const toast = Helpers.useDynamicInject<{ showToast: (status: number, title: string, message: string) => void }>(
@@ -56,9 +58,9 @@ export function useUsers() {
         const params = Helpers.buildQueryFromFilters(filters)
 
         try {
-            const res = await UserService.roles(params)
-            roles.value = res.data.result.users
-            // toast.value.showToast(res.status, 'User Data', res.data)
+            const res = await RoleService.roles(params)
+            roles.value = res.data.result.roles
+            // toast.value.showToast(res.status, 'Role Data', res.data)
         } catch (err: any) {
             console.log("err:", err.response?.data?.message)
             toast.value?.showToast(
@@ -88,7 +90,7 @@ export function useUsers() {
         });
         filters.page = 1 // Reset to first page when filters change
         updateUrlWithFilters()
-        fetchUsers()
+        fetchRoles()
     }
 
     // Handle search input changes
@@ -96,7 +98,7 @@ export function useUsers() {
         filters.search = searchTerm
         filters.page = 1 // Reset to first page when search changes
         updateUrlWithFilters()
-        fetchUsers()
+        fetchRoles()
     }
 
     // Handle search query
@@ -111,21 +113,22 @@ export function useUsers() {
 
     // Filter data handler
     const filterData = (data: any) => {
-        users.value = data.result.users
+        roles.value = data.result.roles6y
     }
 
     // Reset filters to default
     const resetFilters = () => {
         Object.assign(filters, defaultFilters)
         updateUrlWithFilters()
-        fetchUsers()
+        fetchRoles
+        ()
     }
 
     // Initialize on mount
     const init = () => {
         loadFiltersFromUrl()
         dropdownsStore.fetchRoles()
-        fetchUsers()
+        fetchRoles()
     }
 
     return {
@@ -138,7 +141,7 @@ export function useUsers() {
         sortableFilterOptions,
 
         // Methods
-        fetchUsers,
+        fetchRoles,
         handleFilterChange,
         handleSearchChange,
         handleSearchQuery,

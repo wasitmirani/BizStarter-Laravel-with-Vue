@@ -1,26 +1,46 @@
 <template>
-    <div>
-        <VueMultiselect
-            v-model="selectedOption"
-            :placeholder="placeholder"
-            :trackBy="trackBy"
-            :label="label"
-            :options="options">
-        </VueMultiselect>
-    </div>
+  <div>
+    <VueMultiselect
+      v-model="selectedOption"
+      :placeholder="placeholder"
+      :track-by="trackBy"
+      :label="label"
+      :options="options"
+    />
+  </div>
 </template>
 
-<script lang="ts">
-
-import VueMultiselect from 'vue-multiselect';
+<script setup lang="ts">
 import { Helpers } from '../Utils/Helper';
-const props = defineProps(['modelValue', 'placeholder','trackBy','label','options']);
 
-const selectedOption = Helpers.useDynamicRef(props.modelValue);
+// Props
+const props = defineProps<{
+  modelValue: any
+  placeholder?: string
+  trackBy?: string
+  label?: string
+  options: any[]
+}>()
 
+// Emits
+const emit = defineEmits(['update:modelValue'])
 
+// Local state
+const selectedOption = Helpers.useDynamicRef(props.modelValue)
+
+// Sync parent -> child
+Helpers.useDynamicWatch(
+  () => props.modelValue,
+  (val) => {
+    selectedOption.value = val
+  }
+)
+
+// Sync child -> parent
+Helpers.useDynamicWatch(
+  () => selectedOption.value,
+  (val) => {
+    emit('update:modelValue', val)
+  }
+)
 </script>
-
-<style scoped>
-/* Add any styles you need here */
-</style>

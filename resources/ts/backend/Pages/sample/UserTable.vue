@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { UserService } from '../../Services/user/UserService';
+import  UserService  from '../../Services/user/UserService';
 import GenericTable from '../../Components/GenericTable.vue';
 import { Helpers } from '../../Utils/Helper';
 import { hasUuid } from '../../Utils/Common';
-import axios from 'axios';
-
 
 const props = defineProps<{
     users: any;
@@ -140,10 +138,10 @@ function handleAction({ action, row, selected }: { action: string; row?: any; se
                     window.token = res.data.data.token;
                     window.user = res.data.data.user;
                     // Update axios default headers
-                    axios.defaults.headers.common["Authorization"] = `Bearer ${window.token}`;
-                    
+                   
+
                     toast.value.showToast(200, 'Success', `Now impersonating as ${res.data.data.user.name}`);
-                    
+
                     // Optionally refresh the page or redirect to dashboard
                     setTimeout(() => {
                         window.location.href = '/backend/dashboard';

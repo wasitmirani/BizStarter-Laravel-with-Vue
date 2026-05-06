@@ -2,6 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\backend\catalog\BrandController;
+use App\Http\Controllers\backend\catalog\ProductController;
+use App\Http\Controllers\backend\catalog\CategoryController;
+use App\Http\Controllers\backend\catalog\ProductVariantController;
 use App\Http\Controllers\backend\role\RoleController;
 use App\Http\Controllers\backend\user\UserController;
 use App\Http\Controllers\backend\media\UploadController;
@@ -21,19 +25,34 @@ Route::prefix('/app')->group(function () {
         ]);
     });
 
-    Route::post('/password/update', [UserController::class, 'updatePassword']);
+
+    // Users
     Route::resource('user', UserController::class);
+    Route::post('/password/update', [UserController::class, 'updatePassword']);
     Route::post('user/{uuid}/impersonate', [UserController::class, 'impersonate']);
     Route::post('impersonate/leave', [UserController::class, 'leaveImpersonate']);
+
+    // Roles
     Route::resource('role',RoleController::class);
+    Route::resource('category', CategoryController::class);
+    Route::resource('brand', BrandController::class);
+    Route::resource('product', ProductController::class);
+    Route::post('variant/bulk-store', [ProductVariantController::class, 'bulkStore']);
+    Route::resource('variant', ProductVariantController::class);
+
+    // Uploads
     Route::prefix('upload')->group(function() {
         Route::post('/{type}/image',[UploadController::class,'uploadSingleImage']);
     });
 
-    Route::prefix('/list')->group( function(){
+    Route::prefix('/dropdown-list')->group( function(){
         Route::get('/options',[SettingController::class,'getListOptions']);
         Route::get('/languages',[SettingController::class,'getLanguages']);
         Route::get('/timezones',[SettingController::class,'getTimezones']);
         Route::get('/roles',[RoleController::class,'getRoles']);
+        Route::get('/categories',[CategoryController::class,'index']);
+        Route::get('/brands',[BrandController::class,'index']);
+        Route::get('/users',[UserController::class,'getUsers']);
     });
+
 });

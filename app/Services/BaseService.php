@@ -294,4 +294,12 @@ abstract class BaseService
             return $this->getModel()->insert($data);
         });
     }
+    protected function resolvePerPage(array $params, int $default = 15, int $max = 100): int
+    {
+        return max(
+            1,
+            min((int)($params['per_page'] ?? $default), $max)
+        );
+    }
+    
 }
