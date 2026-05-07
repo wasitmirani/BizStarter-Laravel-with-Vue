@@ -47,10 +47,17 @@ const routes = [
     setRoute('/management/permission/edit/:id', 'edit-permission', 'Permission/Permission', 'edit-permission'),
     setRoute('/management/permission/details/:id', 'show-permission', 'Permission/PermissionShow', 'show-permission'),
 
+    // Tenants
+    setRoute('/management/tenants', 'tenants', 'Tenant/Tenants', null),
+    setRoute('/management/tenant/create', 'create-tenant', 'Tenant/Tenant', null),
+    setRoute('/management/tenant/edit/:id', 'edit-tenant', 'Tenant/Tenant', null),
+
 
 
     //Settings Routes
     setRoute('/settings/user-account', 'user-account', 'account/Account', null),
+    setRoute('/settings/tenant', 'tenant-settings', 'Settings/TenantSettings', null),
+    setRoute('/settings/app-config', 'app-config', 'Settings/AppConfig', null),
 
     // Catch-all routes MUST be at the end
     setRoute('/:catchAll(.*)', '404', 'Errors/404', null),

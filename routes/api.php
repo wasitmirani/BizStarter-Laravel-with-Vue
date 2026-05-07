@@ -5,6 +5,7 @@ use App\Http\Controllers\Backend\Media\UploadController;
 use App\Http\Controllers\Backend\Permission\PermissionController;
 use App\Http\Controllers\Backend\Role\RoleController;
 use App\Http\Controllers\Backend\Settings\SettingController;
+use App\Http\Controllers\Backend\Tenant\TenantController;
 use App\Http\Controllers\Backend\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,11 @@ Route::prefix('/app')->group(function () {
 
     // Permissions
     Route::resource('permission',PermissionController::class);
+
+    // Tenants
+    Route::resource('tenant', TenantController::class);
+    Route::get('tenant-settings/current', [TenantController::class, 'current']);
+    Route::put('tenant-settings/current', [TenantController::class, 'updateCurrent']);
 
     // Uploads
     Route::prefix('upload')->group(function() {
