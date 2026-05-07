@@ -3,6 +3,10 @@
 use App\Http\Controllers\Backend\Dropdown\DropDownController;
 use App\Http\Controllers\Backend\Media\UploadController;
 use App\Http\Controllers\Backend\Warehouse\WarehouseController;
+use App\Http\Controllers\Backend\Warehouse\WarehouseAreaController;
+use App\Http\Controllers\Backend\Warehouse\WarehouseContainerController;
+use App\Http\Controllers\Backend\Warehouse\WarehouseLocationController;
+use App\Http\Controllers\Backend\Warehouse\WarehouseZoneController;
 use App\Http\Controllers\Backend\Permission\PermissionController;
 use App\Http\Controllers\Backend\Role\RoleController;
 use App\Http\Controllers\Backend\Settings\SettingController;
@@ -38,6 +42,10 @@ Route::prefix('/app')->group(function () {
     // Permissions
     Route::resource('permission',PermissionController::class);
     Route::resource('warehouse', WarehouseController::class);
+    Route::resource('warehouse-area', WarehouseAreaController::class);
+    Route::resource('warehouse-zone', WarehouseZoneController::class);
+    Route::resource('warehouse-location', WarehouseLocationController::class);
+    Route::resource('warehouse-container', WarehouseContainerController::class);
 
     // Uploads
     Route::prefix('upload')->group(function() {
