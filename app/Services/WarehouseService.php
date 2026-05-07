@@ -24,7 +24,7 @@ class WarehouseService extends BaseService
     {
         return $this->model
             ->withCount($withCount)
-            ->sorting($params['sort_dir'] ?? 'asc')
+            ->sortingBy($params['sort_by'] ?? 'id', $params['sort_dir'] ?? 'asc')
             ->filters($params)
             ->with($relations)
             ->retrieve($params['paginated'] ?? false, $this->resolvePerPage($params));

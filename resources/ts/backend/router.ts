@@ -27,6 +27,34 @@ const routes = [
     setRoute('/unauthorized/user', '401', 'Errors/401', null),
     setRoute('/dashboard', 'dashboard', 'Dashboard/Dashboard', null),
 
+    // Catalog Routes
+    setRoute('/categories', 'categories', 'categories/Categories', 'categories-list'),
+    setRoute('/categories/create', 'create-category', 'categories/Category', 'create-category'),
+    setRoute('/categories/edit/:uuid', 'edit-category', 'categories/Category', 'edit-category'),
+    setRoute('/categories/:uuid', 'show-category', 'categories/CategoryShow', 'show-category'),
+    setRoute('/brands', 'brands', 'brands/Brands', 'brands-list'),
+    setRoute('/brands/create', 'create-brand', 'brands/Brand', 'create-brand'),
+    setRoute('/brands/edit/:uuid', 'edit-brand', 'brands/Brand', 'edit-brand'),
+    setRoute('/products', 'products', 'products/Products', 'products-list'),
+    setRoute('/products/create', 'create-product', 'products/Product', 'create-product'),
+    setRoute('/products/edit/:uuid', 'edit-product', 'products/Product', 'edit-product'),
+    setRoute('/products/:uuid/add-variants', 'add-product-variants', 'products/ProductAddVariants', 'create-variant'),
+    setRoute('/products/:uuid', 'show-product', 'products/ProductShow', 'show-product'),
+    setRoute('/variants', 'variants', 'variants/Variants', 'variants-list'),
+    setRoute('/variants/create', 'create-variant', 'variants/Variant', 'create-variant'),
+    setRoute('/variants/edit/:uuid', 'edit-variant', 'variants/Variant', 'edit-variant'),
+    setRoute('/variants/:uuid', 'show-variant', 'variants/VariantShow', 'show-variant'),
+
+    // Purchases Routes
+    setRoute('/purchase-orders', 'purchase-orders', 'purchaseOrders/PurchaseOrders', 'purchase-orders-list'),
+    setRoute('/purchase-orders/create', 'create-purchase-order', 'purchaseOrders/PurchaseOrder', 'create-purchase-order'),
+    setRoute('/purchase-orders/edit/:uuid', 'edit-purchase-order', 'purchaseOrders/PurchaseOrder', 'edit-purchase-order'),
+    setRoute('/purchase-orders/:uuid', 'show-purchase-order', 'purchaseOrders/PurchaseOrderShow', 'show-purchase-order'),
+    setRoute('/purchase/suppliers', 'suppliers', 'Supplier/Suppliers', 'suppliers-list'),
+    setRoute('/purchase/supplier/create', 'create-supplier', 'Supplier/Supplier', 'create-supplier'),
+    setRoute('/purchase/supplier/edit/:id', 'edit-supplier', 'Supplier/Supplier', 'edit-supplier'),
+    setRoute('/purchase/supplier/details/:id', 'show-supplier', 'Supplier/SupplierShow', 'show-supplier'),
+
     // Managment Routes
     
     // Users
