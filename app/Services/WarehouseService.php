@@ -20,7 +20,7 @@ class WarehouseService extends BaseService
         return Warehouse::class;
     }
 
-    public function getWarehousesList($params, $relations = [], $withCount = [])
+    public function getWarehousesList($params=[], $relations = [], $withCount = [])
     {
         return $this->model
             ->withCount($withCount)
@@ -33,12 +33,15 @@ class WarehouseService extends BaseService
     public function saveWarehouse(array $data)
     {
         return DB::transaction(function () use ($data) {
+
             $warehouseData = array_merge($data, [
                 'tenant_id' => tenant('id')->id ?? null,
-                'slug' => $this->generateUniqueSlug($data['name']),
-                'uuid' => $this->generateUniqueUuid(),
+                'slug'      => $this->generateUniqueSlug($data['name']),
+                'uuid'      => $this->generateUniqueUuid(),
+                // Generate 5 character warehouse label
+                'label'     => generateWarehouseLabel($data['name']),
             ]);
-
+        
             return $this->model->create($warehouseData);
         });
     }

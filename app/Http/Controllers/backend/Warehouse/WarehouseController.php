@@ -17,7 +17,7 @@ class WarehouseController extends Controller implements BaseFilterable
         $filters = $request->only(self::ALLOWED_FILTERS);
         $filters['paginated'] = true;
 
-        $warehouses = app(WarehouseService::class)->getWarehousesList($filters);
+        $warehouses = app(WarehouseService::class)->getWarehousesList($filters,['country:id,name,flag']);
 
         return responseJson('Warehouses fetched successfully', ['warehouses' => $warehouses], true);
     }

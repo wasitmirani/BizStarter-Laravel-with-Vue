@@ -47,7 +47,9 @@ const deleteWarehouse = (item: any) => {
 const columns = [
     { key: "id", label: "Ref-ID" },
     { key: "name", label: "Name" },
+    { key: "label", label: "Label" },
     { key: "city", label: "City" },
+    { key: "country", label: "Country" },
     { key: "status", label: "Status" },
     { key: "created_at", label: "Created At" },
 ];
@@ -110,6 +112,14 @@ function handleAction({ action, row, selected }: { action: string; row?: any; se
         <template #name="{ row }">
             <Avatar :name="row.name" />
         </template>
+        <template #country="{ row }">
+           
+            <CountryFlagName
+                :country="row.country?.name"
+                :flag="row?.country?.flag"
+                />
+        </template>
+   
         <template #status="{ row }">
             <span class="badge" :class="row.status === 'active' ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'">
                 {{ row.status }}

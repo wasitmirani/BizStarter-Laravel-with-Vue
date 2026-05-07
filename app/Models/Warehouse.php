@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use App\Models\BaseModel;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Concerns\HasNameGuardFilters;
 use App\Models\Concerns\InteractsWithListQuery;
+
 
 class Warehouse extends BaseModel
 {
-    use InteractsWithListQuery;
+    use HasNameGuardFilters, InteractsWithListQuery;
+
 
     protected $guarded = [];
 
@@ -35,11 +37,8 @@ class Warehouse extends BaseModel
 
         return $query->where(function ($q) use ($search, $id) {
             $q->where('name', 'LIKE', "%{$search}%")
-                ->orWhere('label', 'LIKE', "%{$search}%")
-                ->orWhere('email', 'LIKE', "%{$search}%")
-                ->orWhere('phone', 'LIKE', "%{$search}%")
-                ->orWhere('city', 'LIKE', "%{$search}%")
-                ->orWhere('country', 'LIKE', "%{$search}%");
+                ->orWhere('label', 'LIKE', "%{$search}%");
+           
 
             if (is_numeric($id)) {
                 $q->orWhere('id', $id);
@@ -57,5 +56,9 @@ class Warehouse extends BaseModel
             ->when($filters['created_from'] ?? null, fn ($q, $from) => $q->whereDate('created_at', '>=', $from))
             ->when($filters['created_between'] ?? null, fn ($q, $range) => $q->whereBetween('created_at', explode(',', $range)))
             ->when($filters['date_range'] ?? null, fn ($q, $days) => $q->where('created_at', '>=', now()->subDays((int) $days)->startOfDay()));
+    }
+
+    public function country(){
+        return $this->belongsTo(Country::class);
     }
 }

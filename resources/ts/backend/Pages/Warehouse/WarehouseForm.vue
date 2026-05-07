@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BaseMultiSelect from "@/Backend/Components/BaseMultiSelect.vue";
 import { useWarehouseForm } from "./Composables/useWarehouseForm";
 
 const props = defineProps(["isEditMode", "warehouseData"]);
@@ -21,11 +22,7 @@ const { warehouse, errors, isLoading, onSubmit, countryModel, countryOptions } =
             <div class="card-body">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <FormInput v-model="warehouse.name" label="Warehouse Name" name="name" type="text" :errors="errors" autofocus />
-<<<<<<< HEAD
-                    <FormInput v-model="warehouse.label" label="Label" name="label" type="text" :errors="errors" />
-=======
                  
->>>>>>> main
                     <FormInput v-model="warehouse.email" label="Email" name="email" type="email" :errors="errors" />
                     <div>
                         <label class="form-label">Phone Number</label>
@@ -36,19 +33,42 @@ const { warehouse, errors, isLoading, onSubmit, countryModel, countryOptions } =
                     </div>
                     <FormInput v-model="warehouse.address" label="Address" name="address" type="text" :errors="errors" class="md:col-span-2" />
                     <div>
-                        <label class="form-label">Country</label>
-                        <MultiSelect
+                        <label class="form-label">Country </label>
+                         <BaseMultiSelect
                             v-model="countryModel"
                             :options="countryOptions"
-                            label="Country"
-                            placeholder="Select Country"
-                            trackBy="value"
                             optionLabel="label"
-                            :multiple="false"
-                        />
-                        <div v-if="errors" class="invalid-feedback">
-                            <validate-input :errors="errors" value="country" />
-                        </div>
+                            trackBy="value"
+                            placeholder="Select Country"
+                            >
+                            <!-- 🔥 OPTION SLOT (dropdown) -->
+                            <template #option="{ option }">
+                                <div class="flex items-center gap-2">
+                                <img
+                                    v-if="option.flag"
+                                    :src="option.flag"
+                                    class="w-5 h-4 rounded-sm"
+                                />
+                                <span>{{ option.label }}</span>
+                                </div>
+                            </template>
+
+                            <!-- 🔥 SELECTED VALUE -->
+                            <template #singleLabel="{ option }">
+                                <div class="flex items-center gap-2">
+                                <img
+                                    v-if="option.flag"
+                                    :src="option.flag"
+                                    class="w-5 h-4 rounded-sm"
+                                />
+                                <span>{{ option.label }}</span>
+                                </div>
+                            </template>
+
+                            </BaseMultiSelect>
+
+
+                            <validate-input class="text-danger" v-if="errors" :errors="errors" value="country_id" />
                     </div>
                     <FormInput v-model="warehouse.city" label="City" name="city" type="text" :errors="errors" />
                     <FormInput v-model="warehouse.zipcode" label="Zipcode" name="zipcode" type="text" :errors="errors" />

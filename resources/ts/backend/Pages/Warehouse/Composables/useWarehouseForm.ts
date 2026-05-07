@@ -1,9 +1,17 @@
 import WarehouseService from "../../../Services/Warehouse/WarehouseService";
 import { Helpers } from "../../../Utils/Helper";
+import { useDropDownsStore } from '@/Backend/Stores/DropDownsStore';
+import { storeToRefs } from 'pinia';
 
 export function useWarehouseForm(initialWarehouse?: any, isEditMode: boolean = false) {
     const errors = Helpers.useDynamicRef<any>([]);
     const isLoading = Helpers.useDynamicRef(false);
+    const dropdownStore = useDropDownsStore();
+    const { countries } =  storeToRefs(dropdownStore);
+    const countryOptions =  Helpers.useDynamicComputed(() => countries.value ?? []);
+   
+
+    
     const toast = Helpers.useDynamicInject<{ showToast: (status: number, title: string, message: string) => void }>(
         "toast",
         { showToast: () => {} }
@@ -39,22 +47,17 @@ export function useWarehouseForm(initialWarehouse?: any, isEditMode: boolean = f
         ...(initialWarehouse ?? {}),
     });
 
-    const countryOptions = [
-        { value: "PK", label: "Pakistan" },
-        { value: "IN", label: "India" },
-        { value: "US", label: "United States" },
-        { value: "AE", label: "United Arab Emirates" },
-        { value: "SA", label: "Saudi Arabia" },
-        { value: "GB", label: "United Kingdom" },
-    ];
+    const findOptionByValue = (options: any[], value: unknown) =>
+        options.find((item: any) => String(item.value) === String(value)) ?? null;
 
-    const countryModel = Helpers.useDynamicRef<any>(null);
-
-    Helpers.useDynamicOnMounted(() => {
-        if (warehouse.country) {
-            countryModel.value = countryOptions.find((item) => item.value === warehouse.country) || null;
-        }
+    const countryModel = Helpers.useDynamicComputed({
+        get: () => findOptionByValue(countryOptions.value, warehouse.country_id ?? warehouse.country),
+        set: (selected: any) => {
+            warehouse.country_id = selected?.value ?? null;
+        },
     });
+
+
 
     const onStore = async (data: any) => {
         isLoading.value = true;

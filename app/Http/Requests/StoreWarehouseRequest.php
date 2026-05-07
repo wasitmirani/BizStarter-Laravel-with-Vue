@@ -19,7 +19,7 @@ class StoreWarehouseRequest extends FormRequest
             'email' => ['nullable', 'email', 'max:255'],
             'phone' => ['nullable', 'string', 'max:30'],
             'address' => ['nullable', 'string'],
-            'country' => ['nullable', 'string', 'max:100'],
+            'country_id' => ['nullable',  'max:100'],
             'city' => ['nullable', 'string', 'max:100'],
             'region' => ['nullable', 'string', 'max:100'],
             'zipcode' => ['nullable', 'string', 'max:20'],
