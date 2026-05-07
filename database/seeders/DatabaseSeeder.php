@@ -15,8 +15,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
         // MasterDataSeeder::class,
-        UserStatusSeed::class,
-        CountriesSeeder::class,
+        // UserStatusSeed::class,
+        // CountriesSeeder::class,
+        TimeZoneSeeder::class,
         ]);
 
     }

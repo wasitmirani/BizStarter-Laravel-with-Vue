@@ -19,23 +19,22 @@
                             <img   :src="`/backend/auth-card-bg.svg`"  alt="auth-card-bg">
                         </div>
 
-                        <div class="card rounded-2xl">
-                            <div class="card-body p-7.5">
-                                <div class="mb-4 flex flex-col items-center justify-center text-center">
-                                    <a href="index.html" class="auth-logo">
-                                        <img :src="`/backend/images/logo-black.png`"  alt="logo" class="flex dark:hidden">
-                                        <img :src="`/backend/images/logo.png`" alt="dark logo" class="hidden dark:flex">
-                                    </a>
-                                </div>
-                                <div class="p-3 text-center">
-                                    <div class="from-primary my-4 bg-linear-to-r to-danger bg-clip-text text-7xl font-bold text-transparent">404</div>
-                                    <h3 class="mb-2 text-xl font-bold uppercase"> Page Not Found ⚠️</h3>
-                                    <p class="text-default-400">we couldn't find the page you are looking for.</p>
-                                    <div class="flex justify-center gap-3 mt-7.5">
-                                        <!-- <router-link  to="/" class="btn border border-secondary text-secondary hover:text-white hover:bg-secondary"> Go Back</router-link> -->
-                                        <router-link  to="/app"  class="btn bg-primary text-white hover:bg-primary-hover"> Back to Dashboard</router-link>
-                                    </div>
-                                </div>
+                        <div class="mb-4 flex flex-col items-center justify-center text-center">
+                            <router-link to="/app" class="auth-logo">
+                                <img :src="`/backend/images/logo-black.png`"  alt="logo" class="flex dark:hidden">
+                                <img :src="`/backend/images/logo.png`" alt="dark logo" class="hidden dark:flex">
+                            </router-link>
+                        </div>
+                        <div class="p-3 text-center">
+                            <div class="my-4">
+                                <img :src="`/backend/images/404.png`"  alt="404" class="flex dark:hidden">
+                                <img :src="`/backend/images/404-dark.png`"  alt="404-dark" class="hidden dark:flex">
+                            </div>
+                            <!-- <h3 class="mb-2 text-xl font-bold uppercase"> Page Not Found ⚠️</h3> -->
+                            <p class="text-default-400">we couldn't find the page you are looking for.</p>
+                            <div class="flex justify-center gap-3 mt-7.5">
+                                <!-- <router-link  to="/" class="btn border border-secondary text-secondary hover:text-white hover:bg-secondary"> Go Back</router-link> -->
+                                <router-link  to="/app"  class="btn bg-primary text-white hover:bg-primary-hover"> Back to Dashboard</router-link>
                             </div>
                         </div>
 

@@ -53,6 +53,7 @@ export default class SidebarMenu {
             ),
             this.setSingleMenu('Warehouses', 'building','/management/warehouses', 'warehouses-list'),
 
+            // this.setSingleMenu('Calendar', 'calendar', '/calendar', undefined),
             this.setHeadingMenu('Tools & Sessions'),
 
             this.setMultiMenu('Settings', 'settings', undefined, [

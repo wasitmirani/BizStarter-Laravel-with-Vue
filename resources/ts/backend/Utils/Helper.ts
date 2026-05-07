@@ -94,7 +94,7 @@ class Helper {
     }
 
     auth() {
-        return window.user;
+        return window.__APP_CONTEXT__?.auth.user ?? window.user ?? null;
     }
 
     DateTimeFormat(date: String) {

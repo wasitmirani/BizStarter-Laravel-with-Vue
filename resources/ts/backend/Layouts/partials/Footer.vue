@@ -1,9 +1,7 @@
 <script setup lang="ts">
 
 const year = new Date().getFullYear();
-const config = {
-    appName: 'AppNAME',
-};
+
 </script>
 <template lang="">
             <!-- Footer Start -->
@@ -13,14 +11,13 @@ const config = {
                         <div class="text-center md:text-start">
                             ©
                             {{ year }}
-                            Paces By
-                            <span class="font-semibold">{{config.appName}}</span>
+                            Powered By
+                            <span class="font-semibold">{{$appConfig?.appName}}</span>
                         </div>
 
                         <div class="md:text-end hidden md:block">
-                            10GB of
-                            <span class="font-bold">250GB</span>
-                            Free.
+                            Environment:
+                            <span class="font-bold">{{$appConfig?.appEnv}}</span>
                         </div>
                     </div>
                 </div>

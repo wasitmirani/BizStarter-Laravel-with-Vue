@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum Role : string
+enum RolesEnum : string
 {
 
     case SUPER_ADMIN = 'super-admin';

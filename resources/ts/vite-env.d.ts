@@ -9,9 +9,40 @@ interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
 
-/** Injected by Laravel Blade on admin/frontend layouts — source of truth for RBAC in the SPA. */
+type AppContextUserRole = {
+  id: number | string;
+  name: string;
+};
+
+type AppContextUser = {
+  id: number | string;
+  name: string;
+  email: string;
+  roles: AppContextUserRole[];
+} | null;
+
+type AppContext = {
+  auth: {
+    user: AppContextUser;
+    permissions: string[];
+  };
+  config: {
+    appName: string;
+    appEnv: string;
+    appUrl: string | null;
+    locale: string;
+    fallbackLocale: string;
+    theme: {
+      layout: string;
+    };
+  };
+  layout: Readonly<Record<string, unknown>>;
+};
+
+/** Injected by Laravel Blade on admin/frontend layouts — source of truth for global app state. */
 interface Window {
-  user?: unknown;
+  __APP_CONTEXT__?: Readonly<AppContext>;
+  user?: AppContextUser;
   permissions?: string[];
   token?: string;
   /** Theme/layout bootstrap; optional per layout. */

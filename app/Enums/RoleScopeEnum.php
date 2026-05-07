@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum RoleScope : string
+enum RoleScopeEnum : string
 {
 
     case SYSTEM = 'system';

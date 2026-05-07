@@ -20,8 +20,7 @@ import moment from 'moment'
 
 // import GenericInput from "./Components/GenericInputComponent.vue";
 import Uploader from 'vue-media-upload';
-import VueMultiselect from 'vue-multiselect';
-import "vue-multiselect/dist/vue-multiselect.css";
+
 
 import { useGlobal } from './global-composables';
 import router from "./router";
@@ -33,7 +32,9 @@ declare module '@vue/runtime-core' {
     $filters: {
       DateTimeFormat(date: String): string;
       HoursFormat(date: String): string;
-    }
+    };
+    $authUser: AppContextUser;
+    $appConfig: Readonly<AppContext['config']> | undefined;
   }
 }
 
@@ -47,6 +48,10 @@ app.config.globalProperties.$filters = {
       return moment.utc(String(date)).local().fromNow();
     },
   }
+
+const appContext = typeof window !== 'undefined' ? window.__APP_CONTEXT__ : undefined;
+app.config.globalProperties.$authUser = appContext?.auth.user ?? null;
+app.config.globalProperties.$appConfig = appContext?.config;
 
 app.use(pinia);
 
@@ -77,7 +82,7 @@ app.component('FormInput', FormInput);
 app.component('LoadingBox', LoadingBox);
 app.component('validate-input', ValidateInput);
 app.component('Tooltip', Tooltip);
-app.component('VueMultiselect', VueMultiselect);
+
 app.component('Avatar', Avatar);
 app.component('FlashMessage', FlashMessage);
 app.component('OffCanvas', OffCanvas);

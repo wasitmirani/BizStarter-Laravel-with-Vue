@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum User : string
+enum UserEnum : string
 {
 
     case ID = 'id';

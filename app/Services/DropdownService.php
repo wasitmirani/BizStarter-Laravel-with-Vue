@@ -45,7 +45,7 @@ class DropdownService
     public function timezones($params=[])
     {
         return Cache::remember('timezones:list', now()->addDays(1), function () {
-            return TimeZone::orderBy('name', 'asc')
+            return TimeZone::orderBy('time_zone', 'asc')
                 ->get();
         });
     }
