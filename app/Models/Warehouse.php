@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\Concerns\InteractsWithListQuery;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Concerns\InteractsWithListQuery;
 
-class Warehouse extends Model
+class Warehouse extends BaseModel
 {
     use InteractsWithListQuery;
 
