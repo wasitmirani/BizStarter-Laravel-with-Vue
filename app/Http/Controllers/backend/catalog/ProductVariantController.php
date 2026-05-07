@@ -83,16 +83,65 @@ class ProductVariantController extends Controller implements CatalogFilterable
             'product_id' => 'required|exists:products,id',
             'variants' => 'required|array|min:1',
             'variants.*.name' => 'nullable|string|max:255',
-            'variants.*.sku' => 'required|string|max:255|distinct|unique:product_variants,sku',
-            'variants.*.barcode' => 'nullable|string|max:255|distinct|unique:product_variants,barcode',
-            'variants.*.option_name' => 'nullable|string|max:255',
+            'variants.*.sku' => 'required|string|max:255',
+            'variants.*.barcode' => 'nullable|string|max:255',
+            'variants.*.option_name' => 'required|string|max:255',
             'variants.*.option_value' => 'nullable|string|max:255',
+            'variants.*.option_values' => 'required|array|min:1',
+            'variants.*.option_values.*' => 'required|string|max:255|distinct',
+            'variants.*.sku_values' => 'nullable|array',
+            'variants.*.sku_values.*' => 'nullable|string|max:255|distinct',
+            'variants.*.barcode_values' => 'nullable|array',
+            'variants.*.barcode_values.*' => 'nullable|string|max:255|distinct',
             'variants.*.price' => 'nullable|numeric|min:0',
             'variants.*.retail_price' => 'nullable|numeric|min:0',
             'variants.*.status' => 'nullable|in:active,inactive',
             'variants.*.sort_order' => 'nullable|integer|min:0',
             'variants.*.is_default' => 'nullable|boolean',
         ]);
+
+        foreach ($data['variants'] as $index => $variant) {
+            $cleanValues = array_values(array_filter(
+                array_map(fn($value) => trim((string) $value), (array) ($variant['option_values'] ?? [])),
+                fn($value) => $value !== ''
+            ));
+            if (empty($cleanValues)) {
+                return responseJson(
+                    "row " . ($index + 1) . " must contain at least one option value",
+                    ['errors' => ["variants.{$index}.option_values" => ['Provide at least one option value.']]],
+                    false,
+                    422
+                );
+            }
+            $cleanSkus = array_values(array_filter(
+                array_map(fn($value) => trim((string) $value), (array) ($variant['sku_values'] ?? [])),
+                fn($value) => $value !== ''
+            ));
+            if (!empty($cleanSkus) && count($cleanSkus) !== count($cleanValues)) {
+                return responseJson(
+                    "row " . ($index + 1) . " sku values count mismatch",
+                    ['errors' => ["variants.{$index}.sku_values" => ['SKU values count must match option values count.']]],
+                    false,
+                    422
+                );
+            }
+            $cleanBarcodes = array_values(array_filter(
+                array_map(fn($value) => trim((string) $value), (array) ($variant['barcode_values'] ?? [])),
+                fn($value) => $value !== ''
+            ));
+            if (!empty($cleanBarcodes) && count($cleanBarcodes) !== count($cleanValues)) {
+                return responseJson(
+                    "row " . ($index + 1) . " barcode values count mismatch",
+                    ['errors' => ["variants.{$index}.barcode_values" => ['Barcode values count must match option values count.']]],
+                    false,
+                    422
+                );
+            }
+            $data['variants'][$index]['option_values'] = $cleanValues;
+            $data['variants'][$index]['sku_values'] = $cleanSkus;
+            $data['variants'][$index]['barcode_values'] = $cleanBarcodes;
+            $data['variants'][$index]['option_name'] = trim((string) ($variant['option_name'] ?? ''));
+        }
 
         $created = $this->productVariantService->saveBulkVariants((int) $data['product_id'], $data['variants']);
 

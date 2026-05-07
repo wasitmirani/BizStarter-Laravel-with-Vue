@@ -75,6 +75,15 @@ Route::prefix('/app')->group(function () {
         Route::get('/users-list',[UserController::class,'getUsers']);
         Route::get('/permissions-list',[PermissionController::class,'getPermissionsList']);
         Route::get('/suppliers-list',[SupplierController::class,'getSuppliers']);
+        
+    Route::prefix('/dropdown-list')->group( function(){
+        Route::get('/options',[SettingController::class,'getListOptions']);
+        Route::get('/languages',[SettingController::class,'getLanguages']);
+        Route::get('/timezones',[SettingController::class,'getTimezones']);
+        Route::get('/roles',[RoleController::class,'getRoles']);
+        Route::get('/categories',[CategoryController::class,'index']);
+        Route::get('/brands',[BrandController::class,'index']);
+        Route::get('/users',[UserController::class,'getUsers']);
     });
 
 });
