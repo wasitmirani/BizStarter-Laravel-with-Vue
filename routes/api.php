@@ -11,6 +11,7 @@ use App\Http\Controllers\Backend\Warehouse\WarehouseZoneController;
 use App\Http\Controllers\Backend\Permission\PermissionController;
 use App\Http\Controllers\Backend\Role\RoleController;
 use App\Http\Controllers\Backend\Settings\SettingController;
+use App\Http\Controllers\Backend\Tenant\TenantController;
 use App\Http\Controllers\Backend\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -60,6 +61,11 @@ Route::prefix('/app')->group(function () {
     Route::resource('warehouse-location', WarehouseLocationController::class);
     Route::resource('warehouse-container', WarehouseContainerController::class);
     Route::resource('supplier', SupplierController::class);
+
+    // Tenants
+    Route::resource('tenant', TenantController::class);
+    Route::get('tenant-settings/current', [TenantController::class, 'current']);
+    Route::put('tenant-settings/current', [TenantController::class, 'updateCurrent']);
 
     // Uploads
     Route::prefix('upload')->group(function() {
