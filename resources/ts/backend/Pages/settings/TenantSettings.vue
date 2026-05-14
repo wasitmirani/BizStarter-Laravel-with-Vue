@@ -5,6 +5,7 @@ import { AxiosService } from "../../Utils/AxiosService";
 
 const loading = ref(false);
 const submitting = ref(false);
+const tenantNotFound = ref(false);
 const currentStep = ref(1);
 const steps = [
     { index: 1, title: "Tenant Profile", subtitle: "Basic company details", icon: "tabler--building-skyscraper" },
@@ -43,11 +44,20 @@ const loadOptions = async () => {
 
 const fetchCurrent = async () => {
     loading.value = true;
+    tenantNotFound.value = false;
     try {
         const response = await TenantService.current();
         const tenant = response?.data?.result?.tenant;
         if (tenant) {
             form.value = { ...form.value, ...tenant };
+        } else {
+            tenantNotFound.value = true;
+        }
+    } catch (error: any) {
+        if (error?.response?.status === 404) {
+            tenantNotFound.value = true;
+        } else {
+            console.error('Error fetching tenant settings:', error);
         }
     } finally {
         loading.value = false;
@@ -96,6 +106,10 @@ onMounted(loadOptions);
     <div class="container-fluid">
         <div v-if="loading" class="rounded-xl border border-default-200 bg-white p-6 text-default-600">
             Loading tenant settings...
+        </div>
+        <div v-else-if="tenantNotFound" class="rounded-xl border border-default-200 bg-white p-6 text-default-600">
+            <h4 class="text-lg font-semibold text-default-900">Tenant settings unavailable</h4>
+            <p class="text-sm text-default-500 mt-1">Your user is not assigned to a tenant yet, so tenant settings cannot be updated from this page.</p>
         </div>
         <div v-else class="rounded-xl border border-default-200 bg-white shadow-sm overflow-hidden">
             <div class="px-6 py-5 border-b border-default-200">
@@ -173,7 +187,7 @@ onMounted(loadOptions);
                             <label class="form-label text-sm font-medium">Timezone</label>
                             <select v-model="form.timezone_id" class="mt-1 w-full rounded-lg border border-default-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary">
                                 <option :value="null">Select timezone</option>
-                                <option v-for="item in optionData.timezones" :key="item.id" :value="item.id">{{ item.name }}</option>
+                                <option v-for="item in optionData.timezones" :key="item.id" :value="item.id">{{ item.label ?? item.name ?? item.time_zone }}</option>
                             </select>
                         </div>
                         <div>

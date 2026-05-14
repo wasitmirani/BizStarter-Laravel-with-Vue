@@ -78,7 +78,7 @@ onMounted(loadOptions);
                     <label class="form-label">Timezone</label>
                     <select v-model="model.timezone_id" class="form-select">
                         <option :value="null">Select timezone</option>
-                        <option v-for="item in optionData.timezones" :key="item.id" :value="item.id">{{ item.name }}</option>
+                        <option v-for="item in optionData.timezones" :key="item.id" :value="item.id">{{ item.label ?? item.name ?? item.time_zone }}</option>
                     </select>
                 </div>
                 <div class="col-md-4">
