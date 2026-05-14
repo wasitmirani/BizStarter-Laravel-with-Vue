@@ -283,6 +283,7 @@
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
+                'thumbnail' => $user->thumbnail,
                 'roles' => $user->roles
                     ->map(
                         fn($role) => [
