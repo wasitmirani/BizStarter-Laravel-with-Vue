@@ -12,6 +12,6 @@ class TimeZone extends BaseModel
 
     public function getAllTimeZones()
     {
-        return self::orderBy('name', 'asc')->get();
+        return self::orderBy('gmt_offset', 'asc')->get();
     }
 }
