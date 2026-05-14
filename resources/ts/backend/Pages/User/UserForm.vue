@@ -96,7 +96,7 @@ const {
                                 value="password_confirmation" />
                         </div>
 
-                        <div>
+                        <!-- <div>
                             <label for="customerCountry" class="form-label">Marital Status</label>
 
                             <select v-model="user.marital_status" class="form-input" required>
@@ -106,7 +106,7 @@ const {
                                     {{ item.value }}
                                 </option>
                             </select>
-                        </div>
+                        </div> -->
 
                         <FormInput v-model="user.address" label="Address" name="address" placeholder="Street"
                             type="text" :errors="errors" autofocus />
