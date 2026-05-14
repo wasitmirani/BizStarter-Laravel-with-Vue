@@ -37,6 +37,15 @@ export default class SidebarMenu {
         }
     }
     getMenuList(): any[] {
+        const authUser = typeof window !== 'undefined' ? (window.__APP_CONTEXT__?.auth.user ?? window.user ?? null) : null;
+        const hasTenant = Boolean((authUser as any)?.tenant_id);
+
+        const settingsSubMenu = [
+            this.setSubMenu('Account', '/settings/user-account', undefined),
+            ...(hasTenant ? [this.setSubMenu('Tenant Settings', '/settings/tenant', undefined)] : []),
+            this.setSubMenu('App config', '/settings/app-config', undefined),
+        ];
+
         return [
             this.setHeadingMenu('Analytics'),
             this.setMultiMenu('Dashboards', 'layout-dashboard', undefined, [

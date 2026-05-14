@@ -242,6 +242,5 @@ function loadBuiltAssets($entry = 'resources/ts/app.ts') {
 
 function tenant()
 {
-    return Tenant::first();
     return auth()->user()?->tenant;
 }

@@ -284,6 +284,7 @@
                 'name' => $user->name,
                 'email' => $user->email,
                 'thumbnail' => $user->thumbnail,
+                'tenant_id' => $user->tenant_id,
                 'roles' => $user->roles
                     ->map(
                         fn($role) => [

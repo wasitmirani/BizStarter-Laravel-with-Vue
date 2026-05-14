@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class TimeZone extends BaseModel
 {
     use HasFactory;
-    protected $tabel = "time_zones";
+
+    protected $table = 'timezones';
 
     public function getAllTimeZones()
     {
-        return self::orderBy('gmt_offset')->get();
+        return self::orderBy('name', 'asc')->get();
     }
 }
