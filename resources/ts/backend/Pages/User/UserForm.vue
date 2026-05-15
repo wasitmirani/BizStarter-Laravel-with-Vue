@@ -108,14 +108,14 @@ const {
                             </select>
                         </div> -->
 
-                        <FormInput v-model="user.address" label="Address" name="address" placeholder="Street"
+                        <!-- <FormInput v-model="user.address" label="Address" name="address" placeholder="Street"
                             type="text" :errors="errors" autofocus />
                         <FormInput v-model="user.city" label="City" name="city" placeholder="City" type="text"
                             :errors="errors" autofocus />
                         <FormInput v-model="user.state" label="State" name="state" placeholder="State" type="text"
                             :errors="errors" autofocus />
                         <FormInput v-model="user.zip_code" label="Postal/Zip code" name="zip_code"
-                            placeholder="Postal/Zip code" type="text" :errors="errors" autofocus />
+                            placeholder="Postal/Zip code" type="text" :errors="errors" autofocus /> -->
 
                         <div>
                             <label class="form-label">Country </label>
