@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" dir="ltr" data-skin="default" data-theme="light" data-topbar-color="light" data-menu-color="light"
+<html lang="en" dir="ltr" data-skin="default" data-theme="light" data-topbar-color="light" data-menu-color="dark"
     data-layout-position="fixed" data-layout-width="fluid" data-sidenav-size="default">
 
 
@@ -111,7 +111,7 @@
     <script src="{{ asset('/backend/assets/demo.js') }}"></script>
 
 
-
+{{-- 
     <style>
         :root,
         :host {
@@ -231,8 +231,8 @@
             background-color: #001f40;
             border-color: #001f40;
         }
-    </style>
-    <style>
+    </style> --}}
+    {{-- <style>
         body {
             font-family: 'Instrument Sans', sans-serif !important;
             font-size: 14px;
@@ -247,7 +247,8 @@
         h5 {
             font-weight: 600;
         }
-    </style>
+    </style> --}}
+    
 </head>
 
 <body @component('layouts.backend.components.switcher')

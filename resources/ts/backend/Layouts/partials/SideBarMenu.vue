@@ -39,29 +39,55 @@ const getMenuClass = (type: string) => {
         <!-- Start::app-sidebar -->
 
         <aside id="app-menu" class="app-menu">
-            <!-- Sidenav Menu Brand Logo -->
-            <a href="/" class="logo-box">
-                <!-- Light Brand Logo -->
-                <span class="logo logo-light">
-                    <span class="logo-lg">
-                        <img :src="`/backend/images/logo.png`" alt="logo">
-                    </span>
-                    <span class="logo-sm">
-                        <img :src="`/backend/images/logo-sm.png`" alt="small logo">
-                    </span>
-                </span>
+           <!-- Sidenav Menu Brand Logo -->
+<router-link
+    to="/app/dashboard"
+    class="logo-box flex items-center justify-start"
+>
+    <!-- Light Brand Logo -->
+    <span class="logo logo-light w-full">
+        <span class="logo-lg flex items-center justify-start gap-2">
+            <img
+                :src="`/backend/images/logoicon.svg`"
+                alt="logo"
+                class="h-[30px] object-contain"
+            >
 
-                <!-- Dark Brand Logo -->
-                <span class="logo logo-dark">
-                    <span class="logo-lg">
-                        <img :src="`/backend/images/logo-black.png`" alt="dark logo">
-                    </span>
-                    <span class="logo-sm">
-                        <img :src="`/backend/images/logo-sm.png`" alt="small logo">
-                    </span>
-                </span>
-            </a>
+            <span class="logo-text text-lg font-bold text-white">
+                {{ $appConfig?.appName }}
+            </span>
+        </span>
 
+        <span class="logo-sm">
+            <img
+                :src="`/backend/images/logo-sm.png`"
+                alt="small logo"
+            >
+        </span>
+    </span>
+
+    <!-- Dark Brand Logo -->
+    <span class="logo logo-dark w-full">
+        <span class="logo-lg flex items-center justify-start gap-2">
+            <img
+                :src="`/backend/images/logo-black.png`"
+                alt="dark logo"
+                class="h-[30px] object-contain"
+            >
+
+            <span class="logo-text text-lg font-bold text-white">
+                {{ $appConfig?.appName }}
+            </span>
+        </span>
+
+        <span class="logo-sm">
+            <img
+                :src="`/backend/images/logo-sm.png`"
+                alt="small logo"
+            >
+        </span>
+    </span>
+</router-link>
             <!-- Sidenav Menu Toggle Button -->
             <div class="h-topbar justify absolute end-5 top-0 flex items-center">
                 <button id="button-hover-toggle">
