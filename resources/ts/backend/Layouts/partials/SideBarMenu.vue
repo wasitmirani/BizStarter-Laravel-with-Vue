@@ -32,6 +32,34 @@ const getMenuClass = (type: string) => {
             break;
     }
 }
+const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '';
+
+function doLogout(event:any) {
+    event.preventDefault();
+    // First try: submit any existing server-rendered logout form (Blade)
+    const existing = Array.from(document.forms).find(f => {
+        try { return new URL(f.action, window.location.href).pathname === '/logout' && f.method.toLowerCase() === 'post'; } catch (e) { return false; }
+    }) as HTMLFormElement | undefined;
+
+    if (existing) {
+        const tokenInput = existing.querySelector('input[name="_token"]') as HTMLInputElement | null;
+        if (tokenInput) tokenInput.value = csrf;
+        existing.submit();
+        return;
+    }
+
+    // Fallback: create and submit a form programmatically
+    const f = document.createElement('form');
+    f.method = 'POST';
+    f.action = '/logout';
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = '_token';
+    input.value = csrf;
+    f.appendChild(input);
+    document.body.appendChild(f);
+    f.submit();
+}
 </script>
 
 <template>
@@ -100,7 +128,7 @@ const getMenuClass = (type: string) => {
                                         </div>
 
                                         <!-- My Profile -->
-                                        <a href="#!" class="dropdown-item">
+                                        <a :href="`/profile`" class="dropdown-item">
                                             <i class="iconify tabler--user-circle me-1 align-middle text-lg"></i>
                                             <span class="align-middle">Profile</span>
                                         </a>
@@ -118,7 +146,7 @@ const getMenuClass = (type: string) => {
                                         </a>
 
                                         <!-- Logout -->
-                                        <a href="javascript:void(0);" class="dropdown-item text-danger">
+                                        <a href="javascript:void(0);" class="dropdown-item text-danger" @click.prevent="doLogout">
                                             <i class="iconify tabler--logout me-1 align-middle text-lg"></i>
                                             <span class="align-middle">Log Out</span>
                                         </a>
