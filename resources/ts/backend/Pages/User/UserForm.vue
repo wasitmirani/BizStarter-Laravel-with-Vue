@@ -156,8 +156,9 @@ const {
                             <validate-input class="text-danger" v-if="errors" :errors="errors" value="country_id" />
                         </div>
 
-                        <div>
-                            <label class="form-label">Timezone</label>
+                        <!-- <div> -->
+                            
+                            <!-- <label class="form-label">Timezone</label>
                             <BaseMultiSelect
                             v-model="timezoneModel"
                             :options="timezoneOptions"
@@ -167,9 +168,9 @@ const {
                             :multiple="false"
                             />
                             <validate-input class="text-danger" v-if="errors" :errors="errors" value="timezone_id" />
-                        </div>
+                        </div> -->
 
-                        <div>
+                        <!-- <div>
                             <label class="form-label">Language</label>
 
                             <BaseMultiSelect
@@ -181,7 +182,7 @@ const {
                             :multiple="false"
                             />
                             <validate-input class="text-danger" v-if="errors" :errors="errors" value="language_id" />
-                        </div>
+                        </div> -->
 
                         <div>
                             <label class="form-label">Gender</label>
