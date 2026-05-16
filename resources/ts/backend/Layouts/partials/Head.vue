@@ -33,7 +33,7 @@ function logOut(event:any) {
 </script>
 <template >
 <div>
-    <form id="logout-form" method="POST" action="/logout" style="display:none;">
+    <form id="logout-form" method="get" action="/logout" style="display:none;">
         <input type="hidden" name="_token" :value="csrf">
     </form>
     

@@ -14,9 +14,12 @@ Route::middleware('auth')->group(function () {
 
 });
 
-require __DIR__.'/auth.php';
+// require __DIR__.'/auth.php';
+// Provide a GET fallback for /logout (some UI flows may navigate directly)s
+
 Route::get('/', fn() => auth()->check() ? redirect('/app/dashboard') : redirect('login'))->name('root');
 
+Route::get('/logout', [AuthenticatedSessionController::class, 'getDestroy']);
 Route::get('/testapp',function(){
     return view('welcome');
 });
