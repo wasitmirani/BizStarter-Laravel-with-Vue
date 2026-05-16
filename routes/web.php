@@ -14,8 +14,9 @@ Route::middleware('auth')->group(function () {
 
 });
 
-// require __DIR__.'/auth.php';
-// Provide a GET fallback for /logout (some UI flows may navigate directly)s
+require __DIR__.'/auth.php';
+// Ensure POST /logout exists (named route 'logout') so form POSTs are handled
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
 Route::get('/', fn() => auth()->check() ? redirect('/app/dashboard') : redirect('login'))->name('root');
 
