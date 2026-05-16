@@ -25,7 +25,8 @@ Route::get('/logout',[AuthenticatedSessionController::class,'destroy']);
 Route::get('/app', fn() => redirect('/app/dashboard'))->middleware(['auth', 'verified']);
 
 Route::get('/app/{module?}/{feature?}/{action?}/{id?}', [BackendController::class, 'index'])->name('backend.dashboard')->middleware(['auth', 'verified']);
-// Route::get('/{path?}',[FrontendController::class, 'index'])->where('path', '^(?!app).*$')
-// ->middleware(['auth', 'verified']);
+// Route::get('/{path?}',[FrontendController::class, 'index'])->where('path', '^(?!app).*$');
+
+// ->middleware(['auth', 'verified'])
 
 

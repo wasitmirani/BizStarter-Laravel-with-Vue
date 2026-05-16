@@ -30,8 +30,8 @@ Route::get('/me', function (Request $request) {
 
 // Route::get('/me', static fn () => response()->json(['user_name'=>"wasitmirani"]));
 // ->middleware('auth:api')
-Route::prefix('/app')->group(function () {
-    Route::middleware('auth:sanctum')->get('/permissions', function (Request $request) {
+Route::prefix('/app')->middleware('auth:api')->group(function () {
+    Route::get('/permissions', function (Request $request) {
         return response()->json([
             'permissions' => $request->user()->getAllPermissions()->pluck('name')->values()->all(),
         ]);

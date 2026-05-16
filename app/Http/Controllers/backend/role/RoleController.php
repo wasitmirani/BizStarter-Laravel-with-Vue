@@ -31,6 +31,7 @@ class RoleController extends Controller implements BaseFilterable
     }
 
     public function store(StoreRoleRequest $request){
+        
         $data = $request->validated();
         $role = app(RoleService::class)->saveRole($data);
         return responseJson('Role created successfully', ['role' => $role], true);

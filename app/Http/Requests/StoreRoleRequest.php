@@ -14,42 +14,39 @@ class StoreRoleRequest extends FormRequest
 
     public function rules(): array
     {
+        $user = $this->user(); // ✅ works for API guard too
+
         return [
             'name' => [
                 'required',
                 'string',
                 'max:255',
 
-                // ❌ block super-admin
+                // block super-admin
                 function ($attribute, $value, $fail) {
                     if (strtolower($value) === 'super-admin') {
                         $fail('This role is reserved.');
                     }
                 },
 
-                // ✅ tenant-wise unique
-                // Rule::unique('roles', 'name')
-                //     ->where(fn ($q) =>
-                //         $q->where('tenant_id', auth()->user()->tenant_id)
-                //     ),
+                // tenant-wise unique
+                Rule::unique('roles', 'name')
+                    ->where(fn ($q) => $q->where('tenant_id', $user?->tenant_id)),
             ],
 
             'users' => ['required', 'array'],
 
-            // ✅ tenant-safe users
-            // 'users.*' => [
-            //     'integer',
-            //     Rule::exists('users', 'id')
-            //         ->where(fn ($q) =>
-            //             $q->where('tenant_id', auth()->user()->tenant_id ?? 1)
-            //         ),
-            // ],
+            'users.*' => [
+                'integer',
+                Rule::exists('users', 'id')
+                    ->where(fn ($q) => $q->where('tenant_id', $user?->tenant_id)),
+            ],
 
             'permissions' => ['nullable', 'array'],
 
             'permissions.*' => [
                 'integer',
-                'exists:permissions,id'
+                'exists:permissions,id',
             ],
         ];
     }

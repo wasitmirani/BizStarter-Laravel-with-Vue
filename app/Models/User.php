@@ -4,17 +4,18 @@ namespace App\Models;
 
 use App\Models\Concerns\InteractsWithListQuery;
 use App\Models\Country;
+use App\Models\Tenant;
+use App\Traits\HasThumbnail;
 use App\Traits\LogsActivity;
-use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use App\Traits\HasThumbnail;
 use Lab404\Impersonate\Models\Impersonate;
+use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
