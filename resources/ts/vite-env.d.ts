@@ -44,7 +44,7 @@ interface Window {
   __APP_CONTEXT__?: Readonly<AppContext>;
   user?: AppContextUser;
   permissions?: string[];
-  token?: string;
+ token?: string | null;
   /** Theme/layout bootstrap; optional per layout. */
   config?: Record<string, unknown>;
 }

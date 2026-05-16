@@ -247,20 +247,24 @@
         h5 {
             font-weight: 600;
         }
-    </style> 
-    
+    </style>
 </head>
 
 <body @component('layouts.backend.components.switcher')
     @endcomponent <div class="wrapper">
     <div id="app">
+
         @yield('content')
+
+
+
     </div>
     </div>
 
     @php
         $authUser = null;
         $permissions = [];
+
         $appConfig = [
             'appName' => config('app.name'),
             'appEnv' => app()->environment(),
@@ -271,15 +275,17 @@
                 'layout' => 'backend',
             ],
         ];
+
         if (Auth::check()) {
             $user = Auth::user()->loadMissing(['roles:id,name']);
-            
+
             $authUser = [
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
                 'thumbnail' => $user->thumbnail,
                 'tenant_id' => $user->tenant_id,
+                'token' => $user->token,
                 'roles' => $user->roles
                     ->map(
                         fn($role) => [
@@ -300,37 +306,44 @@
                 auth: Object.freeze({
                     user: @json($authUser),
                     permissions: @json($permissions),
+                    token: @json($authUser['token'] ?? null),
                 }),
                 config: Object.freeze(@json($appConfig)),
                 layout: Object.freeze(window.config ?? {}),
+                token: @json($authUser['token'] ?? null),
             });
-
+        
             Object.defineProperty(window, "__APP_CONTEXT__", {
                 value: appContext,
                 writable: false,
                 configurable: false,
             });
+
             // Backward compatibility for legacy code paths.
             Object.defineProperty(window, "user", {
                 get() {
-                    return window.__APP_CONTEXT__.auth.user;
+                    return window.__APP_CONTEXT__.auth?.user;
                 },
                 configurable: true,
             });
+
             Object.defineProperty(window, "permissions", {
                 get() {
                     return window.__APP_CONTEXT__.auth.permissions;
                 },
                 configurable: true,
             });
-            // NOTE: token is NOT exposed on `window` for security. Use secure httpOnly cookies or
-            // call the frontend `setAuthToken()` after login to store token in memory/sessionStorage.
+             
+
         })();
     </script>
+
     @if (app()->environment('local'))
         @vite(['resources/ts/Backend/app.ts', 'resources/css/app.css'])
     @else
         {!! loadBuiltAssets('resources/ts/Backend/app.ts') !!}
     @endif
+
 </body>
+
 </html>
