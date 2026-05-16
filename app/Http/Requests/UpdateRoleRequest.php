@@ -14,6 +14,7 @@ class UpdateRoleRequest extends FormRequest
 
     public function rules(): array
     {
+      
         return [
             'name' => [
                 'required',
@@ -28,24 +29,22 @@ class UpdateRoleRequest extends FormRequest
                 },
 
                 // ✅ tenant-wise unique (excluding current role)
-                // Rule::unique('roles', 'name')
-                //     ->where(fn ($q) =>
-                //         $q->where('tenant_id', auth()->user()->tenant_id)
-                //     )
-                //     ->ignore($this->route('role')),
+                Rule::unique('roles', 'name')
+                    ->where(fn ($q) =>
+                        $q->where('tenant_id', auth()->user()->tenant_id)
+                    )
+                    ->ignore($this->route('role')),
             ],
 
             'users' => ['nullable', 'array'],
 
             'users.*' => [
-                'integer',
                 'exists:users,id'
             ],
 
             'permissions' => ['nullable', 'array'],
 
             'permissions.*' => [
-                'integer',
                 'exists:permissions,id'
             ],
         ];

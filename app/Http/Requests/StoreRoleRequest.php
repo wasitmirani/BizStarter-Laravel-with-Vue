@@ -27,23 +27,23 @@ class StoreRoleRequest extends FormRequest
                     }
                 },
 
-                // ✅ tenant-wise unique
-                // Rule::unique('roles', 'name')
-                //     ->where(fn ($q) =>
-                //         $q->where('tenant_id', auth()->user()->tenant_id)
-                //     ),
+                ✅ tenant-wise unique
+                Rule::unique('roles', 'name')
+                    ->where(fn ($q) =>
+                        $q->where('tenant_id', auth()->user()->tenant_id)
+                    ),
             ],
 
             'users' => ['required', 'array'],
 
-            // ✅ tenant-safe users
-            // 'users.*' => [
-            //     'integer',
-            //     Rule::exists('users', 'id')
-            //         ->where(fn ($q) =>
-            //             $q->where('tenant_id', auth()->user()->tenant_id ?? 1)
-            //         ),
-            // ],
+            ✅ tenant-safe users
+            'users.*' => [
+                'integer',
+                Rule::exists('users', 'id')
+                    ->where(fn ($q) =>
+                        $q->where('tenant_id', auth()->user()->tenant_id ?? 1)
+                    ),
+            ],
 
             'permissions' => ['nullable', 'array'],
 

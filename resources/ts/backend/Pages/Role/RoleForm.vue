@@ -37,14 +37,11 @@ const permissionsModel = Helpers.useMultiSelectModel(role, 'permissions', permis
 
                     </div>
 
-                    <div>
+                    <!-- <div>
 
                         <FormInput v-model="role.description" label="Description" name="description"
                             placeholder="Brief description" type="text" :errors="errors" autofocus />
-                    </div>
-
-                 
-
+                    </div> -->
                     <div>
                         <label for="roleUsers" class="form-label">Assign Users </label>
                         <BaseMultiSelect v-model="usersModel" :options="usersDropdownItems" label="Assign Users"
@@ -62,7 +59,7 @@ const permissionsModel = Helpers.useMultiSelectModel(role, 'permissions', permis
                         </small>
                     </div>
                        <div class="md:col-span-2">
-            <label for="roleResponsibilities" class="form-label">Key Responsibilities</label>
+            <!-- <label for="roleResponsibilities" class="form-label">Key Responsibilities</label>
             
             <textarea 
                 class="form-textarea" 
@@ -71,11 +68,11 @@ const permissionsModel = Helpers.useMultiSelectModel(role, 'permissions', permis
                 rows="4" 
                 placeholder="Enter responsibilities (comma-separated or one per line)" 
                 >
-            </textarea>
+            </textarea> -->
             
-            <small class="text-default-400 text-xs">
+            <!-- <small class="text-default-400 text-xs">
                 Add each responsibility separated by a comma or on a new line (e.g., Codebase Maintenance, API Integration, Unit Testing)
-            </small>
+            </small> -->
         </div>
                             <!-- <div>
                                         <label for="roleIcon" class="form-label">Role Icon</label>

@@ -47,6 +47,7 @@ class RoleController extends Controller implements BaseFilterable
     }
     public function update(UpdateRoleRequest $request, $id)
     {
+        
         try {
             $data = $request->validated();
             $role = app(RoleService::class)->updateRole($id, $data);
