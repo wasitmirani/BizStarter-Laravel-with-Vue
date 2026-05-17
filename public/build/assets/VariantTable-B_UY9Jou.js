@@ -1,1 +1,0 @@
-import{_ as o}from"./VariantTable.vue_vue_type_script_setup_true_lang-f6tgv_dK.js";import"./CatalogService-B7hPtJnq.js";import"./Service-eKEHw2YC.js";import"./useGlobal-DuYp-7AC.js";import"./GenericTable-pyZSaR4b.js";import"./app-DYfNjE75.js";import"./_plugin-vue_export-helper-DlAUqK2U.js";export{o as default};

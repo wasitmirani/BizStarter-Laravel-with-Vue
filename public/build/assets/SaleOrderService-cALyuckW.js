@@ -1,0 +1,1 @@
+import{B as a}from"./BaseService-u-P0lLsC.js";import{A as o}from"./AxiosService-PxRtai5R.js";class d extends a{constructor(){super("sale-order")}importOrders(e,t){const r=new FormData;return r.append("file",e),o.post("/sale-order/import",r,{headers:{"Content-Type":"multipart/form-data"},...t})}downloadInvoice(e){return o.get(`/sale-order/${e}/invoice`)}}export{d as S};
