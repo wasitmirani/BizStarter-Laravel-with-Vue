@@ -1,0 +1,29 @@
+directories:
+  output: dist-electron
+  buildResources: build
+appId: com.tasarroms.desktop
+productName: Tasarr OMS
+files:
+  - filter:
+      - electron-main.cjs
+      - electron-preload.cjs
+      - public/**/*
+      - vendor/**/*
+      - bootstrap/**/*
+      - artisan
+      - storage/**/*
+      - resources/**/*
+      - package.json
+extraMetadata:
+  main: electron-main.cjs
+asar: true
+win:
+  target:
+    - nsis
+mac:
+  target:
+    - dmg
+linux:
+  target:
+    - AppImage
+electronVersion: 33.4.11

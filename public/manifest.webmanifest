@@ -1,8 +1,8 @@
 {
   "id": "/",
-  "name": "LarabaseKit Admin",
-  "short_name": "LarabaseAdmin",
-  "description": "LarabaseKit admin dashboard — order and warehouse management.",
+  "name": "TasarrOMSAdmin Admin",
+  "short_name": "TasarrOMSAdmin",
+  "description": "TasarrOMSAdmin admin dashboard — order and warehouse management.",
   "lang": "en",
   "dir": "ltr",
   "start_url": "/app",

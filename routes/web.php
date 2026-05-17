@@ -20,6 +20,42 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name
 
 Route::get('/', fn() => auth()->check() ? redirect('/app/dashboard') : redirect('login'))->name('root');
 
+Route::get('/manifest.json', function () {
+    $manifest = [
+        'id' => '/',
+        'name' => config('app.name'),
+        'short_name' => config('app.name'),
+        'description' => config('app.name').' admin dashboard — order and warehouse management.',
+        'lang' => 'en',
+        'dir' => 'ltr',
+        'start_url' => '/app',
+        'display' => 'standalone',
+        'display_override' => ['standalone', 'minimal-ui'],
+        'background_color' => '#002855',
+        'theme_color' => '#002855',
+        'orientation' => 'portrait-primary',
+        'scope' => '/',
+        'categories' => ['business', 'productivity'],
+        'icons' => [
+            [
+                'src' => '/icons/icon-192.png',
+                'sizes' => '192x192',
+                'type' => 'image/png',
+                'purpose' => 'any',
+            ],
+            [
+                'src' => '/icons/icon-512.png',
+                'sizes' => '512x512',
+                'type' => 'image/png',
+                'purpose' => 'any',
+            ],
+        ],
+    ];
+
+    return response()->json($manifest)
+        ->header('Content-Type', 'application/manifest+json');
+});
+
 Route::get('/logout', [AuthenticatedSessionController::class, 'getDestroy']);
 Route::get('/testapp',function(){
     return view('welcome');
