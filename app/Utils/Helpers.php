@@ -248,26 +248,26 @@ function tenant()
 if (! function_exists('generateWarehouseLabel')) {
 
     /**
-     * Generate 4 character warehouse label
+     * Generate warehouse label
      *
      * Example Output:
-     * WHA1
-     * STO2
-     * WAR3
+     * WHA11
+     * STO22
+     * WAR33
      */
-    function generateWarehouseLabel(string $name, int $id = null): string
+    function generateWarehouseLabel(string $name, ?int $id = null): string
     {
         // Remove spaces and special characters
         $cleanName = preg_replace('/[^A-Za-z0-9]/', '', strtoupper($name));
 
-        // Take first 3 characters
+        // Take first 4 characters
         $prefix = substr($cleanName, 0, 4);
 
-        // Pad if less than 3 characters
+        // Pad if less than 4 characters
         $prefix = str_pad($prefix, 4, 'X');
 
         // Generate last character
-        $lastChar = $id ? substr((string)$id, -1) : rand(0, 9);
+        $lastChar = $id ? substr((string) $id, -1) : rand(0, 9);
 
         return $prefix . $lastChar;
     }

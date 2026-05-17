@@ -106,11 +106,11 @@
                     <button type="submit" class="btn bg-primary w-full py-3 font-semibold text-white hover:bg-primary-hover">Sign In</button>
                 </div>
             </form>
-
+{{-- 
             <p class="text-default-400 mt-7.5 text-center">
                 New here?
                 <a href="#" class="text-primary font-semibold underline underline-offset-4">Create an account</a>
-            </p>
+            </p> --}}
 
             <!-- Auth Footer -->
             <p class="text-default-400 mt-7.5 text-center">
@@ -123,8 +123,8 @@
             </p>
         </div>
     </div>
-    <div class="relative hidden h-full overflow-hidden rounded-e-2xl bg-cover bg-center object-cover lg:block" style="background-image: url({{ asset('/backend/images/auth2.jpg') }})">
-        <div class="absolute inset-0 flex items-end justify-center rounded-e-sm p-9 [background:linear-gradient(to_top,#313a46,rgba(49,58,70,.8),rgba(49,58,70,.5))]"></div>
+    <div class="relative hidden h-full overflow-hidden rounded-e-2xl bg-cover bg-center object-cover lg:block" style="background-image: url({{ asset('/backend/images/auth2.png') }})">
+        {{-- <div class="absolute inset-0 flex items-end justify-center rounded-e-sm p-9 [background:linear-gradient(to_top,#313a46,rgba(49,58,70,.8),rgba(49,58,70,.5))]"></div> --}}
     </div>
 </div>
 @endsection

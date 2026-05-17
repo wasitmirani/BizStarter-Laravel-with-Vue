@@ -13099,10 +13099,10 @@
         --color-body-bg: #f6f7fb;
         --color-body-color: #4c4c5c;
         --color-card: var(--color-white);
-        --color-primary: #236dc9;
+        --color-primary: #042468;
         --color-secondary: #7b70ef;
         --color-success: #02bc9c;
-        --color-primary-hover: #1e5dab;
+        --color-primary-hover: #092560;
         --color-info: #5bc3e1;
         --color-warning: #f9bf59;
         --color-danger: #f7577e;
@@ -16585,7 +16585,7 @@
     }
 
     .border-primary\/10 {
-        border-color: #236dc91a
+        border-color: #0424681a
     }
 
     @supports (color:color-mix(in lab, red, red)) {
@@ -16595,7 +16595,7 @@
     }
 
     .border-primary\/15 {
-        border-color: #236dc926
+        border-color: #04246826
     }
 
     @supports (color:color-mix(in lab, red, red)) {
@@ -16605,7 +16605,7 @@
     }
 
     .border-primary\/25 {
-        border-color: #236dc940
+        border-color: #04246840
     }
 
     @supports (color:color-mix(in lab, red, red)) {
@@ -16615,7 +16615,7 @@
     }
 
     .border-primary\/50 {
-        border-color: #236dc980
+        border-color: #04246880
     }
 
     @supports (color:color-mix(in lab, red, red)) {
@@ -16625,7 +16625,7 @@
     }
 
     .border-primary\/75 {
-        border-color: #236dc9bf
+        border-color: #042468bf
     }
 
     @supports (color:color-mix(in lab, red, red)) {
@@ -17217,7 +17217,7 @@
     }
 
     .bg-primary\/10 {
-        background-color: #236dc91a
+        background-color: #0424681a
     }
 
     @supports (color:color-mix(in lab, red, red)) {
@@ -17227,7 +17227,7 @@
     }
 
     .bg-primary\/15 {
-        background-color: #236dc926
+        background-color: #04246826
     }
 
     @supports (color:color-mix(in lab, red, red)) {
@@ -17237,7 +17237,7 @@
     }
 
     .bg-primary\/20 {
-        background-color: #236dc933
+        background-color: #04246833
     }
 
     @supports (color:color-mix(in lab, red, red)) {
@@ -17247,7 +17247,7 @@
     }
 
     .bg-primary\/25 {
-        background-color: #236dc940
+        background-color: #04246840
     }
 
     @supports (color:color-mix(in lab, red, red)) {
@@ -17257,7 +17257,7 @@
     }
 
     .bg-primary\/50 {
-        background-color: #236dc980
+        background-color: #04246880
     }
 
     @supports (color:color-mix(in lab, red, red)) {
@@ -17267,7 +17267,7 @@
     }
 
     .bg-primary\/60 {
-        background-color: #236dc999
+        background-color: #04246899
     }
 
     @supports (color:color-mix(in lab, red, red)) {
@@ -17277,7 +17277,7 @@
     }
 
     .bg-primary\/70 {
-        background-color: #236dc9b3
+        background-color: #042468b3
     }
 
     @supports (color:color-mix(in lab, red, red)) {
@@ -17287,7 +17287,7 @@
     }
 
     .bg-primary\/75 {
-        background-color: #236dc9bf
+        background-color: #042468bf
     }
 
     @supports (color:color-mix(in lab, red, red)) {
@@ -17297,7 +17297,7 @@
     }
 
     .bg-primary\/85 {
-        background-color: #236dc9d9
+        background-color: #042468d9
     }
 
     @supports (color:color-mix(in lab, red, red)) {
@@ -17307,7 +17307,7 @@
     }
 
     .bg-primary\/90 {
-        background-color: #236dc9e6
+        background-color: #042468e6
     }
 
     @supports (color:color-mix(in lab, red, red)) {
@@ -18017,7 +18017,7 @@
     }
 
     .fill-primary\/15 {
-        fill: #236dc926
+        fill: #04246826
     }
 
     @supports (color:color-mix(in lab, red, red)) {
@@ -18883,7 +18883,7 @@
     }
 
     .text-primary\/25 {
-        color: #236dc940
+        color: #04246840
     }
 
     @supports (color:color-mix(in lab, red, red)) {
@@ -18893,7 +18893,7 @@
     }
 
     .text-primary\/50 {
-        color: #236dc980
+        color: #04246880
     }
 
     @supports (color:color-mix(in lab, red, red)) {
@@ -18903,7 +18903,7 @@
     }
 
     .text-primary\/75 {
-        color: #236dc9bf
+        color: #042468bf
     }
 
     @supports (color:color-mix(in lab, red, red)) {
@@ -19023,7 +19023,7 @@
     }
 
     .decoration-primary\/15 {
-        text-decoration-color: #236dc926
+        text-decoration-color: #04246826
     }
 
     @supports (color:color-mix(in lab, red, red)) {
@@ -19034,7 +19034,7 @@
     }
 
     .decoration-primary\/25 {
-        text-decoration-color: #236dc940
+        text-decoration-color: #04246840
     }
 
     @supports (color:color-mix(in lab, red, red)) {
@@ -19045,7 +19045,7 @@
     }
 
     .decoration-primary\/50 {
-        text-decoration-color: #236dc980
+        text-decoration-color: #04246880
     }
 
     @supports (color:color-mix(in lab, red, red)) {
@@ -19056,7 +19056,7 @@
     }
 
     .decoration-primary\/75 {
-        text-decoration-color: #236dc9bf
+        text-decoration-color: #042468bf
     }
 
     @supports (color:color-mix(in lab, red, red)) {
@@ -22253,7 +22253,7 @@
         }
 
         .hover\:bg-primary\/15:hover {
-            background-color: #236dc926
+            background-color: #04246826
         }
 
         @supports (color:color-mix(in lab, red, red)) {
@@ -22263,7 +22263,7 @@
         }
 
         .hover\:bg-primary\/40:hover {
-            background-color: #236dc966
+            background-color: #04246866
         }
 
         @supports (color:color-mix(in lab, red, red)) {
@@ -24006,7 +24006,7 @@
     }
 
     .\[\.active\]\:bg-primary\/20.active {
-        background-color: #236dc933
+        background-color: #04246833
     }
 
     @supports (color:color-mix(in lab, red, red)) {
@@ -24034,7 +24034,7 @@
 
 :root {
     color-scheme: light;
-    --color-chart-primary: #236dc9;
+    --color-chart-primary: #042468;
     --color-chart-secondary: #7b70ef;
     --color-chart-alpha: #02bc9c;
     --color-chart-beta: #f7577e;
@@ -24589,7 +24589,7 @@ html[data-skin=modern] .card:after {
 html[data-skin=modern] .card:before {
     content: "";
     top: 5px;
-    background-color: #236dc9bf;
+    background-color: #042468bf;
     width: 6px;
     height: 6px;
     position: absolute;
@@ -30662,7 +30662,7 @@ html[data-theme=dark] #theme .card-radio [for=layout-color-dark]:after {
 }
 
 input:checked+.form-label.btn {
-    background-color: #236dc926
+    background-color: #04246826
 }
 
 @supports (color:color-mix(in lab, red, red)) {
@@ -32260,7 +32260,7 @@ pre[class*=language-] {
 .pcr-app .pcr-interaction input:focus {
     box-shadow: none;
     background-color: var(--color-card);
-    border-color: #236dc926
+    border-color: #04246826
 }
 
 @supports (color:color-mix(in lab, red, red)) {
@@ -34274,7 +34274,7 @@ table.dataTable input.dt-select-checkbox[type=checkbox]:indeterminate {
 
 .select2-container .select2-selection--multiple .select2-selection__choice__remove {
     color: #fff;
-    border-color: #236dc9b3;
+    border-color: #042468b3;
     margin-inline-end: 7px
 }
 
@@ -34499,7 +34499,7 @@ div:where(.swal2-icon).swal2-info {
 
 .swal2-progress-steps .swal2-progress-step.swal2-active-progress-step~.swal2-progress-step,
 .swal2-progress-steps .swal2-progress-step.swal2-active-progress-step~.swal2-progress-step-line {
-    background-color: #236dc94d
+    background-color: #0424684d
 }
 
 @supports (color:color-mix(in lab, red, red)) {
@@ -34639,7 +34639,7 @@ div:where(.swal2-icon).swal2-success [class^=swal2-success-line][class$=tip] {
 }
 
 .jstree-default .jstree-clicked {
-    background-color: #236dc926
+    background-color: #04246826
 }
 
 @supports (color:color-mix(in lab, red, red)) {

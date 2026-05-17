@@ -10,8 +10,7 @@ Helpers.useDynamicOnMounted(() => {
     menuList.value = fetchedMenuList;
 });
 function isActive(link: string) {
-    return Helpers.route().path === link ? 'active' : '';
-
+    return Helpers.route().path === link;
 }
 function isAllowed(value: string): boolean {
     console.log("isAllowed", value);
@@ -192,7 +191,7 @@ function doLogout(event:any) {
 
 
                                     <li v-else-if="item.type === 'single'" class="menu-item">
-                                        <RouterLink :to="item.link" :class="[isActive(item.link) ? 'menu-link !bg-primary !text-white' : 'menu-link']">
+                                        <RouterLink :to="item.link" :class="[isActive(item.link) ? 'menu-link active !bg-primary !text-white' : 'menu-link']">
 
 
                                             <i :class="`menu-icon iconify tabler--${item.icon}`"></i>
@@ -202,7 +201,7 @@ function doLogout(event:any) {
                                     </li>
                                     <li v-else-if="item.type === 'multi'" class="menu-item hs-accordion">
                                         <a href="javascript:void(0)" :aria-expanded="false"
-                                            :aria-controls="`sidebar-${index}`" :class="['hs-accordion-toggle menu-link', item.sub_menu?.some((sub: any) => Helpers.route().path === sub.link) ? '!bg-primary !text-white' : '']">
+                                            :aria-controls="`sidebar-${index}`" :class="['hs-accordion-toggle menu-link', item.sub_menu?.some((sub: any) => Helpers.route().path === sub.link) ? 'active !bg-primary !text-white' : '']">
                                             <span class="menu-icon">
                                                 <i :class="`iconify tabler--${item.icon}`"></i>
 
@@ -219,7 +218,7 @@ function doLogout(event:any) {
                                             <li v-for="(subItem, subIndex) in item.sub_menu" :key="subIndex"
                                                 class="menu-item">
 
-                                                <RouterLink :to="subItem.link" class="menu-link">
+                                                <RouterLink :to="subItem.link" :class="[Helpers.route().path === subItem.link ? 'menu-link active !bg-primary !text-white' : 'menu-link']">
 
                                                     {{ subItem.title }}
                                                 </RouterLink>
