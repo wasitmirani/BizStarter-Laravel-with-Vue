@@ -52,6 +52,8 @@ export default class SidebarMenu {
                     this.setSubMenu('Dashboard', '/dashboard', undefined),
                 ]
             ),
+            this.setHeadingMenu('Modules & Apps'),
+            this.setSingleMenu('Sale Orders', 'basket','/sale-orders', 'sale-orders-list'),
 
             this.setHeadingMenu('Modules & Apps'),
             // this.setMultiMenu('Catalog', 'catalog ', 'Catalog',
@@ -69,6 +71,7 @@ export default class SidebarMenu {
             //     ]
             // ),
             this.setHeadingMenu('Management & Apps'),
+         
             this.setMultiMenu('Users Management', 'users', undefined, [
                     this.setSubMenu('Users', '/management/users', 'users-list'),
                     this.setSubMenu('Roles', '/management/roles', 'roles-list'),

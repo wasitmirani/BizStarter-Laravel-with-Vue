@@ -28,16 +28,17 @@ class AxiosClass {
         }
     }
 
-    async post<T>(url: string, body?: any): Promise<AxiosResponse<T>> {
+    async post<T>(url: string, body?: any, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
         if (token === undefined) {
             await setSessionToken();
         }
 
         const headers = {
             Authorization: `Bearer ${token}`,
+            ...(config?.headers || {}),
         };
 
-        return  await axios.post<T>(url, body, { headers });
+        return await axios.post<T>(url, body, { ...config, headers });
     }
     async put<T>(url: string, body: any): Promise<AxiosResponse<T>> {
         if (token === undefined) {
