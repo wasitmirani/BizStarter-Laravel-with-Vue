@@ -7,9 +7,17 @@ export function useWarehouseForm(initialWarehouse?: any, isEditMode: boolean = f
     const errors = Helpers.useDynamicRef<any>([]);
     const isLoading = Helpers.useDynamicRef(false);
     const dropdownStore = useDropDownsStore();
-    const { countries } =  storeToRefs(dropdownStore);
+    const { countries } =
+    storeToRefs(dropdownStore);
+
+    Helpers.useDynamicOnMounted(async () => {
+    await dropdownStore.fetchDropdowns();
+
+    console.log("countries", countries.value); // ✅ correct
+    });
+    console.log("countries",countries.value); // ✅ correct
     const countryOptions =  Helpers.useDynamicComputed(() => countries.value ?? []);
-   
+
 
     
     const toast = Helpers.useDynamicInject<{ showToast: (status: number, title: string, message: string) => void }>(

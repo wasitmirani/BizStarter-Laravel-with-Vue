@@ -44,18 +44,18 @@ class UpdateRoleRequest extends FormRequest
 
             'users' => ['nullable', 'array'],
 
-            'users.*' => [
-                // 'integer',
-                Rule::exists('users', 'id')
-                    ->where(fn ($q) => $q->where('tenant_id', $user?->tenant_id)),
-            ],
+            // 'users.*' => [
+            //     // 'integer',
+            //     Rule::exists('users', 'id')
+            //         ->where(fn ($q) => $q->where('tenant_id', $user?->tenant_id)),
+            // ],
 
             'permissions' => ['nullable', 'array'],
 
-            'permissions.*' => [
-                // 'integer',
-                'exists:permissions,id',
-            ],
+            // 'permissions.*' => [
+            //     // 'integer',
+            //     'exists:permissions,id',
+            // ],
         ];
     }
 }

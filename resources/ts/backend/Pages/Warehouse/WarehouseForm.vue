@@ -75,7 +75,7 @@ const { warehouse, errors, isLoading, onSubmit, countryModel, countryOptions } =
                     <FormInput v-model="warehouse.region" label="Region" name="region" type="text" :errors="errors" />
                     <FormInput v-model="warehouse.longitude" label="Longitude" name="longitude" type="number" :errors="errors" />
                     <FormInput v-model="warehouse.latitude" label="Latitude" name="latitude" type="number" :errors="errors" />
-                    <FormInput v-model="warehouse.timezone" label="Timezone" name="timezone" type="text" :errors="errors" />
+                    <!-- <FormInput v-model="warehouse.timezone" label="Timezone" name="timezone" type="text" :errors="errors" /> -->
                     <FormInput v-model="warehouse.contact_first_name" label="Contact First Name" name="contact_first_name" type="text" :errors="errors" />
                     <FormInput v-model="warehouse.contact_last_name" label="Contact Last Name" name="contact_last_name" type="text" :errors="errors" />
                     <FormInput v-model="warehouse.contact_email" label="Contact Email" name="contact_email" type="email" :errors="errors" />
