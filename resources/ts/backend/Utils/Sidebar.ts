@@ -73,7 +73,7 @@ export default class SidebarMenu {
                     this.setSubMenu('Users', '/management/users', 'users-list'),
                     this.setSubMenu('Roles', '/management/roles', 'roles-list'),
                     this.setSubMenu('Permissions & Policy', '/management/permissions', undefined),
-                    this.setSubMenu('Tenants', '/management/tenants', undefined),
+                    // this.setSubMenu('Tenants', '/management/tenants', undefined),
                 ]
             ),
             this.setSingleMenu('Warehouses', 'building','/management/warehouses', 'warehouses-list'),
