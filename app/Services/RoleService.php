@@ -42,6 +42,7 @@ class RoleService extends BaseService
             $data = array_merge($data, [
                 'tenant_id' => tenant('id')->id,
                 'slug' => setSlug($data['name']),
+                'name'=> setSlug($data['name'], '-'),
                 'guard_name'=>  'api',
                 'uuid' => genUUID(),
             ]);
@@ -69,7 +70,8 @@ class RoleService extends BaseService
             unset($data['permissions'], $data['users']);
 
             $role->update([
-                'name' => $data['name'] ?? $role->name,
+               
+                'name'=> setSlug($data['name'], '-') ?? $role->name,
                 'slug' => setSlug($data['name'] ?? $role->name),
             ]);
 
