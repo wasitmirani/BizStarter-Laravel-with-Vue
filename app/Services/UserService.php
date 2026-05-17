@@ -111,18 +111,16 @@ class UserService extends BaseService implements BaseFilterable
         $imageUrl = !empty($data['thumbnail']) ?  $data['thumbnail'] : $user->thumbnail;
         $thumbnail = basename($imageUrl);
 
-        $user->address = $data['address'];
-        $user->dob = $data['dob'];
-        $user->gender = $data['gender'];
-        $user->marital_status = $data['marital_status'];
+        $user->address = $data['address'] ?? '';
+        $user->dob = $data['dob'] ?? null;
+        $user->gender = $data['gender'] ?? null;
         $user->thumbnail =$thumbnail;
-        $user->city = $data['city'];
-        $user->state = $data['state'];
-        $user->zip_code = $data['zip_code'];
-        $user->phone = $data['phone'];
+        $user->city = $data['city'] ?? '';
+        $user->state = $data['state'] ?? '';
+        $user->zip_code = $data['zip_code'] ?? '';
+        $user->phone = $data['phone'] ?? '';
         $user->country_id = $data['country_id'] ?? null;
-        $user->timezone_id = $data['timezone_id'] ?? null;
-        $user->language_id = $data['language_id'] ?? null;
+       
 
         $user->save();
 
