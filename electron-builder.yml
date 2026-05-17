@@ -1,5 +1,5 @@
-appId: com.larabasekit.desktop
-productName: LarabaseKit Admin
+appId: com.tasarroms.desktop
+productName: Tasarr OMS Admin
 files:
   - "electron-main.cjs"
   - "electron-preload.cjs"
