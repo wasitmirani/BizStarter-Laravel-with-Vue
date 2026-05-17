@@ -108,6 +108,7 @@ class UserService extends BaseService implements BaseFilterable
         $user->name = ($data['first_name'].' ' .$data['last_name']);
         $user->first_name =$data['first_name'];
         $user->last_name =$data['last_name'];
+        $user->email =$data['email'];
         $imageUrl = !empty($data['thumbnail']) ?  $data['thumbnail'] : $user->thumbnail;
         $thumbnail = basename($imageUrl);
 
