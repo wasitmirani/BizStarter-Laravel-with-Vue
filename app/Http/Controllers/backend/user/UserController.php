@@ -85,7 +85,7 @@ class UserController extends Controller implements BaseFilterable
         }
 
 
-    public function update(Request $request, $id)
+    public function update(StoreUserRequest $request, $id)
     {
         //     'phone'=> 'required|unique:users,phone,'.$id,
         //     'thumbnail' => 'required',

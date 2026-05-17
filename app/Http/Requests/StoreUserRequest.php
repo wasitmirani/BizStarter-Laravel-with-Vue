@@ -29,14 +29,14 @@ class StoreUserRequest extends FormRequest
             'thumbnail' => 'required',
             'role'=>'required|sometimes',
             'password' => 'required|confirmed',
-            'address' => 'sometimes',
-            'city' => 'sometimes',
-            'state' => 'sometimes',
+            // 'address' => 'sometimes',
+            // 'city' => 'sometimes',
+            // 'state' => 'sometimes',
             'dob' => 'sometimes',
             'gender' => 'sometimes',
             'country_id' => 'nullable|exists:countries,id',
-            'timezone_id' => 'nullable|exists:timezones,id',
-            'language_id' => 'nullable|exists:languages,id',
+            // 'timezone_id' => 'nullable|exists:timezones,id',
+            // 'language_id' => 'nullable|exists:languages,id',
         ];
     }
 }
