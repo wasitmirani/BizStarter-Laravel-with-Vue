@@ -7,6 +7,7 @@ use App\Models\Tenant;
 use App\Services\BaseService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class RoleService extends BaseService
 {
@@ -42,7 +43,7 @@ class RoleService extends BaseService
             $data = array_merge($data, [
                 'tenant_id' => tenant('id')->id,
                 'slug' => setSlug($data['name']),
-                'name'=> setSlug($data['name'], '-'),
+                'name'=> Str::upper(Str::slug($data['name'], '_')),Str::upper(Str::slug($data['name'], '_')),
                 'guard_name'=>  'api',
                 'uuid' => genUUID(),
             ]);
@@ -71,7 +72,8 @@ class RoleService extends BaseService
 
             $role->update([
                
-                'name'=> setSlug($data['name'], '-') ?? $role->name,
+                'name'=> Str::upper(Str::slug($data['name'], '_')) ?? $role->name,
+                
                 'slug' => setSlug($data['name'] ?? $role->name),
             ]);
 
