@@ -1,1 +1,0 @@
-import{_ as o}from"./UserTable.vue_vue_type_script_setup_true_lang-o4E3c_Yy.js";import"./UserService-CjcQLDmr.js";import"./AxiosService-DoQTnYMs.js";import"./useGlobal-DuYp-7AC.js";import"./BaseService-CPvKmZ97.js";import"./GenericTable-DEALyEID.js";import"./app-gJIw5xgc.js";import"./_plugin-vue_export-helper-DlAUqK2U.js";import"./Common-CTp2wCpz.js";export{o as default};
