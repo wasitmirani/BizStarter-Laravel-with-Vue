@@ -68,6 +68,11 @@ export default class SidebarMenu {
                     this.setSubMenu('Suppliers', '/purchase/suppliers', 'suppliers-list'),
                 ]
             ),
+            this.setMultiMenu('Logistics', 'truck', 'Logistics',
+                [
+                    this.setSubMenu('Drivers', '/logistics/drivers', 'drivers-list'),
+                ]
+            ),
             this.setHeadingMenu('Management & Apps'),
             this.setMultiMenu('Users Management', 'users', undefined, [
                     this.setSubMenu('Users', '/management/users', 'users-list'),
