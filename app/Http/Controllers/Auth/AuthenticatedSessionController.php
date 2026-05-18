@@ -50,4 +50,19 @@ class AuthenticatedSessionController extends Controller
 
         return redirect('/');
     }
+
+    /**
+     * Fallback logout for GET requests (UI may navigate if JS not present).
+     */
+    public function getDestroy(Request $request): RedirectResponse
+    {
+        // Perform same logout steps as POST destroy
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/');
+    }
 }

@@ -96,6 +96,10 @@ const routes = [
     setRoute('/settings/tenant', 'tenant-settings', 'Settings/TenantSettings', null),
     setRoute('/settings/app-config', 'app-config', 'Settings/AppConfig', null),
 
+
+    // Sale Orders
+    setRoute('/sale-orders', 'sale-orders', 'SaleOrder/SaleOrders', 'sale-orders-list'),
+
     // Catch-all routes MUST be at the end
     setRoute('/:catchAll(.*)', '404', 'Errors/404', null),
 

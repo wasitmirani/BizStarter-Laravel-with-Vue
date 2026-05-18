@@ -36,14 +36,14 @@ const permissionsModel = Helpers.useMultiSelectModel(role, 'permissions', permis
                             placeholder="e.g. Developer, Project Manager" type="text" :errors="errors" autofocus />
 
                     </div>
-
+<!-- 
                     <div>
 
                         <FormInput v-model="role.description" label="Description" name="description"
                             placeholder="Brief description" type="text" :errors="errors" autofocus />
                     </div>
 
-                 
+                  -->
 
                     <div>
                         <label for="roleUsers" class="form-label">Assign Users </label>
@@ -61,10 +61,10 @@ const permissionsModel = Helpers.useMultiSelectModel(role, 'permissions', permis
                         <small class="text-default-400 text-xs"> Select permissions you want to assign to this role
                         </small>
                     </div>
-                       <div class="md:col-span-2">
-            <label for="roleResponsibilities" class="form-label">Key Responsibilities</label>
+                       <!-- <div class="md:col-span-2"> -->
+            <!-- <label for="roleResponsibilities" class="form-label">Key Responsibilities</label> -->
             
-            <textarea 
+            <!-- <textarea 
                 class="form-textarea" 
                 v-model="role.responsibilities" 
                 id="roleResponsibilities"
@@ -75,8 +75,8 @@ const permissionsModel = Helpers.useMultiSelectModel(role, 'permissions', permis
             
             <small class="text-default-400 text-xs">
                 Add each responsibility separated by a comma or on a new line (e.g., Codebase Maintenance, API Integration, Unit Testing)
-            </small>
-        </div>
+            </small> -->
+        <!-- </div> -->
                             <!-- <div>
                                         <label for="roleIcon" class="form-label">Role Icon</label>
                                         <input type="text" class="form-input" id="roleIcon" placeholder="e.g. shield, briefcase">
