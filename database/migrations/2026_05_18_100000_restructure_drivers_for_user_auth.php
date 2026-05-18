@@ -13,6 +13,7 @@ return new class extends Migration
         Schema::disableForeignKeyConstraints();
 
         Schema::dropIfExists('driver_warehouse');
+        Schema::dropIfExists('module_has_users');
         Schema::dropIfExists('drivers');
 
         Schema::table('users', function (Blueprint $table) {
@@ -44,14 +45,16 @@ return new class extends Migration
             $table->index('status');
         });
 
-        Schema::create('driver_warehouse', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('driver_id')->constrained('drivers')->cascadeOnDelete();
-            $table->foreignId('warehouse_id')->constrained('warehouses')->cascadeOnDelete();
-            $table->timestamps();
+        if (! Schema::hasTable('module_has_users')) {
+            Schema::create('module_has_users', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+                $table->morphs('module');
+                $table->timestamps();
 
-            $table->unique(['driver_id', 'warehouse_id']);
-        });
+                $table->unique(['user_id', 'module_type', 'module_id'], 'module_has_users_user_module_unique');
+            });
+        }
 
         Schema::enableForeignKeyConstraints();
     }
@@ -61,6 +64,7 @@ return new class extends Migration
         Schema::disableForeignKeyConstraints();
 
         Schema::dropIfExists('driver_warehouse');
+        Schema::dropIfExists('module_has_users');
         Schema::dropIfExists('drivers');
 
         Schema::create('drivers', function (Blueprint $table) {

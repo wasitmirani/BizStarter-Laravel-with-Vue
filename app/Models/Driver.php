@@ -46,7 +46,14 @@ class Driver extends Model
 
     public function warehouses()
     {
-        return $this->belongsToMany(Warehouse::class, 'driver_warehouse');
+        return $this->belongsToMany(
+            Warehouse::class,
+            'module_has_users',
+            'user_id',
+            'module_id',
+            'user_id',
+            'id'
+        )->where('module_has_users.module_type', Warehouse::class);
     }
 
     public function getUuidAttribute(): ?string

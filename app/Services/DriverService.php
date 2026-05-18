@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\UserTypeEnum;
 use App\Models\Driver;
 use App\Models\User;
+use App\Models\Warehouse;
 use Illuminate\Support\Facades\DB;
 
 class DriverService extends BaseService
@@ -64,7 +65,7 @@ class DriverService extends BaseService
                 'driver_code' => $this->generateUniqueDriverCode(),
             ]));
 
-            $driver->warehouses()->sync($warehouseIds);
+            $user->syncModuleUsers(Warehouse::class, $warehouseIds);
 
             return $driver->load(['user', 'warehouses:id,name,label']);
         });
@@ -83,8 +84,8 @@ class DriverService extends BaseService
                 $driver->user->update($userData);
             }
 
-            if ($warehouseIds !== null) {
-                $driver->warehouses()->sync($warehouseIds);
+            if ($warehouseIds !== null && $driver->user) {
+                $driver->user->syncModuleUsers(Warehouse::class, $warehouseIds);
             }
 
             return $driver->fresh(['user', 'warehouses:id,name,label']);

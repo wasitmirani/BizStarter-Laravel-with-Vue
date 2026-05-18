@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\UserTypeEnum;
+use App\Models\Concerns\HasModuleUsers;
 use App\Models\Concerns\InteractsWithListQuery;
 use App\Models\Country;
 use App\Models\Tenant;
@@ -20,7 +21,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Impersonate, HasRoles, HasThumbnail, InteractsWithListQuery, LogsActivity, Notifiable;
+    use HasApiTokens, HasFactory, HasModuleUsers, Impersonate, HasRoles, HasThumbnail, InteractsWithListQuery, LogsActivity, Notifiable;
     protected array $guard_name = ['api', 'web'];
     protected $guarded = [];
     protected $prefix ="UR00";
