@@ -9,7 +9,7 @@ export function extractProfileImageFilename(value: string | undefined | null): s
     }
 
     const str = String(value);
-    if (str.includes("user-5.jpg") || str.includes("/backend/images/users/")) {
+    if (str.includes("user-5.jpg") || str.includes("user-1.jpg") || str.includes("/backend/images/users/")) {
         return "";
     }
 
@@ -38,7 +38,6 @@ export function useDriverForm(initialDriver?: any, isEditMode: boolean = false) 
         id: null,
         full_name: "",
         type: "driver",
-        profile_image: "",
         phone: "",
         email: "",
         cnic: "",
@@ -48,7 +47,8 @@ export function useDriverForm(initialDriver?: any, isEditMode: boolean = false) 
         city: "",
         joining_date: "",
         status: "active",
-        warehouse_ids: [] as number[],
+        password: "",
+        password_confirmation: "",
         ...(initialDriver ?? {}),
         profile_image: initialFilename,
         warehouse_ids: initialWarehouseIds,
@@ -78,6 +78,15 @@ export function useDriverForm(initialDriver?: any, isEditMode: boolean = false) 
 
     const handleProfileMediaChange = (allMedia: { name: string }[] = []): void => {
         driver.profile_image = allMedia.length > 0 ? allMedia[allMedia.length - 1].name : "";
+    };
+
+    const buildPayload = () => {
+        const payload = { ...driver };
+        if (isEditMode && !payload.password) {
+            delete payload.password;
+            delete payload.password_confirmation;
+        }
+        return payload;
     };
 
     const onStore = async (data: any) => {
@@ -110,10 +119,10 @@ export function useDriverForm(initialDriver?: any, isEditMode: boolean = false) 
 
     const onSubmit = () => {
         if (isEditMode) {
-            onUpdate({ ...driver });
+            onUpdate(buildPayload());
             return;
         }
-        onStore({ ...driver });
+        onStore(buildPayload());
     };
 
     Helpers.useDynamicOnMounted(() => {
@@ -129,7 +138,8 @@ export function useDriverForm(initialDriver?: any, isEditMode: boolean = false) 
         statusOptions,
         initialSavedMedia,
         handleProfileMediaChange,
-        profileImageLocation: "/storage/images/driver",
+        profileImageLocation: "/storage/images/user",
         warehousesDropdownItems,
+        showPassword: !isEditMode,
     };
 }

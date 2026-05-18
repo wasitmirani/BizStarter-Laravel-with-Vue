@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\UserTypeEnum;
 use App\Models\User;
 use function Laravel\Prompts\search;
 use App\Contracts\BaseFilterable;
@@ -44,6 +45,11 @@ class UserService extends BaseService implements BaseFilterable
     {
 
         return $this->model
+            ->when(isset($params['user_type']), function ($query) use ($params) {
+                $query->where('user_type', $params['user_type']);
+            }, function ($query) {
+                $query->where('user_type', UserTypeEnum::User->value);
+            })
             ->when(!isset($params['sort_by']), function ($query) {
                 $query->latest();
             })
@@ -71,6 +77,7 @@ class UserService extends BaseService implements BaseFilterable
         // Optionally, you may want to handle additional logic here (validation, password hashing, events, etc.)
         // Merge extradata into $data before creating the user
         $data = array_merge($data, [
+            'user_type' => UserTypeEnum::User->value,
             'user_name' => $this->generateUsername($data['first_name'], $data['last_name']),
             'slug' => mapFirstNameLastSlug($data['first_name'], $data['last_name']),
             'uuid' => genUUID(),
