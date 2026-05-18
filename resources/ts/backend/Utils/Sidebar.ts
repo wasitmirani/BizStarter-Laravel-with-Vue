@@ -70,6 +70,25 @@ export default class SidebarMenu {
             //         this.setSubMenu('Suppliers', '/purchase/suppliers', 'suppliers-list'),
             //     ]
             // ),
+            this.setMultiMenu('Catalog', 'catalog ', 'Catalog',
+                [
+                    this.setSubMenu('Categories', '/categories', 'categories-view'),
+                    this.setSubMenu('Brands', '/brands', 'brands-view'),
+                    this.setSubMenu('Products', '/products', 'products-view'),
+                    this.setSubMenu('Variants', '/variants', 'variants-view'),
+                ]
+            ),
+            this.setMultiMenu('Purchases', 'shopping-cart', 'Purchases',
+                [
+                    this.setSubMenu('Purchase Orders', '/purchase-orders', 'purchase-orders-list'),
+                    this.setSubMenu('Suppliers', '/purchase/suppliers', 'suppliers-list'),
+                ]
+            ),
+            this.setMultiMenu('Logistics', 'truck', 'Logistics',
+                [
+                    this.setSubMenu('Drivers', '/logistics/drivers', 'drivers-list'),
+                ]
+            ),
             this.setHeadingMenu('Management & Apps'),
          
             this.setMultiMenu('Users Management', 'users', undefined, [

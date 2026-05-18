@@ -61,4 +61,9 @@ class Warehouse extends BaseModel
     public function country(){
         return $this->belongsTo(Country::class);
     }
+
+    public function drivers()
+    {
+        return $this->belongsToMany(Driver::class, 'driver_warehouse');
+    }
 }

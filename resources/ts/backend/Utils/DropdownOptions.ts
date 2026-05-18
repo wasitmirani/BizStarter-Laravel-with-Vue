@@ -49,4 +49,15 @@ export class DropdownOptions {
             label: permission.name
         }));
     }
+
+    static getWarehousesListOptions(warehouses: any[]) {
+        if (!warehouses || warehouses.length === 0) {
+            return [];
+        }
+
+        return warehouses.map((warehouse) => ({
+            value: Number(warehouse.id),
+            label: warehouse.label ? `${warehouse.name} (${warehouse.label})` : warehouse.name,
+        }));
+    }
 }

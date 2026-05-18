@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Backend\Dropdown\DropDownController;
 use App\Http\Controllers\Backend\Media\UploadController;
+use App\Http\Controllers\Backend\Driver\DriverController;
 use App\Http\Controllers\Backend\Supplier\SupplierController;
 use App\Http\Controllers\Backend\Warehouse\WarehouseController;
 use App\Http\Controllers\Backend\Warehouse\WarehouseAreaController;
@@ -61,6 +62,7 @@ Route::prefix('/app')->middleware('auth:api')->group(function () {
     Route::resource('warehouse-location', WarehouseLocationController::class);
     Route::resource('warehouse-container', WarehouseContainerController::class);
     Route::resource('supplier', SupplierController::class);
+    Route::resource('driver', DriverController::class);
 
     // Tenants
     Route::resource('tenant', TenantController::class);
@@ -81,6 +83,7 @@ Route::prefix('/app')->middleware('auth:api')->group(function () {
         Route::get('/users-list',[UserController::class,'getUsers']);
         Route::get('/permissions-list',[PermissionController::class,'getPermissionsList']);
         Route::get('/suppliers-list',[SupplierController::class,'getSuppliers']);
+        Route::get('/drivers-list',[DriverController::class,'getDrivers']);
     });
     Route::prefix('/dropdown-list')->group( function(){
         Route::get('/options',[SettingController::class,'getListOptions']);

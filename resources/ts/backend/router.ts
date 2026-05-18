@@ -54,6 +54,10 @@ const routes = [
     setRoute('/purchase/supplier/create', 'create-supplier', 'Supplier/Supplier', 'create-supplier'),
     setRoute('/purchase/supplier/edit/:id', 'edit-supplier', 'Supplier/Supplier', 'edit-supplier'),
     setRoute('/purchase/supplier/details/:id', 'show-supplier', 'Supplier/SupplierShow', 'show-supplier'),
+    setRoute('/logistics/drivers', 'drivers', 'Driver/Drivers', 'drivers-list'),
+    setRoute('/logistics/driver/create', 'create-driver', 'Driver/Driver', 'create-driver'),
+    setRoute('/logistics/driver/edit/:id', 'edit-driver', 'Driver/Driver', 'edit-driver'),
+    setRoute('/logistics/driver/details/:id', 'show-driver', 'Driver/DriverShow', 'show-driver'),
 
     // Managment Routes
     
