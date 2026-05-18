@@ -1,1 +1,0 @@
-import{_ as o}from"./RolesTable.vue_vue_type_script_setup_true_lang-DWfKVGwG.js";import"./RoleService-CR813DIs.js";import"./AxiosService-PxRtai5R.js";import"./useGlobal-DuYp-7AC.js";import"./BaseService-u-P0lLsC.js";import"./GenericTable-Ds0ONNcs.js";import"./app-CF2qAcRS.js";import"./_plugin-vue_export-helper-DlAUqK2U.js";import"./Common-CTp2wCpz.js";export{o as default};
