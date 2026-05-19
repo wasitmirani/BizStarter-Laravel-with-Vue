@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use App\Models\BaseModel;
+use App\Models\Concerns\HasAssignedUsers;
 use App\Models\Concerns\HasNameGuardFilters;
 use App\Models\Concerns\InteractsWithListQuery;
 
 
 class Warehouse extends BaseModel
 {
-    use HasNameGuardFilters, InteractsWithListQuery;
+    use HasAssignedUsers, HasNameGuardFilters, InteractsWithListQuery;
 
 
     protected $guarded = [];

@@ -22,6 +22,7 @@ const {
     handleProfileMediaChange,
     profileImageLocation,
     warehousesDropdownItems,
+    showPassword,
 } = useDriverForm(props?.driverData, props?.isEditMode);
 
 const warehousesModel = Helpers.useMultiSelectModel(driver, "warehouse_ids", warehousesDropdownItems);
@@ -57,7 +58,7 @@ const warehousesModel = Helpers.useMultiSelectModel(driver, "warehouse_ids", war
                             <small class="text-default-400 text-xs font-normal ml-2">JPG, PNG • Max 2MB</small>
                         </label>
                         <Uploader
-                            server="/upload/driver/image"
+                            server="/upload/user/image"
                             :media="initialSavedMedia"
                             :location="profileImageLocation"
                             max="1"
@@ -78,6 +79,16 @@ const warehousesModel = Helpers.useMultiSelectModel(driver, "warehouse_ids", war
                         </div>
                     </div>
                     <FormInput v-model="driver.email" label="Email" name="email" type="email" :errors="errors" />
+                    <template v-if="showPassword">
+                        <FormInput v-model="driver.password" label="Password" name="password" type="password" :errors="errors" />
+                        <FormInput
+                            v-model="driver.password_confirmation"
+                            label="Confirm Password"
+                            name="password_confirmation"
+                            type="password"
+                            :errors="errors"
+                        />
+                    </template>
                     <FormInput v-model="driver.cnic" label="CNIC / National ID" name="cnic" type="text" :errors="errors" />
                     <FormInput v-model="driver.license_number" label="License Number" name="license_number" type="text" :errors="errors" />
                     <FormInput v-model="driver.license_expiry_date" label="License Expiry Date" name="license_expiry_date" type="date" :errors="errors" />

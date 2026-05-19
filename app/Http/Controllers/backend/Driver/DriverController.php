@@ -6,7 +6,6 @@ use App\Contracts\BaseFilterable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreDriverRequest;
 use App\Http\Requests\UpdateDriverRequest;
-use App\Models\Driver;
 use App\Services\DriverService;
 use Illuminate\Http\Request;
 
@@ -63,8 +62,7 @@ class DriverController extends Controller implements BaseFilterable
     public function destroy($id)
     {
         try {
-            $driver = Driver::findOrFail($id);
-            $driver->delete();
+            app(DriverService::class)->deleteDriver((int) $id);
 
             return responseJson('Driver deleted successfully', null, true);
         } catch (\Exception $e) {
