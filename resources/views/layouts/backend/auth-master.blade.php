@@ -17,6 +17,7 @@
      
 <!-- App favicon -->
 <link rel="shortcut icon" href=""{{ asset('/backend/images/favicon.ico') }}" />
+
  <script>
         // Build config from HTML attributes
         function getSystemTheme() {

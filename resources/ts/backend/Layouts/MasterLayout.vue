@@ -150,7 +150,7 @@ const completeProgress = () => {
                     <div class="flex-1">
                         <p class="font-semibold mb-1">Install admin as an app</p>
                         <p class="text-xs text-slate-300 mb-2">
-                            Add LarabaseKit admin to your home screen for a faster, full-screen experience.
+                            Add Tasarr OMS Admin to your home screen for a faster, full-screen experience.
                         </p>
                         <div class="flex items-center justify-end gap-2">
                             <button

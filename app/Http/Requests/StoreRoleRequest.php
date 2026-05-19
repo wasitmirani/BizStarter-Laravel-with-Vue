@@ -37,7 +37,7 @@ class StoreRoleRequest extends FormRequest
             'users' => ['required', 'array'],
 
             'users.*' => [
-                'integer',
+                // 'integer',
                 Rule::exists('users', 'id')
                     ->where(fn ($q) => $q->where('tenant_id', $user?->tenant_id)),
             ],
@@ -45,7 +45,7 @@ class StoreRoleRequest extends FormRequest
             'permissions' => ['nullable', 'array'],
 
             'permissions.*' => [
-                'integer',
+                // 'integer',
                 'exists:permissions,id',
             ],
         ];

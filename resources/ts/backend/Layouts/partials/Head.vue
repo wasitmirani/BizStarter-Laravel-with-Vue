@@ -1,41 +1,67 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue';
+
+
+
 let auth_user = window.user;
-const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '';
+const csrf = ref('');
 
-function logOut(event:any) {
+onMounted(() => {
+    // Get CSRF token after component mounts
+    csrf.value = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '';
+});
+
+function logOut(event: any) {
     event.preventDefault();
-    // First try: find any existing server-rendered logout form (Blade) and submit it
-    const existing = Array.from(document.forms).find(f => {
-        try {
-            return new URL(f.action, window.location.href).pathname === '/logout' && f.method.toLowerCase() === 'post';
-        } catch (e) { return false; }
-    }) as HTMLFormElement | undefined;
+    
+    // Use axios or fetch for better CSRF handling
+    fetch('/logout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrf.value,
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        credentials: 'same-origin' // Important: sends cookies
+    })
+    .then(response => {
+        if (response.redirected) {
+            window.location.href = response.url;
+        } else if (response.ok) {
+            window.location.href = '/login';
+        } else {
+            console.error('Logout failed');
+        }
+    })
+    .catch(error => {
+        console.error('Logout error:', error);
+        // Fallback to form submission
+        submitFormLogout();
+    });
+}
 
-    if (existing) {
-        const tokenInput = existing.querySelector('input[name="_token"]') as HTMLInputElement | null;
-        if (tokenInput) tokenInput.value = csrf;
-        existing.submit();
-        return;
-    }
-
-    // Fallback: create and submit a form programmatically (ensures cookies are sent)
-    const f = document.createElement('form');
-    f.method = 'POST';
-    f.action = '/logout';
-    const input = document.createElement('input');
-    input.type = 'hidden';
-    input.name = '_token';
-    input.value = csrf;
-    f.appendChild(input);
-    document.body.appendChild(f);
-    f.submit();
+function submitFormLogout() {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/logout';
+    form.style.display = 'none';
+    
+    const csrfInput = document.createElement('input');
+    csrfInput.type = 'hidden';
+    csrfInput.name = '_token';
+    csrfInput.value = csrf.value;
+    form.appendChild(csrfInput);
+    
+    document.body.appendChild(form);
+    form.submit();
 }
 </script>
 <template >
 <div>
-    <form id="logout-form" method="POST" action="/logout" style="display:none;">
-        <input type="hidden" name="_token" :value="csrf">
-    </form>
+        <!-- Keep hidden form as backup -->
+        <form id="logout-form" method="POST" action="/logout" style="display:none;">
+            <input type="hidden" name="_token" :value="csrf">
+        </form>
     
       <!-- Start::main-header -->
  <header class="app-header">
@@ -147,7 +173,7 @@ function logOut(event:any) {
                             aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
                             <i class="iconify tabler--bell topbar-link-icon"></i>
                             <span
-                                class="badge bg-danger absolute -end-px -top-4 size-4 rounded-full leading-0 text-white">5</span>
+                                class="badge bg-danger absolute -end-px -top-4 size-4 rounded-full leading-0 text-white">0</span>
                         </button>
 
                         <div class="hs-dropdown-menu min-w-80 p-0 space-y-0" role="menu" aria-orientation="vertical"
@@ -216,74 +242,6 @@ function logOut(event:any) {
                         </div>
                     </div>
 
-                    <!-- Setting Offcanvas Button -->
-                    <!-- <div class="sm:inline-flex hidden">
-                        <div class="topbar-item btn-theme-setting">
-                            <button class="topbar-link btn btn-icon size-8 rounded-full" type="button"
-                                aria-haspopup="dialog" aria-expanded="false" aria-controls="theme-customization"
-                                data-hs-overlay="#theme-customization">
-                                <i class="iconify tabler--settings topbar-link-icon"></i>
-                            </button>
-                        </div>
-                    </div> -->
-
-                    <!-- Language Dropdown Button -->
-
-                    <!-- <div id="language-selector-rounded"
-                        class="topbar-item hs-dropdown relative inline-flex [--placement:bottom-right]">
-                        <button class="topbar-link hs-dropdown-toggle font-bold relative flex items-center"
-                            type="button" aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
-                            <img :src="`/backend/images/flags/us.svg`" alt="" class="me-3 size-4.5 rounded-full"
-                                id="selected-language-image">
-                            <span id="selected-language-code">EN</span>
-                        </button>
-
-                        <div class="hs-dropdown-menu" role="menu" aria-orientation="vertical"
-                            aria-labelledby="dropdown-menu">
-                            <a href="javascript:void(0);" class="dropdown-item" data-translator-lang="en"
-                                title="English">
-                                <img :src="`/backend/images/flags/us.svg`" alt="English" class="me-1 size-4 rounded-full"
-                                    height="18" data-translator-image="">
-                                <span class="align-middle">English</span>
-                            </a>
-                            <a href="javascript:void(0);" class="dropdown-item" data-translator-lang="de"
-                                title="German">
-                                <img :src="`/backend/images/flags/de.svg`" alt="German" class="me-1 size-4 rounded-full" height="18"
-                                    data-translator-image="">
-                                <span class="align-middle">Deutsch</span>
-                            </a>
-                            <a href="javascript:void(0);" class="dropdown-item" data-translator-lang="it"
-                                title="Italian">
-                                <img :src="`/backend/images/flags/it.svg`" alt="Italian" class="me-1 size-4 rounded-full"
-                                    height="18" data-translator-image="">
-                                <span class="align-middle">Italiano</span>
-                            </a>
-                            <a href="javascript:void(0);" class="dropdown-item" data-translator-lang="es"
-                                title="Spanish">
-                                <img :src="`/backend/images/flags/es.svg`" alt="Spanish" class="me-1 size-4 rounded-full"
-                                    height="18" data-translator-image="">
-                                <span class="align-middle">Español</span>
-                            </a>
-                            <a href="javascript:void(0);" class="dropdown-item" data-translator-lang="ru"
-                                title="Russian">
-                                <img :src="`/backend/images/flags/ru.svg`" alt="Russian" class="me-1 size-4 rounded-full"
-                                    height="18" data-translator-image="">
-                                <span class="align-middle">Русский</span>
-                            </a>
-                            <a href="javascript:void(0);" class="dropdown-item" data-translator-lang="hi" title="Hindi">
-                                <img :src="`/backend/images/flags/in.svg`" alt="Hindi" class="me-1 size-4 rounded-full"
-                                    data-translator-image="">
-                                <span class="align-middle">हिन्दी</span>
-                            </a>
-                            <a href="javascript:void(0);" class="dropdown-item" data-translator-lang="ar"
-                                title="Arabic">
-                                <img :src="`/backend/images/flags/sa.svg`" alt="Arabic" class="me-1 size-4 rounded-full"
-                                    data-translator-image="">
-                                <span class="align-middle">عربي</span>
-                            </a>
-                        </div>
-                    </div> -->
-
                     <!-- Profile Dropdown Button -->
                     <div id="user-dropdown-detailed"
                         class="topbar-item hs-dropdown before:bg-default-700/35 relative inline-flex before:h-4.5 before:w-px before:content-['']">
@@ -312,24 +270,7 @@ function logOut(event:any) {
                                 <span class="align-middle">Profile</span>
                             </a>
 
-                            <!-- Notifications -->
-                            <!-- <a href="javascript:void(0);" class="dropdown-item">
-                                <i class="iconify tabler--bell-ringing text-base align-middle"></i>
-                                <span class="align-middle">Notifications</span>
-                            </a> -->
-
-                            <!-- Settings -->
-                            <!-- <a href="javascript:void(0);" class="dropdown-item">
-                                <i class="iconify tabler--settings-2 text-base align-middle"></i>
-                                <span class="align-middle">Account Settings</span>
-                            </a> -->
-
-                            <!-- Support -->
-                            <!-- <a href="javascript:void(0);" class="dropdown-item">
-                                <i class="iconify tabler--headset text-base align-middle"></i>
-                                <span class="align-middle">Support Center</span>
-                            </a> -->
-
+                           
                             <!-- Divider -->
                             <div class="dropdown-divider"></div>
 
@@ -340,6 +281,7 @@ function logOut(event:any) {
                             </a> -->
 
                             <!-- Logout -->
+                              <!-- Update the logout link -->
                             <a href="javascript:void(0);" class="dropdown-item font-semibold" @click.prevent="logOut">
                                 <i class="iconify tabler--logout text-base align-middle"></i>
                                 <span class="align-middle">Log Out</span>

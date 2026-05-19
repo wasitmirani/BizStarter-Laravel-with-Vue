@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\UserTypeEnum;
+use App\Models\Concerns\HasModuleUsers;
 use App\Models\Concerns\InteractsWithListQuery;
 use App\Models\Country;
 use App\Models\Tenant;
@@ -19,7 +21,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Impersonate, HasRoles, HasThumbnail, InteractsWithListQuery, LogsActivity, Notifiable;
+    use HasApiTokens, HasFactory, HasModuleUsers, Impersonate, HasRoles, HasThumbnail, InteractsWithListQuery, LogsActivity, Notifiable;
     protected array $guard_name = ['api', 'web'];
     protected $guarded = [];
     protected $prefix ="UR00";
@@ -55,7 +57,38 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'user_type' => UserTypeEnum::class,
         ];
+    }
+
+    public function isDriver(): bool
+    {
+        return $this->user_type === UserTypeEnum::Driver;
+    }
+
+    public function isStaff(): bool
+    {
+        return $this->user_type === UserTypeEnum::User;
+    }
+
+    public function driverProfile()
+    {
+        return $this->hasOne(Driver::class);
+    }
+
+    public function scopeOfType($query, UserTypeEnum $type)
+    {
+        return $query->where('user_type', $type->value);
+    }
+
+    public function scopeDrivers($query)
+    {
+        return $query->ofType(UserTypeEnum::Driver);
+    }
+
+    public function scopeStaff($query)
+    {
+        return $query->ofType(UserTypeEnum::User);
     }
 
     /**

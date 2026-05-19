@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\UserTypeEnum;
 use App\Models\User;
 use function Laravel\Prompts\search;
 use App\Contracts\BaseFilterable;
@@ -44,6 +45,11 @@ class UserService extends BaseService implements BaseFilterable
     {
 
         return $this->model
+            ->when(isset($params['user_type']), function ($query) use ($params) {
+                $query->where('user_type', $params['user_type']);
+            }, function ($query) {
+                $query->where('user_type', UserTypeEnum::User->value);
+            })
             ->when(!isset($params['sort_by']), function ($query) {
                 $query->latest();
             })
@@ -71,6 +77,7 @@ class UserService extends BaseService implements BaseFilterable
         // Optionally, you may want to handle additional logic here (validation, password hashing, events, etc.)
         // Merge extradata into $data before creating the user
         $data = array_merge($data, [
+            'user_type' => UserTypeEnum::User->value,
             'user_name' => $this->generateUsername($data['first_name'], $data['last_name']),
             'slug' => mapFirstNameLastSlug($data['first_name'], $data['last_name']),
             'uuid' => genUUID(),
@@ -108,21 +115,20 @@ class UserService extends BaseService implements BaseFilterable
         $user->name = ($data['first_name'].' ' .$data['last_name']);
         $user->first_name =$data['first_name'];
         $user->last_name =$data['last_name'];
+        $user->email =$data['email'];
         $imageUrl = !empty($data['thumbnail']) ?  $data['thumbnail'] : $user->thumbnail;
         $thumbnail = basename($imageUrl);
 
-        $user->address = $data['address'];
-        $user->dob = $data['dob'];
-        $user->gender = $data['gender'];
-        $user->marital_status = $data['marital_status'];
+        $user->address = $data['address'] ?? '';
+        $user->dob = $data['dob'] ?? null;
+        $user->gender = $data['gender'] ?? null;
         $user->thumbnail =$thumbnail;
-        $user->city = $data['city'];
-        $user->state = $data['state'];
-        $user->zip_code = $data['zip_code'];
-        $user->phone = $data['phone'];
+        $user->city = $data['city'] ?? '';
+        $user->state = $data['state'] ?? '';
+        $user->zip_code = $data['zip_code'] ?? '';
+        $user->phone = $data['phone'] ?? '';
         $user->country_id = $data['country_id'] ?? null;
-        $user->timezone_id = $data['timezone_id'] ?? null;
-        $user->language_id = $data['language_id'] ?? null;
+       
 
         $user->save();
 

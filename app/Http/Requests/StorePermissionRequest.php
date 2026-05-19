@@ -48,7 +48,7 @@ class StorePermissionRequest extends FormRequest
             'roles' => ['nullable', 'array'],
 
             'roles.*' => [
-                'integer',
+                // 'integer',
                 'exists:roles,id'
             ],
         ];

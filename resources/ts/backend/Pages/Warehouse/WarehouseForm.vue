@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BaseMultiSelect from "@/Backend/Components/BaseMultiSelect.vue";
 import { useWarehouseForm } from "./Composables/useWarehouseForm";
 
 const props = defineProps(["isEditMode", "warehouseData"]);
@@ -32,26 +33,49 @@ const { warehouse, errors, isLoading, onSubmit, countryModel, countryOptions } =
                     </div>
                     <FormInput v-model="warehouse.address" label="Address" name="address" type="text" :errors="errors" class="md:col-span-2" />
                     <div>
-                        <label class="form-label">Country</label>
-                        <MultiSelect
+                        <label class="form-label">Country </label>
+                         <BaseMultiSelect
                             v-model="countryModel"
                             :options="countryOptions"
-                            label="Country"
-                            placeholder="Select Country"
-                            trackBy="value"
                             optionLabel="label"
-                            :multiple="false"
-                        />
-                        <div v-if="errors" class="invalid-feedback">
-                            <validate-input :errors="errors" value="country" />
-                        </div>
+                            trackBy="value"
+                            placeholder="Select Country"
+                            >
+                            <!-- 🔥 OPTION SLOT (dropdown) -->
+                            <template #option="{ option }">
+                                <div class="flex items-center gap-2">
+                                <img
+                                    v-if="option.flag"
+                                    :src="option.flag"
+                                    class="w-5 h-4 rounded-sm"
+                                />
+                                <span>{{ option.label }}</span>
+                                </div>
+                            </template>
+
+                            <!-- 🔥 SELECTED VALUE -->
+                            <template #singleLabel="{ option }">
+                                <div class="flex items-center gap-2">
+                                <img
+                                    v-if="option.flag"
+                                    :src="option.flag"
+                                    class="w-5 h-4 rounded-sm"
+                                />
+                                <span>{{ option.label }}</span>
+                                </div>
+                            </template>
+
+                            </BaseMultiSelect>
+
+
+                            <validate-input class="text-danger" v-if="errors" :errors="errors" value="country_id" />
                     </div>
                     <FormInput v-model="warehouse.city" label="City" name="city" type="text" :errors="errors" />
                     <FormInput v-model="warehouse.zipcode" label="Zipcode" name="zipcode" type="text" :errors="errors" />
                     <FormInput v-model="warehouse.region" label="Region" name="region" type="text" :errors="errors" />
                     <FormInput v-model="warehouse.longitude" label="Longitude" name="longitude" type="number" :errors="errors" />
                     <FormInput v-model="warehouse.latitude" label="Latitude" name="latitude" type="number" :errors="errors" />
-                    <FormInput v-model="warehouse.timezone" label="Timezone" name="timezone" type="text" :errors="errors" />
+                    <!-- <FormInput v-model="warehouse.timezone" label="Timezone" name="timezone" type="text" :errors="errors" /> -->
                     <FormInput v-model="warehouse.contact_first_name" label="Contact First Name" name="contact_first_name" type="text" :errors="errors" />
                     <FormInput v-model="warehouse.contact_last_name" label="Contact Last Name" name="contact_last_name" type="text" :errors="errors" />
                     <FormInput v-model="warehouse.contact_email" label="Contact Email" name="contact_email" type="email" :errors="errors" />

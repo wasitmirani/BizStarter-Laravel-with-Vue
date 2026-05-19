@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" dir="ltr" data-skin="default" data-theme="light" data-topbar-color="light" data-menu-color="light"
+<html lang="en" dir="ltr" data-skin="default" data-theme="light" data-topbar-color="light" data-menu-color="dark"
     data-layout-position="fixed" data-layout-width="fluid" data-sidenav-size="default">
 
 
@@ -18,11 +18,11 @@
     <meta name="theme-color" content="#002855">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="LarabaseAdmin">
-
+    <meta name="apple-mobile-web-app-title" content="{{ config('app.name') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- App favicon -->
     <link rel="shortcut icon" href="/favicon.ico">
-    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/icons/icon-192.png">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet" />
@@ -115,8 +115,8 @@
     <style>
         :root,
         :host {
-            --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            /* --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; */
 
             /* Core Colors */
             --color-black: #000;
@@ -208,7 +208,7 @@
         .side-nav .menu-item .menu-link:hover,
         .side-nav .menu-item .menu-link.active {
             background: rgba(0, 40, 85, 0.08);
-            color: #002855 !important;
+            color:  #002855  !important;
             border-radius: 6px;
         }
 
@@ -231,9 +231,9 @@
             background-color: #001f40;
             border-color: #001f40;
         }
-    </style>
+    </style> 
     <style>
-        body {
+        /* body {
             font-family: 'Instrument Sans', sans-serif !important;
             font-size: 14px;
             font-weight: 400;
@@ -246,8 +246,9 @@
         h4,
         h5 {
             font-weight: 600;
-        }
+        } */
     </style>
+    
 </head>
 
 <body @component('layouts.backend.components.switcher')

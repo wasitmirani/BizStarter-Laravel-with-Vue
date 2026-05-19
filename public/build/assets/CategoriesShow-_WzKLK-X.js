@@ -1,0 +1,1 @@
+import{_ as o}from"./CategoriesShow.vue_vue_type_script_setup_true_lang-B-cxULSx.js";import"./useCreateCategories-c1lXyZ_W.js";import"./app-D1-9lQX9.js";import"./useGlobal-DuYp-7AC.js";import"./_plugin-vue_export-helper-DlAUqK2U.js";import"./CatalogService-B7hPtJnq.js";import"./Service-eKEHw2YC.js";export{o as default};

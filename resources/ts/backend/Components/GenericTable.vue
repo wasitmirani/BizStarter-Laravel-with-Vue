@@ -52,6 +52,13 @@ const emits = defineEmits<{
 }>();
 
 const selectedItems = Helpers.useDynamicRef<(string | number)[]>([]);
+const selectionEnabled = Helpers.useDynamicComputed(() => {
+    if (typeof props.enableBulkActions === 'boolean') {
+        return props.enableBulkActions;
+    }
+
+    return (props.actions?.length || 0) > 0;
+});
 
 // Function to update URL with query parameters
 const updateUrlWithParams = (page?: number, perPage?: number) => {
@@ -135,12 +142,12 @@ const clearSelection = () => {
 <template>
 
 <div
-  v-if="enableFilterBar || (selectedItems.length > 0 && enableBulkActions && (bulkActions?.length || 0) > 0)"
+  v-if="enableFilterBar || (selectedItems.length > 0 && selectionEnabled && (bulkActions?.length || 0) > 0)"
   class="flex flex-col md:flex-row md:items-center gap-3 px-4 py-3 bg-white border-b border-gray-200 w-full justify-start"
 >
   <!-- Bulk Actions -->
   <div
-    v-if="selectedItems.length > 0 && enableBulkActions && (bulkActions?.length || 0) > 0"
+    v-if="selectedItems.length > 0 && selectionEnabled && (bulkActions?.length || 0) > 0"
     class="flex items-center gap-2"
   >
     <select
@@ -177,7 +184,7 @@ const clearSelection = () => {
         <table class="table table-hover">
             <thead class="thead-sm">
                 <tr class="bg-light/25 text-2xs uppercase">
-                    <th class="w-[1%]" v-if="enableBulkActions">
+                    <th class="w-[1%]" v-if="selectionEnabled">
 
                         <input data-table-select-all="" class="form-checkbox form-checkbox-light size-4.5"
                             :checked="isAllSelected" @change="toggleSelectAll" type="checkbox">
@@ -214,7 +221,7 @@ const clearSelection = () => {
                     </td>
                 </tr>
                 <tr v-else v-for="row in rows.data" :key="row.id">
-                    <td class="text-center" v-if="(actions?.length || 0) > 0">
+                    <td class="text-center" v-if="selectionEnabled">
 
                         <input class="form-checkbox form-checkbox-light size-4.5" :value="row.id" type="checkbox"
                             :checked="selectedItems.includes(row.id)" @change="toggleSelectItem(row.id)">
@@ -284,7 +291,7 @@ const clearSelection = () => {
                         v-if="page !== '...'"
                         href="#"
                         class="page-link"
-                        @click.prevent="fetchDataWithUrlUpdate(page as number)"
+                        @click.prevent="fetchDataWithUrlUpdate(Number(page))"
                     >
                         {{ page }}
                     </a>

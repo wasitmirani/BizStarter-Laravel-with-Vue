@@ -24,7 +24,7 @@ export function useCreatePermission() {
                 const res = await PermissionService.permission(permissionId);
                 permission.value = res.data.result?.permission || res.data.data?.permission;
                 editmode.value = true;
-                
+
             }
         } catch (error) {
             console.error('Error fetching permission:', error);

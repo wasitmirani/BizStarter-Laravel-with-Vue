@@ -16,6 +16,9 @@ import Avatar from "./Components/Avatar.vue";
 import ValidateInput from "./Components/ValidateInput.vue";
 import OffCanvas from "./Components/OffCanvas.vue";
 import BaseMultiSelect from "./Components/BaseMultiSelect.vue";
+import  CountryFlagName from  "./Components/CountryFlagName.vue"
+
+
 import moment from 'moment'
 
 // import GenericInput from "./Components/GenericInputComponent.vue";
@@ -87,6 +90,7 @@ app.component('Avatar', Avatar);
 app.component('FlashMessage', FlashMessage);
 app.component('OffCanvas', OffCanvas);
 app.component('BaseMultiSelect', BaseMultiSelect);
+app.component('CountryFlagName', CountryFlagName);
 
 app.config.globalProperties.$helpers = Helpers
 app.config.globalProperties.$router = router;

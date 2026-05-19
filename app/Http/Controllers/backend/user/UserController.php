@@ -85,13 +85,14 @@ class UserController extends Controller implements BaseFilterable
         }
 
 
-    public function update(Request $request, $id)
+    public function update(StoreUserRequest $storeUserRequest, $id)
     {
         //     'phone'=> 'required|unique:users,phone,'.$id,
         //     'thumbnail' => 'required',
         //     'role'=>'required',
         // ]);
-        $user = $this->userService->updateUser($id,$request->all());
+         $data =$storeUserRequest->validated();
+        $user = $this->userService->updateUser($id,$data);
 
         return responseJson('user updated successfully',['user'=>$user],true);
     }

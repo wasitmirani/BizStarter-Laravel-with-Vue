@@ -7,7 +7,7 @@ const CACHE_NAME = `larabase-admin-${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
   '/offline.html',
-  '/manifest.webmanifest',
+  '/manifest.json',
   '/favicon.ico',
   '/icons/icon-192.png',
   '/icons/icon-512.png',
@@ -21,7 +21,7 @@ function isCacheableStatic(request, url) {
   if (request.method !== 'GET' || !isSameOrigin(url)) {
     return false;
   }
-  if (url.pathname === '/manifest.webmanifest') {
+  if (url.pathname === '/manifest.json') {
     return true;
   }
   const dest = request.destination;

@@ -20,21 +20,25 @@ class AxiosClass {
             Authorization: `Bearer ${token}`,
         };
 
-        return await axios.get<T>(url, { headers }).catch((err) => {
-            console.log("ER2:",err.response.data.message);
-        });
+        try {
+            return await axios.get<T>(url, { headers });
+        } catch (err: any) {
+            console.log("ER2:", err?.response?.data?.message ?? err?.message ?? err);
+            throw err;
+        }
     }
 
-    async post<T>(url: string, body?: any): Promise<AxiosResponse<T>> {
+    async post<T>(url: string, body?: any, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
         if (token === undefined) {
             await setSessionToken();
         }
 
         const headers = {
             Authorization: `Bearer ${token}`,
+            ...(config?.headers || {}),
         };
 
-        return  await axios.post<T>(url, body, { headers });
+        return await axios.post<T>(url, body, { ...config, headers });
     }
     async put<T>(url: string, body: any): Promise<AxiosResponse<T>> {
         if (token === undefined) {

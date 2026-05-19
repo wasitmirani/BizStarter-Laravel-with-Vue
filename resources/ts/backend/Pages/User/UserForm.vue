@@ -108,14 +108,14 @@ const {
                             </select>
                         </div> -->
 
-                        <FormInput v-model="user.address" label="Address" name="address" placeholder="Street"
+                        <!-- <FormInput v-model="user.address" label="Address" name="address" placeholder="Street"
                             type="text" :errors="errors" autofocus />
                         <FormInput v-model="user.city" label="City" name="city" placeholder="City" type="text"
                             :errors="errors" autofocus />
                         <FormInput v-model="user.state" label="State" name="state" placeholder="State" type="text"
                             :errors="errors" autofocus />
                         <FormInput v-model="user.zip_code" label="Postal/Zip code" name="zip_code"
-                            placeholder="Postal/Zip code" type="text" :errors="errors" autofocus />
+                            placeholder="Postal/Zip code" type="text" :errors="errors" autofocus /> -->
 
                         <div>
                             <label class="form-label">Country </label>
@@ -156,8 +156,9 @@ const {
                             <validate-input class="text-danger" v-if="errors" :errors="errors" value="country_id" />
                         </div>
 
-                        <div>
-                            <label class="form-label">Timezone</label>
+                        <!-- <div> -->
+                            
+                            <!-- <label class="form-label">Timezone</label>
                             <BaseMultiSelect
                             v-model="timezoneModel"
                             :options="timezoneOptions"
@@ -167,9 +168,9 @@ const {
                             :multiple="false"
                             />
                             <validate-input class="text-danger" v-if="errors" :errors="errors" value="timezone_id" />
-                        </div>
+                        </div> -->
 
-                        <div>
+                        <!-- <div>
                             <label class="form-label">Language</label>
 
                             <BaseMultiSelect
@@ -181,7 +182,7 @@ const {
                             :multiple="false"
                             />
                             <validate-input class="text-danger" v-if="errors" :errors="errors" value="language_id" />
-                        </div>
+                        </div> -->
 
                         <div>
                             <label class="form-label">Gender</label>

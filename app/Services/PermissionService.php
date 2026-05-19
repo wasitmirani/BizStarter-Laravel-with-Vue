@@ -55,7 +55,8 @@ class PermissionService extends BaseService
             $permissionData = array_merge($data, [
                 'tenant_id' => tenant('id')->id ?? null,
                 'slug' => $this->generateUniqueSlug($data['name']),
-                'guard_name' => $data['guard_name'] ?? 'api',
+                'guard_name' =>  'api',
+                'name'=> setSlug($data['name'], '-'),
                 'uuid' => $this->generateUniqueUuid(),
             ]);
 
@@ -99,9 +100,9 @@ class PermissionService extends BaseService
 
             // Prepare update data
             $updateData = [
-                'name' => $data['name'] ?? $permission->name,
+                'name'=> setSlug($data['name'], '-') ?? $permission->name,
                 'slug' => isset($data['name']) ? $this->generateUniqueSlug($data['name'], $permission->id) : $permission->slug,
-                'guard_name' => $data['guard_name'] ?? $permission->guard_name,
+                'guard_name' =>  'api',
             ];
 
             // Update the permission
