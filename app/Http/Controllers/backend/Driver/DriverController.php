@@ -17,6 +17,7 @@ class DriverController extends Controller implements BaseFilterable
         $filters = ['paginated' => false, 'sort_by' => 'full_name', 'sort_dir' => 'asc'] + $filters;
         $drivers = app(DriverService::class)->getDriversList($filters);
 
+
         return responseJson('Drivers fetched successfully', ['drivers' => $drivers], true);
     }
 
@@ -69,4 +70,5 @@ class DriverController extends Controller implements BaseFilterable
             return responseJson('Failed to delete driver', null, false, 500);
         }
     }
+    
 }
