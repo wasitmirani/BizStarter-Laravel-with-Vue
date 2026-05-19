@@ -70,5 +70,6 @@ class DriverController extends Controller implements BaseFilterable
             return responseJson('Failed to delete driver', null, false, 500);
         }
     }
-    
+
+    // \/ Define allowed filters for driver listing
 }

@@ -18,6 +18,7 @@ class BrandController extends Controller implements CatalogFilterable
             'brands' => $this->brandService->brands($filters),
         ], true);
     }
+    // Note: Store and update methods can be merged into a single save method in the service layer, but for clarity and RESTful conventions, we keep them separate in the controller.
 
     public function store(Request $request)
     {
