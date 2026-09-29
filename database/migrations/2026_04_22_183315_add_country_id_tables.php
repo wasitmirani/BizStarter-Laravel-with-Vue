@@ -18,12 +18,7 @@ return new class extends Migration
                 ->nullOnDelete();
         });
 
-        Schema::table('tenants', function (Blueprint $table) {
-            $table->foreignId('country_id')
-                ->nullable()
-                ->constrained('countries')
-                ->nullOnDelete();
-        });
+      
     }
 
     /**

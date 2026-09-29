@@ -13,7 +13,6 @@ return new class extends Migration
     {
 
         Schema::table('permissions', function (Blueprint $table) {
-            $table->foreignId('tenant_id')->nullable()->constrained()->cascadeOnDelete();
             $table->enum('scope', ['system', 'tenant', 'custom'])->default('system');
             $table->string('uuid')->nullable();
             $table->string('slug')->nullable();

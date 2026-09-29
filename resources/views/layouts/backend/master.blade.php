@@ -1,16 +1,14 @@
 <!doctype html>
-<html lang="en" >
+<html lang="en">
 
 
 <head>
     <meta charset="utf-8">
     <title>{{ $title ?? config('app.name') }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description"
-        content="{{ config('app.name') }}">
+    <meta name="description" content="{{ config('app.name') }}">
 
-    <meta name="keywords"
-        content="{{ config('app.name') }}">
+    <meta name="keywords" content="{{ config('app.name') }}">
 
     <meta name="author" content="Wasit Mirani">
 
@@ -27,15 +25,9 @@
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet" />
 
 
-
-
-
-
-
-
 </head>
 
-<body >
+<body>
     <div id="app">
 
         @yield('content')
@@ -96,7 +88,7 @@
                 layout: Object.freeze(window.config ?? {}),
                 token: @json($authUser['token'] ?? null),
             });
-        
+
             Object.defineProperty(window, "__APP_CONTEXT__", {
                 value: appContext,
                 writable: false,
@@ -117,7 +109,7 @@
                 },
                 configurable: true,
             });
-             
+
 
         })();
     </script>
