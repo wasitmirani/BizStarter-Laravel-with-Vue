@@ -4,9 +4,6 @@
     </div>
 
 
-
-    <!-- Custom table -->
-
 </body>
 
 </html>
