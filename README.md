@@ -1,12 +1,12 @@
 # LaraKit — Laravel + Vue Starter Kit
 
-A multi-tenant admin starter kit built with **Laravel 12** and **Vue 3**. Use it as a base for APIs and SPA admin panels with roles, permissions, reusable CRUD modules, and database-per-tenant tenancy via [stancl/tenancy](https://tenancyforlaravel.com).
+A multi-tenant admin starter kit built with **Laravel 13** and **Vue 3**. Use it as a base for APIs and SPA admin panels with roles, permissions, reusable CRUD modules, and database-per-tenant tenancy via [stancl/tenancy](https://tenancyforlaravel.com).
 
 ## Stack
 
 | Layer | Tech |
 |--------|------|
-| Backend | Laravel 12, Sanctum, Spatie Permission, Activity Log |
+| Backend | Laravel 13, Sanctum, Spatie Permission, Activity Log |
 | Tenancy | stancl/tenancy (domain identification, separate tenant DBs) |
 | Auth | Laravel Breeze (Blade) + Sanctum tokens for the SPA |
 | Frontend | Vue 3, TypeScript, Vue Router, Pinia, Vite, Tailwind CSS |
@@ -69,7 +69,7 @@ LaraKit uses **stancl/tenancy** with domain identification and a separate databa
 | Config | `config/tenancy.php` |
 | Tenant model | `app/Models/Tenant.php` |
 | Provider | `app/Providers/TenancyServiceProvider.php` |
-| Central domains | `127.0.0.1`, `localhost` (in config) |
+| Central domains | `127.0.0.1`, `localhost`, plus `APP_URL` host (in config) |
 | Tenant routes | `routes/tenant.php` |
 | Tenant migrations | `database/migrations/tenant/` |
 | Central migrations | `database/migrations/` (includes `tenants` + `domains`) |
