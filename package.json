@@ -4,7 +4,7 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "electron": "cross-env LARABASEKIT_DESKTOP_URL=http://127.0.0.1:8000/app electron ./electron-main.cjs",
+        "electron": "cross-env LARAKIT_DESKTOP_URL=http://127.0.0.1:8000/app electron ./electron-main.cjs",
         "electron:dev": "npm-run-all --parallel dev:laravel dev:frontend electron",
         "dev:frontend": "vite",
         "dev:laravel": "php artisan serve",

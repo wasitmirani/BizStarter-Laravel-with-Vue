@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\Role;
-use App\Models\Tenant;
 use App\Services\BaseService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +23,6 @@ class RoleService extends BaseService
 
     public function getRolesList($params, $relations = [], $withCount = [])
     {
-
         return $this->model
             ->withCount($withCount)
             ->sorting($params['sort_dir'] ?? 'asc')
@@ -39,12 +37,13 @@ class RoleService extends BaseService
             $permissions = $data['permissions'] ?? [];
             $users = $data['users'] ?? [];
             unset($data['permissions'], $data['users']);
+
             $data = array_merge($data, [
-                'tenant_id' => tenant('id')->id,
                 'slug' => setSlug($data['name']),
-                'guard_name'=>  'api',
+                'guard_name' => $data['guard_name'] ?? 'web',
                 'uuid' => genUUID(),
             ]);
+
             $role = $this->model->create($data);
 
             if (!empty($permissions)) {
@@ -88,7 +87,7 @@ class RoleService extends BaseService
     public function getRoleByUuid($uuid, $relations = [])
     {
         try {
-            return $this->model->select('name','id','created_at')->with($relations)->where('uuid', $uuid)->first();
+            return $this->model->select('name', 'id', 'created_at')->with($relations)->where('uuid', $uuid)->first();
         } catch (ModelNotFoundException $e) {
             throw new \Exception('Role not found');
         }

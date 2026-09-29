@@ -8,7 +8,7 @@ class TimeZone extends BaseModel
 {
     use HasFactory;
 
-    protected $table = 'timezones';
+    protected $table = 'time_zones';
 
     public function getAllTimeZones()
     {

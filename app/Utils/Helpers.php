@@ -3,159 +3,120 @@
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Jenssegers\Agent\Agent;
-use App\Models\BrandingLabel;
 use App\Models\DeviceHistory;
-use App\Models\Tenant;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\HtmlString;
 
-
-
-
-function perPage()
+function perPage(): int
 {
-
-    return 2;
+    return (int) config('app.per_page', 15);
 }
 
 /**
  * Send JSON response.
- *
- * @param $result
- * @param $message
- * @param $status
- * @param $code
- *
- * @return mixed
  */
-function responseJson($message = "success", $result = [], $status = true, $code = 200)
+function responseJson($message = 'success', $result = [], $status = true, $code = 200)
 {
-    return response()->json(['message' => $message, 'status' => $status, 'result' => $result], $code);
+    return response()->json([
+        'message' => $message,
+        'status' => $status,
+        'result' => $result,
+    ], $code);
 }
 
-function genUUID()
+function genUUID(): string
 {
     return (string) Str::uuid();
 }
 
-function mapFirstNameLastSlug($val, $val2 = null)
+function mapFirstNameLastSlug($val, $val2 = null): string
 {
-
     return Str::slug($val . '-' . $val2, '-');
 }
-function setSlug($val)
+
+function setSlug($val): string
 {
     return (string) Str::slug($val, '-');
 }
 
-function getBrandingLabel()
+function setDateTimeFormat($date): ?string
 {
-    $label = BrandingLabel::latest()->first();
-    return $label;
-}
-
-
-function setDateTimeFormat($date)
-{
-    if ($date) {
-        // date_default_timezone_set("Asia/Karachi");
-        $carbonDate = new Carbon($date->format('d-m-Y h:i:s a'));
-        $carbonDate->timezone = 'Asia/Karachi';
-        return $carbonDate->format('d-m-Y h:i:s a');
+    if (!$date) {
+        return null;
     }
+
+    return Carbon::parse($date)
+        ->timezone(config('app.timezone', 'UTC'))
+        ->format('d-m-Y h:i:s a');
 }
 
-function formatDate($date)
+function formatDate($date): string
 {
-    $time = strtotime($date);
-    $newformat = date('Y-m-d', $time);
-    return $newformat;
+    return date('Y-m-d', strtotime($date));
 }
 
-
-
-
-// function getBrandById($id){
-// 	$brand=Brand::where('id',$id)->first();
-// 	return $brand;
-// }
-// function getBrandByName($name){
-// 	$brand=Brand::where('name',$name)->first();
-// 	return $brand;
-// }
-
-// function getCategoryById($id)
-// {
-// 	$category=Category::where('id',$id)->first();
-// 	return $category;
-// }
-// function getCategoryByName($name)
-// {
-// 	$category=Category::where('name',$name)->first();
-// 	return $category;
-// }
-
-
-function uploadImage($path)
+function uploadImage($path): string
 {
     if (request()->hasFile('image')) {
-        $name = "/" . request()->file('image')->store($path); // Assuming $path is already defined
+        $name = '/' . request()->file('image')->store($path);
         $name = str_replace($path . '/', '', $name);
     } else {
-        $name = "";
+        $name = '';
     }
+
     return $name;
 }
-function getImagePath($type)
+
+function getImagePath($type): string
 {
-    return "/public/images/" . $type;
+    return '/public/images/' . $type;
 }
 
-
-function getCurrency()
+function getCurrency(): string
 {
-    return env('CURRENCY') ?? '$';
+    return env('CURRENCY', '$');
 }
 
-
-function getYears()
+function getYears(): array
 {
-    $years = [];
-    for ($year = 1980; $year <= 2024; $year++) {
-        $years[] = $year;
-    }
-    $years = array_reverse($years);
-    return $years;
+    $years = range(1980, (int) date('Y'));
+
+    return array_reverse($years);
 }
-
-
-
-
 
 function removeUrlFromThumbnail(string $type, string $value): string
 {
-    // Ensure $type doesn't have leading or trailing slashes
     $type = trim($type, '/');
-    // Generate the pattern to remove
     $pattern = url("/storage/images/{$type}/");
-    // Remove the pattern from the $value
+
     return str_replace($pattern, '', $value);
 }
 
 function fetchGeoLocation()
 {
     $ip = request()->ip();
-    if ($ip == "127.0.0.1")
-        $ip = "103.244.176.117";
-    $geo = unserialize(file_get_contents("http://ip-api.com/php/" . $ip));
-    return $geo ?? null;
+    if ($ip === '127.0.0.1') {
+        return null;
+    }
+
+    try {
+        $raw = @file_get_contents('http://ip-api.com/php/' . $ip);
+        if (!$raw) {
+            return null;
+        }
+
+        return unserialize($raw) ?: null;
+    } catch (\Throwable $e) {
+        return null;
+    }
 }
-function logDeviceHistory()
+
+function logDeviceHistory(): void
 {
     try {
         $agent = new Agent();
         $agent->setUserAgent(request()->header('User-Agent'));
-        // Determine the device type
+
         if ($agent->isPhone()) {
             $deviceType = 'mobile';
         } elseif ($agent->isTablet()) {
@@ -163,11 +124,12 @@ function logDeviceHistory()
         } else {
             $deviceType = 'desktop';
         }
+
         DeviceHistory::create([
-            'user_id' => auth()->user()->id,
-            'device_name' => $agent->device(), // Device name (e.g., iPhone)
-            'browser' => $agent->browser(), // Browser name (e.g., Chrome)
-            'platform' => $agent->platform(), // OS name (e.g., iOS)
+            'user_id' => auth()->id(),
+            'device_name' => $agent->device(),
+            'browser' => $agent->browser(),
+            'platform' => $agent->platform(),
             'device_id' => request()->header('X-Device-ID'),
             'device_type' => $deviceType,
             'os_version' => $agent->version($agent->platform()),
@@ -177,36 +139,41 @@ function logDeviceHistory()
             'last_login_at' => now(),
         ]);
     } catch (\Throwable $th) {
-        Log::error("logDeviceHistory: has failed to log device history for {$th->getMessage()} | {$th->getTraceAsString()} | Time:" . now());
-        throw $th;
-    }
-
-    function shortTimer()
-    {
-        return  now()->addSeconds(60);
-    }
-    function sessionTimer()
-    {
-
-        return  now()->addMinutes(30);
-    }
-
-    function generateUserName($request){
-     return   !empty($request->user_name) ? $request->user_name : strtolower(trim( $request->first_name." ".$request->first_name)) . rand(10, 1000900);
-    }
-
-    function   responseMessage(string $msg,int $status_code=422,$status=false):array{
-        return ['message'=>$msg,'status_code'=>$status_code,'status'=>$status];
+        Log::error('logDeviceHistory failed: ' . $th->getMessage());
     }
 }
 
+function shortTimer()
+{
+    return now()->addSeconds(60);
+}
 
+function sessionTimer()
+{
+    return now()->addMinutes(30);
+}
+
+function generateUserName($request): string
+{
+    return !empty($request->user_name)
+        ? $request->user_name
+        : strtolower(trim($request->first_name . ' ' . $request->last_name)) . rand(10, 1000900);
+}
+
+function responseMessage(string $msg, int $status_code = 422, $status = false): array
+{
+    return [
+        'message' => $msg,
+        'status_code' => $status_code,
+        'status' => $status,
+    ];
+}
 
 /**
- * Dynamically load built assets from Vite manifest
- * Used to include CSS and JS files generated by npm run build
+ * Dynamically load built assets from Vite manifest.
  */
-function loadBuiltAssets($entry = 'resources/ts/app.ts') {
+function loadBuiltAssets($entry = 'resources/ts/backend/app.ts')
+{
     $manifestPath = public_path('build/manifest.json');
 
     if (!file_exists($manifestPath)) {
@@ -222,7 +189,6 @@ function loadBuiltAssets($entry = 'resources/ts/app.ts') {
     $entryData = $manifest[$entry];
     $html = '';
 
-    // Load CSS files first
     if (isset($entryData['css'])) {
         foreach ($entryData['css'] as $cssFile) {
             if (!empty($cssFile) && preg_match('/\.css$/', $cssFile)) {
@@ -231,16 +197,9 @@ function loadBuiltAssets($entry = 'resources/ts/app.ts') {
         }
     }
 
-    // Load main JS entry point ONLY - it will handle its own module dependencies
     if (isset($entryData['file']) && !empty($entryData['file']) && preg_match('/\.js$/', $entryData['file'])) {
-        $jsFile = $entryData['file'];
-        $html .= '<script type="module" src="' . asset('build/' . $jsFile) . '"></script>' . PHP_EOL;
+        $html .= '<script type="module" src="' . asset('build/' . $entryData['file']) . '"></script>' . PHP_EOL;
     }
 
     return new HtmlString($html);
-}
-
-function tenant()
-{
-    return auth()->user()?->tenant;
 }

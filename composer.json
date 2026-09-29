@@ -1,8 +1,8 @@
 {
-    "name": "laravel/laravel",
+    "name": "larakit/larakit",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "Generic Laravel + Vue 3 admin starter kit with Sanctum, Spatie permissions, and TypeScript SPA.",
+    "keywords": ["laravel", "vue", "starter", "admin", "spa"],
     "license": "MIT",
     "require": {
         "php": "^8.3 || ^8.4",
@@ -11,7 +11,6 @@
         "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
-        "mongodb/laravel-mongodb": "^5.7",
         "spatie/laravel-activitylog": "^4.8",
         "spatie/laravel-permission": "^6.9"
     },
@@ -30,15 +29,15 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Tests\\": "tests/"
         },
         "files": [
             "app/Utils/Helpers.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
     },
     "scripts": {
         "post-autoload-dump": [
@@ -46,6 +45,7 @@
             "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
+            "@php artisan package:discover --ansi",
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
         ],
         "post-root-package-install": [

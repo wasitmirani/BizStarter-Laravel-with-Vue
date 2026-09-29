@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Models\Concerns\InteractsWithListQuery;
 use App\Models\Country;
-use App\Models\Tenant;
 use App\Traits\HasThumbnail;
 use App\Traits\LogsActivity;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -20,9 +19,10 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Impersonate, HasRoles, HasThumbnail, InteractsWithListQuery, LogsActivity, Notifiable;
-    protected array $guard_name = ['api', 'web'];
+
+    protected $guard_name = 'web';
     protected $guarded = [];
-    protected $prefix ="UR00";
+    protected $prefix = 'UR00';
 
     /**
      * The attributes that are mass assignable.
@@ -148,20 +148,11 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function canImpersonate()
     {
-        return $this->hasRole('admin') ?? false; // or whatever role you want
+        return $this->hasRole('admin');
     }
 
     public function canBeImpersonated()
     {
-        return !$this->hasRole('admin') ?? true;  // admins can't be impersonated by other admins
+        return !$this->hasRole('admin');
     }
-
-    public function tenant()
-    {
-        return $this->belongsTo(Tenant::class);
-    }
-
-
-
-
 }

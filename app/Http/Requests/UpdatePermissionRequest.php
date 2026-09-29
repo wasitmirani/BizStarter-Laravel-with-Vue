@@ -14,40 +14,29 @@ class UpdatePermissionRequest extends FormRequest
 
     public function rules(): array
     {
+        $permissionId = $this->route('permission');
+        if (is_object($permissionId)) {
+            $permissionId = $permissionId->id;
+        }
+
         return [
             'name' => [
                 'required',
                 'string',
                 'max:255',
-
-                // ❌ block super-admin
+                Rule::unique('permissions', 'name')
+                    ->where(fn ($q) => $q->where('guard_name', 'web'))
+                    ->ignore($permissionId),
                 function ($attribute, $value, $fail) {
                     if (strtolower($value) === 'super-admin') {
-                        $fail('This permision is reserved.');
+                        $fail('This permission is reserved.');
                     }
                 },
-
-                // ✅ tenant-wise unique (excluding current role)
-                // Rule::unique('roles', 'name')
-                //     ->where(fn ($q) =>
-                //         $q->where('tenant_id', auth()->user()->tenant_id)
-                //     )
-                //     ->ignore($this->route('role')),
             ],
-
             'users' => ['nullable', 'array'],
-
-            'users.*' => [
-                'integer',
-                'exists:users,id'
-            ],
-
+            'users.*' => ['integer', 'exists:users,id'],
             'roles' => ['nullable', 'array'],
-
-            'roles.*' => [
-                'integer',
-                'exists:roles,id'
-            ],
+            'roles.*' => ['integer', 'exists:roles,id'],
         ];
     }
 }

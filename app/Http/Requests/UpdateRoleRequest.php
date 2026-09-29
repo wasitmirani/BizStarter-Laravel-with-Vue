@@ -14,11 +14,8 @@ class UpdateRoleRequest extends FormRequest
 
     public function rules(): array
     {
-        $user = $this->user(); // ✅ API-safe
-
         $roleId = $this->route('role');
 
-        // if route model binding returns object
         if (is_object($roleId)) {
             $roleId = $roleId->id;
         }
@@ -28,34 +25,19 @@ class UpdateRoleRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-
-                // block super-admin
+                Rule::unique('roles', 'name')
+                    ->where(fn ($q) => $q->where('guard_name', 'web'))
+                    ->ignore($roleId),
                 function ($attribute, $value, $fail) {
                     if (strtolower($value) === 'super-admin') {
                         $fail('This role is reserved.');
                     }
                 },
-
-                // tenant-wise unique (excluding current role)
-                Rule::unique('roles', 'name')
-                    ->where(fn ($q) => $q->where('tenant_id', $user?->tenant_id))
-                    ->ignore($roleId),
             ],
-
             'users' => ['nullable', 'array'],
-
-            'users.*' => [
-                'integer',
-                Rule::exists('users', 'id')
-                    ->where(fn ($q) => $q->where('tenant_id', $user?->tenant_id)),
-            ],
-
+            'users.*' => ['integer', 'exists:users,id'],
             'permissions' => ['nullable', 'array'],
-
-            'permissions.*' => [
-                'integer',
-                'exists:permissions,id',
-            ],
+            'permissions.*' => ['integer', 'exists:permissions,id'],
         ];
     }
 }

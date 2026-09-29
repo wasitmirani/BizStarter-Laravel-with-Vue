@@ -13,12 +13,12 @@ return new class extends Migration
     {
 
         Schema::table('permissions', function (Blueprint $table) {
-            $table->enum('scope', ['system', 'tenant', 'custom'])->default('system');
+            $table->enum('scope', ['system', 'app', 'custom'])->default('system');
             $table->string('uuid')->nullable();
             $table->string('slug')->nullable();
         });
         Schema::table('roles', function (Blueprint $table) {
-            $table->enum('scope', ['system', 'tenant', 'custom'])->default('system');
+            $table->enum('scope', ['system', 'app', 'custom'])->default('system');
         });
     }
 

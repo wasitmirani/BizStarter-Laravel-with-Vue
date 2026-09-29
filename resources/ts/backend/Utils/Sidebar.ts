@@ -1,5 +1,4 @@
 
-
 export default class SidebarMenu {
 
     private per_fix = "/app";
@@ -37,15 +36,6 @@ export default class SidebarMenu {
         }
     }
     getMenuList(): any[] {
-        const authUser = typeof window !== 'undefined' ? (window.__APP_CONTEXT__?.auth.user ?? window.user ?? null) : null;
-        const hasTenant = Boolean((authUser as any)?.tenant_id);
-
-        const settingsSubMenu = [
-            this.setSubMenu('Account', '/settings/user-account', undefined),
-            ...(hasTenant ? [this.setSubMenu('Tenant Settings', '/settings/tenant', undefined)] : []),
-            this.setSubMenu('App config', '/settings/app-config', undefined),
-        ];
-
         return [
             this.setHeadingMenu('Analytics'),
             this.setMultiMenu('Dashboards', 'layout-dashboard', undefined, [
@@ -53,19 +43,17 @@ export default class SidebarMenu {
                 ]
             ),
 
-            this.setHeadingMenu('Management & Apps'),
-            this.setMultiMenu('Users Management', 'users', undefined, [
+            this.setHeadingMenu('Management'),
+            this.setMultiMenu('Access Control', 'users', undefined, [
                     this.setSubMenu('Users', '/management/users', 'users-list'),
                     this.setSubMenu('Roles', '/management/roles', 'roles-list'),
-                    this.setSubMenu('Permissions & Policy', '/management/permissions', undefined),
-                    this.setSubMenu('Tenants', '/management/tenants', undefined),
+                    this.setSubMenu('Permissions', '/management/permissions', 'permissions-list'),
                 ]
             ),
-            // this.setSingleMenu('Calendar', 'calendar', '/calendar', undefined),
-            this.setHeadingMenu('Tools & Sessions'),
+
+            this.setHeadingMenu('Tools'),
             this.setMultiMenu('Settings', 'settings', undefined, [
                     this.setSubMenu('Account', '/settings/user-account', undefined),
-                    this.setSubMenu('Tenant Settings', '/settings/tenant', undefined),
                     this.setSubMenu('App config', '/settings/app-config', undefined),
                 ]
             ),

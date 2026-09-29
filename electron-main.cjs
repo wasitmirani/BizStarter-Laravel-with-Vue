@@ -19,8 +19,8 @@ function createWindow() {
   });
 
   const appUrl =
-    process.env.LARABASEKIT_DESKTOP_URL ||
-    (isDev ? 'http://127.0.0.1:8000/app' : 'http://127.0.0.1:8000/app');
+    process.env.LARAKIT_DESKTOP_URL ||
+    'http://127.0.0.1:8000/app';
 
   mainWindow.loadURL(appUrl);
 

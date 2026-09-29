@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Permission;
 use App\Models\Role;
-use App\Models\Tenant;
 use App\Services\BaseService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
@@ -25,9 +24,6 @@ class PermissionService extends BaseService
 
     public function getPermissionsList($params, $relations = [], $withCount = [])
     {
-        // Build allowed filters array from params
-
-      
         return $this->model
             ->withCount($withCount)
             ->sorting($params['sort_dir'] ?? 'asc')
@@ -36,41 +32,32 @@ class PermissionService extends BaseService
             ->retrieve($params['paginated'] ?? false, $this->resolvePerPage($params));
     }
 
-    /**
-     * Save a new permission
-     */
     public function savePermission($data)
     {
         return DB::transaction(function () use ($data) {
-            // Check if permission with same name already exists
             $existingPermission = $this->model->where('name', $data['name'])
-                ->where('tenant_id', tenant('id')->id ?? null)
+                ->where('guard_name', $data['guard_name'] ?? 'web')
                 ->first();
 
             if ($existingPermission) {
                 throw new \Exception('Permission with this name already exists');
             }
 
-            // Prepare permission data
             $permissionData = array_merge($data, [
-                'tenant_id' => tenant('id')->id ?? null,
                 'slug' => $this->generateUniqueSlug($data['name']),
-                'guard_name' => $data['guard_name'] ?? 'api',
+                'guard_name' => $data['guard_name'] ?? 'web',
                 'uuid' => $this->generateUniqueUuid(),
+                'scope' => $data['scope'] ?? 'system',
             ]);
 
-            // Remove any relationship data
             unset($permissionData['roles'], $permissionData['users']);
 
-            // Create the permission
             $permission = $this->model->create($permissionData);
 
-            // Sync roles if provided
             if (!empty($data['roles'])) {
                 $permission->roles()->sync($data['roles']);
             }
 
-            // Sync users if provided (if you have this relationship)
             if (!empty($data['users']) && method_exists($permission, 'users')) {
                 $permission->users()->sync($data['users']);
             }
@@ -79,17 +66,13 @@ class PermissionService extends BaseService
         });
     }
 
-    /**
-     * Update an existing permission
-     */
     public function updatePermission($id, $data)
     {
         return DB::transaction(function () use ($id, $data) {
             $permission = $this->model->findOrFail($id);
 
-            // Check for duplicate name (excluding current permission)
             $existingPermission = $this->model->where('name', $data['name'])
-                ->where('tenant_id', $permission->tenant_id)
+                ->where('guard_name', $data['guard_name'] ?? $permission->guard_name)
                 ->where('id', '!=', $id)
                 ->first();
 
@@ -97,22 +80,18 @@ class PermissionService extends BaseService
                 throw new \Exception('Permission with this name already exists');
             }
 
-            // Prepare update data
             $updateData = [
                 'name' => $data['name'] ?? $permission->name,
                 'slug' => isset($data['name']) ? $this->generateUniqueSlug($data['name'], $permission->id) : $permission->slug,
                 'guard_name' => $data['guard_name'] ?? $permission->guard_name,
             ];
 
-            // Update the permission
             $permission->update($updateData);
 
-            // Sync roles if provided
             if (array_key_exists('roles', $data)) {
                 $permission->roles()->sync($data['roles'] ?? []);
             }
 
-            // Sync users if provided and relationship exists
             if (array_key_exists('users', $data) && method_exists($permission, 'users')) {
                 $permission->users()->sync($data['users'] ?? []);
             }
@@ -121,9 +100,6 @@ class PermissionService extends BaseService
         });
     }
 
-    /**
-     * Get permission by UUID
-     */
     public function getPermissionByUuid($uuid, $relations = [])
     {
         try {
@@ -140,18 +116,12 @@ class PermissionService extends BaseService
         }
     }
 
-    /**
-     * Delete a permission
-     */
     public function deletePermission($id)
     {
         return DB::transaction(function () use ($id) {
             $permission = $this->model->findOrFail($id);
-
-            // Detach all roles before deleting
             $permission->roles()->detach();
 
-            // Detach users if relationship exists
             if (method_exists($permission, 'users')) {
                 $permission->users()->detach();
             }
@@ -160,41 +130,6 @@ class PermissionService extends BaseService
         });
     }
 
-    /**
-     * Assign permission to role
-     */
-    public function assignPermissionToRole($permissionId, $roleId)
-    {
-        return DB::transaction(function () use ($permissionId, $roleId) {
-            $permission = $this->model->findOrFail($permissionId);
-            $role = app(Role::class)->findOrFail($roleId);
-
-            if (!$role->hasPermissionTo($permission->name)) {
-                $role->givePermissionTo($permission);
-            }
-
-            return $permission;
-        });
-    }
-
-    /**
-     * Remove permission from role
-     */
-    public function removePermissionFromRole($permissionId, $roleId)
-    {
-        return DB::transaction(function () use ($permissionId, $roleId) {
-            $permission = $this->model->findOrFail($permissionId);
-            $role = app(Role::class)->findOrFail($roleId);
-
-            $role->revokePermissionTo($permission);
-
-            return $permission;
-        });
-    }
-
-    /**
-     * Generate unique slug for permission
-     */
     private function generateUniqueSlug($name, $excludeId = null)
     {
         $slug = setSlug($name);
@@ -202,7 +137,6 @@ class PermissionService extends BaseService
         $counter = 1;
 
         $query = $this->model->where('slug', $slug);
-
         if ($excludeId) {
             $query->where('id', '!=', $excludeId);
         }
@@ -219,9 +153,6 @@ class PermissionService extends BaseService
         return $slug;
     }
 
-    /**
-     * Generate unique UUID
-     */
     private function generateUniqueUuid()
     {
         do {
@@ -229,26 +160,5 @@ class PermissionService extends BaseService
         } while ($this->model->where('uuid', $uuid)->exists());
 
         return $uuid;
-    }
-
-    /**
-     * Get permissions by guard name
-     */
-    public function getPermissionsByGuard($guardName = 'api')
-    {
-        return $this->model->where('guard_name', $guardName)->get();
-    }
-
-    /**
-     * Sync permissions for a role
-     */
-    public function syncRolePermissions($roleId, array $permissionIds)
-    {
-        return DB::transaction(function () use ($roleId, $permissionIds) {
-            $role = app(Role::class)->findOrFail($roleId);
-            $permissions = $this->model->whereIn('id', $permissionIds)->get();
-
-            return $role->syncPermissions($permissions);
-        });
     }
 }

@@ -19,38 +19,17 @@ class StorePermissionRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-
-                // ❌ block super-admin
+                Rule::unique('permissions', 'name')->where(fn ($q) => $q->where('guard_name', 'web')),
                 function ($attribute, $value, $fail) {
                     if (strtolower($value) === 'super-admin') {
                         $fail('This permission is reserved.');
                     }
                 },
-
-                // ✅ tenant-wise unique
-                // Rule::unique('roles', 'name')
-                //     ->where(fn ($q) =>
-                //         $q->where('tenant_id', auth()->user()->tenant_id)
-                //     ),
             ],
-
-            'users' => ['required', 'array'],
-
-            // ✅ tenant-safe users
-            // 'users.*' => [
-            //     'integer',
-            //     Rule::exists('users', 'id')
-            //         ->where(fn ($q) =>
-            //             $q->where('tenant_id', auth()->user()->tenant_id ?? 1)
-            //         ),
-            // ],
-
             'roles' => ['nullable', 'array'],
-
-            'roles.*' => [
-                'integer',
-                'exists:roles,id'
-            ],
+            'roles.*' => ['integer', 'exists:roles,id'],
+            'users' => ['nullable', 'array'],
+            'users.*' => ['integer', 'exists:users,id'],
         ];
     }
 }
