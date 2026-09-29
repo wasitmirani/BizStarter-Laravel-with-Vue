@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\DB;
 
 class TimeZoneSeeder extends Seeder
 {
-    public function run(): void
-    {
-        DB::statement("
+	public function run(): void
+	{
+		DB::statement("
             INSERT INTO `time_zones` (`id`, `country_code`, `country_name`, `time_zone`, `gmt_offset`, `created_at`, `updated_at`) VALUES
 	(1, 'AF', 'Afghanistan', 'Asia/Kabul', 'UTC +04:30', NULL, NULL),
 	(2, 'AL', 'Albania', 'Europe/Tirane', 'UTC +01:00', NULL, NULL),
@@ -431,5 +431,5 @@ class TimeZoneSeeder extends Seeder
 	(418, 'ZW', 'Zimbabwe', 'Africa/Harare', 'UTC +02:00', NULL, NULL),
 	(419, 'AX', 'Åland Islands', 'Europe/Mariehamn', 'UTC +02:00', NULL, NULL);
         ");
-    }
+	}
 }
