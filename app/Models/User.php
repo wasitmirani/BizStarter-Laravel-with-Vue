@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Models\Concerns\InteractsWithListQuery;
 use App\Models\Country;
-
 use App\Traits\HasThumbnail;
 use App\Traits\LogsActivity;
 use Illuminate\Contracts\Auth\MustVerifyEmail;

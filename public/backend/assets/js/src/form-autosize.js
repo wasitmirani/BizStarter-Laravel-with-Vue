@@ -1,1 +1,0 @@
-import "../../admin.bundle-DOCqQWIh.js";import "../../main-BSp6wgyE.js";var e=document.getElementById(`message`),t=document.getElementById(`charCount`);function n(){e.style.height=`auto`,e.style.height=e.scrollHeight+`px`}function r(){t.textContent=e.value.length}e.addEventListener(`input`,()=>{n(),r()});

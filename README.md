@@ -8,8 +8,6 @@ A multi-tenant admin starter kit built with **Laravel 13** and **Vue 3**. Use it
 |--------|------|
 | Backend | Laravel 13, Sanctum, Spatie Permission, Activity Log |
 | Tenancy | stancl/tenancy (domain identification, separate tenant DBs) |
-
-
 | Auth | Laravel Breeze (Blade) + Sanctum tokens for the SPA |
 | Frontend | Vue 3, TypeScript, Vue Router, Pinia, Vite, Tailwind CSS |
 | Desktop (optional) | Electron |

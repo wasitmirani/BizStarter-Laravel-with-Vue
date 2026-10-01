@@ -1,1 +1,0 @@
-import "../../admin.bundle-DOCqQWIh.js";import "../../main-BSp6wgyE.js";import "../../progress-circle.init-BEuzsGsH.js";/* empty css                               */new SimpleLightbox({elements:`.images-gallery a`});
