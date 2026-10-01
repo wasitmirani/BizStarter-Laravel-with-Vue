@@ -47,7 +47,14 @@ class RolePermissionSeeder extends Seeder
             ['scope' => 'system', 'uuid' => (string) Str::uuid(), 'slug' => 'admin']
         );
 
-        $admin->syncPermissions(Permission::where('guard_name', $guard)->pluck('name')->all());
+        $superAdmin = Role::firstOrCreate(
+            ['name' => 'super-admin', 'guard_name' => $guard],
+            ['scope' => 'system', 'uuid' => (string) Str::uuid(), 'slug' => 'super-admin']
+        );
+
+        $allPermissions = Permission::where('guard_name', $guard)->pluck('name')->all();
+        $admin->syncPermissions($allPermissions);
+        $superAdmin->syncPermissions($allPermissions);
 
         Role::firstOrCreate(
             ['name' => 'user', 'guard_name' => $guard],

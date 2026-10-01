@@ -6,9 +6,9 @@ use App\Contracts\BaseFilterable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePermissionRequest;
 use App\Http\Requests\UpdatePermissionRequest;
+use App\Models\Permission;
 use App\Services\PermissionService;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller implements BaseFilterable
 {
@@ -48,18 +48,19 @@ class PermissionController extends Controller implements BaseFilterable
     public function show($uuid)
     {
         try {
-            $permission = app(PermissionService::class)->getRoleByUuid($uuid, ['users:id,name,thumbnail', 'roles:id,name']);
+            $permission = app(PermissionService::class)->getPermissionByUuid($uuid, ['roles:id,name']);
             return responseJson('Permission fetched successfully', ['permission' => $permission], true);
         } catch (\Exception $e) {
             return responseJson('Permission not found', null, false, 404);
         }
     }
+
     public function update(UpdatePermissionRequest $request, $id)
     {
         try {
             $data = $request->validated();
-            $role = app(PermissionService::class)->updateRole($id, $data);
-            return responseJson('Permission updated successfully', ['role' => $role], true);
+            $permission = app(PermissionService::class)->updatePermission($id, $data);
+            return responseJson('Permission updated successfully', ['permission' => $permission], true);
         } catch (\Exception $e) {
             return responseJson('Failed to update permission: ' . $e->getMessage(), null, false, 500);
         }
@@ -68,10 +69,7 @@ class PermissionController extends Controller implements BaseFilterable
     public function destroy($id)
     {
         try {
-            $permission = Permission::findOrFail($id);
-
-
-            $permission->delete();
+            app(PermissionService::class)->deletePermission($id);
             return responseJson('Permission deleted successfully', null, true);
         } catch (\Exception $e) {
             return responseJson('Failed to delete permission', null, false, 500);

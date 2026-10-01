@@ -17,9 +17,11 @@ const {
     countryModel,
     timezoneModel,
     languageModel,
+    roleModel,
     countryOptions,
     timezoneOptions,
     languageOptions,
+    roleOptions,
 
     onSubmit,
     addThumbnail,
@@ -181,6 +183,19 @@ const {
                             :multiple="false"
                             />
                             <validate-input class="text-danger" v-if="errors" :errors="errors" value="language_id" />
+                        </div>
+
+                        <div>
+                            <label class="form-label">Role</label>
+                            <BaseMultiSelect
+                                v-model="roleModel"
+                                :options="roleOptions"
+                                optionLabel="label"
+                                trackBy="value"
+                                placeholder="Select Role"
+                                :multiple="false"
+                            />
+                            <validate-input class="text-danger" v-if="errors" :errors="errors" value="role" />
                         </div>
 
                         <div>
