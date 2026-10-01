@@ -1,10 +1,12 @@
 <script lang="ts" setup>
-import { ref, provide, onMounted, onBeforeUnmount } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, provide, onMounted, onBeforeUnmount, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import Footer from "./partials/Footer.vue";
 import Head from "./partials/Head.vue";
 import SideBarMenu from "./partials/SideBarMenu.vue";
+import Switcher from "./partials/Switcher.vue";
 import { Helpers } from '../Utils/Helper';
+import { loadAlloceScripts, refreshAlloceIcons } from '../Utils/alloce/loadAlloceScripts';
 
 const toast = Helpers.useDynamicRef(null);
 provide('toast', toast);
@@ -19,6 +21,7 @@ const installPromptEvent = ref<any | null>(null);
 const showInstallBanner = ref(false);
 
 const router = useRouter();
+const route = useRoute();
 
 const handleBeforeInstallPrompt = (event: Event) => {
     installPromptEvent.value = (event as any).detail ?? event;
@@ -43,6 +46,9 @@ const requestInstall = async () => {
     }
 };
 
+let alloceFrame: number | null = null;
+let iconsFrame: number | null = null;
+
 onMounted(() => {
     if (window.__pwaInstallPrompt) {
         installPromptEvent.value = window.__pwaInstallPrompt;
@@ -50,6 +56,12 @@ onMounted(() => {
     }
 
     window.addEventListener('pwa:beforeinstallprompt', handleBeforeInstallPrompt as EventListener);
+
+    // Defer Alloce main.js until after mount so #toggleSidebar /
+    // #darkModeButton / #settingsModal exist (same as React Starter Kit).
+    alloceFrame = requestAnimationFrame(() => {
+        void loadAlloceScripts();
+    });
 
     // Start progress on route change
     router.beforeEach((to, from, next) => {
@@ -65,7 +77,19 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
     window.removeEventListener('pwa:beforeinstallprompt', handleBeforeInstallPrompt as EventListener);
+    if (alloceFrame !== null) cancelAnimationFrame(alloceFrame);
+    if (iconsFrame !== null) cancelAnimationFrame(iconsFrame);
 });
+
+watch(
+    () => route.path,
+    () => {
+        if (iconsFrame !== null) cancelAnimationFrame(iconsFrame);
+        iconsFrame = requestAnimationFrame(() => {
+            void refreshAlloceIcons();
+        });
+    },
+);
 
 const startProgress = () => {
     isLoading.value = true;
@@ -108,32 +132,24 @@ const completeProgress = () => {
             </div>
         </Transition>
 
-        <Head />
-        <!-- END HEADER -->
-        <!-- SIDEBAR -->
-        <SideBarMenu />
-        <!-- END SIDEBAR -->
-        <!-- MAIN-CONTENT -->
-        <!-- Start::app-content -->
-        <div class="page-content">
-            <main>
-                <!-- <Transition name="slide-fade" mode="out-in">
-                        <component :is="Component" :key="route.fullPath" />
-                    </Transition>
-                    <!-- Start::row-1  v-slot="{ Component, route }" --> 
-                <router-view>
-                    
-                </router-view>
-                <FlashMessage ref="toast" />
-            </main>
+        <div class="body-effect-img"></div>
+        <div class="body-top-line"></div>
+        <div class="body-bottom-line"></div>
 
+        <Head />
+        <Switcher />
+        <SideBarMenu />
+
+        <div id="sidebar-backdrop" class="sidebar-backdrop"></div>
+        <div class="min-vh-100 position-relative">
+            <div class="page-wrapper">
+                <div class="container-fluid">
+                    <router-view />
+                    <FlashMessage ref="toast" />
+                </div>
+            </div>
             <Footer />
         </div>
-        <!-- End::app-content -->
-        <!-- END MAIN-CONTENT -->
-        <!-- FOOTER -->
-
-        <!-- Start::main-footer -->
 
         <!-- PWA install banner -->
         <transition name="slide-fade">

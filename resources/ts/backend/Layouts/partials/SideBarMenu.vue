@@ -118,18 +118,18 @@ function doLogout(event: any) {
         <div class="sidebar-wrapper">
           <a href="#!" class="navbar-brand">
             <div class="logo-lg">
-              <img :src="'/backend/assets/images/main-logo.webp'" loading="lazy" aria-label="logo" alt="Main Logo" height="26" class="mx-auto logo-dark" />
-                <img :src="'/backend/assets/images/logo-white.webp'" loading="lazy" aria-label="logo" alt="Logo White" height="26" class="mx-auto logo-light" />
+              <img src="/backend/assets/images/main-logo.webp" loading="lazy" aria-label="logo" alt="Main Logo" height="26" class="mx-auto logo-dark" />
+                <img src="/backend/assets/images/logo-white.webp" loading="lazy" aria-label="logo" alt="Logo White" height="26" class="mx-auto logo-light" />
                 </div>
                 <div class="logo-sm">
-                  <img :src="'/backend/assets/images/logo-sm-dark.webp'" loading="lazy" aria-label="logo" alt="Logo Sm Dark" height="26" class="mx-auto logo-dark"/>
-                    <img :src="'/backend/assets/images/logo-sm-dark.webp'" loading="lazy" aria-label="logo" alt="Logo Sm White" height="26" class="mx-auto logo-light"/>
+                  <img src="/backend/assets/images/logo-sm-dark.webp" loading="lazy" aria-label="logo" alt="Logo Sm Dark" height="26" class="mx-auto logo-dark"/>
+                    <img src="/backend/assets/images/logo-sm-dark.webp" loading="lazy" aria-label="logo" alt="Logo Sm White" height="26" class="mx-auto logo-light"/>
                     </div>
                   </a>
                   <div class="dropdown profile-dropdown mb-4">
                     <a href="#!" class="btn px-4 py-5 w-100 position-relative" data-bs-toggle="dropdown" aria-expanded="false">
                       <span class="position-relative">
-                        <img :src="'/backend/assets/images/user-38.webp'" loading="lazy" alt="User 38" class="object-fit-cover rounded-circle size-12 mb-4"/>
+                        <img src="/backend/assets/images/user-38.webp" loading="lazy" alt="User 38" class="object-fit-cover rounded-circle size-12 mb-4"/>
                           <span class="badge bg-orange rounded-pill fw-normal position-absolute top-50 translate-middle-y profile-version">v.1</span>
                           <span class="size-2 bg-success rounded-circle d-block position-absolute bottom-0 end-0 mb-n6px"></span>
                       </span>

@@ -25,7 +25,7 @@ const isLoading = Helpers.useDynamicComputed(() => loading?.value || false);
                     <div class="mb-7.5 flex items-center justify-between">
                         <div class="flex items-center gap-base">
                             <div class="relative">
-                                <img :src="userData?.thumbnail || '/backend/images/users/user-1.jpg'"
+                                <img :src="userData?.thumbnail || '/backend/assets/images/user-1.webp'"
                                      alt="avatar"
                                      class="size-18 rounded-full object-cover" />
                             </div>

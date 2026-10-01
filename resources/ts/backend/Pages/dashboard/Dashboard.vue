@@ -131,7 +131,7 @@ onUnmounted(() => {
         <div class="card overflow-hidden">
             <div class="card-body relative">
                 <div class="absolute end-0 top-0 size-45 opacity-40 pointer-events-none">
-                    <img src="/backend/images/auth-card-bg.svg" alt="">
+                    <img src="/backend/assets/images/shape-3.svg" alt="">
                 </div>
                 <div class="flex flex-wrap items-center justify-between gap-4 relative">
                     <div>

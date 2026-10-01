@@ -178,7 +178,7 @@
                                                  <h6 class="mb-0">YouTube</h6>
                                                  <p class="text-muted fs-15">Video Platform</p>
                                              </div>
-                                             <input class="form-check-input rounded-pill" type="checkbox" name="youtubeApp" id="youtubeApp" / >
+                                             <input class="form-check-input rounded-pill" type="checkbox" name="youtubeApp" id="youtubeApp" >
                                          </div>
                                      </div>
                                  </div>
@@ -196,7 +196,7 @@
                                                  <h6 class="mb-0">Windows 11</h6>
                                                  <p class="text-muted fs-15">Operating System</p>
                                              </div>
-                                             <input class="form-check-input rounded-pill" type="checkbox" name="windowApp" id="windowApp" / >
+                                             <input class="form-check-input rounded-pill" type="checkbox" name="windowApp" id="windowApp" />
                                          </div>
                                      </div>
                                  </div>
@@ -489,7 +489,7 @@
                                              <div class="flex-column gap-0 form-check check-primary">
                                                  <input id="defaultTheme" name="data-theme" type="radio" value="default" class="d-none form-check-input"/>
                                                  <label htmlFor="defaultTheme" class="card mb-3 form-check-label setting-widget setting-vertical-widget border-elegant">
-                                                     <img :src="'/backend/assets/images/demos-default.webp'" alt="Dashboard Ecommerce" class="img-fluid" />
+                                                     <img src="/backend/assets/images/demos-default.webp" alt="Dashboard Ecommerce" class="img-fluid" />
                                                  </label>
                                                  <label htmlFor="defaultTheme" class="cursor-pointer form-label d-block text-center">Default Theme</label>
                                              </div>
@@ -498,7 +498,7 @@
                                              <div class="flex-column gap-0 form-check check-primary">
                                                  <input id="minimalTheme" name="data-theme" type="radio" value="minimal" class="d-none form-check-input"/>
                                                  <label htmlFor="minimalTheme" class="card mb-3 form-check-label setting-widget setting-vertical-widget border-elegant">
-                                                     <img :src="'/backend/assets/images/demos-minimal.webp'" alt="Demos Minimal" class="img-fluid"/>
+                                                     <img src="/backend/assets/images/demos-minimal.webp" alt="Demos Minimal" class="img-fluid"/>
                                                  </label>
                                                  <label htmlFor="minimalTheme" class="cursor-pointer form-label d-block text-center">Minimal Theme</label>
                                              </div>
@@ -507,7 +507,7 @@
                                              <div class="flex-column gap-0 form-check check-primary">
                                                  <input id="materialTheme" name="data-theme" type="radio" value="material" class="d-none form-check-input"/>
                                                  <label htmlFor="materialTheme" class="card mb-3 form-check-label setting-widget setting-vertical-widget border-elegant">
-                                                     <img :src="'/backend/assets/images/demos-material.webp'" alt="Demos Material" class="img-fluid"/>
+                                                     <img src="/backend/assets/images/demos-material.webp" alt="Demos Material" class="img-fluid"/>
                                                  </label>
                                                  <label htmlFor="materialTheme" class="cursor-pointer form-label d-block text-center">Material Theme</label>
                                              </div>
@@ -516,7 +516,7 @@
                                              <div class="flex-column gap-0 form-check check-primary">
                                                  <input id="primeTheme" name="data-theme" type="radio" value="prime" class="d-none form-check-input"/>
                                                  <label htmlFor="primeTheme" class="card mb-3 form-check-label setting-widget setting-vertical-widget border-elegant">
-                                                     <img :src="'/backend/assets/images/demos-prime.webp'" alt="Demos Prime" class="img-fluid"/>
+                                                     <img src="/backend/assets/images/demos-prime.webp" alt="Demos Prime" class="img-fluid"/>
                                                  </label>
                                                  <label htmlFor="primeTheme" class="cursor-pointer form-label d-block text-center">Prime Theme</label>
                                              </div>
@@ -525,7 +525,7 @@
                                              <div class="flex-column gap-0 form-check check-primary">
                                                  <input id="elegantTheme" name="data-theme" type="radio" value="elegant" class="d-none form-check-input"/>
                                                  <label htmlFor="elegantTheme" class="card mb-3 form-check-label setting-widget setting-vertical-widget border-elegant">
-                                                     <img :src="'/backend/assets/images/demos-elegant.webp'" alt="Demos Elegant" class="img-fluid"/>
+                                                     <img src="/backend/assets/images/demos-elegant.webp" alt="Demos Elegant" class="img-fluid"/>
                                                  </label>
                                                  <label htmlFor="elegantTheme" class="cursor-pointer form-label d-block text-center">Elegant Theme</label>
                                              </div>
@@ -534,7 +534,7 @@
                                              <div class="flex-column gap-0 form-check check-primary">
                                                  <input id="edgeTheme" name="data-theme" type="radio" value="edge" class="d-none form-check-input"/>
                                                  <label htmlFor="edgeTheme" class="card mb-3 form-check-label setting-widget setting-vertical-widget border-elegant">
-                                                     <img :src="'/backend/assets/images/demos-edge.webp'" alt="Demos Edge" class="img-fluid"/>
+                                                     <img src="/backend/assets/images/demos-edge.webp" alt="Demos Edge" class="img-fluid"/>
                                                  </label>
                                                  <label htmlFor="edgeTheme" class="cursor-pointer form-label d-block text-center">Edge Theme</label>
                                              </div>
@@ -543,7 +543,7 @@
                                              <div class="flex-column gap-0 form-check check-primary">
                                                  <input id="retroTheme" name="data-theme" type="radio" value="retro" class="d-none form-check-input"/>
                                                  <label htmlFor="retroTheme" class="card mb-3 form-check-label setting-widget setting-vertical-widget border-elegant">
-                                                     <img :src="'/backend/assets/images/demos-retro.webp'" alt="Demos Retro" class="img-fluid"/>
+                                                     <img src="/backend/assets/images/demos-retro.webp" alt="Demos Retro" class="img-fluid"/>
                                                  </label>
                                                  <label htmlFor="retroTheme" class="cursor-pointer form-label d-block text-center">Retro Theme</label>
                                              </div>
@@ -552,7 +552,7 @@
                                              <div class="flex-column gap-0 form-check check-primary">
                                                  <input id="corporateTheme" name="data-theme" type="radio" value="corporate" class="d-none form-check-input"/>
                                                  <label htmlFor="corporateTheme" class="card mb-3 form-check-label setting-widget setting-vertical-widget border-elegant">
-                                                     <img :src="'/backend/assets/images/demos-corporate.webp'" alt="Demos Corporate" class="img-fluid"/>
+                                                     <img src="/backend/assets/images/demos-corporate.webp" alt="Demos Corporate" class="img-fluid"/>
                                                  </label>
                                                  <label htmlFor="corporateTheme" class="cursor-pointer form-label d-block text-center">Corporate Theme</label>
                                              </div>
@@ -561,7 +561,7 @@
                                              <div class="flex-column gap-0 form-check check-primary">
                                                  <input id="vertexTheme" name="data-theme" type="radio" value="vertex" class="d-none form-check-input"/>
                                                  <label htmlFor="vertexTheme" class="card mb-3 form-check-label setting-widget setting-vertical-widget border-elegant">
-                                                     <img :src="'/backend/assets/images/demos-vertex.webp'" alt="Demos Vertex" class="img-fluid"/>
+                                                     <img src="/backend/assets/images/demos-vertex.webp" alt="Demos Vertex" class="img-fluid"/>
                                                  </label>
                                                  <label htmlFor="vertexTheme" class="cursor-pointer form-label d-block text-center">Vertex Theme</label>
                                              </div>
@@ -570,7 +570,7 @@
                                              <div class="flex-column gap-0 form-check check-primary">
                                                  <input id="sparkleTheme" name="data-theme" type="radio" value="sparkle" class="d-none form-check-input"/>
                                                  <label htmlFor="sparkleTheme" class="card mb-3 form-check-label setting-widget setting-vertical-widget border-elegant">
-                                                     <img :src="'/backend/assets/images/demos-sparkle.webp'" alt="Demos Sparkle" class="img-fluid"/>
+                                                     <img src="/backend/assets/images/demos-sparkle.webp" alt="Demos Sparkle" class="img-fluid"/>
                                                  </label>
                                                  <label htmlFor="sparkleTheme" class="cursor-pointer form-label d-block text-center">Sparkle Theme</label>
                                              </div>
@@ -579,7 +579,7 @@
                                              <div class="flex-column gap-0 form-check check-primary">
                                                  <input id="flatTheme" name="data-theme" type="radio" value="flat" class="d-none form-check-input"/>
                                                  <label htmlFor="flatTheme" class="card mb-3 form-check-label setting-widget setting-vertical-widget border-elegant">
-                                                     <img :src="'/backend/assets/images/demos-flat.webp'" alt="Demos Flat" class="img-fluid"/>
+                                                     <img src="/backend/assets/images/demos-flat.webp" alt="Demos Flat" class="img-fluid" />
                                                  </label>
                                                  <label htmlFor="flatTheme" class="cursor-pointer form-label d-block text-center">Flat Theme</label>
                                              </div>
@@ -588,7 +588,7 @@
                                              <div class="flex-column gap-0 form-check check-primary">
                                                  <input id="visionTheme" name="data-theme" type="radio" value="vision" class="d-none form-check-input"/>
                                                  <label htmlFor="visionTheme" class="card mb-3 form-check-label setting-widget setting-vertical-widget border-elegant">
-                                                     <img :src="'/backend/assets/images/demos-vision.webp'" alt="Demos Vision" class="img-fluid"/  >
+                                                     <img src="/backend/assets/images/demos-vision.webp" alt="Demos Vision" class="img-fluid" />
                                                  </label>
                                                  <label htmlFor="visionTheme" class="cursor-pointer form-label d-block text-center">Vision Theme</label>
                                              </div>
@@ -597,7 +597,7 @@
                                              <div class="flex-column gap-0 form-check check-primary">
                                                  <input id="creativeTheme" name="data-theme" type="radio" value="creative" class="d-none form-check-input"/>
                                                  <label htmlFor="creativeTheme" class="card mb-3 form-check-label setting-widget setting-vertical-widget border-elegant">
-                                                     <img :src="'/backend/assets/images/demos-creative.webp'" alt="Demos Creative" class="img-fluid" />
+                                                     <img src="/backend/assets/images/demos-creative.webp" alt="Demos Creative" class="img-fluid" />
                                                  </label>
                                                  <label htmlFor="creativeTheme" class="cursor-pointer form-label d-block text-center">Creative Theme</label>
                                              </div>
@@ -606,7 +606,7 @@
                                              <div class="flex-column gap-0 form-check check-primary">
                                                  <input id="modernTheme" name="data-theme" type="radio" value="modern" class="d-none form-check-input" />
                                                  <label htmlFor="modernTheme" class="card mb-3 form-check-label setting-widget setting-vertical-widget border-elegant">
-                                                     <img :src="'/backend/assets/images/demos-modern.webp'" alt="Demos Modern" class="img-fluid" />
+                                                     <img src="/backend/assets/images/demos-modern.webp" alt="Demos Modern" class="img-fluid" />
                                                  </label>
                                                  <label htmlFor="modernTheme" class="cursor-pointer form-label d-block text-center">Modern Theme</label>
                                              </div>
@@ -1015,31 +1015,31 @@
                                  <div class="form-check check-primary">
                                      <input id="image1SidebarBg" name="data-sidebar-image" type="radio" value="image-1" class="d-none form-check-input" />
                                      <label htmlFor="image1SidebarBg" class="sidebar-image-1 rounded-1 form-check-label outline-offset-2">
-                                         <img :src="'/backend/assets/images/img-1.webp'" alt="Image 1" class="h-24 w-14 object-fit-cover rounded-1"/>
+                                         <img src="/backend/assets/images/img-1.webp" alt="Image 1" class="h-24 w-14 object-fit-cover rounded-1"/>
                                      </label>
                                  </div>
                                  <div class="form-check check-primary">
                                      <input id="image2SidebarBg" name="data-sidebar-image" type="radio" value="image-2" class="d-none form-check-input" />
                                      <label htmlFor="image2SidebarBg" class="sidebar-image-2 rounded-1 form-check-label outline-offset-2">
-                                         <img :src="'/backend/assets/images/img-2.webp'" alt="Image 2" class="h-24 w-14 object-fit-cover rounded-1"/>
+                                         <img src="/backend/assets/images/img-2.webp" alt="Image 2" class="h-24 w-14 object-fit-cover rounded-1"/>
                                      </label>
                                  </div>
                                  <div class="form-check check-primary">
                                      <input id="image3SidebarBg" name="data-sidebar-image" type="radio" value="image-3" class="d-none form-check-input" />
                                      <label htmlFor="image3SidebarBg" class="sidebar-image-3 rounded-1 form-check-label outline-offset-2">
-                                         <img :src="'/backend/assets/images/img-3.webp'" alt="Image 3" class="h-24 w-14 object-fit-cover rounded-1"  />
+                                         <img src="/backend/assets/images/img-3.webp" alt="Image 3" class="h-24 w-14 object-fit-cover rounded-1"  />
                                      </label>
                                  </div>
                                  <div class="form-check check-primary">
                                      <input id="image4SidebarBg" name="data-sidebar-image" type="radio" value="image-4" class="d-none form-check-input" />
                                      <label htmlFor="image4SidebarBg" class="sidebar-image-4 rounded-1 form-check-label outline-offset-2">
-                                         <img :src="'/backend/assets/images/img-4.webp'" alt="Image 4" class="h-24 w-14 object-fit-cover rounded-1"/>
+                                         <img src="/backend/assets/images/img-4.webp" alt="Image 4" class="h-24 w-14 object-fit-cover rounded-1"/>
                                      </label>
                                  </div>
                                  <div class="form-check check-primary">
                                      <input id="image5SidebarBg" name="data-sidebar-image" type="radio" value="image-5" class="d-none form-check-input" />
                                      <label htmlFor="image5SidebarBg" class="sidebar-image-5 rounded-1 form-check-label outline-offset-2">
-                                         <img :src="'/backend/assets/images/img-5.webp'" alt="Image 5" class="h-24 w-14 object-fit-cover rounded-1"/>
+                                         <img src="/backend/assets/images/img-5.webp" alt="Image 5" class="h-24 w-14 object-fit-cover rounded-1"/>
                                      </label>
                                  </div>
                              </div>

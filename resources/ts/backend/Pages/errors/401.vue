@@ -7,12 +7,8 @@
             <router-link to="/app" class="btn btn-primary text-center my-5 waves-effect waves-light">Back to home</router-link>
 
             <div class="d-flex justify-content-center mt-12">
-              <img :src="`/backend/assets/img/illustrations/misc-not-authorized-object.png`" alt="misc-not-authorized" class="img-fluid misc-object d-none d-lg-inline-block" width="190">
-              <img :src="`/backend/assets/img/illustrations/misc-bg-light.png`" alt="misc-not-authorized" class="misc-bg d-none d-lg-inline-block" data-app-light-img="illustrations/misc-bg-light.png" data-app-dark-img="illustrations/misc-bg-dark.png">
               <div class="d-flex flex-column align-items-center">
-                <img :src="`/backend/assets/img/illustrations/misc-not-authorized-illustration.png`" alt="misc-not-authorized" class="img-fluid z-1" width="160">
-                <div>
-                </div>
+                <img src="/backend/assets/images/astronaut.webp" alt="not authorized" class="img-fluid z-1" width="220">
               </div>
             </div>
           </div>

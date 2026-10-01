@@ -13,7 +13,7 @@ const props = defineProps(['items']);
     <template v-if="Array.isArray(props.items) && props.items.length">
         <div class="card" v-for="item in items" :key="item?.id ?? item?.name">
             <div class="absolute end-0 top-0 size-45">
-                <img :src="`/backend/images/auth-card-bg.svg`" alt="auth-card-bg">
+                <img src="/backend/assets/images/shape-3.svg" alt="auth-card-bg">
             </div>
             <div class="card-body">
                 <div class="mb-7.5 flex items-start">
@@ -96,7 +96,7 @@ const props = defineProps(['items']);
 
         <div class="card">
             <div class="absolute end-0 top-0 size-45">
-                <img :src="`/backend/images/auth-card-bg.svg`" alt="auth-card-bg">
+                <img src="/backend/assets/images/shape-3.svg" alt="auth-card-bg">
             </div>
             <div class="card-body">
                 <div class="mb-7.5 flex items-start">

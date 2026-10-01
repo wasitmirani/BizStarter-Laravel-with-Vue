@@ -44,8 +44,8 @@ function logOut(event:any) {
         <div class="navbar-brand">
           <div class="logos">
             <a href="#!" aria-label="Topbar Logo">
-              <img :src="'/backend/assets/images/main-logo.webp'" loading="lazy" height="24" alt="Main Logo" class="logo-dark" />
-              <img :src="'/backend/assets/images/logo-white.webp'" loading="lazy" height="24" alt="Logo White" class="logo-light" />
+              <img src="/backend/assets/images/main-logo.webp" loading="lazy" height="24" alt="Main Logo" class="logo-dark" />
+              <img src="/backend/assets/images/logo-white.webp" loading="lazy" height="24" alt="Logo White" class="logo-light" />
             </a>
           </div>
           <button type="button" id="toggleSidebar" class="sidebar-toggle btn p-0" aria-label="sidebar-toggle"><i class="mgc_layout_rightbar_open_line"></i></button>
@@ -75,7 +75,7 @@ function logOut(event:any) {
                   </li>
                   <li>
                     <a class="dropdown-item d-flex gap-2 align-items-center" href="#" data-lang="es">
-                      <img :src="'/backend/assets/images/es.svg'" loading="lazy" alt="ES" class="object-fit-cover rounded-circle size-6" />  
+                      <img src="/backend/assets/images/es.svg" loading="lazy" alt="ES" class="object-fit-cover rounded-circle size-6" />  
                         <span>Spanish</span>
                         <span class="text-muted fs-sm ms-auto">ES</span>
                     </a>
@@ -117,7 +117,7 @@ function logOut(event:any) {
                   </li>
                   <li>
                     <a class="dropdown-item d-flex gap-2 align-items-center" href="#" data-lang="ar">
-                      <img :src="'/backend/assets/images/sa.svg'" loading="lazy" alt="SA" class="object-fit-cover rounded-circle size-6"/>
+                      <img src="/backend/assets/images/sa.svg" loading="lazy" alt="SA" class="object-fit-cover rounded-circle size-6"/>
                         <span>Arabic</span>
                         <span class="text-muted fs-sm ms-auto">AR</span>
                     </a>
@@ -159,7 +159,7 @@ function logOut(event:any) {
                   </li>
                   <li>
                     <a class="dropdown-item d-flex gap-2 align-items-center" href="#" data-lang="pt">
-                      <img :src="'/backend/assets/images/pt.svg'" loading="lazy" alt="PT" class="object-fit-cover rounded-circle size-6" />
+                      <img src="/backend/assets/images/pt.svg" loading="lazy" alt="PT" class="object-fit-cover rounded-circle size-6" />
                         <span>Portuguese</span>
                         <span class="text-muted fs-sm ms-auto">PT</span>
                     </a>
@@ -198,7 +198,7 @@ function logOut(event:any) {
                 <div class="vstack gap-4 mb-4">
                   <div class="d-flex align-items-center gap-3 bg-light bg-opacity-75 rounded p-2">
                     <div class="bg-body-secondary rounded-3 p-6px flex-shrink-0">
-                      <img :src="'/backend/assets/images/product-05.webp'" alt="Product 05" class="img-fluid size-10" />
+                      <img src="/backend/assets/images/product-05.webp" alt="Product 05" class="img-fluid size-10" />
                     </div>
                     <div class="flex-grow-1 overflow-hidden">
                       <div class="d-flex align-items-center justify-content-between gap-2 mb-6px">
@@ -216,7 +216,7 @@ function logOut(event:any) {
                   </div>
                   <div class="d-flex align-items-center gap-3 bg-light bg-opacity-75 rounded p-2">
                     <div class="bg-body-secondary rounded-3 p-6px flex-shrink-0">
-                      <img :src="'/backend/assets/images/product-09.webp'" alt="Product 09" class="img-fluid size-10" />
+                      <img src="/backend/assets/images/product-09.webp" alt="Product 09" class="img-fluid size-10" />
                     </div>
                     <div class="flex-grow-1 overflow-hidden">
                       <div class="d-flex align-items-center justify-content-between gap-2 mb-6px">
@@ -234,7 +234,7 @@ function logOut(event:any) {
                   </div>
                   <div class="d-flex align-items-center gap-3 bg-light bg-opacity-75 rounded p-2">
                     <div class="bg-body-secondary rounded-3 p-6px flex-shrink-0">
-                      <img :src="'/backend/assets/images/product-11.webp'" alt="Product 11" class="img-fluid size-10" />
+                      <img src="/backend/assets/images/product-11.webp" alt="Product 11" class="img-fluid size-10" />
                     </div>
                     <div class="flex-grow-1 overflow-hidden">
                       <div class="d-flex align-items-center justify-content-between gap-2 mb-6px">
@@ -252,7 +252,7 @@ function logOut(event:any) {
                   </div>
                   <div class="d-flex align-items-center gap-3 bg-light bg-opacity-75 rounded p-2">
                     <div class="bg-body-secondary rounded-3 p-6px flex-shrink-0">
-                      <img :src="'/backend/assets/images/product-14.webp'" alt="Product 14" class="img-fluid size-10" />
+                      <img src="/backend/assets/images/product-14.webp" alt="Product 14" class="img-fluid size-10" />
                     </div>
                     <div class="flex-grow-1 overflow-hidden">
                       <div class="d-flex align-items-center justify-content-between gap-2 mb-6px">
@@ -334,7 +334,7 @@ function logOut(event:any) {
                     <div class="notification-item unread p-4">
                       <div class="d-flex align-items-start gap-3">
                         <div class="notification-avatar position-relative">
-                          <img :src="'/backend/assets/images/user-28.webp'" alt="User 21" class="size-11 rounded-circle" />
+                          <img src="/backend/assets/images/user-28.webp" alt="User 21" class="size-11 rounded-circle" />
                             <span class="size-2-5 bg-success rounded-circle d-block position-absolute bottom-0 end-0 border border-white border-2"></span>
                         </div>
                         <div class="flex-grow-1 min-w-0">
@@ -354,7 +354,7 @@ function logOut(event:any) {
                     <div class="notification-item unread p-4">
                       <div class="d-flex align-items-start gap-3">
                         <div class="notification-avatar position-relative">
-                          <img :src="'/backend/assets/images/user-12.webp'" alt="User 21" class="size-11 rounded-circle" />
+                          <img src="/backend/assets/images/user-12.webp" alt="User 21" class="size-11 rounded-circle" />
                             <span class="size-2-5 bg-success rounded-circle d-block position-absolute bottom-0 end-0 border border-white border-2"></span>
                         </div>
                         <div class="flex-grow-1 min-w-0">
@@ -373,7 +373,7 @@ function logOut(event:any) {
                     <div class="notification-item p-4">
                       <div class="d-flex align-items-start gap-3">
                         <div class="notification-avatar position-relative">
-                          <img :src="'/backend/assets/images/user-13.webp'" alt="User 21" class="size-11 rounded-circle"/>
+                          <img src="/backend/assets/images/user-13.webp" alt="User 21" class="size-11 rounded-circle"/>
                             <span class="size-2-5 bg-success rounded-circle d-block position-absolute bottom-0 end-0 border border-white border-2"></span>
                         </div>
                         <div class="flex-grow-1 min-w-0">
@@ -396,7 +396,7 @@ function logOut(event:any) {
                     <div class="notification-item p-4">
                       <div class="d-flex align-items-start gap-3">
                         <div class="notification-avatar position-relative">
-                          <img :src="'/backend/assets/images/user-18.webp'" alt="User 21" class="size-11 rounded-circle" />
+                          <img src="/backend/assets/images/user-18.webp" alt="User 21" class="size-11 rounded-circle" />
                             <span class="size-2-5 bg-success rounded-circle d-block position-absolute bottom-0 end-0 border border-white border-2"></span>
                         </div>
                         <div class="flex-grow-1 min-w-0">
@@ -426,7 +426,7 @@ function logOut(event:any) {
                     <div class="notification-item unread p-4">
                       <div class="d-flex align-items-start gap-3">
                         <div class="notification-avatar position-relative">
-                          <img :src="'/backend/assets/images/user-22.webp'" alt="User" class="size-11 rounded-circle" />
+                          <img src="/backend/assets/images/user-22.webp" alt="User" class="size-11 rounded-circle" />
                             <span class="size-2-5 bg-success rounded-circle d-block position-absolute bottom-0 end-0 border border-white border-2"></span>
                         </div>
                         <div class="flex-grow-1 min-w-0">
@@ -448,7 +448,7 @@ function logOut(event:any) {
                     <div class="notification-item unread p-4">
                       <div class="d-flex align-items-start gap-3">
                         <div class="notification-avatar position-relative">
-                          <img :src="'/backend/assets/images/user-8.webp'" alt="User" class="size-11 rounded-circle" />
+                          <img src="/backend/assets/images/user-8.webp" alt="User" class="size-11 rounded-circle" />
                             <span class="size-2-5 bg-success rounded-circle d-block position-absolute bottom-0 end-0 border border-white border-2"></span>
                         </div>
                         <div class="flex-grow-1 min-w-0">
@@ -469,7 +469,7 @@ function logOut(event:any) {
                     <div class="notification-item unread p-4">
                       <div class="d-flex align-items-start gap-3">
                         <div class="notification-avatar position-relative">
-                          <img :src="'/backend/assets/images/user-7.webp'" alt="User" class="size-11 rounded-circle" />
+                          <img src="/backend/assets/images/user-7.webp" alt="User" class="size-11 rounded-circle" />
                             <span class="size-2-5 bg-success rounded-circle d-block position-absolute bottom-0 end-0 border border-white border-2"></span>
                         </div>
                         <div class="flex-grow-1 min-w-0">
@@ -507,7 +507,7 @@ function logOut(event:any) {
                     <div class="notification-item unread p-4">
                       <div class="d-flex align-items-start gap-3">
                         <div class="notification-avatar position-relative">
-                          <img :src="'/backend/assets/images/user-33.webp'" alt="User" class="size-11 rounded-circle" />
+                          <img src="/backend/assets/images/user-33.webp" alt="User" class="size-11 rounded-circle" />
                             <span class="size-2-5 bg-warning rounded-circle d-block position-absolute bottom-0 end-0 border border-white border-2"></span>
                         </div>
                         <div class="flex-grow-1 min-w-0">
@@ -540,7 +540,7 @@ function logOut(event:any) {
                     <div class="notification-item p-4">
                       <div class="d-flex align-items-start gap-3">
                         <div class="notification-avatar position-relative">
-                          <img :src="'/backend/assets/images/user-28.webp'" alt="User" class="size-11 rounded-circle" />
+                          <img src="/backend/assets/images/user-28.webp" alt="User" class="size-11 rounded-circle" />
                             <span class="size-2-5 bg-info rounded-circle d-block position-absolute bottom-0 end-0 border border-white border-2"></span>
                         </div>
                         <div class="flex-grow-1 min-w-0">
@@ -569,7 +569,7 @@ function logOut(event:any) {
                     <div class="notification-item p-4">
                       <div class="d-flex align-items-start gap-3">
                         <div class="notification-avatar position-relative">
-                          <img :src="'/backend/assets/images/user-29.webp'" alt="User" class="size-11 rounded-circle" />
+                          <img src="/backend/assets/images/user-29.webp" alt="User" class="size-11 rounded-circle" />
                             <span class="size-2-5 bg-success rounded-circle d-block position-absolute bottom-0 end-0 border border-white border-2"></span>
                         </div>
                         <div class="flex-grow-1 min-w-0">
@@ -608,7 +608,7 @@ function logOut(event:any) {
                   <span class="d-inline-block admin-designation">Tech Lead</span>
                 </span>
                 <span class="position-relative ms-6">
-                  <img :src="'/backend/assets/images/user-38.webp'" loading="lazy" alt="User 38" class="object-fit-cover rounded-circle size-9" />
+                  <img src="/backend/assets/images/user-38.webp" loading="lazy" alt="User 38" class="object-fit-cover rounded-circle size-9" />
                     <span class="badge bg-orange rounded-pill border fw-normal profile-border-color position-absolute top-50 translate-middle-y start-0 ms-n6 profile-version">v.1</span>
                     <span class="size-2-5 bg-success rounded-circle d-block position-absolute bottom-0 end-0 border profile-border-color border-2"></span>
                 </span>

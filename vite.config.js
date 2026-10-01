@@ -38,7 +38,14 @@ export default defineConfig({
   },
 
   plugins: [
-    vue(),
+    vue({
+      template: {
+        // Keep absolute /backend/... paths as public URLs (do not resolve as Vite imports)
+        transformAssetUrls: {
+          includeAbsolute: false,
+        },
+      },
+    }),
     dynamicImport(),
     laravel({
       input: [
