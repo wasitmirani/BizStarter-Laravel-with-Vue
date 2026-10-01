@@ -1,0 +1,1 @@
+import "../../admin.bundle-DOCqQWIh.js";import "../../main-BSp6wgyE.js";/* empty css                               */new SimpleLightbox({elements:`.images-gallery a`});

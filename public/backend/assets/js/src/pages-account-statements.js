@@ -1,0 +1,1 @@
+import "../../admin.bundle-DOCqQWIh.js";import "../../main-BSp6wgyE.js";import "../../progress-circle.init-BEuzsGsH.js";import{t as e}from"../../esm-DSV97o7S.js";import "../../account-common.init-Biw8nm9E.js";e(document.getElementById(`accountNumberInput`),{mask:`0000 0000 0000 0000 000`,placeholderChar:`_`,lazy:!1,blocks:{0:{mask:e.MaskedRange,from:0,to:9}}});

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-layout="modern" data-theme="material" data-bs-theme="light" data-sidebar-colors="dark" data-sidebar-image="none" data-sidebar="large" data-topbar-colors="light" data-nav-type="boxed" dir="ltr" data-colors="default" data-profile-sidebar>
 <head>
     <meta charset="utf-8">
     <title>{{ $title ?? config('app.name') }}</title>
@@ -17,8 +17,27 @@
     <link rel="apple-touch-icon" href="/icons/icon-192.png">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet" />
+
+    {{-- ASSETS --}}
+    <link rel="shortcut icon" href="/assets/images/favicon.ico">
+
+    <!-- Bootstrap CSS (RTL, enabled when dir=rtl) -->
+    <link href="{{ asset('/backend/assets/css/bootstrap.rtl.css') }}" rel="stylesheet" type="text/css" disabled>
+    <!-- App CSS (RTL, enabled when dir=rtl) -->
+    <link href="{{ asset('/backend/assets/css/app.rtl.css') }}" rel="stylesheet" type="text/css" disabled>
+
+    <!-- Prefetch Alloce bundles (loaded after React mounts layout) -->
+    <link rel="modulepreload" crossorigin href="{{ asset('/backend/assets/admin.bundle-DOCqQWIh.js') }}">
+    <link rel="modulepreload" crossorigin href="{{ asset('/backend/assets/main-BSp6wgyE.js') }}">
+    <link rel="modulepreload" crossorigin href="{{ asset('/backend/assets/apexcharts.esm-CF-OO0O0.js') }}">
+
+    <link rel="stylesheet" crossorigin href="{{ asset('/backend/assets/css/virtual-select.css') }}">
+    <link rel="stylesheet" crossorigin href="{{ asset('/backend/assets/css/admin.css') }}">
 </head>
-<body>
+<body class="sidebar-hidden">
+    <div class="body-effect-img"></div>
+    <div class="body-top-line"></div>
+    <div class="body-bottom-line"></div>
     <div id="app">
         @yield('content')
     </div>
@@ -95,7 +114,10 @@
             });
         })();
     </script>
-
+     <!-- Vendor scripts used across pages -->
+  <script src="{{ asset('/backend/assets/virtual-select.min-DQ103J38.js') }}"></script>
+  <script src="{{ asset('/backend/assets/libs/dayjs/dayjs.min.js') }}"></script>
+  <script src="{{ asset('/backend/assets/libs/dayjs/plugin/quarterOfYear.js') }}"></script>
     @if (app()->environment('local'))
         @vite(['resources/ts/backend/app.ts', 'resources/css/app.css'])
     @else

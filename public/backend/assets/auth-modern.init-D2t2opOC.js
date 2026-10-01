@@ -1,0 +1,1 @@
+import{t as e}from"./swiper-bundle-DoNZdI6h.js";new e(`#authCreative`,{loop:!0,slidesPerView:1,effect:`fade`,navigation:{nextEl:`.swiper-button-next`,prevEl:`.swiper-button-prev`},autoplay:{delay:1e4,disableOnInteraction:!1},speed:800});

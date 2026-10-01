@@ -1,0 +1,1 @@
+import "../../admin.bundle-DOCqQWIh.js";import "../../main-BSp6wgyE.js";new ClipboardJS(`#copyInput`),new ClipboardJS(`.btn`);

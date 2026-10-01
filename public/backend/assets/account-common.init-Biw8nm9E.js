@@ -1,0 +1,1 @@
+import{t as e}from"./swiper-bundle-DoNZdI6h.js";new e(`#projectsSwiper`,{loop:!0,spaceBetween:20,slidesPerView:1,autoplay:{delay:3500,disableOnInteraction:!1},speed:300});

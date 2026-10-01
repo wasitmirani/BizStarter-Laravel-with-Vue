@@ -1,0 +1,1 @@
+var e=``+new URL(`images/bot.webp`,import.meta.url).href;export{e as t};

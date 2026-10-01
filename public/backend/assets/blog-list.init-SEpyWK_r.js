@@ -1,0 +1,1 @@
+import{t as e}from"./swiper-bundle-DoNZdI6h.js";new e(`#basicSwiper`,{loop:!0,spaceBetween:0,effect:`fade`,speed:1e3,fadeEffect:{crossFade:!0}});
