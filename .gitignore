@@ -3,6 +3,7 @@
 /public/build
 /public/hot
 /public/storage
+/public/assets
 /dist-electron
 /storage/*.key
 /vendor

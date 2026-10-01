@@ -52,21 +52,22 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet" />
 
-    {{-- ASSETS (same pattern as React Starter Kit index.html) --}}
-    <link rel="shortcut icon" href="{{ asset('/backend/assets/images/favicon.ico') }}">
+    {{-- ASSETS (Alloce expects /assets/...; public/assets → public/backend/assets) --}}
+    <link rel="shortcut icon" href="{{ asset('/assets/images/favicon.ico') }}">
 
     <!-- Bootstrap CSS (RTL, enabled when dir=rtl) -->
-    <link href="{{ asset('/backend/assets/css/bootstrap.rtl.css') }}" rel="stylesheet" type="text/css" disabled>
+    <link href="{{ asset('/assets/css/bootstrap.rtl.css') }}" rel="stylesheet" type="text/css" disabled>
     <!-- App CSS (RTL, enabled when dir=rtl) -->
-    <link href="{{ asset('/backend/assets/css/app.rtl.css') }}" rel="stylesheet" type="text/css" disabled>
+    <link href="{{ asset('/assets/css/app.rtl.css') }}" rel="stylesheet" type="text/css" disabled>
 
-    <!-- Prefetch Alloce bundles (loaded after Vue mounts layout) -->
-    <link rel="modulepreload" crossorigin href="{{ asset('/backend/assets/admin.bundle-DOCqQWIh.js') }}">
-    <link rel="modulepreload" crossorigin href="{{ asset('/backend/assets/main-BSp6wgyE.js') }}">
-    <link rel="modulepreload" crossorigin href="{{ asset('/backend/assets/apexcharts.esm-CF-OO0O0.js') }}">
+    <!-- Prefetch Alloce bundles (loaded after Vue mounts layout).
+         Use /assets/... so URLs match hard-coded imports inside main-*.js -->
+    <link rel="modulepreload" crossorigin href="{{ asset('/assets/admin.bundle-DOCqQWIh.js') }}">
+    <link rel="modulepreload" crossorigin href="{{ asset('/assets/main-BSp6wgyE.js') }}">
+    <link rel="modulepreload" crossorigin href="{{ asset('/assets/apexcharts.esm-CF-OO0O0.js') }}">
 
-    <link rel="stylesheet" crossorigin href="{{ asset('/backend/assets/css/virtual-select.css') }}">
-    <link rel="stylesheet" crossorigin href="{{ asset('/backend/assets/css/admin.css') }}">
+    <link rel="stylesheet" crossorigin href="{{ asset('/assets/css/virtual-select.css') }}">
+    <link rel="stylesheet" crossorigin href="{{ asset('/assets/css/admin.css') }}">
 </head>
 <body class="sidebar-hidden">
     <div id="app">
@@ -147,9 +148,9 @@
     </script>
 
     <!-- Vendor scripts used across pages (same as React Starter Kit) -->
-    <script src="{{ asset('/backend/assets/virtual-select.min-DQ103J38.js') }}"></script>
-    <script src="{{ asset('/backend/assets/libs/dayjs/dayjs.min.js') }}"></script>
-    <script src="{{ asset('/backend/assets/libs/dayjs/plugin/quarterOfYear.js') }}"></script>
+    <script src="{{ asset('/assets/virtual-select.min-DQ103J38.js') }}"></script>
+    <script src="{{ asset('/assets/libs/dayjs/dayjs.min.js') }}"></script>
+    <script src="{{ asset('/assets/libs/dayjs/plugin/quarterOfYear.js') }}"></script>
 
     @if (app()->environment('local'))
         @vite(['resources/ts/backend/app.ts', 'resources/css/app.css'])

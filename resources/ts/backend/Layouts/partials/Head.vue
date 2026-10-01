@@ -327,7 +327,7 @@ function logOut(event:any) {
                   </ul>
                 </div>
               </div>
-              {/* <!-- Tab Content --> */}
+           
               <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab" tabIndex={0}>
                   <div data-simplebar class="topbar-notification">

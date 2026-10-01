@@ -43,11 +43,16 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+            "@php scripts/link-alloce-assets.php"
         ],
         "post-update-cmd": [
             "@php artisan package:discover --ansi",
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
+            "@php scripts/link-alloce-assets.php"
+        ],
+        "link-alloce-assets": [
+            "@php scripts/link-alloce-assets.php"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""

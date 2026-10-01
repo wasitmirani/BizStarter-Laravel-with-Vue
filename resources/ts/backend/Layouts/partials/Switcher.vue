@@ -47,9 +47,7 @@
              </defs>
          </svg>
      </div>
-     
-     {/* <!-- Apps Tools Modal --> */}
-     
+
      <div class="modal fade" id="toolAppsModal" tabIndex={-1} aria-labelledby="toolAppsModalLabel" aria-hidden="true">
          <div class="modal-dialog modal-xl modal-dialog-centered">
              <div class="modal-content border-0 shadow-lg">
@@ -76,7 +74,6 @@
                              </div>
                          </div>
                      </div>
-                     {/* <!-- Categories Filter --> */}
                      <ul class="nav nav-pills flex-wrap gap-2 category-filter mb-3">
                          <li class="nav-item">
                              <button type="button" class="nav-link active" data-category="all">All Apps</button>
@@ -107,7 +104,6 @@
                              </button>
                          </div>
                          <div class="row g-2" id="selectedAppsList">
-                             {/* <!-- Selected apps here --> */}
                          </div>
                      </div>
      
@@ -290,7 +286,7 @@
          </div>
      </div>
      
-     {/* <!-- Modal --> */}
+     <!-- Modal --> 
      <div class="modal fade" id="settingsModal" tabIndex={-1} aria-labelledby="settingsModalLabel" aria-hidden="true">
          <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
              <div class="modal-content">

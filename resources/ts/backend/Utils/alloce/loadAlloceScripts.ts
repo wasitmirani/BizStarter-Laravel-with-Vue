@@ -6,8 +6,10 @@
  * Public assets cannot be `import()`-ed through Vite — load them as `<script type="module">`.
  */
 
-const ADMIN_BUNDLE = '/backend/assets/admin.bundle-DOCqQWIh.js';
-const MAIN_BUNDLE = '/backend/assets/main-BSp6wgyE.js';
+// Alloce bundles hard-import absolute `/assets/...` paths (same as React Starter Kit).
+// `public/assets` is a junction/symlink to `public/backend/assets`.
+const ADMIN_BUNDLE = '/assets/admin.bundle-DOCqQWIh.js';
+const MAIN_BUNDLE = '/assets/main-BSp6wgyE.js';
 
 let layoutPromise: Promise<void> | null = null;
 const pagePromises = new Map<string, Promise<void>>();
