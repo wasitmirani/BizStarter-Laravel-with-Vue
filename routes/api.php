@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\Dashboard\DashboardController;
 use App\Http\Controllers\Backend\Dropdown\DropDownController;
 use App\Http\Controllers\Backend\Media\UploadController;
 use App\Http\Controllers\Backend\Permission\PermissionController;
@@ -19,17 +20,34 @@ Route::prefix('/app')->middleware('auth:sanctum')->group(function () {
         ]);
     });
 
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+
     // Users
-    Route::resource('user', UserController::class);
+    Route::get('user', [UserController::class, 'index'])->middleware('permission:users-list');
+    Route::post('user', [UserController::class, 'store'])->middleware('permission:create-user');
+    Route::get('user/{user}', [UserController::class, 'show'])->middleware('permission:show-user');
+    Route::put('user/{user}', [UserController::class, 'update'])->middleware('permission:edit-user');
+    Route::patch('user/{user}', [UserController::class, 'update'])->middleware('permission:edit-user');
+    Route::delete('user/{user}', [UserController::class, 'destroy'])->middleware('permission:delete-user');
     Route::post('/password/update', [UserController::class, 'updatePassword']);
     Route::post('user/{uuid}/impersonate', [UserController::class, 'impersonate']);
     Route::post('impersonate/leave', [UserController::class, 'leaveImpersonate']);
 
     // Roles
-    Route::resource('role', RoleController::class);
+    Route::get('role', [RoleController::class, 'index'])->middleware('permission:roles-list');
+    Route::post('role', [RoleController::class, 'store'])->middleware('permission:create-role');
+    Route::get('role/{role}', [RoleController::class, 'show'])->middleware('permission:show-role');
+    Route::put('role/{role}', [RoleController::class, 'update'])->middleware('permission:edit-role');
+    Route::patch('role/{role}', [RoleController::class, 'update'])->middleware('permission:edit-role');
+    Route::delete('role/{role}', [RoleController::class, 'destroy'])->middleware('permission:delete-role');
 
     // Permissions
-    Route::resource('permission', PermissionController::class);
+    Route::get('permission', [PermissionController::class, 'index'])->middleware('permission:permissions-list');
+    Route::post('permission', [PermissionController::class, 'store'])->middleware('permission:create-permission');
+    Route::get('permission/{permission}', [PermissionController::class, 'show'])->middleware('permission:show-permission');
+    Route::put('permission/{permission}', [PermissionController::class, 'update'])->middleware('permission:edit-permission');
+    Route::patch('permission/{permission}', [PermissionController::class, 'update'])->middleware('permission:edit-permission');
+    Route::delete('permission/{permission}', [PermissionController::class, 'destroy'])->middleware('permission:delete-permission');
 
     // Uploads
     Route::prefix('upload')->group(function () {

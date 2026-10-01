@@ -44,6 +44,7 @@ class UserService extends BaseService implements BaseFilterable
     {
 
         return $this->model
+            ->with('roles:id,name')
             ->when(!isset($params['sort_by']), function ($query) {
                 $query->latest();
             })
@@ -68,14 +69,23 @@ class UserService extends BaseService implements BaseFilterable
 
     public function saveUser(array $data = [])
     {
-        // Optionally, you may want to handle additional logic here (validation, password hashing, events, etc.)
-        // Merge extradata into $data before creating the user
+        $role = $data['role'] ?? null;
+        unset($data['role'], $data['password_confirmation']);
+
         $data = array_merge($data, [
+            'name' => trim(($data['first_name'] ?? '') . ' ' . ($data['last_name'] ?? '')),
             'user_name' => $this->generateUsername($data['first_name'], $data['last_name']),
             'slug' => mapFirstNameLastSlug($data['first_name'], $data['last_name']),
             'uuid' => genUUID(),
         ]);
-        return $this->model->create($data);
+
+        $user = $this->model->create($data);
+
+        if (!empty($role)) {
+            $user->syncRoles([$role]);
+        }
+
+        return $user->load('roles');
     }
 
     public function updatePassword(){
@@ -94,7 +104,7 @@ class UserService extends BaseService implements BaseFilterable
 
     public function fetch(string $column,int|string $val){
         // fetch user info
-        return $this->model->filters([$column =>$val])->first();
+        return $this->model->with('roles:id,name')->filters([$column =>$val])->first();
     }
 
     public function updateUser(int  $id, array $data){
@@ -103,7 +113,7 @@ class UserService extends BaseService implements BaseFilterable
         return responseMessage('User not found',404);
         }
 
-
+        $role = $data['role'] ?? null;
 
         $user->name = ($data['first_name'].' ' .$data['last_name']);
         $user->first_name =$data['first_name'];
@@ -126,6 +136,10 @@ class UserService extends BaseService implements BaseFilterable
 
         $user->save();
 
-      return $user;
+        if ($role !== null && $role !== '') {
+            $user->syncRoles([$role]);
+        }
+
+      return $user->load('roles');
     }
 }

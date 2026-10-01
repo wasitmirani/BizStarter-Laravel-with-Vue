@@ -13,10 +13,13 @@ export function useUserForm(userData?: any, isEditMode: boolean = false) {
     const { countries, timezones, languages, currencies } =
     storeToRefs(dropdownStore);
 
-    Helpers.useDynamicOnMounted(async () => {
-    await dropdownStore.fetchDropdowns();
+    const { roles } = storeToRefs(dropdownStore);
 
-    console.log("countries", countries.value); // ✅ correct
+    Helpers.useDynamicOnMounted(async () => {
+        await Promise.all([
+            dropdownStore.fetchDropdowns(),
+            dropdownStore.fetchRoles(),
+        ]);
     });
     // ─── State ────────────────────────────────────────────────────────────────
     let errors = Helpers.useDynamicRef<any>([]);
@@ -29,6 +32,9 @@ export function useUserForm(userData?: any, isEditMode: boolean = false) {
     const genderDropdownItems = DropdownOptions.genderOptions();
     const maritalStatusDropdownItems = DropdownOptions.maritalStatusOptions();
 
+    const initialRoleId = userData?.role
+        ?? userData?.roles?.[0]?.id
+        ?? null;
 
     // ─── User Reactive Object ─────────────────────────────────────────────────
     const user = Helpers.useDynamicReactive({
@@ -51,8 +57,13 @@ export function useUserForm(userData?: any, isEditMode: boolean = false) {
         country_id: null as string | number | null,
         timezone_id: null as string | number | null,
         language_id: null as string | number | null,
-        ...(userData ?? {})
+        role: initialRoleId as string | number | null,
+        ...(userData ?? {}),
     });
+
+    if (initialRoleId) {
+        user.role = initialRoleId;
+    }
 
     const findOptionByValue = (options: any[], value: unknown) =>
         options.find((item: any) => String(item.value) === String(value)) ?? null;
@@ -60,6 +71,7 @@ export function useUserForm(userData?: any, isEditMode: boolean = false) {
     const countryOptions =  Helpers.useDynamicComputed(() => countries.value ?? []);
     const timezoneOptions = Helpers.useDynamicComputed(() => timezones.value ?? []);
     const languageOptions = Helpers.useDynamicComputed(() => languages.value ?? []);
+    const roleOptions = Helpers.useDynamicComputed(() => roles.value ?? []);
 
     const countryModel = Helpers.useDynamicComputed({
         get: () => findOptionByValue(countryOptions.value, user.country_id ?? user.country),
@@ -79,6 +91,13 @@ export function useUserForm(userData?: any, isEditMode: boolean = false) {
         get: () => findOptionByValue(languageOptions.value, user.language_id),
         set: (selected: any) => {
             user.language_id = selected?.value ?? null;
+        },
+    });
+
+    const roleModel = Helpers.useDynamicComputed({
+        get: () => findOptionByValue(roleOptions.value, user.role),
+        set: (selected: any) => {
+            user.role = selected?.value ?? null;
         },
     });
 
@@ -211,9 +230,11 @@ export function useUserForm(userData?: any, isEditMode: boolean = false) {
          countryModel,
          timezoneModel,
          languageModel,
+         roleModel,
          countryOptions,
          timezoneOptions,
          languageOptions,
+         roleOptions,
         // handlers
         onSubmit,
         addThumbnail,
