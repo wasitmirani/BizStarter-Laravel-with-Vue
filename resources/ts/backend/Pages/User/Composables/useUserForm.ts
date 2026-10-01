@@ -3,17 +3,14 @@ import { DropdownOptions } from '@/Backend/Utils/DropdownOptions';
 import { Helpers } from '@/Backend/Utils/Helper'
 import { useDropDownsStore } from '@/Backend/Stores/DropDownsStore';
 import { storeToRefs } from 'pinia';
-import { computed, onMounted } from 'vue';
 
 
 export function useUserForm(userData?: any, isEditMode: boolean = false) {
       // ─── Store ─────────────────────────────────────────
     const dropdownStore = useDropDownsStore();
 
-    const { countries, timezones, languages, currencies } =
+    const { countries, timezones, languages, currencies, roles } =
     storeToRefs(dropdownStore);
-
-    const { roles } = storeToRefs(dropdownStore);
 
     Helpers.useDynamicOnMounted(async () => {
         await Promise.all([

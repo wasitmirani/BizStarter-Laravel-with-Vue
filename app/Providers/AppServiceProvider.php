@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
+use App\Enums\RolesEnum;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
-use App\Repositories\Eloquent\UserRepository;
-use App\Repositories\Contracts\UserRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,8 +14,6 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         //
-        // $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
-
     }
 
     /**
@@ -23,6 +21,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Gate::before(function ($user, $ability) {
+            if (method_exists($user, 'hasAnyRole') && $user->hasAnyRole([
+                RolesEnum::SUPER_ADMIN->value,
+                RolesEnum::ADMIN->value,
+            ])) {
+                return true;
+            }
+
+            return null;
+        });
     }
 }
