@@ -35,6 +35,14 @@ type AppContext = {
     theme: {
       layout: string;
     };
+    tenant?: {
+      id: string | number;
+      name: string | null;
+      email?: string | null;
+      primary_color?: string | null;
+      logo?: string | null;
+      domain?: string | null;
+    } | null;
   };
   layout: Readonly<Record<string, unknown>>;
 };

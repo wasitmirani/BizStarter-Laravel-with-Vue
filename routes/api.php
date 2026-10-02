@@ -5,6 +5,7 @@ use App\Http\Controllers\Backend\Dropdown\DropDownController;
 use App\Http\Controllers\Backend\Media\UploadController;
 use App\Http\Controllers\Backend\Permission\PermissionController;
 use App\Http\Controllers\Backend\Role\RoleController;
+use App\Http\Controllers\Backend\Tenant\TenantController;
 use App\Http\Controllers\Backend\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,17 @@ Route::prefix('/app')->middleware('auth:sanctum')->group(function () {
     });
 
     Route::get('/dashboard', [DashboardController::class, 'index']);
+
+    // Tenants
+    Route::get('tenant', [TenantController::class, 'index'])->middleware('permission:tenants-list');
+    Route::post('tenant', [TenantController::class, 'store'])->middleware('permission:create-tenant');
+    Route::get('tenant/{tenant}', [TenantController::class, 'show'])->middleware('permission:show-tenant');
+    Route::put('tenant/{tenant}', [TenantController::class, 'update'])->middleware('permission:edit-tenant');
+    Route::patch('tenant/{tenant}', [TenantController::class, 'update'])->middleware('permission:edit-tenant');
+    Route::delete('tenant/{tenant}', [TenantController::class, 'destroy'])->middleware('permission:delete-tenant');
+    Route::patch('tenant/{tenant}/status', [TenantController::class, 'updateStatus'])->middleware('permission:edit-tenant');
+    Route::post('tenant/{tenant}/domains', [TenantController::class, 'storeDomain'])->middleware('permission:edit-tenant');
+    Route::delete('tenant/{tenant}/domains/{domain}', [TenantController::class, 'destroyDomain'])->middleware('permission:edit-tenant');
 
     // Users
     Route::get('user', [UserController::class, 'index'])->middleware('permission:users-list');

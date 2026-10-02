@@ -52,6 +52,7 @@ export default defineConfig({
         'resources/css/app.css',
         'resources/ts/backend/app.ts',
         'resources/ts/frontend/app.ts',
+        'resources/ts/tenant/app.ts',
       ],
       refresh: true,
     }),

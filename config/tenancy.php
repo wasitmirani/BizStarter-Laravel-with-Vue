@@ -138,7 +138,8 @@ return [
          * disable asset() helper tenancy and explicitly use tenant_asset() calls in places
          * where you want to use tenant-specific assets (product images, avatars, etc).
          */
-        'asset_helper_tenancy' => true,
+        // Shared Alloce/admin assets live under public/; use tenant_asset() for tenant uploads.
+        'asset_helper_tenancy' => false,
     ],
 
     /**

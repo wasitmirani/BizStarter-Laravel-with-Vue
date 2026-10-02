@@ -44,6 +44,10 @@ export default class SidebarMenu {
             ),
 
             this.setHeadingMenu('Management'),
+            this.setMultiMenu('Tenancy', 'building', undefined, [
+                    this.setSubMenu('Tenants', '/management/tenants', 'tenants-list'),
+                ]
+            ),
             this.setMultiMenu('Access Control', 'users', undefined, [
                     this.setSubMenu('Users', '/management/users', 'users-list'),
                     this.setSubMenu('Roles', '/management/roles', 'roles-list'),

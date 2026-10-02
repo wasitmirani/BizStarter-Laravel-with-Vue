@@ -1,0 +1,5 @@
+USER=test@gmail.com
+HASH_OK=no
+ACTIVE=yes
+HAS_SESSIONS_TABLE=yes
+USERS=1

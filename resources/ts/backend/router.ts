@@ -31,6 +31,12 @@ const routes = [
     setRoute("/management/user/edit/:uuid", "edit-user", "User/User", "edit-user"),
     setRoute("/management/user/:uuid", "show-user", "User/UserShow", "show-user"),
 
+    // Tenants
+    setRoute("/management/tenants", "tenants", "Tenant/Tenants", "tenants-list"),
+    setRoute("/management/tenant/create", "create-tenant", "Tenant/Tenant", "create-tenant"),
+    setRoute("/management/tenant/edit/:id", "edit-tenant", "Tenant/Tenant", "edit-tenant"),
+    setRoute("/management/tenant/:id", "show-tenant", "Tenant/TenantShow", "show-tenant"),
+
     // Roles
     setRoute("/management/roles", "roles", "Role/Roles", "roles-list"),
     setRoute("/management/role/create", "create-role", "Role/Role", "create-role"),

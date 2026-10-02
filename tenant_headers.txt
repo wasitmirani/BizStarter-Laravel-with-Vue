@@ -1,0 +1,11 @@
+HTTP/1.1 500 Internal Server Error
+Server: nginx/1.25.2
+Content-Type: text/html; charset=utf-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+X-Powered-By: PHP/8.4.26
+Cache-Control: no-cache, private
+date: Fri, 02 Oct 2026 13:51:34 GMT
+Set-Cookie: XSRF-TOKEN=eyJpdiI6Inpmd2NLc0Fwd2Nad3hTUTkwWWlWZlE9PSIsInZhbHVlIjoidFRSamY0OVgvUzFTR0ZzUDRiazVHWnBMSi9lUFllL2gvWnFyMUhFM2dZUkZWL3hUYUdrd2RGQ3gzMkhEaHlWaFNlUFU3cEJLYk02ODhBYUYvaEVhMFFMTWZZcVJIM3BxNmQzMzdvbWpnaldoSXNyYlJwMVFEdnljQjMwczNuWjkiLCJtYWMiOiJmMzIwOTk5YWM1YmE2MjFiZWU0NGQ2N2NkNWU3ZjZlNWQ5ZDQ4YzE5Y2JkODJlYzk4MzNkMTdmNDM2YjFiNDViIiwidGFnIjoiIn0%3D; expires=Fri, 02 Oct 2026 15:51:34 GMT; Max-Age=7200; path=/; secure; samesite=lax
+Set-Cookie: larabase_session=eyJpdiI6IlJkT2FYM05yVGVsalBpdmZHOGlQQ3c9PSIsInZhbHVlIjoiam9wMUZWQWRnblYwVUlrcWxCVnBzU29JYTR6YVV3V0lOeGV0NkRiUXFJTU84UFRmVW5xN2NheC8vbm45alB3R3JnTFFDVERobEgwa3RoUi83N1BCOFNNcUVudk9nK2RlekxMNGx2cXV1a2xNb1F1RWFwS1VQN256UHJ4Vm0wVloiLCJtYWMiOiI5YjQ4ZjNkYjYwNmMxYTMxNmUwMjk0NWE3MDlkN2E1OGJjZWEzNDQxMzlhZDQ2OTdlNjIyZDUyMTUyYTdhNWFmIiwidGFnIjoiIn0%3D; expires=Fri, 02 Oct 2026 15:51:34 GMT; Max-Age=7200; path=/; secure; httponly; samesite=lax
+
