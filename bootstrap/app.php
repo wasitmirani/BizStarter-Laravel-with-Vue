@@ -16,7 +16,18 @@ return Application::configure(basePath: dirname(__DIR__))
         then: function () {
             // Scope central web routes to central domains so Laravel 13's
             // domain-route precedence keeps them ahead of tenant catch-alls.
-            foreach (config('tenancy.central_domains') as $domain) {
+            //
+            // Laravel 13 keeps the FIRST registered name in the route name
+            // lookup, so prefer the current request host (or APP_URL) first.
+            // Otherwise route('login') always points at 127.0.0.1.
+            $domains = config('tenancy.central_domains');
+            $preferred = request()->getHost() ?: parse_url((string) config('app.url'), PHP_URL_HOST);
+
+            if (is_string($preferred) && $preferred !== '' && in_array($preferred, $domains, true)) {
+                $domains = array_values(array_unique([$preferred, ...$domains]));
+            }
+
+            foreach ($domains as $domain) {
                 Route::middleware('web')
                     ->domain($domain)
                     ->group(base_path('routes/web.php'));

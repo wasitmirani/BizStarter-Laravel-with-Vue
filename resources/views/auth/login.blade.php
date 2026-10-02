@@ -1,130 +1,112 @@
 @extends('layouts.backend.auth-master')
 @section('title', 'Sign In')
 @section('content')
-<div class="grid grid-cols-1 lg:grid-cols-2">
-    <div class="card-body relative p-12.5">
-        <!-- Auth Brand Logo -->
-        <div class="mb-7.5 flex flex-col items-center justify-center text-center">
-            <a href="{{ route('login') }}" class="auth-logo">
-                <img src="{{ asset('/backend/images/logo-black.png') }}" alt="logo" class="flex dark:hidden" />
-                <img src="{{ asset('/backend/images/logo.png') }}" alt="dark logo" class="hidden dark:flex" />
-            </a>
-            <h4 class="mt-5 mb-2 text-base font-bold">Great to see you here 👋</h4>
-            <p class="text-default-400 mx-auto w-full lg:w-3/4">Let’s get you signed in. Enter your email and password to continue.</p>
-        </div>
 
-        <div class="grid lg:grid-cols-1 text-default-400 gap-3">
-            <div>
-                <a href="#!" class="btn border border-default-300 text-default-900 hover:border-default-400 hover:bg-default-50 w-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="me-1" width="13.68px" height="14px" viewBox="0 0 256 262">
-                        <path fill="#4285f4" d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622l38.755 30.023l2.685.268c24.659-22.774 38.875-56.282 38.875-96.027"></path>
-                        <path
-                            fill="#34a853"
-                            d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.055-45.257 13.055c-34.523 0-63.824-22.773-74.269-54.25l-1.531.13l-40.298 31.187l-.527 1.465C35.393 231.798 79.49 261.1 130.55 261.1"
-                        ></path>
-                        <path fill="#fbbc05" d="M56.281 156.37c-2.756-8.123-4.351-16.827-4.351-25.82c0-8.994 1.595-17.697 4.206-25.82l-.073-1.73L15.26 71.312l-1.335.635C5.077 89.644 0 109.517 0 130.55s5.077 40.905 13.925 58.602z"></path>
-                        <path fill="#eb4335" d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0C79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251"></path>
-                    </svg>
-                    Sign in with Google
+<div class="row g-0 auth-modern-row justify-content-center align-items-center">
+    <div class="col-md-9 col-lg-7 col-xxl-6">
+        <div class="p-4 p-md-10 pb-20 pb-md-16 pb-xl-10">
+            <div class="mb-4 text-center">
+                <a href="{{ route('login') }}" class="logos">
+                    <img src="{{ asset('/assets/images/main-logo.webp') }}" loading="lazy" alt="{{ config('app.name') }}" class="h-7 logo-dark">
+                    <img src="{{ asset('/assets/images/logo-white.webp') }}" loading="lazy" alt="{{ config('app.name') }}" class="h-7 logo-light">
                 </a>
             </div>
-            <div>
-               
+            <h5 class="mb-12 text-center text-gradient fs-lg fw-medium">Welcome Back!</h5>
+            <div class="d-flex flex-wrap gap-2 justify-content-between mb-8">
+                <h6 class="mb-0 fs-16 fw-bold">Sign In</h6>
+                <p class="text-center text-muted">Don't have an account? <a href="{{ route('register') }}" class="text-body fw-semibold">Sign Up</a></p>
             </div>
-        </div>
-
-        <p class="relative my-5 text-center text-default-400 after:absolute after:start-0 after:end-0 after:top-2.75 after:h-0.75 after:border-t after:border-b after:border-dashed after:border-default-300">
-            <span class="relative z-10 bg-card font-medium px-4">Continue with Email</span>
-        </p>
-
-        <div class="rounded-md">
-            @if (session('status'))
-                <div class="mb-4 rounded-md border border-success/20 bg-success/10 px-3 py-2 text-sm text-success">
-                    {{ session('status') }}
-                </div>
-            @endif
-
             <form method="POST" action="{{ route('login') }}">
                 @csrf
-                <div class="mb-5">
-                    <label for="userEmail" class="form-label">
-                        Email address
-                        <span class="text-danger">*</span>
-                    </label>
-                    <div class="input-icon-group">
-                        <i class="iconify tabler--mail input-icon"></i>
+
+                @if (session('status'))
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        <span>{{ session('status') }}</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
+                @if ($errors->any())
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <span>{{ $errors->first() }}</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
+                <div class="row g-6">
+                    <div class="col-12">
+                        <label for="emailInput" class="form-label">Email Or Username</label>
                         <input
-                            type="email"
-                            class="form-input @error('email') border-danger @enderror"
-                            id="userEmail"
+                            type="text"
+                            id="emailInput"
                             name="email"
                             value="{{ old('email') }}"
-                            placeholder="you&#64;example.com"
+                            placeholder="Enter your email or username"
+                            class="form-control @error('email') is-invalid @enderror"
                             required
                             autofocus
                             autocomplete="username"
-                        />
+                        >
                     </div>
-                    @error('email')
-                        <p class="mt-1 text-xs text-danger">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="mb-5">
-                    <label for="userPassword" class="form-label">
-                        Password
-                        <span class="text-danger">*</span>
-                    </label>
-                    <div class="input-icon-group">
-                        <i class="iconify tabler--lock-password input-icon"></i>
-                        <input
-                            type="password"
-                            class="form-input @error('password') border-danger @enderror"
-                            id="userPassword"
-                            name="password"
-                            placeholder="••••••••"
-                            required
-                            autocomplete="current-password"
-                        />
+                    <div class="col-12">
+                        <label for="passwordInput" class="form-label">Password</label>
+                        <div class="position-relative">
+                            <input
+                                type="password"
+                                id="passwordInput"
+                                name="password"
+                                class="form-control pe-8 @error('password') is-invalid @enderror"
+                                placeholder="Enter your password"
+                                required
+                                autocomplete="current-password"
+                            >
+                            <div class="position-absolute top-50 end-0 me-3 translate-middle-y text-muted cursor-pointer" id="passwordShowIcon">
+                                <i data-lucide="eye-off" class="size-5"></i>
+                                <i data-lucide="eye" class="size-5 d-none"></i>
+                            </div>
+                        </div>
                     </div>
-                    @error('password')
-                        <p class="mt-1 text-xs text-danger">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="mb-5 flex items-center justify-between">
-                    <div class="flex items-start gap-2 lg:items-center">
-                        <input class="form-checkbox form-checkbox-light mt-1 size-4.25 lg:mt-0" type="checkbox" id="rememberMe" name="remember" {{ old('remember') ? 'checked' : '' }} />
-                        <label class="form-check-label" for="rememberMe">Keep me signed in</label>
+                    <div class="col-12 d-flex justify-content-between align-items-center">
+                        <div class="form-check check-primary">
+                            <input type="checkbox" id="rememberMe" name="remember" class="form-check-input" {{ old('remember') ? 'checked' : '' }}>
+                            <label for="rememberMe" class="form-check-label">Remember me</label>
+                        </div>
+                        @if (Route::has('password.request'))
+                            <a href="{{ route('password.request') }}" class="fs-sm">Forgot Password?</a>
+                        @endif
                     </div>
-                    @if (Route::has('password.request'))
-                        <a href="{{ route('password.request') }}" class="text-default-400 underline underline-offset-4">Forgot Password?</a>
-                    @endif
-                </div>
-
-                <div>
-                    <button type="submit" class="btn bg-primary w-full py-3 font-semibold text-white hover:bg-primary-hover">Sign In</button>
+                    <div class="col-12 mt-7">
+                        <button type="submit" class="btn btn-primary w-100">Sign In</button>
+                    </div>
                 </div>
             </form>
-
-            <p class="text-default-400 mt-7.5 text-center">
-                New here?
-                <a href="#" class="text-primary font-semibold underline underline-offset-4">Create an account</a>
-            </p>
-
-            <!-- Auth Footer -->
-            <p class="text-default-400 mt-7.5 text-center">
-                &copy;
-                <script>
-                    document.write(new Date().getFullYear())
-                </script>
-                    {{ config('app.name') }} - by
-              
-            </p>
+            <div class="position-relative text-center mt-8 mb-5 d-flex align-items-center gap-2">
+                <div class="border-top border-dark-subtle w-50 border-dashed"></div>
+                <p class="text-muted p-2 flex-shrink-0 ">Or Sign In With</p>
+                <div class="end-0 border-top border-dark-subtle w-50  border-dashed"></div>
+            </div>
+            <div class="d-flex gap-5 justify-content-center">
+               <a href="#!" class="btn btn-danger gradient-dark-danger rounded-circle size-9 btn-icon">
+                    <i class="ri-google-fill fs-lg"></i>
+                </a>
+               <a href="#!" class="btn btn-primary gradient-dark-primary rounded-circle size-9 btn-icon">
+                    <i class="ri-facebook-fill fs-lg"></i>
+                </a>
+               <a href="#!" class="btn btn-dark gradient-dark-dark rounded-circle size-9 btn-icon">
+                    <i class="ri-github-fill fs-lg"></i>
+                </a>
+               <a href="#!" class="btn btn-secondary gradient-dark-secondary rounded-circle size-9 btn-icon">
+                    <i class="ri-linkedin-fill fs-lg"></i>
+                </a>
+               <a href="#!" class="btn btn-info gradient-dark-info rounded-circle size-9 btn-icon">
+                    <i class="ri-twitter-fill fs-lg"></i>
+                </a>
+            </div>
+        </div>
+        <div class="position-absolute bottom-0 start-0 w-100 d-flex justify-content-center p-5 pb-xxl-0">
+            <p class="mb-0 text-center fs-15 text-muted">© <script>document.write(new Date().getFullYear())</script> {{ config('app.name') }}</p>
         </div>
     </div>
-    <div class="relative hidden h-full overflow-hidden rounded-e-2xl bg-cover bg-center object-cover lg:block" style="background-image: url({{ asset('/backend/images/auth2.jpg') }})">
-        <div class="absolute inset-0 flex items-end justify-center rounded-e-sm p-9 [background:linear-gradient(to_top,#313a46,rgba(49,58,70,.8),rgba(49,58,70,.5))]"></div>
-    </div>
 </div>
+
 @endsection
