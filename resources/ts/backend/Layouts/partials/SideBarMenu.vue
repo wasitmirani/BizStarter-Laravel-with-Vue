@@ -1,211 +1,145 @@
 <script lang="ts" setup>
-import { Helpers } from "../../Utils/Helper";
-import SidebarMenu from "../../Utils/Sidebar";
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 
-const menuList: any = Helpers.useDynamicRef([]);
+const route = useRoute();
 
-Helpers.useDynamicOnMounted(() => {
-    let sidebar = new SidebarMenu();
-    const fetchedMenuList = sidebar.getMenuList();
-    menuList.value = fetchedMenuList;
-});
-function isActive(link: string) {
-    return Helpers.route().path === link ? 'active' : '';
+const permissions = computed<string[]>(() => (window as any).permissions ?? []);
 
-}
-function isAllowed(value: string): boolean {
-    console.log("isAllowed", value);
-    // return true;
-    if (permissions.includes(value)) {
-        return true;
-    } else {
-        return false;
-    }
-}
-const getMenuClass = (type: string) => {
-    switch (type) {
-        case "heading":
-            return "menu-header fw-medium mt-4";
-            break;
-        default:
-            return "menu-item";
-            break;
-    }
-}
-const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '';
+const has = (permission?: string | null) => !permission || permissions.value.includes(permission);
 
-function doLogout(event: any) {
-    event.preventDefault();
-    // First try: submit any existing server-rendered logout form (Blade)
-    const existing = Array.from(document.forms).find(f => {
-        try { return new URL(f.action, window.location.href).pathname === '/logout' && f.method.toLowerCase() === 'post'; } catch (e) { return false; }
-    }) as HTMLFormElement | undefined;
+type NavItem = { name: string; label: string; icon: string; permission?: string | null };
 
-    if (existing) {
-        const tokenInput = existing.querySelector('input[name="_token"]') as HTMLInputElement | null;
-        if (tokenInput) tokenInput.value = csrf;
-        existing.submit();
-        return;
-    }
+const workspace: NavItem[] = [
+    { name: 'dashboard', label: 'Dashboard', icon: 'layout-dashboard' },
+    { name: 'matches', label: 'My matches', icon: 'target-arrow' },
+    { name: 'programs', label: 'Programs', icon: 'school' },
+    { name: 'universities', label: 'Universities', icon: 'building' },
+    { name: 'scholarships', label: 'Scholarships', icon: 'award' },
+];
 
-    // Fallback: create and submit a form programmatically
-    const f = document.createElement('form');
-    f.method = 'POST';
-    f.action = '/logout';
-    const input = document.createElement('input');
-    input.type = 'hidden';
-    input.name = '_token';
-    input.value = csrf;
-    f.appendChild(input);
-    document.body.appendChild(f);
-    f.submit();
-}
+const tracking: NavItem[] = [
+    { name: 'applications', label: 'Applications', icon: 'files' },
+    { name: 'tasks', label: 'Tasks', icon: 'checks' },
+    { name: 'documents', label: 'Documents', icon: 'paperclip' },
+    { name: 'reports', label: 'Reports', icon: 'report' },
+];
+
+const account: NavItem[] = [
+    { name: 'profile', label: 'My profile', icon: 'user' },
+    { name: 'preferences', label: 'Preferences', icon: 'adjustments' },
+    { name: 'onboarding', label: 'Onboarding', icon: 'list-check' },
+];
+
+const administration: NavItem[] = [
+    { name: 'users', label: 'Users', icon: 'users', permission: 'users-list' },
+    { name: 'roles', label: 'Roles', icon: 'shield', permission: 'roles-list' },
+    { name: 'permissions', label: 'Permissions', icon: 'lock', permission: 'permissions-list' },
+    { name: 'user-account', label: 'Account settings', icon: 'settings', permission: null },
+];
+
+const visible = (items: NavItem[]) => items.filter((item) => has(item.permission));
+
+const isActive = (item: NavItem) => route.name === item.name;
 </script>
 
 <template>
     <div>
         <!-- Start::app-sidebar -->
-      
-            <!-- Sidenav Menu Brand Logo -->
-            <!-- <div id="sidenav-menu">
-                <ul class="side-nav hs-accordion-group px-2.5 pb-16.5">
-                    <template v-if="menuList?.length > 0">
-                        <template v-for="(item, index) in menuList" :key="index">
-                            <li v-if="item.type === 'heading'" class="menu-title" data-lang="main">
-                                <span>{{ item.title }}</span>
-                            </li>
+        <div id="main-sidebar" class="main-sidebar">
+            <div class="sidebar-wrapper">
+                <RouterLink :to="{ name: 'dashboard' }" class="navbar-brand uni-brand" aria-label="UniPilot dashboard">
+                    <span class="uni-brand-mark"><AppIcon name="school" :size="19" /></span>
+                    <span class="uni-brand-text">
+                        <span class="uni-brand-name">UniPilot</span>
+                        <span class="uni-brand-sub">Italy</span>
+                    </span>
+                </RouterLink>
 
+                <div class="navbar-menu px-5" id="navbar-menu-list" data-simplebar>
+                    <ul class="list-unstyled p-0 navbar-nav-menu">
+                        <li class="nav-menu-title">Admissions</li>
+                        <li v-for="item in visible(workspace)" :key="item.name" class="nav-item">
+                            <RouterLink :to="{ name: item.name }" class="nav-link" :class="{ active: isActive(item) }">
+                                <span class="icons"><AppIcon :name="item.icon" :size="18" /></span>
+                                <span class="content">{{ item.label }}</span>
+                            </RouterLink>
+                        </li>
 
-                            <li v-else-if="item.type === 'single'" class="menu-item">
-                                <RouterLink :to="item.link"
-                                    :class="[isActive(item.link) ? 'menu-link !bg-primary !text-white' : 'menu-link']">
+                        <li class="nav-menu-title mt-3">My workspace</li>
+                        <li v-for="item in visible(tracking)" :key="item.name" class="nav-item">
+                            <RouterLink :to="{ name: item.name }" class="nav-link" :class="{ active: isActive(item) }">
+                                <span class="icons"><AppIcon :name="item.icon" :size="18" /></span>
+                                <span class="content">{{ item.label }}</span>
+                            </RouterLink>
+                        </li>
 
+                        <li class="nav-menu-title mt-3">Account</li>
+                        <li v-for="item in visible(account)" :key="item.name" class="nav-item">
+                            <RouterLink :to="{ name: item.name }" class="nav-link" :class="{ active: isActive(item) }">
+                                <span class="icons"><AppIcon :name="item.icon" :size="18" /></span>
+                                <span class="content">{{ item.label }}</span>
+                            </RouterLink>
+                        </li>
 
-                                    <i :class="`menu-icon iconify tabler--${item.icon}`"></i>
-                                    <span class="menu-text !bg-inherit" data-lang="{{ item.title }}">{{
-                                        item.title }}</span>
+                        <template v-if="visible(administration).length">
+                            <li class="nav-menu-title mt-3">Administration</li>
+                            <li v-for="item in visible(administration)" :key="item.name" class="nav-item">
+                                <RouterLink :to="{ name: item.name }" class="nav-link" :class="{ active: isActive(item) }">
+                                    <span class="icons"><AppIcon :name="item.icon" :size="18" /></span>
+                                    <span class="content">{{ item.label }}</span>
                                 </RouterLink>
                             </li>
-                            <li v-else-if="item.type === 'multi'" class="menu-item hs-accordion">
-                                <a href="javascript:void(0)" :aria-expanded="false" :aria-controls="`sidebar-${index}`"
-                                    :class="['hs-accordion-toggle menu-link', item.sub_menu?.some((sub: any) => Helpers.route().path === sub.link) ? '!bg-primary !text-white' : '']">
-                                    <span class="menu-icon">
-                                        <i :class="`iconify tabler--${item.icon}`"></i>
-
-                                    </span>
-                                    <span class="menu-text" data-lang="{{ item.title }}">{{ item.title }}</span>
-                                    <span class="menu-arrow"></span>
-
-
-                                </a>
-
-                                <ul class="sub-menu hs-accordion-content hs-accordion-group" style="display: none;">
-
-                                    <li v-for="(subItem, subIndex) in item.sub_menu" :key="subIndex" class="menu-item">
-
-                                        <RouterLink :to="subItem.link" class="menu-link">
-
-                                            {{ subItem.title }}
-                                        </RouterLink>
-                                    </li>
-                                </ul>
-                            </li>
                         </template>
-                    </template>
-                </ul>
-            </div> -->
-            <div id="main-sidebar" class="main-sidebar">
-        <div class="sidebar-wrapper">
-          <a href="#!" class="navbar-brand">
-            <div class="logo-lg">
-              <img src="/backend/assets/images/main-logo.webp" loading="lazy" aria-label="logo" alt="Main Logo" height="26" class="mx-auto logo-dark" />
-                <img src="/backend/assets/images/logo-white.webp" loading="lazy" aria-label="logo" alt="Logo White" height="26" class="mx-auto logo-light" />
-                </div>
-                <div class="logo-sm">
-                  <img src="/backend/assets/images/logo-sm-dark.webp" loading="lazy" aria-label="logo" alt="Logo Sm Dark" height="26" class="mx-auto logo-dark"/>
-                    <img src="/backend/assets/images/logo-sm-dark.webp" loading="lazy" aria-label="logo" alt="Logo Sm White" height="26" class="mx-auto logo-light"/>
-                    </div>
-                  </a>
-                  <div class="dropdown profile-dropdown mb-4">
-                    <a href="#!" class="btn px-4 py-5 w-100 position-relative" data-bs-toggle="dropdown" aria-expanded="false">
-                      <span class="position-relative">
-                        <img src="/backend/assets/images/user-38.webp" loading="lazy" alt="User 38" class="object-fit-cover rounded-circle size-12 mb-4"/>
-                          <span class="badge bg-orange rounded-pill fw-normal position-absolute top-50 translate-middle-y profile-version">v.1</span>
-                          <span class="size-2 bg-success rounded-circle d-block position-absolute bottom-0 end-0 mb-n6px"></span>
-                      </span>
-                      <div class="d-flex align-items-end justify-content-center">
-                        <div class="flex-grow-1 content text-white text-start">
-                          <h6 class="fw-medium text-truncate mb-1 admin-name" data-translate="pe-emma-anderson">Emma Anderson</h6>
-                          <p class="fs-14 admin-id">ID: 170001</p>
-                        </div>
-                        <div class="size-6 avatar"><i data-lucide="settings" class="size-4-5 stroke-2"></i></div>
-                      </div>
-                    </a>
-                    <div class="dropdown-menu p-0 profile-dropdown-menu">
-                      <span class="text-muted px-5 pt-4 d-block">Welcome Back, Emma! 👋</span>
-                      <ul class="list-unstyled mb-0 p-2 border-bottom">
-                        <li>
-                          <a class="dropdown-item align-items-center px-3 d-flex" href="pages-user-friends.html"><i class="mgc_user_1_line d-inline-block me-2"></i> User Profile <span class="text-muted ms-1 fst-italic fs-15">@emma.ander</span></a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item align-items-center px-3 d-flex" href="pages-account-settings.html"><i class="mgc_settings_3_line d-inline-block me-2"></i> Profile Preferences</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item align-items-center px-3 d-flex" href="pages-help-center.html"><i class="mgc_headphone_2_line d-inline-block me-2"></i> Support Center</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item align-items-center px-3 d-flex" href="pages-pricing.html"><i class="mgc_keyboard_line d-inline-block me-2"></i> Shortcut Keys</a>
-                        </li>
-                      </ul>
-                      <div class="border-bottom">
-                        <div class="d-flex justify-content-between align-items-center py-3 px-5">
-                          <div>
-                            <h6 class="mb-0">Free Plan</h6>
-                            <p class="text-muted fs-sm">System control panel</p>
-                          </div>
-                          <a href="pages-pricing.html" class="badge bg-primary py-6px px-10px rounded-pill">Upgrade</a>
-                        </div>
-                      </div>
-                      <ul class="list-unstyled mb-0 px-2">
-                        <li>
-                          <a class="dropdown-item align-items-center d-flex py-4 text-danger" href="auth-signin-basic.html"><i class="mgc_key_2_line d-inline-block me-2"></i> Log Out</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="navbar-menu px-5" id="navbar-menu-list" data-simplebar>
-                    <ul class="list-unstyled p-0 navbar-nav-menu">
-                      <li class="nav-menu-title" data-translate="pe-dashboards">Dashboards</li>
-                      <li class="nav-item">
-                        <a class="nav-link active collapsed" data-position="right-top" data-bs-toggle="collapse" href="#collapseDashboards" aria-expanded="false">
-                          <span class="icons"><i class="mgc_dashboard_line"></i></span>
-                          <span class="content" data-translate="pe-dashboards">Dashboards</span>
-                          <span class="ms-auto menu-arrow"><i class="mgc_down_line"></i></span>
-                        </a>
-                        <div class="collapse" id="collapseDashboards">
-                          <ul class="nav-menu-sub">
-                            <li><a href="index.html" class="nav-link active"><span data-translate="pe-ecommerce">Ecommerce</span></a></li>
-
-
-                          </ul>
-                        </div>
-                      </li>
-
-                      <li class="nav-menu-title" data-translate="pe-apps">Apps</li>
-                      <li class="nav-item">
-                        <a class="nav-link collapsed" href="apps-chat-default.html">
-                          <span class="icons"><i class="mgc_wechat_line"></i></span>
-                          <span class="content" data-translate="pe-chat">Chat</span>
-                        </a>
-                      </li>
-
-
                     </ul>
-                  </div>
                 </div>
             </div>
+        </div>
         <!-- End::app-sidebar -->
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.uni-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.uni-brand-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #2563eb, #0ea5e9);
+    color: #fff;
+    box-shadow: 0 8px 18px -10px rgba(37, 99, 235, 0.9);
+}
+
+.uni-brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.05;
+}
+
+.uni-brand-name {
+    color: var(--dx-sidebar-color, #fff);
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.uni-brand-sub {
+    margin-top: 3px;
+    color: var(--dx-sidebar-color, #fff);
+    opacity: 0.5;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+</style>

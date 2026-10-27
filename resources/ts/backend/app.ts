@@ -16,6 +16,7 @@ import Avatar from "./Components/Avatar.vue";
 import ValidateInput from "./Components/ValidateInput.vue";
 import OffCanvas from "./Components/OffCanvas.vue";
 import BaseMultiSelect from "./Components/BaseMultiSelect.vue";
+import AppIcon from "./Components/AppIcon.vue";
 import moment from 'moment'
 
 // import GenericInput from "./Components/GenericInputComponent.vue";
@@ -86,11 +87,14 @@ app.component('Avatar', Avatar);
 app.component('FlashMessage', FlashMessage);
 app.component('OffCanvas', OffCanvas);
 app.component('BaseMultiSelect', BaseMultiSelect);
+app.component('AppIcon', AppIcon);
 
 app.config.globalProperties.$helpers = Helpers
 app.config.globalProperties.$router = router;
 app.use(VueTelInput);
 
-app.mount('#app');
+if (document.querySelector('#app')) {
+    app.mount('#app');
+}
 
 registerPWA();

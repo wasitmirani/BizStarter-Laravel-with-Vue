@@ -19,7 +19,7 @@ const props = defineProps(['items']);
                 <div class="mb-7.5 flex items-start">
                     <div>
                         <div class="bg-primary/15 text-primary flex size-12 items-center justify-center rounded-md">
-                            <i class="iconify tabler--shield-lock text-2xl"></i>
+                            <AppIcon name="shield-lock" class="text-2xl" />
                         </div>
                     </div>
                     <div class="ms-6">
@@ -30,20 +30,20 @@ const props = defineProps(['items']);
                         <div class="hs-dropdown relative inline-flex [--placement:bottom-right]">
                             <button type="button" class="hs-dropdown-toggle text-lg text-default-400" aria-haspopup="menu"
                                 aria-expanded="false" aria-label="Dropdown">
-                                <i class="iconify tabler--dots-vertical text-xl"></i>
+                                <AppIcon name="dots-vertical" class="text-xl" />
                             </button>
                             <div class="hs-dropdown-menu" role="menu" aria-orientation="vertical" tabindex="-1">
                                 <div class="space-y-0.5">
                                     <a class="dropdown-item" href="#">
-                                        <i class="iconify tabler--eye"></i>
+                                        <AppIcon name="eye" />
                                         View
                                     </a>
                                     <a class="dropdown-item" href="#">
-                                        <i class="iconify tabler--edit"></i>
+                                        <AppIcon name="edit" />
                                         Edit
                                     </a>
                                     <a class="dropdown-item text-danger" href="#">
-                                        <i class="iconify tabler--trash"></i>
+                                        <AppIcon name="trash" />
                                         Remove
                                     </a>
                                 </div>
@@ -53,19 +53,19 @@ const props = defineProps(['items']);
                 </div>
                 <ul class="mb-base flex flex-col gap-y-3">
                     <li class="flex items-center gap-3">
-                        <i class="iconify tabler--check text-success text-base"></i>
+                        <AppIcon name="check" class="text-success text-base" />
                         Daily Risk Assessment
                     </li>
                     <li class="flex items-center gap-3">
-                        <i class="iconify tabler--check text-success text-base"></i>
+                        <AppIcon name="check" class="text-success text-base" />
                         Manage Security Logs
                     </li>
                     <li class="flex items-center gap-3">
-                        <i class="iconify tabler--check text-success text-base"></i>
+                        <AppIcon name="check" class="text-success text-base" />
                         input Access Rights
                     </li>
                     <li class="flex items-center gap-3">
-                        <i class="iconify tabler--check text-success text-base"></i>
+                        <AppIcon name="check" class="text-success text-base" />
                         Emergency Protocols
                     </li>
                 </ul>
@@ -81,7 +81,7 @@ const props = defineProps(['items']);
                 </div>
                 <div class="flex justify-between">
                     <span class="text-default-400 flex items-center gap-1.5 text-xs">
-                        <i class="iconify tabler--clock"></i>
+                        <AppIcon name="clock" />
                         {{ $filters.HoursFormat(item?.updated_at) }}
                     </span>
                     <div>
@@ -102,7 +102,7 @@ const props = defineProps(['items']);
                 <div class="mb-7.5 flex items-start">
                     <div>
                         <div class="bg-primary/15 text-primary flex size-12 items-center justify-center rounded-md">
-                            <i class="iconify tabler--shield-lock text-2xl"></i>
+                            <AppIcon name="shield-lock" class="text-2xl" />
                         </div>
                     </div>
                     <div class="ms-6">
@@ -113,16 +113,16 @@ const props = defineProps(['items']);
                         <div class="hs-dropdown relative inline-flex [--placement:bottom-right]">
                             <button type="button" class="hs-dropdown-toggle text-lg text-default-400" aria-haspopup="menu"
                                 aria-expanded="false" aria-label="Dropdown">
-                                <i class="iconify tabler--dots-vertical text-xl"></i>
+                                <AppIcon name="dots-vertical" class="text-xl" />
                             </button>
                             <div class="hs-dropdown-menu" role="menu" aria-orientation="vertical" tabindex="-1">
                                 <div class="space-y-0.5">
                                     <router-link class="dropdown-item" :to="{ name: 'show-role', params: { uuid: props.items?.uuid } }">
-                                        <i class="iconify tabler--eye"></i>
+                                        <AppIcon name="eye" />
                                         View
                                     </router-link>
                                     <router-link class="dropdown-item" :to="{ name: 'edit-role', params: { uuid: props.items?.uuid } }">
-                                        <i class="iconify tabler--edit"></i>
+                                        <AppIcon name="edit" />
                                         Edit
                                     </router-link>
 
@@ -133,27 +133,27 @@ const props = defineProps(['items']);
                 </div>
                 <ul class="mb-base flex flex-col gap-y-3">
                 <li class="flex items-center gap-3">
-                    <i class="iconify tabler--check text-success text-base"></i>
+                    <AppIcon name="check" class="text-success text-base" />
                     Manage daily tasks and responsibilities efficiently
                     </li>
                     <li class="flex items-center gap-3">
-                        <i class="iconify tabler--check text-success text-base"></i>
+                        <AppIcon name="check" class="text-success text-base" />
                         Collaborate with team members and stakeholders
                     </li>
                     <li class="flex items-center gap-3">
-                        <i class="iconify tabler--check text-success text-base"></i>
+                        <AppIcon name="check" class="text-success text-base" />
                         Maintain accurate records and documentation
                     </li>
                     <li class="flex items-center gap-3">
-                        <i class="iconify tabler--check text-success text-base"></i>
+                        <AppIcon name="check" class="text-success text-base" />
                         Ensure compliance with company policies and standards
                     </li>
                     <li class="flex items-center gap-3">
-                        <i class="iconify tabler--check text-success text-base"></i>
+                        <AppIcon name="check" class="text-success text-base" />
                         Identify issues and implement effective solutions
                     </li>
                     <li class="flex items-center gap-3">
-                        <i class="iconify tabler--check text-success text-base"></i>
+                        <AppIcon name="check" class="text-success text-base" />
                         Continuously improve processes and workflows
                     </li>
                 </ul>
@@ -169,7 +169,7 @@ const props = defineProps(['items']);
                 </div>
                 <div class="flex justify-between">
                     <span class="text-default-400 flex items-center gap-1.5 text-xs">
-                        <i class="iconify tabler--clock"></i>
+                        <AppIcon name="clock" />
                         {{ $filters.HoursFormat(props.items?.created_at) }}
                     </span>
                     <div>

@@ -2,11 +2,11 @@
 
 return [
     'defaults' => [
-        'user' => 'user-5.jpg',
+        'user' => 'user-38.webp',
         'product' => 'product-default.jpg',
     ],
     'paths' => [
         'storage' => 'storage/',
-        'backend' => 'backend/images/',
+        'backend' => 'backend/assets/images/',
     ]
 ];

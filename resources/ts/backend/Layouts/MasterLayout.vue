@@ -160,7 +160,7 @@ const completeProgress = () => {
                 <div class="flex items-start gap-3">
                     <div class="mt-0.5">
                         <span class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-400">
-                            <i class="iconify tabler--device-mobile"></i>
+                            <AppIcon name="device-mobile" />
                         </span>
                     </div>
                     <div class="flex-1">

@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             TimeZoneSeeder::class,
             RolePermissionSeeder::class,
             AdminUserSeeder::class,
+            AdmissionsDemoSeeder::class,
         ]);
     }
 }

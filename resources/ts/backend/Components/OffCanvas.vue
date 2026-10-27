@@ -74,7 +74,7 @@ defineExpose({
                     class="text-gray-500 hover:text-gray-700"
                 >
                     <span class="sr-only">Close</span>
-                    <i class="iconify tabler--x text-xl"></i>
+                    <AppIcon name="x" class="text-xl" />
                 </button>
             </div>
 

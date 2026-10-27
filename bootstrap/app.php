@@ -32,6 +32,12 @@ return Application::configure(basePath: dirname(__DIR__))
                     ->domain($domain)
                     ->group(base_path('routes/web.php'));
             }
+
+            // Versioned applicant API. The existing /api/app endpoints stay
+            // untouched for the admin starter kit.
+            Route::middleware('api')
+                ->prefix('api')
+                ->group(base_path('routes/api_v1.php'));
         },
     )
     ->withMiddleware(function (Middleware $middleware) {

@@ -73,16 +73,16 @@ const {
                                 <button
                                     class="btn border-primary text-primary hover:bg-primary  border hover:text-white"
                                     type="button" @click="togglePassword" tabindex="-1">
-                                    <i :class="showPassword ? 'iconify tabler--eye-off' : 'iconify tabler--eye'"></i>
+                                    <AppIcon :name="showPassword ? 'eye-off' : 'eye'" :size="16" />
                                 </button>
                                 <button
                                     class="btn border-primary text-primary hover:bg-primary  border hover:text-white"
                                     type="button" @click="generatePassword" tabindex="-1">
-                                    <i class="iconify tabler--key"></i>
+                                    <AppIcon name="key" />
                                 </button>
                                 <button class="btn border-primary text-primary hover:bg-primary border hover:text-white"
                                     type="button" @click="copyPassword" tabindex="-1">
-                                    <i class="iconify tabler--copy"></i>
+                                    <AppIcon name="copy" />
                                 </button>
                             </div>
                             <validate-input class="text-danger" v-if="errors" :errors="errors" value="password" />
@@ -230,11 +230,11 @@ const {
                                         <p class="text-sm text-default-600 mb-3 text-center sm:text-left">Current profile picture</p>
                                         <div class="flex gap-2 w-full">
                                             <button type="button" @click="removeThumbnail" class="flex-1 sm:flex-none btn btn-sm btn-outline-danger">
-                                                <i class="iconify tabler--trash"></i>
+                                                <AppIcon name="trash" />
                                                 <span class="ml-1">Remove</span>
                                             </button>
                                             <button v-if="isEditMode" type="button" @click="resetThumbnail" class="flex-1 sm:flex-none btn btn-sm btn-outline-secondary">
-                                                <i class="iconify tabler--refresh"></i>
+                                                <AppIcon name="refresh" />
                                                 <span class="ml-1">Reset</span>
                                             </button>
                                         </div>
@@ -257,13 +257,13 @@ const {
 
 
                     <router-link :to="{ name: 'users' }" class="btn bg-light hover:text-primary">
-                        <i class="iconify tabler--arrow-back-up"></i> Discard
+                        <AppIcon name="arrow-back-up" /> Discard
                     </router-link>
                     <button class="btn bg-secondary hover:bg-secondary-hover text-white ">
-                        Draft User <i class="iconify tabler--folder-open"></i>
+                        Draft User <AppIcon name="folder-open" />
                     </button>
                     <button :class="isEditMode ? 'btn bg-success hover:bg-success-hover text-white' : 'btn bg-primary hover:bg-primary-hover text-white'" v-if="!isLoading">
-                        {{ isEditMode ? 'Update User' : 'Save User' }} <i class="iconify tabler--device-floppy"></i>
+                        {{ isEditMode ? 'Update User' : 'Save User' }} <AppIcon name="device-floppy" />
                     </button>
                     <button class="btn bg-primary hover:bg-success-hover text-white" type="button" disabled
                         v-if="isLoading">

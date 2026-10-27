@@ -73,7 +73,7 @@ class User extends Authenticatable implements MustVerifyEmail
             return asset('storage/images/user/' . $value);
         }
 
-        return asset($backendPath . 'users/' . $default);
+        return asset($backendPath . $default);
     }
 
     public function scopeActive($query)
@@ -140,6 +140,71 @@ class User extends Authenticatable implements MustVerifyEmail
     public function country()
     {
         return $this->belongsTo(Country::class, 'country_id', 'id');
+    }
+
+    public function profile()
+    {
+        return $this->hasOne(UserProfile::class);
+    }
+
+    public function educations()
+    {
+        return $this->hasMany(EducationRecord::class);
+    }
+
+    public function languageQualifications()
+    {
+        return $this->hasMany(LanguageQualification::class);
+    }
+
+    public function workExperiences()
+    {
+        return $this->hasMany(WorkExperience::class);
+    }
+
+    public function studyPreference()
+    {
+        return $this->hasOne(StudyPreference::class);
+    }
+
+    public function notificationPreference()
+    {
+        return $this->hasOne(NotificationPreference::class);
+    }
+
+    public function eligibilityAssessments()
+    {
+        return $this->hasMany(EligibilityAssessment::class);
+    }
+
+    public function bookmarks()
+    {
+        return $this->hasMany(UserProgramBookmark::class);
+    }
+
+    public function applications()
+    {
+        return $this->hasMany(UserApplication::class);
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(UserTask::class);
+    }
+
+    public function documents()
+    {
+        return $this->hasMany(ApplicationDocument::class);
+    }
+
+    public function dailyReports()
+    {
+        return $this->hasMany(DailyReport::class);
+    }
+
+    public function notificationDeliveries()
+    {
+        return $this->hasMany(NotificationDelivery::class);
     }
 
     public function getRoles(){

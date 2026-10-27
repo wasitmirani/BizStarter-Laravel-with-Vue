@@ -88,13 +88,13 @@ const permissionsModel = Helpers.useMultiSelectModel(role, 'permissions', permis
             <div class="border-default-300 flex items-center justify-end gap-x-2 border-t p-4">
 
                 <router-link :to="{ name: 'roles' }" class="btn bg-light hover:text-primary">
-                    <i class="iconify tabler--arrow-back-up"></i> Discard
+                    <AppIcon name="arrow-back-up" /> Discard
                 </router-link>
 
                 <button
                     :class="isEditMode ? 'btn bg-success hover:bg-success-hover text-white' : 'btn bg-primary hover:bg-primary-hover text-white'"
                     v-if="!isLoading" type="submit">
-                    {{ isEditMode ? 'Update Role' : 'Save Role' }} <i class="iconify tabler--device-floppy"></i>
+                    {{ isEditMode ? 'Update Role' : 'Save Role' }} <AppIcon name="device-floppy" />
                 </button>
 
                 <button class="btn bg-primary hover:bg-success-hover text-white" type="button" disabled

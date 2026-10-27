@@ -26,6 +26,28 @@ A multi-tenant admin starter kit built with **Laravel 13** and **Vue 3**. Use it
 - Admin impersonation
 - Optional Electron desktop shell
 
+## UniPilot admissions module
+
+This repository also contains **UniPilot**, a multi-user Italy master's admission
+intelligence workspace built on the same Laravel + Vue stack:
+
+- Private applicant profile, education, language and work evidence
+- Rules-based program matches (Likely Eligible, Potential Match, Ambitious, Not Eligible,
+  Insufficient Evidence) — match strength is not an admission probability
+- Shared, source-labeled catalog of universities, programs and scholarships
+- Application tracker, tasks, private document uploads and on-demand reports
+- Scheduled email/Slack digests via queue + scheduler
+- Strict per-user isolation with Sanctum, policies and Form Request ownership checks
+
+API: `/api/v1` (`routes/api_v1.php`). UI: `/app/dashboard` and the admissions navigation.
+
+Full documentation — setup, API groups, security model, demo-data caveat, tests and
+free-first deployment — is in [docs/admissions.md](docs/admissions.md).
+
+> The seeded catalog is illustrative and marked `is_sample` / `unverified`. Verify every
+> deadline, tuition figure and requirement on the official university page before applying.
+
+
 ## Requirements
 
 - PHP 8.3+
@@ -103,24 +125,46 @@ Put **tenant-only** schema in `database/migrations/tenant/`. Keep shared/central
 ```
 app/
   Http/Controllers/Backend/   # Admin API controllers
+  Http/Controllers/Api/V1/    # UniPilot admissions API (/api/v1)
+  Http/Requests/Admissions/   # Admissions validation + ownership
   Models/                     # Eloquent models (Tenant, Role, Permission, …)
+  Policies/                   # RBAC + owned-resource policies
   Providers/                  # App + Tenancy service providers
-  Services/                   # Business logic
+  Services/                   # Business logic (Admissions/EligibilityEngine, …)
 resources/
-  ts/backend/                 # Vue admin SPA
+  ts/backend/                 # Vue admin SPA (+ Pages/Admissions)
   ts/frontend/                # Optional public SPA entry
   views/layouts/backend/      # Blade shells for auth + SPA mount
 routes/
   web.php                     # Auth + SPA shell routes
-  api.php                     # Sanctum-protected /api/app/* routes
+  api.php                     # Sanctum-protected /api/app/* admin routes
+  api_v1.php                  # UniPilot /api/v1 admissions routes
+  console.php                 # Scheduler (admissions digests)
   tenant.php                  # Tenant-domain routes
 database/
-  migrations/                 # Central DB (users, tenants, domains, …)
+  migrations/                 # Central DB (users, tenants, domains, admissions, …)
   migrations/tenant/          # Per-tenant DB migrations
-  seeders/                    # Master data + admin + RBAC seeders
+  seeders/                    # Master data + admin + RBAC + demo catalog seeders
 config/
   tenancy.php                 # Tenancy configuration
+docs/
+  admissions.md               # UniPilot setup, API, security, deployment
 ```
+
+## Notifications and scheduler
+
+UniPilot queues email/Slack digests. Run a worker and the scheduler in any environment
+where digests should be delivered:
+
+```bash
+php artisan queue:work
+php artisan schedule:work        # development
+# production: * * * * * php artisan schedule:run
+```
+
+`php artisan admissions:send-digests` dispatches manually; delivery is deduplicated per
+user, channel and day.
+
 
 ## Adding a module
 

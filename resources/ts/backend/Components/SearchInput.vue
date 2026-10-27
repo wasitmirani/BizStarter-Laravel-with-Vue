@@ -1,6 +1,6 @@
 <template>
     <div class="input-icon-group">
-        <i class="iconify tabler--search input-icon"></i>
+        <AppIcon name="search" class="input-icon" />
         <input
             type="search"
             class="form-input w-auto ps-10"

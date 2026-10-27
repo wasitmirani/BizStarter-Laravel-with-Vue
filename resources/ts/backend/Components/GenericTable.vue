@@ -234,7 +234,7 @@ const clearSelection = () => {
                                 :class="`btn border-default-300 hover:border-default-400 btn-icon btn-sm text-default-800 size-7.75 rounded border`"
                                 @click="$emit('action', { action: action.action, row })" data-bs-toggle="tooltip"
                                 data-bs-placement="top" :title="action.label">
-                                <i :class="`iconify tabler--${action.icon}  text-base`"></i>
+                                <AppIcon :name="action.icon" :size="16" />
                             </a>
                         </div>
                     </td>

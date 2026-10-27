@@ -53,8 +53,7 @@ Helpers.useDynamicOnMounted(() => {
                         <div class="flex gap-1">
                             <router-link :to="{ name: 'create-role' }"
                                 class="btn bg-primary text-white hover:bg-primary-hover" aria-haspopup="dialog"
-                                aria-expanded="false" aria-controls="incomeModal" data-hs-overlay="#incomeModal"> <i
-                                    class="iconify tabler--plus"></i> Add Role </router-link>
+                                aria-expanded="false" aria-controls="incomeModal" data-hs-overlay="#incomeModal"> <AppIcon name="plus" :size="15" /> Add Role </router-link>
                         </div>
                         <!-- Delete Selected -->
                         <button data-table-delete-selected=""
@@ -66,11 +65,11 @@ Helpers.useDynamicOnMounted(() => {
                             <span class="me-3 font-semibold text-nowrap">Filter By:</span>
                             <!-- Role Type Filter -->
                             <div class="input-icon-group">
-                                <i class="iconify tabler--user-hexagon input-icon"></i>
+                                <AppIcon name="user-hexagon" class="input-icon" />
                              
                             </div>
                             <div class="input-icon-group">
-                                            <i class="iconify tabler--calendar input-icon"></i>
+                                            <AppIcon name="calendar" class="input-icon" />
                                             <select data-table-range-filter="date" class="form-select"  @change="handleFilterChange(filters)" v-model="filters.date_range">
                                                 <option value="" >Date Range</option>
 
@@ -83,7 +82,7 @@ Helpers.useDynamicOnMounted(() => {
 
                             <!-- Role Type Filter -->
                             <div class="input-icon-group">
-                                <i class="iconify tabler--list-details input-icon"></i>
+                                <AppIcon name="list-details" class="input-icon" />
 
                                 <select id="filterPerPage" @change="handleFilterChange(filters)"
                                     v-model="filters.per_page" class="form-select w-full">
@@ -102,14 +101,14 @@ Helpers.useDynamicOnMounted(() => {
                         <nav class="flex items-center gap-x-1">
                             <a role="button" @click="fetchRoles()"
                                 class="btn bg-primary/15 text-primary btn-icon hover:bg-primary hover:text-white">
-                                <i class="iconify tabler--refresh text-lg"></i>
+                                <AppIcon name="refresh" class="text-lg" />
                             </a>
 
                             <OffCanvas id="offcanvasRight" title="Advance Filters"
                                 buttonClass="btn bg-primary btn-icon text-white hover:bg-primary-hover"
                                 buttonLabel="Filter">
                                 <template #button-icon>
-                                    <i class="iconify tabler--filter text-lg"></i>
+                                    <AppIcon name="filter" class="text-lg" />
                                 </template>
                                 <template #body>
                                     <RoleFilterForm :initialFilters="filters" @filterChange="handleFilterChange" />

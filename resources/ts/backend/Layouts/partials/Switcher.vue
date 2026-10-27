@@ -254,12 +254,12 @@
                          </div>
                      </div>
                      <div class="text-center py-5 d-none" id="noResults">
-                         <i data-lucide="search-x" class="size-16 text-muted mb-3"></i>
+                         <AppIcon name="search" :size="48" class="text-muted mb-3" />
                          <h6 class="text-muted">No apps found</h6>
                          <p class="text-muted small">Try adjusting your search terms or category filter</p>
                      </div>
                      <div class="text-center py-5 d-none" id="allSelectedMessage">
-                         <i data-lucide="check-circle" class="size-16 text-success mb-3"></i>
+                         <AppIcon name="circle-check" :size="48" class="text-success mb-3" />
                          <h6 class="text-success">All apps selected!</h6>
                          <p class="text-muted small">You have selected all available apps. Click "Deselect All" to see them again.</p>
                      </div>
@@ -1044,8 +1044,8 @@
                      </div>
                  </div>
                  <div class="d-flex align-items-center justify-content-end gap-2 modal-footer">
-                     <button type="button" class="btn btn-light" id="resetLayout"><i data-lucide="rotate-ccw" class="d-inline-block me-1 size-4"></i> Reset Layouts</button>
-                     <a href="#!" class="btn btn-danger"><i data-lucide="shopping-bag" class="d-inline-block ms-1 size-4"></i> Buy Now</a>
+                     <button type="button" class="btn btn-light" id="resetLayout"><AppIcon name="refresh" :size="16" class="d-inline-block me-1" /> Reset Layouts</button>
+                     <a href="#!" class="btn btn-danger"><AppIcon name="sparkles" :size="16" class="d-inline-block ms-1" /> Buy Now</a>
                  </div>
              </div>
          </div>

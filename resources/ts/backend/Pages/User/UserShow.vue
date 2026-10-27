@@ -47,7 +47,7 @@ const isLoading = Helpers.useDynamicComputed(() => loading?.value || false);
                             <button type="button"
                                 class="hs-dropdown-toggle btn btn-icon hover:bg-default-100 focus:bg-default-100"
                                 aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
-                                <i class="iconify tabler--dots-vertical text-default-400 text-xl"></i>
+                                <AppIcon name="dots-vertical" class="text-default-400 text-xl" />
                             </button>
                             <div class="hs-dropdown-menu" role="menu" aria-orientation="vertical" >
                                 <router-link class="dropdown-item" :to="{ name: 'edit-user', params: { uuid: userData?.uuid } }">Edit Profile</router-link>
@@ -60,7 +60,7 @@ const isLoading = Helpers.useDynamicComputed(() => loading?.value || false);
                         <!-- <div class="flex items-center gap-3">
                             <div>
                                 <div class="btn btn-icon bg-light size-8!">
-                                    <i class="iconify tabler--school text-secondary text-lg"></i>
+                                    <AppIcon name="school" class="text-secondary text-lg" />
                                 </div>
                             </div>
                             <!-- <p class="text-sm">
@@ -71,7 +71,7 @@ const isLoading = Helpers.useDynamicComputed(() => loading?.value || false);
                         <div class="flex items-center gap-3">
                             <div>
                                 <div class="btn btn-icon bg-light size-8!">
-                                    <i class="iconify tabler--map-pin text-secondary text-lg"></i>
+                                    <AppIcon name="map-pin" class="text-secondary text-lg" />
                                 </div>
                             </div>
                             <p class="text-sm">
@@ -84,7 +84,7 @@ const isLoading = Helpers.useDynamicComputed(() => loading?.value || false);
                         <div class="flex items-center gap-3">
                             <div>
                                 <div class="btn btn-icon bg-light size-8!">
-                                    <i class="iconify tabler--users text-secondary text-lg"></i>
+                                    <AppIcon name="users" class="text-secondary text-lg" />
                                 </div>
                             </div>
                             <p class="text-sm">
@@ -95,7 +95,7 @@ const isLoading = Helpers.useDynamicComputed(() => loading?.value || false);
                         <div class="flex items-center gap-3">
                             <div>
                                 <div class="btn btn-icon bg-light size-8!">
-                                    <i class="iconify tabler--mail text-secondary text-lg"></i>
+                                    <AppIcon name="mail" class="text-secondary text-lg" />
                                 </div>
                             </div>
                             <p class="text-sm">
@@ -107,7 +107,7 @@ const isLoading = Helpers.useDynamicComputed(() => loading?.value || false);
                         <div class="flex items-center gap-3">
                             <div>
                                 <div class="btn btn-icon bg-light size-8!">
-                                    <i class="iconify tabler--link text-secondary text-lg"></i>
+                                    <AppIcon name="link" class="text-secondary text-lg" />
                                 </div>
                             </div>
                             <p class="text-sm">
@@ -117,7 +117,7 @@ const isLoading = Helpers.useDynamicComputed(() => loading?.value || false);
                         <div class="flex items-center gap-3">
                             <div>
                                 <div class="btn btn-icon bg-light size-8!">
-                                    <i class="iconify tabler--world text-secondary text-lg"></i>
+                                    <AppIcon name="world" class="text-secondary text-lg" />
                                 </div>
                             </div>
                             <p class="text-sm">

@@ -27,8 +27,7 @@ import { Helpers } from '../../Utils/Helper'
                         <div class="flex gap-1">
                             <router-link :to="{ name: 'create-user' }"
                                 class="btn bg-primary text-white hover:bg-primary-hover" aria-haspopup="dialog"
-                                aria-expanded="false" aria-controls="incomeModal" data-hs-overlay="#incomeModal"> <i
-                                    class="iconify tabler--plus"></i> Add Role </router-link>
+                                aria-expanded="false" aria-controls="incomeModal" data-hs-overlay="#incomeModal"> <AppIcon name="plus" :size="15" /> Add Role </router-link>
                         </div>
 
                         <!-- Delete Selected -->
@@ -44,7 +43,7 @@ import { Helpers } from '../../Utils/Helper'
 
                             <!-- Role Type Filter -->
                             <div class="input-icon-group">
-                                <i class="iconify tabler--list-details input-icon"></i>
+                                <AppIcon name="list-details" class="input-icon" />
 
                                 <select id="filterPerPage" class="form-select w-full">
 
@@ -65,14 +64,14 @@ import { Helpers } from '../../Utils/Helper'
                         <nav class="flex items-center gap-x-1">
                             <!-- <a role="button" @click="fetchUsers()"
                                 class="btn bg-primary/15 text-primary btn-icon hover:bg-primary hover:text-white">
-                                <i class="iconify tabler--refresh text-lg"></i>
+                                <AppIcon name="refresh" class="text-lg" />
                             </a> -->
 
                             <OffCanvas id="offcanvasRight" title="Advance Filters"
                                 buttonClass="btn bg-primary btn-icon text-white hover:bg-primary-hover"
                                 buttonLabel="Filter">
                                 <template #button-icon>
-                                    <i class="iconify tabler--filter text-lg"></i>
+                                    <AppIcon name="filter" class="text-lg" />
                                 </template>
                                 <template #body>
                                     <!-- Filter fileds -->

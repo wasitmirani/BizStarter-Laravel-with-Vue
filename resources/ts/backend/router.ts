@@ -25,6 +25,19 @@ const routes = [
     setRoute("/unauthorized/user", "401", "errors/401", null),
     setRoute("/dashboard", "dashboard", "Dashboard/Dashboard", null),
 
+    // Admissions workspace
+    setRoute("/onboarding", "onboarding", "Admissions/Onboarding", null),
+    setRoute("/profile", "profile", "Admissions/Profile", null),
+    setRoute("/preferences", "preferences", "Admissions/Preferences", null),
+    setRoute("/programs", "programs", "Admissions/Programs", null),
+    setRoute("/universities", "universities", "Admissions/Universities", null),
+    setRoute("/scholarships", "scholarships", "Admissions/Scholarships", null),
+    setRoute("/matches", "matches", "Admissions/Matches", null),
+    setRoute("/applications", "applications", "Admissions/Applications", null),
+    setRoute("/tasks", "tasks", "Admissions/Tasks", null),
+    setRoute("/documents", "documents", "Admissions/Documents", null),
+    setRoute("/reports", "reports", "Admissions/Reports", null),
+
     // Users
     setRoute("/management/users", "users", "User/Users", "users-list"),
     setRoute("/management/user/create", "create-user", "User/User", "create-user"),

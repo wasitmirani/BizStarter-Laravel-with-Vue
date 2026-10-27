@@ -2,7 +2,7 @@
     <div id="ToastMsg" :class="`toast colored-toast bg-${alert.type}-transparent`" role="alert" aria-live="assertive"
         aria-atomic="true" style="display: none;">
         <div :class="`toast-header bg-${alert.type} text-fixed-white text-dark`">
-            <i :class="`bd-placeholder-img rounded me-2  ${alert.icon} `"></i>
+            <AppIcon :name="alert.icon" :size="16" class="me-2" />
             <strong class="me-auto">{{ alert.title }}</strong>
             <button type="button" class="btn-close" @click="hideToast" aria-label="Close"></button>
         </div>
@@ -58,25 +58,25 @@ const setMessage = (item: any) => {
         case 200:
         case 201:
             alert.type = 'success';
-            alert.icon = 'iconify tabler--checked';
+            alert.icon = 'checked';
             break;
         case 400:
         case 422:
             alert.type = 'danger';
-            alert.icon = 'iconify tabler--triangle';
+            alert.icon = 'triangle';
             break;
         case 404:
             alert.type = 'warning';
-            alert.icon = 'iconify tabler--alert-circle';
+            alert.icon = 'alert-circle';
             break;
         case 500:
             console.log('500', item);
             alert.type = 'danger';
-            alert.icon = 'iconify tabler--bug';
+            alert.icon = 'bug';
             break;
         default:
             alert.type = 'dark';
-            alert.icon = 'iconify tabler--bug';
+            alert.icon = 'bug';
             alert.title = 'Error';
             alert.text = 'Something went wrong';
             break;

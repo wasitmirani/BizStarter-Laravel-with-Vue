@@ -77,7 +77,7 @@ const clearAllFilters = async () => {
         @click="removeFilter(key)"
         class="hover:text-danger transition"
       >
-        <i class="iconify tabler--x text-sm"></i>
+        <AppIcon name="x" class="text-sm" />
       </button>
     </div>
 

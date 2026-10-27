@@ -158,7 +158,7 @@ const { filters, onSubmit, resetFilters } = useUserFilter(props.initialFilters, 
                 type="submit"
                 class="btn bsort_dir-primary text-primary hover:bg-primary hover:text-white"
             >
-                <i class="iconify tabler--filter me-2"></i>
+                <AppIcon name="filter" class="me-2" />
                 Apply Filters
             </button>
             <button
@@ -166,7 +166,7 @@ const { filters, onSubmit, resetFilters } = useUserFilter(props.initialFilters, 
                 @click="resetFilters"
                 class="btn bsort_dir-danger text-danger hover:bg-danger hover:text-white"
             >
-                <i class="iconify tabler--refresh me-2"></i>
+                <AppIcon name="refresh" class="me-2" />
                 Reset
             </button>
         </div>

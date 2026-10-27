@@ -1,17 +1,13 @@
 <?php
 
-it('redirects guests from the root to login', function () {
-    $response = $this->get('/');
-
-    $response->assertRedirect(route('login'));
+it('redirects guests to the login page', function () {
+    $this->get('/')->assertRedirect(route('login'));
 });
 
-it('redirects authenticated users from the root to the dashboard', function () {
+it('redirects authenticated users to the dashboard', function () {
     $user = \App\Models\User::factory()->create([
         'email_verified_at' => now(),
     ]);
 
-    $response = $this->actingAs($user)->get('/');
-
-    $response->assertRedirect('/app/dashboard');
+    $this->actingAs($user)->get('/')->assertRedirect('/app/dashboard');
 });
