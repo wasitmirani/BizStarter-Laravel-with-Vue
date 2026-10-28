@@ -16,6 +16,7 @@ interface BaseFilterable
         'sort_by' => 'sort_by',
         'sort_dir' => 'sort_dir',
         'role' => 'role',
+        'scope' => 'scope',
         'uuid' => 'uuid',
         'is_active' => 'is_active',
         'date_range' => 'date_range',

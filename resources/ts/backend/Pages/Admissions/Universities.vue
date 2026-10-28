@@ -3,18 +3,17 @@ import { onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import AdmissionsService from '../../Services/Admissions/AdmissionsService';
 import { errorMessage } from '../../Services/Admissions/api';
-import PageHeader from '../Admissions/Components/PageHeader.vue';
-import EmptyState from '../Admissions/Components/EmptyState.vue';
-import Modal from '../Admissions/Components/Modal.vue';
-import SourceBadge from '../Admissions/Components/SourceBadge.vue';
-import Pagination from '../Admissions/Components/Pagination.vue';
+import PageHeader from './Components/PageHeader.vue';
+import EmptyState from './Components/EmptyState.vue';
+import Pagination from './Components/Pagination.vue';
 
 const route = useRoute();
 const router = useRouter();
 
 const filters = reactive({
     search: '',
-    region: '',
+    city: '',
+    country: '',
     type: '',
     sort: 'name',
     page: 1,
@@ -22,13 +21,15 @@ const filters = reactive({
 
 const universities = ref<any[]>([]);
 const meta = ref<any>({ current_page: 1, last_page: 1, total: 0, from: null, to: null });
-const facets = reactive<{ regions: string[]; types: string[] }>({ regions: [], types: [] });
+const facets = reactive<{ cities: string[]; countries: Array<{ code: string; name: string }>; types: string[] }>({
+    cities: [],
+    countries: [],
+    types: [],
+});
 const loading = ref(true);
 const error = ref('');
-const showDetail = ref(false);
-const detail = ref<any>(null);
-const detailPrograms = ref<any[]>([]);
-const detailLoading = ref(false);
+const syncing = ref(false);
+const syncNotice = ref('');
 
 let debounce: number | undefined;
 
@@ -40,7 +41,8 @@ const load = async (page = filters.page) => {
     try {
         const result = await AdmissionsService.universities({
             search: filters.search || undefined,
-            region: filters.region || undefined,
+            city: filters.city || undefined,
+            country: filters.country || undefined,
             type: filters.type || undefined,
             sort: filters.sort,
             page,
@@ -51,7 +53,8 @@ const load = async (page = filters.page) => {
         meta.value = result.meta ?? meta.value;
 
         if (result.facets) {
-            facets.regions = result.facets.regions ?? [];
+            facets.cities = result.facets.cities ?? [];
+            facets.countries = result.facets.countries ?? [];
             facets.types = result.facets.types ?? [];
         }
     } catch (exception: any) {
@@ -63,64 +66,48 @@ const load = async (page = filters.page) => {
 
 const scheduleLoad = () => {
     window.clearTimeout(debounce);
-    debounce = window.setTimeout(() => load(1), 220);
+    debounce = window.setTimeout(() => load(1), 240);
 };
 
 const resetFilters = () => {
     filters.search = '';
-    filters.region = '';
+    filters.city = '';
+    filters.country = '';
     filters.type = '';
     filters.sort = 'name';
     router.replace({ name: 'universities' });
     load(1);
 };
 
-const openUniversity = async (university: any) => {
-    showDetail.value = true;
-    detail.value = university;
-    detailPrograms.value = [];
-    detailLoading.value = true;
+const syncCatalog = async () => {
+    if (syncing.value) return;
 
-    if (route.query.university !== String(university.id)) {
-        router.replace({ name: 'universities', query: { ...route.query, university: university.id } });
-    }
+    syncing.value = true;
+    syncNotice.value = '';
+    error.value = '';
 
     try {
-        const result = await AdmissionsService.university(university.id);
-        detail.value = result.university ?? university;
-        detailPrograms.value = result.programs ?? [];
+        const result = await AdmissionsService.syncCatalog();
+        const checked = Number(result.checked ?? 0);
+        const ok = Number(result.ok ?? 0);
+        const failed = Number(result.failed ?? 0);
+        const remaining = Number(result.remaining ?? 0);
+
+        const parts = [
+            `Checked ${checked} source${checked === 1 ? '' : 's'}`,
+            `${ok} reachable`,
+        ];
+
+        if (failed) parts.push(`${failed} failed`);
+        if (remaining) parts.push(`${remaining} still queued — run sync again`);
+
+        syncNotice.value = `${parts.join(' · ')}.`;
+        await load();
     } catch (exception: any) {
         error.value = errorMessage(exception);
     } finally {
-        detailLoading.value = false;
+        syncing.value = false;
     }
-};
-
-const closeDetail = () => {
-    showDetail.value = false;
-    detail.value = null;
-    detailPrograms.value = [];
-
-    if (route.query.university) {
-        const query = { ...route.query };
-        delete query.university;
-        router.replace({ name: 'universities', query });
-    }
-};
-
-const openProgramFromDetail = (program: any) => {
-    showDetail.value = false;
-    detail.value = null;
-    detailPrograms.value = [];
-    router.push({ name: 'programs', query: { program: program.id } });
-};
-
-const browseProgramsFromDetail = () => {
-    const id = detail.value?.id;
-    showDetail.value = false;
-    detail.value = null;
-    detailPrograms.value = [];
-    if (id) router.push({ name: 'programs', query: { university_id: id } });
 };
 
 const formatDate = (value?: string | null) => {
@@ -131,15 +118,21 @@ const formatDate = (value?: string | null) => {
     return date.toLocaleDateString(undefined, { month: 'short', year: 'numeric' });
 };
 
-const formatDeadline = (value?: string | null) =>
-    value ? new Date(`${value.slice(0, 10)}T00:00:00`).toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' }) : '';
+const formatChecked = (value?: string | null) => {
+    if (!value) return '';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return '';
 
-const location = (university: any) => [university.city, university.region].filter(Boolean).join(' · ') || 'Italy';
+    return date.toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' });
+};
+
+const location = (university: any) =>
+    [university.city, university.country_name].filter(Boolean).join(' · ') || 'Europe';
 
 const programsLabel = (count: number) => `${count} ${Number(count) === 1 ? 'program' : 'programs'}`;
 
 watch(
-    () => [filters.search, filters.region, filters.type, filters.sort],
+    () => [filters.search, filters.city, filters.country, filters.type, filters.sort],
     scheduleLoad,
 );
 
@@ -147,38 +140,20 @@ watch(
     () => route.query.search,
     (value) => {
         const next = typeof value === 'string' ? value : '';
-        if (next !== filters.search) {
-            filters.search = next;
-        }
-    },
-);
-
-watch(
-    () => route.query.university,
-    (value) => {
-        const id = Number(value);
-        if (!id) {
-            if (showDetail.value) closeDetail();
-            return;
-        }
-
-        if (detail.value?.id === id) return;
-        const match = universities.value.find((university) => university.id === id);
-        openUniversity(match ?? { id });
+        if (next !== filters.search) filters.search = next;
     },
 );
 
 onMounted(async () => {
-    if (typeof route.query.search === 'string') {
-        filters.search = route.query.search;
+    if (typeof route.query.search === 'string') filters.search = route.query.search;
+
+    const legacyUniversity = Number(route.query.university);
+    if (legacyUniversity) {
+        router.replace({ name: 'university', params: { id: legacyUniversity } });
+        return;
     }
 
     await load(1);
-
-    const requested = Number(route.query.university);
-    if (requested) {
-        openUniversity(universities.value.find((university) => university.id === requested) ?? { id: requested });
-    }
 });
 
 onBeforeUnmount(() => window.clearTimeout(debounce));
@@ -186,10 +161,22 @@ onBeforeUnmount(() => window.clearTimeout(debounce));
 
 <template>
     <div>
-        <PageHeader title="Universities" subtitle="Live catalog of Italian institutions. Search by name, city, region or subject and open the official admissions pages.">
+        <PageHeader
+            title="Universities"
+            subtitle="European catalog of public and private institutions. Filter by country, city and type, then open a profile with its stored programs."
+        >
             <template #actions>
-                <router-link :to="{ name: 'programs' }" class="btn btn-sm btn-light"><AppIcon name="school" class="me-1" />Browse programs</router-link>
-                <router-link :to="{ name: 'matches' }" class="btn btn-sm btn-primary"><AppIcon name="target-arrow" class="me-1" />My matches</router-link>
+                <button type="button" class="btn btn-sm btn-light" :disabled="syncing" @click="syncCatalog">
+                    <span v-if="syncing" class="spinner-border spinner-border-sm me-1" role="status"></span>
+                    <AppIcon v-else name="refresh" class="me-1" />
+                    {{ syncing ? 'Checking sources…' : 'Sync catalog' }}
+                </button>
+                <router-link :to="{ name: 'programs' }" class="btn btn-sm btn-light">
+                    <AppIcon name="school" class="me-1" />Browse programs
+                </router-link>
+                <router-link :to="{ name: 'matches' }" class="btn btn-sm btn-primary">
+                    <AppIcon name="target-arrow" class="me-1" />My matches
+                </router-link>
             </template>
         </PageHeader>
 
@@ -198,10 +185,16 @@ onBeforeUnmount(() => window.clearTimeout(debounce));
             <span>{{ error }}</span>
         </div>
 
+        <div v-if="syncNotice" class="alert alert-success py-2 d-flex align-items-start gap-2">
+            <AppIcon name="circle-check" :size="17" class="mt-1" />
+            <span class="flex-grow-1">{{ syncNotice }}</span>
+            <button type="button" class="btn-close" aria-label="Dismiss" @click="syncNotice = ''"></button>
+        </div>
+
         <div class="card mb-4">
             <div class="card-body">
                 <div class="row g-3 align-items-end">
-                    <div class="col-lg-5">
+                    <div class="col-lg-4">
                         <label class="form-label" for="university-search">Search the catalog</label>
                         <div class="position-relative">
                             <AppIcon name="search" :size="17" class="position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" />
@@ -211,7 +204,7 @@ onBeforeUnmount(() => window.clearTimeout(debounce));
                                 type="search"
                                 class="form-control"
                                 style="padding-inline-start: 42px; padding-inline-end: 42px"
-                                placeholder="University, city, region or subject"
+                                placeholder="University, city, country or subject"
                                 autocomplete="off"
                             />
                             <span v-if="loading" class="spinner-border spinner-border-sm text-primary position-absolute top-50 end-0 translate-middle-y me-3"></span>
@@ -227,17 +220,29 @@ onBeforeUnmount(() => window.clearTimeout(debounce));
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-2">
-                        <label class="form-label">Region</label>
-                        <select v-model="filters.region" class="form-select">
-                            <option value="">All regions</option>
-                            <option v-for="region in facets.regions" :key="region" :value="region">{{ region }}</option>
+                        <label class="form-label">City</label>
+                        <select v-model="filters.city" class="form-select">
+                            <option value="">All cities</option>
+                            <option v-for="city in facets.cities" :key="city" :value="city">{{ city }}</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6 col-lg-2">
+                        <label class="form-label">Country</label>
+                        <select v-model="filters.country" class="form-select">
+                            <option value="">All countries</option>
+                            <option v-for="country in facets.countries" :key="country.code" :value="country.code">{{ country.name }}</option>
                         </select>
                     </div>
                     <div class="col-sm-6 col-lg-2">
                         <label class="form-label">Type</label>
                         <select v-model="filters.type" class="form-select">
                             <option value="">All types</option>
-                            <option v-for="type in (facets.types.length ? facets.types : ['public', 'private'])" :key="type" :value="type" class="text-capitalize">
+                            <option
+                                v-for="type in (facets.types.length ? facets.types : ['public', 'private'])"
+                                :key="type"
+                                :value="type"
+                                class="text-capitalize"
+                            >
                                 {{ type }}
                             </option>
                         </select>
@@ -247,13 +252,15 @@ onBeforeUnmount(() => window.clearTimeout(debounce));
                         <select v-model="filters.sort" class="form-select">
                             <option value="name">Name (A–Z)</option>
                             <option value="programs">Most programs</option>
-                            <option value="region">Region</option>
+                            <option value="country">Country</option>
                             <option value="updated">Recently updated</option>
                         </select>
                     </div>
-                    <div class="col-sm-6 col-lg-1 d-grid">
-                        <button type="button" class="btn btn-link btn-sm text-decoration-none" @click="resetFilters">Reset</button>
-                    </div>
+                </div>
+                <div class="d-flex justify-content-end mt-2">
+                    <button type="button" class="btn btn-link btn-sm text-decoration-none" @click="resetFilters">
+                        Reset filters
+                    </button>
                 </div>
             </div>
         </div>
@@ -302,7 +309,14 @@ onBeforeUnmount(() => window.clearTimeout(debounce));
                             <div class="d-flex align-items-start gap-3">
                                 <span class="university-mark">{{ university.initials || 'UN' }}</span>
                                 <div class="min-w-0 flex-grow-1">
-                                    <h6 class="mb-1 lh-sm">{{ university.name }}</h6>
+                                    <h6 class="mb-1 lh-sm">
+                                        <router-link
+                                            :to="{ name: 'university', params: { id: university.id } }"
+                                            class="text-reset text-decoration-none stretched-link-title"
+                                        >
+                                            {{ university.name }}
+                                        </router-link>
+                                    </h6>
                                     <p class="text-muted fs-14 mb-0 d-flex align-items-center gap-1">
                                         <AppIcon name="map-pin" :size="13" />{{ location(university) }}
                                     </p>
@@ -318,15 +332,21 @@ onBeforeUnmount(() => window.clearTimeout(debounce));
                                 <span class="d-inline-flex align-items-center gap-1">
                                     <AppIcon name="school" :size="14" />{{ programsLabel(university.programs_count ?? 0) }}
                                 </span>
-                                <span v-if="university.updated_at" class="d-inline-flex align-items-center gap-1">
+                                <span v-if="university.last_checked_at" class="d-inline-flex align-items-center gap-1">
+                                    <AppIcon name="refresh" :size="14" />Checked {{ formatChecked(university.last_checked_at) }}
+                                </span>
+                                <span v-else-if="university.updated_at" class="d-inline-flex align-items-center gap-1">
                                     <AppIcon name="clock" :size="14" />Updated {{ formatDate(university.updated_at) }}
                                 </span>
                             </div>
 
                             <div class="d-flex flex-wrap gap-2 mt-auto pt-3 border-top">
-                                <button type="button" class="btn btn-sm btn-light" @click="openUniversity(university)">
-                                    <AppIcon name="list-details" class="me-1" />Details
-                                </button>
+                                <router-link
+                                    :to="{ name: 'university', params: { id: university.id } }"
+                                    class="btn btn-sm btn-sub-primary"
+                                >
+                                    <AppIcon name="list-details" class="me-1" />View profile
+                                </router-link>
                                 <a
                                     v-if="university.official_website"
                                     :href="university.official_website"
@@ -336,18 +356,9 @@ onBeforeUnmount(() => window.clearTimeout(debounce));
                                 >
                                     <AppIcon name="external-link" class="me-1" />Website
                                 </a>
-                                <a
-                                    v-if="university.admissions_page_url"
-                                    :href="university.admissions_page_url"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="btn btn-sm btn-light"
-                                >
-                                    <AppIcon name="flag" class="me-1" />Admissions
-                                </a>
                                 <router-link
                                     :to="{ name: 'programs', query: { university_id: university.id } }"
-                                    class="btn btn-sm btn-sub-primary ms-auto"
+                                    class="btn btn-sm btn-light ms-auto"
                                 >
                                     Programs <AppIcon name="arrow-right" :size="14" class="ms-1" />
                                 </router-link>
@@ -359,80 +370,6 @@ onBeforeUnmount(() => window.clearTimeout(debounce));
 
             <Pagination :meta="meta" @change="load" />
         </template>
-
-        <Modal
-            :show="showDetail"
-            :title="detail?.name ?? 'University'"
-            :subtitle="detail?.id ? location(detail) : 'Loading institution details…'"
-            icon="building"
-            size="lg"
-            @close="closeDetail"
-        >
-            <div v-if="detail?.id" class="d-flex flex-column gap-4">
-                <div class="d-flex flex-wrap align-items-start gap-3">
-                    <span class="university-mark university-mark-lg">{{ detail.initials || 'UN' }}</span>
-                    <div class="min-w-0 flex-grow-1">
-                        <p class="text-muted fs-15 mb-1 d-flex align-items-center gap-1">
-                            <AppIcon name="map-pin" :size="14" />{{ location(detail) }}
-                            <span class="badge bg-light text-body border text-capitalize ms-2">{{ detail.type }}</span>
-                        </p>
-                        <p v-if="detail.description" class="mb-0">{{ detail.description }}</p>
-                    </div>
-                </div>
-
-                <div class="d-flex flex-wrap gap-2">
-                    <a v-if="detail.official_website" :href="detail.official_website" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary">
-                        <AppIcon name="external-link" class="me-1" />Official website
-                    </a>
-                    <a v-if="detail.admissions_page_url" :href="detail.admissions_page_url" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-light">
-                        <AppIcon name="flag" class="me-1" />Admissions page
-                    </a>
-                    <a v-if="detail.scholarship_source_url" :href="detail.scholarship_source_url" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-light">
-                        <AppIcon name="award" class="me-1" />Scholarships
-                    </a>
-                    <router-link :to="{ name: 'programs', query: { university_id: detail.id } }" class="btn btn-sm btn-light">
-                        <AppIcon name="school" class="me-1" />All {{ programsLabel(detail.programs_count ?? detailPrograms.length) }}
-                    </router-link>
-                </div>
-
-                <div>
-                    <h6 class="mb-3">Programs at this university</h6>
-                    <div v-if="detailLoading" class="text-center py-6"><span class="spinner-border text-primary"></span></div>
-                    <div v-else-if="!detailPrograms.length" class="alert alert-light border mb-0">No programs are stored for this university yet.</div>
-                    <div v-else class="d-flex flex-column gap-2">
-                        <button
-                            v-for="program in detailPrograms"
-                            :key="program.id"
-                            type="button"
-                            class="program-row text-start"
-                            @click="openProgramFromDetail(program)"
-                        >
-                            <span class="min-w-0 flex-grow-1">
-                                <span class="d-block fw-medium text-truncate">{{ program.title }}</span>
-                                <span class="d-flex flex-wrap align-items-center gap-2 fs-14 text-muted mt-1">
-                                    <span class="badge bg-light text-body border">{{ program.subject_area }}</span>
-                                    <span class="text-uppercase">{{ program.language }}</span>
-                                    <span v-if="program.tuition?.label">· {{ program.tuition.label }}</span>
-                                    <template v-if="program.next_call?.deadline">
-                                        <span>· deadline {{ formatDeadline(program.next_call.deadline) }}</span>
-                                    </template>
-                                    <span v-else>· no open call</span>
-                                </span>
-                            </span>
-                            <SourceBadge :status="program.verification_status" :sample="program.is_sample" />
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div v-else class="text-center py-6"><span class="spinner-border text-primary"></span></div>
-
-            <template #footer>
-                <button type="button" class="btn btn-light" @click="closeDetail">Close</button>
-                <button v-if="detail?.id" type="button" class="btn btn-primary" @click="browseProgramsFromDetail">
-                    Browse programs <AppIcon name="arrow-right" class="ms-1" />
-                </button>
-            </template>
-        </Modal>
     </div>
 </template>
 
@@ -445,23 +382,16 @@ onBeforeUnmount(() => window.clearTimeout(debounce));
     height: 46px;
     flex-shrink: 0;
     border-radius: 12px;
-    background: var(--dx-primary-bg-subtle, #e8f0fb);
-    color: var(--dx-primary, #2563eb);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.16), rgba(139, 92, 246, 0.12));
+    color: #4f46e5;
     font-size: 13px;
     font-weight: 800;
     letter-spacing: 0.04em;
 }
 
-.university-mark-lg {
-    width: 58px;
-    height: 58px;
-    border-radius: 16px;
-    font-size: 16px;
-}
-
 [data-bs-theme="dark"] .university-mark {
-    background: rgba(59, 130, 246, 0.22);
-    color: #93c5fd;
+    background: rgba(129, 140, 248, 0.18);
+    color: #c7d2fe;
 }
 
 .university-description {
@@ -471,21 +401,11 @@ onBeforeUnmount(() => window.clearTimeout(debounce));
     overflow: hidden;
 }
 
-.program-row {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 12px;
-    width: 100%;
-    border: 1px solid var(--dx-border-color, #eef0f3);
-    border-radius: 10px;
-    background: transparent;
-    padding: 10px 12px;
+.stretched-link-title {
+    transition: color 0.15s ease;
 }
 
-.program-row:hover,
-.program-row:focus-visible {
-    background: var(--dx-tertiary-bg, #f6f8fa);
-    outline: none;
+.stretched-link-title:hover {
+    color: var(--dx-primary, #4f46e5) !important;
 }
 </style>

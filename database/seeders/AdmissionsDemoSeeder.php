@@ -12,16 +12,24 @@ use App\Models\University;
 use Illuminate\Database\Seeder;
 
 /**
- * Demo catalog for local development.
+ * Demo catalog for local development only.
  *
- * Every record is flagged is_sample + unverified and links to an official
- * domain. Dates, tuition and requirements are illustrative — they must be
- * checked against the linked official page before being relied on.
+ * This seeder is intentionally NOT registered in DatabaseSeeder. Run it by hand
+ * on a local database when you need sample rows. Every record is flagged
+ * is_sample + unverified and links to an official domain. Dates, tuition and
+ * requirements are illustrative — they must be checked against the linked
+ * official page before being relied on.
  */
 class AdmissionsDemoSeeder extends Seeder
 {
     public function run(): void
     {
+        if (app()->environment('production')) {
+            $this->command?->warn('AdmissionsDemoSeeder is disabled in production.');
+
+            return;
+        }
+
         $universities = [
             [
                 'name' => 'University of Bologna',

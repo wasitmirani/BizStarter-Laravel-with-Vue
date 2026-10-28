@@ -30,6 +30,10 @@ export function unwrap<T = any>(response: { data: ApiResponse<T> }): T {
 }
 
 export function errorMessage(error: any): string {
+    if (error?.response?.status === 429) {
+        return 'Too many source checks in a short time. Please wait a minute and try again.';
+    }
+
     return (
         error?.response?.data?.message ??
         error?.response?.data?.errors?.[Object.keys(error?.response?.data?.errors ?? {})[0]]?.[0] ??

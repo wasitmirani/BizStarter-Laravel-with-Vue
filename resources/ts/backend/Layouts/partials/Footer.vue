@@ -10,7 +10,7 @@ const year = new Date().getFullYear();
                 <div class="text-center md:text-start">
                     © {{ year }}
                     <span class="font-semibold">UniPilot</span>
-                    · Italy master's admissions intelligence
+                    · European master's admissions intelligence
                 </div>
 
                 <div class="md:text-end hidden md:block">

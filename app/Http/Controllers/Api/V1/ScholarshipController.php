@@ -22,7 +22,7 @@ class ScholarshipController extends Controller
         })
             ->when($request->filled('region'), fn ($builder) => $builder->where('region', $request->string('region')))
             ->when($request->filled('type'), fn ($builder) => $builder->where('type', $request->string('type')))
-            ->when($request->boolean('has_open_call'), fn ($builder) => $builder->whereHas('calls', fn ($calls) => $calls->whereDate('deadline', '>=', now()->toDateString())));
+            ->when($request->boolean('has_open_call'), fn ($builder) => $builder->whereHas('calls', fn ($calls) => $calls->where(fn ($open) => $open->whereDate('deadline', '>=', now()->toDateString())->orWhereNull('deadline'))));
 
         $scholarships = $query->orderBy('name')->paginate((int) $request->input('per_page', 12));
 

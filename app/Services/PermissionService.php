@@ -103,7 +103,7 @@ class PermissionService extends BaseService
     public function getPermissionByUuid($uuid, $relations = [])
     {
         try {
-            $permission = $this->model->with($relations)->where('uuid', $uuid)->first();
+            $permission = $this->model->with($relations)->withCount(['roles', 'users'])->where('uuid', $uuid)->first();
 
             if (!$permission) {
                 throw new ModelNotFoundException('Permission not found');

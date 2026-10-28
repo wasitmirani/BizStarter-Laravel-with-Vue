@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ProgramResource;
 use App\Models\Program;
 use App\Models\University;
+use App\Support\CountryName;
 use Illuminate\Http\Request;
 
 class ProgramController extends Controller
@@ -32,12 +33,13 @@ class ProgramController extends Controller
         })
             ->when($request->filled('subject_area'), fn ($builder) => $builder->where('subject_area', $request->string('subject_area')))
             ->when($request->filled('language'), fn ($builder) => $builder->where('language', $request->string('language')))
+            ->when($request->filled('country'), fn ($builder) => $builder->whereHas('university', fn ($university) => $university->where('country', strtoupper((string) $request->string('country')))))
             ->when($request->filled('region'), fn ($builder) => $builder->whereHas('university', fn ($university) => $university->where('region', $request->string('region'))))
             ->when($request->filled('university_id'), fn ($builder) => $builder->where('university_id', $request->integer('university_id')))
             ->when($request->filled('status'), fn ($builder) => $builder->where('status', $request->string('status')))
             ->when($request->filled('verification_status'), fn ($builder) => $builder->where('verification_status', $request->string('verification_status')))
             ->when($request->filled('max_tuition'), fn ($builder) => $builder->where(fn ($inner) => $inner->whereNull('tuition_max')->orWhere('tuition_max', '<=', $request->input('max_tuition'))))
-            ->when($request->boolean('has_open_call'), fn ($builder) => $builder->whereHas('admissionCalls', fn ($calls) => $calls->whereDate('deadline', '>=', now()->toDateString())));
+            ->when($request->boolean('has_open_call'), fn ($builder) => $builder->whereHas('admissionCalls', fn ($calls) => $calls->where(fn ($open) => $open->whereDate('deadline', '>=', now()->toDateString())->orWhereNull('deadline'))));
 
         $today = now()->toDateString();
         $nextDeadline = '(select min(deadline) from admission_calls where admission_calls.program_id = programs.id and deadline >= ?)';
@@ -88,6 +90,14 @@ class ProgramController extends Controller
                     ->orderBy('region')
                     ->pluck('region')
                     ->values(),
+                'countries' => University::query()
+                    ->whereNotNull('country')
+                    ->distinct()
+                    ->orderBy('country')
+                    ->pluck('country')
+                    ->map(fn (string $code) => ['code' => $code, 'name' => CountryName::for($code) ?? $code])
+                    ->sortBy('name')
+                    ->values(),
             ],
         ]);
     }
@@ -105,8 +115,28 @@ class ProgramController extends Controller
             $request->user()->bookmarks()->where('program_id', $program->id)->exists(),
         );
 
+        $related = Program::query()
+            ->whereKeyNot($program->id)
+            ->where(function ($query) use ($program) {
+                $query->where('university_id', $program->university_id)
+                    ->orWhere('subject_area', $program->subject_area);
+            })
+            ->with([
+                'university',
+                'admissionCalls',
+                'assessments' => fn ($assessments) => $assessments->where('user_id', $request->user()->id),
+            ])
+            ->orderByRaw(
+                'CASE WHEN university_id = ? THEN 0 ELSE 1 END',
+                [$program->university_id],
+            )
+            ->orderBy('title')
+            ->limit(4)
+            ->get();
+
         return responseJson('Program fetched successfully', [
             'program' => (new ProgramResource($program))->resolve(),
+            'related' => ProgramResource::collection($related)->resolve(),
         ]);
     }
 }

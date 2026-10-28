@@ -9,6 +9,9 @@ class UniversityResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
+        $sources = $this->relationLoaded('officialSources') ? $this->officialSources : collect();
+        $latestSource = $sources->sortByDesc('last_checked_at')->first();
+
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -16,12 +19,16 @@ class UniversityResource extends JsonResource
             'official_website' => $this->official_website,
             'city' => $this->city,
             'region' => $this->region,
+            'country' => $this->country,
+            'country_name' => $this->country_name,
             'type' => $this->type,
             'admissions_page_url' => $this->admissions_page_url,
             'scholarship_source_url' => $this->scholarship_source_url,
             'description' => $this->description,
             'initials' => $this->initials(),
             'programs_count' => $this->whenCounted('programs'),
+            'last_checked_at' => $latestSource?->last_checked_at?->toIso8601String(),
+            'source_status' => $latestSource?->last_status,
             'updated_at' => $this->updated_at?->toIso8601String(),
         ];
     }

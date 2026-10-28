@@ -6,11 +6,11 @@ use App\Contracts\BaseFilterable;
 use App\Enums\UserEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
+use App\Models\User;
 use App\Services\LoggerService;
 use App\Services\RoleService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
-use Lab404\Impersonate\Services\ImpersonateManager;
 
 class UserController extends Controller implements BaseFilterable
 {
@@ -25,21 +25,49 @@ class UserController extends Controller implements BaseFilterable
     public function index(Request $request)
     {
         $filters = $request->only(self::ALLOWED_FILTERS);
-        // $users = $this->userService->users($filters);
 
-        // Add impersonate option for admins
-        // $currentUser = auth()->user();
-        // if ($currentUser) {
-        //     $users->transform(function ($user) use ($currentUser) {
-        //         $user->can_impersonate = $currentUser->canImpersonate() && $user->canBeImpersonated() && $user->id !== $currentUser->id;
-        //         return $user;
-        //     });
-        // }
-        $data=[
-            'users' => $this->userService->users($filters),
-            'roles'=>app(RoleService::class)->getRolesList(['limit'=>4],['users:id,name']),
+        $users = $this->userService->users($filters);
+
+        // Surface impersonation eligibility without exposing it to non-admins.
+        $currentUser = $request->user();
+        $users->setCollection(
+            $users->getCollection()->map(function (User $user) use ($currentUser) {
+                $user->setAttribute(
+                    'can_impersonate',
+                    $currentUser !== null
+                        && $currentUser->canImpersonate()
+                        && $user->canBeImpersonated()
+                        && $user->id !== $currentUser->id,
+                );
+
+                return $user;
+            }),
+        );
+
+        $roleBreakdown = app(RoleService::class)
+            ->getRolesList(['limit' => 50], [], ['users'])
+            ->map(fn ($role) => [
+                'id' => $role->id,
+                'name' => $role->name,
+                'scope' => $role->scope,
+                'users_count' => $role->users_count,
+            ])
+            ->values();
+
+        $data = [
+            'users' => $users,
+            'roles' => $roleBreakdown,
+            'stats' => [
+                'total' => User::count(),
+                'active' => User::where('is_active', true)->count(),
+                'inactive' => User::where('is_active', false)->count(),
+                'verified' => User::whereNotNull('email_verified_at')->count(),
+                'new_30_days' => User::where('created_at', '>=', now()->subDays(30))->count(),
+                'admins' => User::whereHas('roles', fn ($query) => $query->where('name', 'admin'))->count(),
+            ],
         ];
-        return responseJson('users fetched successfully',$data,true);
+
+        return responseJson('users fetched successfully', $data, true);
     }
 
     /**
@@ -78,11 +106,14 @@ class UserController extends Controller implements BaseFilterable
 
     public function show($id)
     {
-        if($id){
-            $user = $this->userService->fetch(UserEnum::UUID->value,$id);
-            return responseJson('user fetched successfully',['user'=>$user],true);
-    }
+        $user = $this->userService->fetch(UserEnum::UUID->value, $id);
+
+        if (! $user) {
+            return responseJson('User not found', null, false, 404);
         }
+
+        return responseJson('user fetched successfully', ['user' => $user], true);
+    }
 
 
     public function update(Request $request, $id)

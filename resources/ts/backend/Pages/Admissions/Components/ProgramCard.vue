@@ -12,6 +12,14 @@ const assessment = () => props.program?.assessment ?? null;
 const deadline = () => props.program?.next_call?.deadline ?? null;
 const daysLeft = () => props.program?.next_call?.days_left ?? null;
 
+const formatDeadline = (value: string) => {
+    const date = new Date(`${String(value).slice(0, 10)}T00:00:00`);
+
+    return Number.isNaN(date.getTime())
+        ? value
+        : date.toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' });
+};
+
 const urgencyClass = (days: number | null) => {
     if (days === null) return 'text-muted';
     if (days <= 14) return 'text-danger fw-semibold';
@@ -30,7 +38,8 @@ const urgencyClass = (days: number | null) => {
                     </h6>
                     <p class="text-muted fs-15 mb-0">
                         {{ program.university?.name }}
-                        <span v-if="program.university?.region">· {{ program.university.region }}</span>
+                        <span v-if="program.university?.city">· {{ program.university.city }}</span>
+                        <span v-else-if="program.university?.country_name">· {{ program.university.country_name }}</span>
                     </p>
                 </div>
                 <button
@@ -55,10 +64,13 @@ const urgencyClass = (days: number | null) => {
                 <span><AppIcon name="cash" class="me-1" />{{ program.tuition?.label }}</span>
                 <span v-if="deadline()" :class="urgencyClass(daysLeft())">
                     <AppIcon name="calendar-event" class="me-1" />
-                    {{ deadline() }}
+                    {{ formatDeadline(deadline()!) }}
                     <template v-if="daysLeft() !== null">({{ daysLeft() }} days)</template>
                 </span>
-                <span v-else><AppIcon name="calendar-off" class="me-1" />No open call stored</span>
+                <span v-else-if="program.next_call" class="chip chip-warning">
+                    <AppIcon name="calendar-off" :size="13" />Deadline TBC
+                </span>
+                <span v-else class="chip"><AppIcon name="calendar-off" :size="13" />No open call</span>
             </div>
 
             <div class="d-flex align-items-center justify-content-between gap-2 mt-auto pt-2 border-top">

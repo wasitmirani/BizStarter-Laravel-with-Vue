@@ -52,7 +52,7 @@ const isActive = (item: NavItem) => route.name === item.name;
                     <span class="uni-brand-mark"><AppIcon name="school" :size="19" /></span>
                     <span class="uni-brand-text">
                         <span class="uni-brand-name">UniPilot</span>
-                        <span class="uni-brand-sub">Italy</span>
+                        <span class="uni-brand-sub">Europe</span>
                     </span>
                 </RouterLink>
 
@@ -115,9 +115,9 @@ const isActive = (item: NavItem) => route.name === item.name;
     height: 34px;
     flex-shrink: 0;
     border-radius: 10px;
-    background: linear-gradient(135deg, #2563eb, #0ea5e9);
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
     color: #fff;
-    box-shadow: 0 8px 18px -10px rgba(37, 99, 235, 0.9);
+    box-shadow: 0 10px 20px -12px rgba(99, 102, 241, 0.95);
 }
 
 .uni-brand-text {
@@ -141,5 +141,22 @@ const isActive = (item: NavItem) => route.name === item.name;
     font-weight: 600;
     letter-spacing: 0.16em;
     text-transform: uppercase;
+}
+
+/* Alloce collapses the rail to icons between 992px and 1199px; the wordmark
+   would otherwise be clipped by the 75px rail. */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .uni-brand {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .uni-brand-text {
+        display: none;
+    }
+}
+
+[data-sidebar="small"] .uni-brand-text {
+    display: none;
 }
 </style>

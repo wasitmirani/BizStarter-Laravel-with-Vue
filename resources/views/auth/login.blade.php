@@ -6,7 +6,7 @@
     <div class="card-body p-4 p-md-5">
         <div class="mb-4">
             <h1 class="h3 mb-2">Welcome back</h1>
-            <p class="text-muted mb-0">Sign in to continue tracking your Italian master's applications.</p>
+            <p class="text-muted mb-0">Sign in to continue tracking your European master's applications.</p>
         </div>
 
         @if (session('status'))

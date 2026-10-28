@@ -32,3 +32,293 @@
     background-position: right 0.625rem center !important;
     padding-right: 2rem !important;
 }
+
+/* ==========================================================================
+   UniPilot — modern SaaS theme layer
+   --------------------------------------------------------------------------
+   The Alloce bundle ships a dark-green "material" preset (#047263) that reads
+   like a finance dashboard. Everything below re-skins that preset into an
+   indigo/slate product palette while keeping Alloce's component structure:
+   tokens only, so every existing card, table, badge and button follows along.
+   Loaded after admin.css through the master layout's @vite() call.
+   ========================================================================== */
+
+:root[data-theme="material"] {
+    /* Brand ------------------------------------------------------------- */
+    --dx-primary: #4f46e5;
+    --dx-primary-rgb: 79, 70, 229;
+    --dx-secondary: #7c3aed;
+    --dx-secondary-rgb: 124, 58, 237;
+    --dx-success: #10b981;
+    --dx-success-rgb: 16, 185, 129;
+    --dx-info: #0ea5e9;
+    --dx-info-rgb: 14, 165, 233;
+    --dx-warning: #f59e0b;
+    --dx-warning-rgb: 245, 158, 11;
+    --dx-danger: #ef4444;
+    --dx-danger-rgb: 239, 68, 68;
+
+    /* Surfaces ---------------------------------------------------------- */
+    --dx-body-bg: #f5f7fb;
+    --dx-body-bg-rgb: 245, 247, 251;
+    --dx-body-color: #0f172a;
+    --dx-body-color-rgb: 15, 23, 42;
+    --dx-secondary-bg: #ffffff;
+    --dx-secondary-bg-rgb: 255, 255, 255;
+    --dx-secondary-color: #5b6b84;
+    --dx-secondary-color-rgb: 91, 107, 132;
+    --dx-tertiary-bg: #eef2f9;
+    --dx-tertiary-bg-rgb: 238, 242, 249;
+    --dx-light: #f1f5f9;
+    --dx-light-rgb: 241, 245, 249;
+    --dx-border-color: #e4e9f2;
+    --dx-border-color-translucent: rgba(15, 23, 42, 0.08);
+    --dx-heading-color: #0f172a;
+    --dx-link-color: var(--dx-primary);
+    --dx-link-hover-color: #4338ca;
+
+    /* Shape & depth ----------------------------------------------------- */
+    --dx-border-radius: 0.75rem;
+    --dx-border-radius-sm: 0.5rem;
+    --dx-element-shadow:
+        0 1px 2px rgba(15, 23, 42, 0.04),
+        0 12px 28px -22px rgba(15, 23, 42, 0.45);
+    --dx-box-shadow:
+        0 1px 2px rgba(15, 23, 42, 0.04),
+        0 20px 44px -30px rgba(15, 23, 42, 0.48);
+
+    /* Type -------------------------------------------------------------- */
+    --dx-font-family-base: "Inter", "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --dx-font-family-heading: "Inter", "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --dx-font-weight-semibold: 600;
+}
+
+/* White, softly elevated topbar instead of the brand-tinted bar. */
+:root[data-theme="material"][data-topbar-colors="light"] {
+    --dx-topbar-bg: rgba(255, 255, 255, 0.88);
+    --dx-topbar-border: var(--dx-border-color);
+    --dx-topbar-color: #475569;
+    --dx-topbar-icon-bg-color: #f1f5f9;
+    --dx-topbar-icon-bg-hover-color: #e6ecf7;
+}
+
+/* Deep slate sidebar (replaces the near-black green). */
+:root[data-theme="material"][data-sidebar-colors="dark"] {
+    --dx-sidebar-bg: #0f172a;
+    --dx-sidebar-border: rgba(148, 163, 184, 0.12);
+    --dx-sidebar-menu-title: #64748b;
+    --dx-sidebar-link-color: #9fb0c8;
+    --dx-sidebar-link-hover-color: #ffffff;
+    --dx-sidebar-link-bg-hover-color: rgba(148, 163, 184, 0.1);
+    --dx-sidebar-link-active-color: #ffffff;
+    --dx-sidebar-link-bg-active-color: rgba(99, 102, 241, 0.26);
+    --dx-sidebar-link-sub-color: #94a3b8;
+    --dx-sidebar-link-sub-hover-color: #ffffff;
+    --dx-sidebar-link-sub-active-color: #ffffff;
+    --dx-sidebar-effect-color: rgba(148, 163, 184, 0.16);
+    --dx-sidebar-effect-hover-color: #818cf8;
+    --dx-sidebar-dropdown-shadow: 0 18px 40px -24px rgba(2, 6, 23, 0.8);
+}
+
+/* Cards: hairline border + very soft shadow instead of Alloce's flat white. */
+:root[data-theme="material"] .card {
+    --dx-card-border-color: var(--dx-border-color);
+    --dx-card-border-width: 1px;
+    --dx-card-box-shadow: var(--dx-element-shadow);
+    border-radius: 16px;
+}
+
+:root[data-theme="material"] .card,
+:root[data-theme="material"] .dropdown-menu,
+:root[data-theme="material"] .modal-content,
+:root[data-theme="material"] .offcanvas {
+    border-radius: 16px;
+}
+
+:root[data-theme="material"] .card-header,
+:root[data-theme="material"] .modal-header,
+:root[data-theme="material"] .modal-footer {
+    border-color: var(--dx-border-color);
+}
+
+/* Primary actions: solid indigo with a soft glow, no gradients. */
+:root[data-theme="material"] .btn-primary {
+    background-color: var(--dx-primary);
+    border-color: var(--dx-primary);
+    box-shadow: 0 12px 24px -16px rgba(79, 70, 229, 0.95);
+}
+
+:root[data-theme="material"] .btn-primary:hover,
+:root[data-theme="material"] .btn-primary:focus-visible {
+    background-color: #4338ca;
+    border-color: #4338ca;
+}
+
+:root[data-theme="material"] .btn-light {
+    background-color: #f8fafc;
+    border-color: var(--dx-border-color);
+    color: #334155;
+}
+
+:root[data-theme="material"] .btn-light:hover,
+:root[data-theme="material"] .btn-light:focus-visible {
+    background-color: #eef2f9;
+    border-color: #dbe3ef;
+    color: #0f172a;
+}
+
+:root[data-theme="material"] .btn-sub-primary {
+    background-color: rgba(79, 70, 229, 0.08);
+    color: #4338ca;
+}
+
+:root[data-theme="material"] .btn-sub-primary:hover,
+:root[data-theme="material"] .btn-sub-primary:focus-visible {
+    background-color: rgba(79, 70, 229, 0.14);
+    color: #3730a3;
+}
+
+:root[data-theme="material"] .nav-pills .nav-link.active {
+    background-color: var(--dx-primary);
+    color: #fff;
+}
+
+/* Form controls: brighter focus ring matching the indigo brand. */
+:root[data-theme="material"] .form-control:focus,
+:root[data-theme="material"] .form-select:focus {
+    border-color: #a5b4fc;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.14);
+}
+
+/* Sidebar active item gets a brand rail so the current page is unmistakable. */
+:root[data-theme="material"][data-sidebar-colors="dark"] .main-sidebar .navbar-menu .nav-item .nav-link {
+    border-radius: 10px;
+}
+
+:root[data-theme="material"][data-sidebar-colors="dark"] .main-sidebar .navbar-menu .nav-item .nav-link.active {
+    box-shadow: inset 3px 0 0 -1px #818cf8;
+}
+
+/* --------------------------------------------------------------------------
+   Dark mode
+   -------------------------------------------------------------------------- */
+:root[data-theme="material"][data-bs-theme="dark"] {
+    --dx-primary: #818cf8;
+    --dx-primary-rgb: 129, 140, 248;
+    --dx-secondary: #a78bfa;
+    --dx-secondary-rgb: 167, 139, 250;
+    --dx-body-bg: #080e1c;
+    --dx-body-bg-rgb: 8, 14, 28;
+    --dx-body-color: #e6ebf5;
+    --dx-body-color-rgb: 230, 235, 245;
+    --dx-secondary-bg: #0f172a;
+    --dx-secondary-bg-rgb: 15, 23, 42;
+    --dx-secondary-color: #9aa9c0;
+    --dx-tertiary-bg: #1b2436;
+    --dx-tertiary-bg-rgb: 27, 36, 54;
+    --dx-light: #1e293b;
+    --dx-light-rgb: 30, 41, 59;
+    --dx-border-color: #1f2a3d;
+    --dx-heading-color: #f8fafc;
+    --dx-link-color: #a5b4fc;
+    --dx-link-hover-color: #c7d2fe;
+    --dx-primary-bg-subtle: rgba(129, 140, 248, 0.16);
+    --dx-primary-border-subtle: rgba(129, 140, 248, 0.34);
+    --dx-element-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 18px 40px -30px rgba(0, 0, 0, 0.9);
+    --dx-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 24px 52px -34px rgba(0, 0, 0, 0.95);
+}
+
+:root[data-theme="material"][data-bs-theme="dark"] .card {
+    --dx-card-border-color: #1f2a3d;
+    --dx-card-box-shadow: var(--dx-element-shadow);
+}
+
+:root[data-theme="material"][data-bs-theme="dark"] .btn-light {
+    background-color: #162033;
+    border-color: #22304a;
+    color: #cbd5e1;
+}
+
+:root[data-theme="material"][data-bs-theme="dark"] .btn-light:hover {
+    background-color: #1d2a41;
+    color: #f8fafc;
+}
+
+:root[data-theme="material"][data-bs-theme="dark"] .btn-sub-primary {
+    background-color: rgba(129, 140, 248, 0.14);
+    color: #c7d2fe;
+}
+
+/* --------------------------------------------------------------------------
+   Shared admissions UI helpers
+   -------------------------------------------------------------------------- */
+
+/* Pill chip used for "deadline TBC"-style facts. */
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    border: 1px solid var(--dx-border-color);
+    background: var(--dx-tertiary-bg);
+    color: var(--dx-secondary-color);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.5;
+    white-space: nowrap;
+}
+
+.chip-warning {
+    border-color: rgba(245, 158, 11, 0.32);
+    background: rgba(245, 158, 11, 0.12);
+    color: #b45309;
+}
+
+.chip-success {
+    border-color: rgba(16, 185, 129, 0.3);
+    background: rgba(16, 185, 129, 0.12);
+    color: #047857;
+}
+
+[data-bs-theme="dark"] .chip {
+    background: rgba(148, 163, 184, 0.12);
+    border-color: rgba(148, 163, 184, 0.22);
+    color: #cbd5e1;
+}
+
+[data-bs-theme="dark"] .chip-warning {
+    background: rgba(245, 158, 11, 0.16);
+    border-color: rgba(245, 158, 11, 0.3);
+    color: #fcd34d;
+}
+
+[data-bs-theme="dark"] .chip-success {
+    background: rgba(16, 185, 129, 0.16);
+    border-color: rgba(16, 185, 129, 0.3);
+    color: #6ee7b7;
+}
+
+/* Compact fact list used on the detail pages. */
+.fact-list {
+    display: grid;
+    gap: 0;
+    margin: 0;
+}
+
+.fact-list dt {
+    color: var(--dx-secondary-color);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.fact-list dd {
+    margin: 0 0 14px;
+    color: var(--dx-body-color);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.fact-list dd:last-of-type {
+    margin-bottom: 0;
+}

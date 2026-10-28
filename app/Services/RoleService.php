@@ -87,7 +87,11 @@ class RoleService extends BaseService
     public function getRoleByUuid($uuid, $relations = [])
     {
         try {
-            return $this->model->select('name', 'id', 'created_at')->with($relations)->where('uuid', $uuid)->first();
+            return $this->model
+                ->with($relations)
+                ->withCount(['users', 'permissions'])
+                ->where('uuid', $uuid)
+                ->first();
         } catch (ModelNotFoundException $e) {
             throw new \Exception('Role not found');
         }

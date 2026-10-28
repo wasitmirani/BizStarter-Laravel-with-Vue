@@ -122,3 +122,90 @@ it('returns a university with its programs and source metadata', function () {
         ->assertJsonPath('result.programs.0.id', $program->id)
         ->assertJsonPath('result.programs.0.is_sample', true);
 });
+
+it('exposes city facets and filters universities by city', function () {
+    catalogUser();
+
+    catalogUniversity(['name' => 'Bocconi University', 'city' => 'Milano', 'region' => 'Lombardy']);
+    catalogUniversity(['name' => 'University of Padova', 'city' => 'Padova', 'region' => 'Veneto']);
+
+    $response = $this->getJson('/api/v1/universities');
+
+    $response->assertOk();
+    expect($response->json('result.facets.cities'))->toBe(['Milano', 'Padova']);
+
+    $this->getJson('/api/v1/universities?city=Padova')
+        ->assertOk()
+        ->assertJsonPath('result.meta.total', 1)
+        ->assertJsonPath('result.universities.0.name', 'University of Padova');
+});
+
+it('returns catalog-derived stats on the university detail endpoint', function () {
+    catalogUser();
+
+    $university = catalogUniversity(['name' => 'University of Milan', 'city' => 'Milano', 'region' => 'Lombardy']);
+    $program = catalogProgram($university, ['title' => 'MSc Data Science', 'subject_area' => 'Data Science']);
+    catalogProgram($university, ['title' => 'MSc Economics', 'subject_area' => 'Economics', 'language' => 'it']);
+
+    \App\Models\AdmissionCall::create([
+        'program_id' => $program->id,
+        'intake_year' => 2026,
+        'intake_label' => '2026/27 intake',
+        'deadline' => now()->addDays(20)->toDateString(),
+        'verification_status' => 'unverified',
+        'is_sample' => true,
+    ]);
+
+    $this->getJson("/api/v1/universities/{$university->id}")
+        ->assertOk()
+        ->assertJsonPath('result.stats.programs', 2)
+        ->assertJsonPath('result.stats.open_calls', 1)
+        ->assertJsonPath('result.stats.languages.0', 'en')
+        ->assertJsonPath('result.stats.currency', 'EUR');
+
+    expect($this->getJson("/api/v1/universities/{$university->id}")->json('result.stats.subject_areas'))
+        ->toBe(['Data Science', 'Economics'])
+        ->and($this->getJson("/api/v1/universities/{$university->id}")->json('result.stats.next_deadline'))
+        ->toBe(now()->addDays(20)->toDateString());
+});
+
+it('returns related programs on the program detail endpoint', function () {
+    catalogUser();
+
+    $university = catalogUniversity(['name' => 'Bocconi University', 'city' => 'Milano', 'region' => 'Lombardy']);
+    $program = catalogProgram($university, ['title' => 'MSc Data Science', 'subject_area' => 'Data Science']);
+    $sibling = catalogProgram($university, ['title' => 'MSc Economics', 'subject_area' => 'Economics']);
+    $other = catalogProgram(
+        catalogUniversity(['name' => 'University of Padova', 'city' => 'Padova', 'region' => 'Veneto']),
+        ['title' => 'MSc Applied Data Science', 'subject_area' => 'Data Science'],
+    );
+
+    $response = $this->getJson("/api/v1/programs/{$program->id}")->assertOk();
+    $relatedIds = collect($response->json('result.related'))->pluck('id');
+
+    expect($relatedIds)->toContain($sibling->id)
+        ->and($relatedIds)->toContain($other->id)
+        ->and($relatedIds)->not->toContain($program->id);
+});
+
+it('treats a call without a deadline as an open call and flags it as deadline TBC', function () {
+    catalogUser();
+
+    $university = catalogUniversity(['name' => 'University of Turin', 'city' => 'Torino', 'region' => 'Piedmont']);
+    $program = catalogProgram($university, ['title' => 'MSc Stochastics and Data Science', 'subject_area' => 'Data Science']);
+
+    \App\Models\AdmissionCall::create([
+        'program_id' => $program->id,
+        'intake_year' => 2026,
+        'intake_label' => '2026/27 intake — deadline to be confirmed',
+        'deadline' => null,
+        'verification_status' => 'unverified',
+        'is_sample' => false,
+    ]);
+
+    $this->getJson('/api/v1/programs?has_open_call=1')
+        ->assertOk()
+        ->assertJsonPath('result.meta.total', 1)
+        ->assertJsonPath('result.programs.0.next_call.deadline', null)
+        ->assertJsonPath('result.programs.0.next_call.days_left', null);
+});

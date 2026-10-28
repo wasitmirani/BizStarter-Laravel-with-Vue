@@ -7,9 +7,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Models\Role;
+use App\Models\User;
 use App\Services\DropdownService;
 use App\Services\RoleService;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller implements BaseFilterable
 {
@@ -26,6 +28,15 @@ class RoleController extends Controller implements BaseFilterable
 
         $data = [
             'roles' => $roles,
+            'stats' => [
+                'total' => Role::count(),
+                'system' => Role::where('scope', 'system')->count(),
+                'custom' => Role::where(function ($query) {
+                    $query->whereNull('scope')->orWhere('scope', '!=', 'system');
+                })->count(),
+                'permissions' => Permission::count(),
+                'assigned_users' => User::has('roles')->count(),
+            ],
         ];
         return responseJson('Roles fetched successfully', $data, true);
     }
@@ -40,7 +51,12 @@ class RoleController extends Controller implements BaseFilterable
     public function show($uuid)
     {
         try {
-            $role = app(RoleService::class)->getRoleByUuid($uuid, ['users:id,name,thumbnail', 'permissions:id,name']);
+            $role = app(RoleService::class)->getRoleByUuid($uuid, ['users:id,name,thumbnail,uuid,email', 'permissions:id,name']);
+
+            if (! $role) {
+                return responseJson('Role not found', null, false, 404);
+            }
+
             return responseJson('Role fetched successfully', ['role' => $role], true);
         } catch (\Exception $e) {
             return responseJson('Role not found', null, false, 404);
@@ -62,9 +78,9 @@ class RoleController extends Controller implements BaseFilterable
         try {
             $role = Role::findOrFail($id);
 
-            // Prevent deletion of super-admin
-            if (strtolower($role->name) === 'super-admin') {
-                return responseJson('Cannot delete super-admin role', null, false, 403);
+            // Built-in roles are required by the platform and must never be removed.
+            if ($role->scope === 'system' || in_array(strtolower($role->name), ['admin', 'super-admin'], true)) {
+                return responseJson('Built-in roles cannot be deleted', null, false, 403);
             }
 
             $role->delete();

@@ -103,7 +103,7 @@ class DashboardController extends Controller
                 'url' => $snapshot->source?->url,
                 'http_status' => $snapshot->http_status,
                 'captured_at' => $snapshot->captured_at?->toDateTimeString(),
-                'changed' => $snapshot->payload_excerpt !== null,
+                'changed' => (bool) $snapshot->changed,
             ]);
 
         $latestReport = $user->dailyReports()->latest('report_date')->first();

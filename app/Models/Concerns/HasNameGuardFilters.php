@@ -36,6 +36,15 @@ trait HasNameGuardFilters
             ->when($filters['created_between'] ?? null, fn($q, $range) =>
                 $q->whereBetween('created_at', explode(',', $range))
             )
+            ->when($filters['scope'] ?? false, function (Builder $q, string $scope) {
+                if ($scope === 'custom') {
+                    return $q->where(function (Builder $query) {
+                        $query->whereNull('scope')->orWhere('scope', '!=', 'system');
+                    });
+                }
+
+                return $q->where('scope', $scope);
+            })
             ->when($filters['guard_name'] ?? false, fn (Builder $q) => $q->where('guard_name', $filters['guard_name']));
     }
 }

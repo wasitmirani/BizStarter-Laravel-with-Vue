@@ -26,7 +26,7 @@ import { Helpers } from '../../Utils/Helper'
 
                         <div class="flex gap-1">
                             <router-link :to="{ name: 'create-user' }"
-                                class="btn bg-primary text-white hover:bg-primary-hover" aria-haspopup="dialog"
+                                class="btn btn-primary" aria-haspopup="dialog"
                                 aria-expanded="false" aria-controls="incomeModal" data-hs-overlay="#incomeModal"> <AppIcon name="plus" :size="15" /> Add Role </router-link>
                         </div>
 

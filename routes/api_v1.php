@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\V1\AccountController;
 use App\Http\Controllers\Api\V1\ApplicationController;
 use App\Http\Controllers\Api\V1\BookmarkController;
+use App\Http\Controllers\Api\V1\CatalogSyncController;
 use App\Http\Controllers\Api\V1\DashboardController;
 use App\Http\Controllers\Api\V1\DocumentController;
 use App\Http\Controllers\Api\V1\EducationRecordController;
@@ -60,6 +61,7 @@ Route::middleware(['auth:sanctum', 'throttle:120,1'])->prefix('v1')->group(funct
     // Shared catalog.
     Route::get('/universities', [UniversityController::class, 'index']);
     Route::get('/universities/{university}', [UniversityController::class, 'show']);
+    Route::post('/catalog/sync', [CatalogSyncController::class, 'sync'])->middleware('throttle:4,1');
     Route::get('/programs', [ProgramController::class, 'index']);
     Route::get('/programs/{program}', [ProgramController::class, 'show']);
     Route::get('/scholarships', [ScholarshipController::class, 'index']);
@@ -84,6 +86,10 @@ Route::middleware(['auth:sanctum', 'throttle:120,1'])->prefix('v1')->group(funct
     Route::get('/reports', [ReportController::class, 'index']);
     Route::post('/reports/generate', [ReportController::class, 'generate']);
 
+    Route::get('/account', [AccountController::class, 'show']);
+    Route::patch('/account', [AccountController::class, 'update']);
+    Route::post('/account/password', [AccountController::class, 'updatePassword']);
+    Route::post('/account/avatar', [AccountController::class, 'uploadAvatar']);
     Route::get('/account/export', [AccountController::class, 'export']);
     Route::delete('/account', [AccountController::class, 'destroy']);
 });

@@ -12,6 +12,7 @@ class SourceSnapshot extends Model
     protected $casts = [
         'captured_at' => 'datetime',
         'http_status' => 'integer',
+        'changed' => 'boolean',
     ];
 
     public function source(): BelongsTo

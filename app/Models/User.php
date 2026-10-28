@@ -44,6 +44,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $hidden = [
         'password',
         'remember_token',
+        'token',
     ];
 
     /**
@@ -112,9 +113,11 @@ class User extends Authenticatable implements MustVerifyEmail
             ->when($filters['uuid'] ?? null, fn($q, $uuid) =>
                 $q->where('uuid', $uuid)
             )
-            ->when($filters['is_active'] ?? null, fn($q, $active) =>
-                $active ? $q->active() : $q->inactive()
-            )
+            ->when(array_key_exists('is_active', $filters) && $filters['is_active'] !== null && $filters['is_active'] !== '', function ($q) use ($filters) {
+                return filter_var($filters['is_active'], FILTER_VALIDATE_BOOLEAN)
+                    ? $q->active()
+                    : $q->inactive();
+            })
             ->when($filters['search'] ?? null, fn($q, $search) =>
                 $q->search($search)
             )

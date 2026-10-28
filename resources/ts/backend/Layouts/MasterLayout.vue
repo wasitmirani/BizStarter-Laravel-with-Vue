@@ -178,7 +178,7 @@ const completeProgress = () => {
                             </button>
                             <button
                                 type="button"
-                                class="btn bg-primary text-white hover:bg-primary-hover btn-xs"
+                                class="btn btn-primary btn-xs"
                                 @click="requestInstall"
                             >
                                 Install app
@@ -205,9 +205,9 @@ const completeProgress = () => {
 
 .router-progress-bar-inner {
     height: 100%;
-    background: linear-gradient(90deg, #15dd80, #8b5cf6, #ec4899);
+    background: linear-gradient(90deg, #6366f1, #8b5cf6, #a855f7);
     transition: width 0.2s ease;
-    box-shadow: 0 0 10px rgba(10, 202, 170, 0.5);
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
 }
 
 .progress-fade-enter-active,

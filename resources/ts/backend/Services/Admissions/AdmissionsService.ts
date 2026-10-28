@@ -79,6 +79,9 @@ const AdmissionsService = {
     university(id: number) {
         return client.get(`/universities/${id}`).then(unwrap);
     },
+    syncCatalog(universityId?: number) {
+        return client.post('/catalog/sync', universityId ? { university_id: universityId } : {}).then(unwrap);
+    },
     scholarships(params: Record<string, any> = {}) {
         return client.get('/scholarships', { params }).then(unwrap);
     },
@@ -166,6 +169,20 @@ const AdmissionsService = {
     },
 
     // Account
+    account() {
+        return client.get('/account').then(unwrap);
+    },
+    updateAccount(payload: Record<string, any>) {
+        return client.patch('/account', payload).then(unwrap);
+    },
+    updateAccountPassword(payload: Record<string, any>) {
+        return client.post('/account/password', payload).then(unwrap);
+    },
+    uploadAccountAvatar(form: FormData) {
+        return client
+            .post('/account/avatar', form, { headers: { 'Content-Type': 'multipart/form-data' } })
+            .then(unwrap);
+    },
     notifications() {
         return client.get('/notifications').then(unwrap);
     },

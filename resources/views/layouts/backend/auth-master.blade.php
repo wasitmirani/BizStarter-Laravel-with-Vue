@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="{{ config('app.name') }} — Italy master's admission intelligence.">
+    <meta name="description" content="{{ config('app.name') }} — European master's admission intelligence.">
     <meta name="author" content="{{ config('app.name') }}">
     <meta name="theme-color" content="#002855">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -74,8 +74,8 @@
         .auth-unipilot {
             min-height: 100vh;
             background:
-                radial-gradient(900px 600px at 8% -10%, rgba(37, 99, 235, 0.10), transparent 60%),
-                radial-gradient(700px 500px at 95% 100%, rgba(14, 165, 233, 0.08), transparent 55%),
+                radial-gradient(900px 600px at 8% -10%, rgba(99, 102, 241, 0.12), transparent 60%),
+                radial-gradient(700px 500px at 95% 100%, rgba(139, 92, 246, 0.09), transparent 55%),
                 var(--dx-body-bg, #f5f7fb);
         }
 
@@ -97,9 +97,9 @@
             height: 36px;
             flex-shrink: 0;
             border-radius: 11px;
-            background: linear-gradient(135deg, #2563eb, #0ea5e9);
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
             color: #fff;
-            box-shadow: 0 10px 22px -12px rgba(37, 99, 235, 0.95);
+            box-shadow: 0 10px 22px -12px rgba(99, 102, 241, 0.95);
         }
 
         .auth-unipilot .auth-brand-text {
@@ -312,7 +312,7 @@
                 <aside class="auth-product-panel">
                     <div>
                         <span class="auth-panel-badge">
-                            <x-ui-icon name="graduation-cap" :size="14" /> Italy master's admissions
+                            <x-ui-icon name="graduation-cap" :size="14" /> European master's admissions
                         </span>
                         <h1 class="auth-panel-title">From shortlist to submission, without the guesswork.</h1>
                         <p class="auth-panel-lead">

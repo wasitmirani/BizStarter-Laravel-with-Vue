@@ -141,12 +141,12 @@ function resetSearch(close = true) {
 
 function goUniversity(university: any) {
     resetSearch();
-    router.push({ name: 'universities', query: { university: university.id } });
+    router.push({ name: 'university', params: { id: university.id } });
 }
 
 function goProgram(program: any) {
     resetSearch();
-    router.push({ name: 'programs', query: { program: program.id } });
+    router.push({ name: 'program', params: { id: program.id } });
 }
 
 function goToPrograms() {
@@ -319,7 +319,7 @@ onBeforeUnmount(() => {
                                     <span class="min-w-0 flex-grow-1">
                                         <span class="d-block fw-medium text-truncate">{{ university.name }}</span>
                                         <span class="d-block text-muted fs-14 text-truncate">
-                                            {{ [university.city, university.region].filter(Boolean).join(' · ') || 'Italy' }}
+                                            {{ [university.city, university.country_name].filter(Boolean).join(' · ') || 'Europe' }}
                                             <template v-if="university.programs_count"> · {{ programsLabel(university.programs_count) }}</template>
                                         </span>
                                     </span>
@@ -571,7 +571,7 @@ onBeforeUnmount(() => {
 
 .topbar-search .form-control:focus {
     background-color: var(--dx-topbar-icon-bg-color, rgba(15, 23, 42, 0.05));
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.14);
 }
 
 .topbar-search .search-leading {
@@ -586,7 +586,7 @@ onBeforeUnmount(() => {
     width: 24px;
     height: 24px;
     border-radius: 7px;
-    background: linear-gradient(135deg, #2563eb, #0ea5e9);
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
     color: #fff;
 }
 

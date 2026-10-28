@@ -20,9 +20,7 @@ class AxiosClass {
             Authorization: `Bearer ${token}`,
         };
 
-        return await axios.get<T>(url, { headers }).catch((err) => {
-            console.log("ER2:",err.response.data.message);
-        });
+        return await axios.get<T>(url, { headers });
     }
 
     async post<T>(url: string, body?: any): Promise<AxiosResponse<T>> {

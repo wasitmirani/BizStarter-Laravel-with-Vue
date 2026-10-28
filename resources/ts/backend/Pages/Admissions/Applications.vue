@@ -308,7 +308,7 @@ watch(
                                                 <h6 class="mb-0 fw-medium">{{ application.program?.title }}</h6>
                                                 <p class="text-muted fs-14 mb-0">
                                                     {{ application.program?.university?.name }}
-                                                    <span v-if="application.program?.university?.region">· {{ application.program.university.region }}</span>
+                                                    <span v-if="application.program?.university?.city">· {{ application.program.university.city }}</span>
                                                 </p>
                                             </div>
                                         </div>

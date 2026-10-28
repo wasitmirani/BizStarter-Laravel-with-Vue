@@ -7,8 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePermissionRequest;
 use App\Http\Requests\UpdatePermissionRequest;
 use App\Models\Permission;
+use App\Models\Role;
 use App\Services\PermissionService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PermissionController extends Controller implements BaseFilterable
 {
@@ -35,6 +37,15 @@ class PermissionController extends Controller implements BaseFilterable
         $permissions =app(PermissionService::class)->getPermissionsList($filters, withCount: ['roles', 'users']);
         $data = [
             'permissions' => $permissions,
+            'stats' => [
+                'total' => Permission::count(),
+                'system' => Permission::where('scope', 'system')->count(),
+                'custom' => Permission::where(function ($query) {
+                    $query->whereNull('scope')->orWhere('scope', '!=', 'system');
+                })->count(),
+                'roles' => Role::count(),
+                'assigned_roles' => DB::table(config('permission.table_names.role_has_permissions'))->count(),
+            ],
         ];
         return responseJson('Permissions fetched successfully', $data, true);
     }
@@ -48,7 +59,7 @@ class PermissionController extends Controller implements BaseFilterable
     public function show($uuid)
     {
         try {
-            $permission = app(PermissionService::class)->getPermissionByUuid($uuid, ['roles:id,name']);
+            $permission = app(PermissionService::class)->getPermissionByUuid($uuid, ['roles:id,name,uuid,scope']);
             return responseJson('Permission fetched successfully', ['permission' => $permission], true);
         } catch (\Exception $e) {
             return responseJson('Permission not found', null, false, 404);
@@ -69,6 +80,12 @@ class PermissionController extends Controller implements BaseFilterable
     public function destroy($id)
     {
         try {
+            $permission = Permission::findOrFail($id);
+
+            if ($permission->scope === 'system') {
+                return responseJson('Built-in permissions cannot be deleted', null, false, 403);
+            }
+
             app(PermissionService::class)->deletePermission($id);
             return responseJson('Permission deleted successfully', null, true);
         } catch (\Exception $e) {
