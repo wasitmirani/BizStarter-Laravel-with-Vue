@@ -34,8 +34,12 @@ Helpers.useDynamicOnMounted(() => {
 
 <template>
     <div>
-        <!-- Breadcrumb  -->
-        <BreadcrumbComponent :current="'Permissions'" :links="[{ name: 'Dashboard', route: 'dashboard' }]" />
+        <header class="lk-page-head">
+            <div>
+                <h1 class="lk-page-title">Permissions</h1>
+                <p class="lk-page-subtitle">The individual capabilities granted to roles across the portal.</p>
+            </div>
+        </header>
 
         <div class="container-fluid">
 

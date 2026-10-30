@@ -8,9 +8,6 @@ import { Helpers } from '../../Utils/Helper'
 
 <template>
     <div>
-        <!-- Breadcrumb  -->
-        <BreadcrumbComponent :current="'Users'" :links="[{ name: 'Dashboard', route: 'dashboard' }]" />
-
         <div class="container-fluid">
             <div class="mb-base grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-base">
 

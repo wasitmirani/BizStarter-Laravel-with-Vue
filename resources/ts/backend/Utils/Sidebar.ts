@@ -1,63 +1,64 @@
+export type PortalMenuItem = {
+    title: string;
+    icon?: string;
+    type: 'single' | 'group' | 'heading';
+    link?: string;
+    can?: string | null;
+    children?: PortalMenuItem[];
+};
 
+/**
+ * Single source of truth for sidebar navigation.
+ * Only modules backed by real routes and permissions are listed here.
+ */
 export default class SidebarMenu {
+    private per_fix = '/app';
 
-    private per_fix = "/app";
+    private single(title: string, icon: string, link: string, can?: string): PortalMenuItem {
+        return {
+            title,
+            type: 'single',
+            icon,
+            link: this.per_fix + link,
+            can: can ?? null,
+        };
+    }
 
-    setSingleMenu = (title: string, icon: string, link: string, can?: string) => {
+    private group(title: string, icon: string, children: PortalMenuItem[]): PortalMenuItem {
         return {
-            "title": title,
-            "type": 'single',
-            "icon": icon,
-            "link": this.per_fix + link,
-            "can": can,
-        }
+            title,
+            type: 'group',
+            icon,
+            children,
+        };
     }
-    setMultiMenu = (title: string, icon: string, can?: string, sub_menu?: any) => {
-        return {
-            "title": title,
-            "icon": icon,
-            "can": can,
-            "type": "multi",
-            "sub_menu": sub_menu,
-        }
-    }
-    setSubMenu = (title: string,  link: string, can?: string) => {
-        return {
-            "title": title,
-            "link": this.per_fix + link,
-            "can": can,
 
-        }
-    }
-    setHeadingMenu = (title: string) => {
+    private heading(title: string): PortalMenuItem {
         return {
-            "title": title,
-            "type": "heading",
-        }
+            title,
+            type: 'heading',
+        };
     }
-    getMenuList(): any[] {
+
+    getMenuList(): PortalMenuItem[] {
         return [
-            this.setHeadingMenu('Analytics'),
-            this.setMultiMenu('Dashboards', 'layout-dashboard', undefined, [
-                    this.setSubMenu('Dashboard', '/dashboard', undefined),
-                ]
-            ),
+            this.heading('Overview'),
+            this.single('Dashboard', 'layout-dashboard', '/dashboard'),
 
-            this.setHeadingMenu('Management'),
-            this.setMultiMenu('Access Control', 'users', undefined, [
-                    this.setSubMenu('Users', '/management/users', 'users-list'),
-                    this.setSubMenu('Roles', '/management/roles', 'roles-list'),
-                    this.setSubMenu('Permissions', '/management/permissions', 'permissions-list'),
-                ]
-            ),
+            this.heading('Access control'),
+            this.group('Access control', 'shield-check', [
+                this.single('Users', 'users', '/management/users', 'users-list'),
+                this.single('Roles', 'badge-check', '/management/roles', 'roles-list'),
+                this.single('Permissions', 'key-round', '/management/permissions', 'permissions-list'),
+            ]),
 
-            this.setHeadingMenu('Tools'),
-            this.setMultiMenu('Settings', 'settings', undefined, [
-                    this.setSubMenu('Account', '/settings/user-account', undefined),
-                    this.setSubMenu('App config', '/settings/app-config', undefined),
-                ]
-            ),
+            this.heading('Operations'),
+            this.single('Activity log', 'activity', '/activity', 'activity-list'),
+            this.single('Reports', 'file-text', '/reports', 'reports-list'),
+
+            this.heading('Workspace'),
+            this.single('My profile', 'user-circle', '/settings/user-account'),
+            this.single('App config', 'sliders-horizontal', '/settings/app-config'),
         ];
     }
-
 }

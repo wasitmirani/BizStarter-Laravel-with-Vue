@@ -26,6 +26,7 @@ import { useGlobal } from './global-composables';
 import router from "./router";
 import { registerPWA } from './pwa/registerPWA';
 import { usePermissionsStore } from '../shared/stores/permissionsStore';
+import { useAuthStore } from '../shared/stores/authStore';
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
@@ -57,6 +58,9 @@ app.use(pinia);
 
 const permissionsStore = usePermissionsStore();
 permissionsStore.initFromWindow();
+
+const authStore = useAuthStore();
+authStore.initFromWindow();
 
 app.directive("can", {
     mounted(el, binding) {

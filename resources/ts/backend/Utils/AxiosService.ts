@@ -1,68 +1,51 @@
-import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
+import axios, { AxiosResponse } from 'axios';
 
-axios.defaults.baseURL = "/api/app/";
+axios.defaults.baseURL = '/api/app/';
+axios.defaults.withCredentials = true;
+axios.defaults.headers.common['Accept'] = 'application/json';
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-let token: string | undefined = window.user?.token;
+function csrfToken(): string {
+    return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '';
+}
 
-setInterval(setSessionToken, 3000);
+function authHeaders(): Record<string, string> {
+    const token = window.__APP_CONTEXT__?.auth.token ?? window.user?.token;
+    return token ? { Authorization: `Bearer ${token}` } : {};
+}
 
-// Declare the window object to include auth_token
+function headers(extra: Record<string, string> = {}) {
+    return {
+        ...authHeaders(),
+        'X-CSRF-TOKEN': csrfToken(),
+        ...extra,
+    };
+}
 
 class AxiosClass {
-
-
-    async get<T>(url: string): Promise<any> {
-        if (token === undefined) {
-            await setSessionToken();
-        }
-
-        const headers = {
-            Authorization: `Bearer ${token}`,
-        };
-
-        return await axios.get<T>(url, { headers }).catch((err) => {
-            console.log("ER2:",err.response.data.message);
-        });
+    async get<T>(url: string): Promise<AxiosResponse<T>> {
+        return axios.get<T>(url, { headers: headers() });
     }
 
     async post<T>(url: string, body?: any): Promise<AxiosResponse<T>> {
-        if (token === undefined) {
-            await setSessionToken();
-        }
-
-        const headers = {
-            Authorization: `Bearer ${token}`,
-        };
-
-        return  await axios.post<T>(url, body, { headers });
+        return axios.post<T>(url, body, { headers: headers() });
     }
+
     async put<T>(url: string, body: any): Promise<AxiosResponse<T>> {
-        if (token === undefined) {
-            await setSessionToken();
-        }
+        return axios.put<T>(url, body, { headers: headers() });
+    }
 
-        const headers = {
-            Authorization: `Bearer ${token}`,
-        };
-
-        return  await axios.put<T>(url, body, { headers });
+    async patch<T>(url: string, body: any): Promise<AxiosResponse<T>> {
+        return axios.patch<T>(url, body, { headers: headers() });
     }
 
     async delete<T>(url: string): Promise<AxiosResponse<T>> {
-        if (token === undefined) {
-            await setSessionToken();
-        }
-
-        const headers = {
-            Authorization: `Bearer ${token}`,
-        };
-
-        return await axios.delete<T>(url, { headers });
+        return axios.delete<T>(url, { headers: headers() });
     }
-}
 
-async function setSessionToken() {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    async download(url: string): Promise<AxiosResponse<Blob>> {
+        return axios.get<Blob>(url, { headers: headers(), responseType: 'blob' });
+    }
 }
 
 export const AxiosService = new AxiosClass();

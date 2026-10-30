@@ -35,8 +35,12 @@ Helpers.useDynamicOnMounted(() => {
 
 <template>
     <div>
-        <!-- Breadcrumb  -->
-        <BreadcrumbComponent :current="'Roles'" :links="[{ name: 'Dashboard', route: 'dashboard' }]" />
+        <header class="lk-page-head">
+            <div>
+                <h1 class="lk-page-title">Roles</h1>
+                <p class="lk-page-subtitle">Group permissions into roles and see who holds each one.</p>
+            </div>
+        </header>
 
         <div class="container-fluid">
             <div class="mb-base grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-base">

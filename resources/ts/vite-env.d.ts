@@ -18,6 +18,8 @@ type AppContextUser = {
   id: number | string;
   name: string;
   email: string;
+  thumbnail?: string | null;
+  token?: string | null;
   roles: AppContextUserRole[];
 } | null;
 
@@ -25,6 +27,7 @@ type AppContext = {
   auth: {
     user: AppContextUser;
     permissions: string[];
+    token?: string | null;
   };
   config: {
     appName: string;

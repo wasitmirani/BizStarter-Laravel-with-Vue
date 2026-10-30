@@ -1,10 +1,14 @@
 <?php
 
+use App\Http\Controllers\Backend\Activity\ActivityLogController;
 use App\Http\Controllers\Backend\Dashboard\DashboardController;
 use App\Http\Controllers\Backend\Dropdown\DropDownController;
 use App\Http\Controllers\Backend\Media\UploadController;
 use App\Http\Controllers\Backend\Permission\PermissionController;
+use App\Http\Controllers\Backend\Profile\ProfileController;
+use App\Http\Controllers\Backend\Report\ReportController;
 use App\Http\Controllers\Backend\Role\RoleController;
+use App\Http\Controllers\Backend\Search\SearchController;
 use App\Http\Controllers\Backend\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +25,24 @@ Route::prefix('/app')->middleware('auth:sanctum')->group(function () {
     });
 
     Route::get('/dashboard', [DashboardController::class, 'index']);
+
+    // Own profile
+    Route::get('/profile', [ProfileController::class, 'show']);
+    Route::put('/profile', [ProfileController::class, 'update']);
+    Route::patch('/profile', [ProfileController::class, 'update']);
+
+    // Global search
+    Route::get('/search', [SearchController::class, 'index'])->middleware('throttle:60,1');
+
+    // Audit log
+    Route::get('/activity', [ActivityLogController::class, 'index'])
+        ->middleware('permission:activity-list');
+
+    // Reports
+    Route::get('/reports/summary', [ReportController::class, 'summary'])
+        ->middleware('permission:reports-list');
+    Route::get('/reports/users', [ReportController::class, 'users'])
+        ->middleware('permission:reports-list');
 
     // Users
     Route::get('user', [UserController::class, 'index'])->middleware('permission:users-list');

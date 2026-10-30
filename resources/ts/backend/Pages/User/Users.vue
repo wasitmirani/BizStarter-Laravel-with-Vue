@@ -34,8 +34,12 @@ Helpers.useDynamicOnMounted(() => {
 
 <template>
     <div>
-        <!-- Breadcrumb  -->
-        <BreadcrumbComponent :current="'Users'" :links="[{ name: 'Dashboard', route: 'dashboard' }]" />
+        <header class="lk-page-head">
+            <div>
+                <h1 class="lk-page-title">Users</h1>
+                <p class="lk-page-subtitle">Search, filter and manage the people who can access the workspace.</p>
+            </div>
+        </header>
 
         <div class="container-fluid">
             <div class="mb-base grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-base">

@@ -12,7 +12,14 @@ const isLoading = Helpers.useDynamicComputed(() => loading?.value || false);
 </script>
 
 <template>
-    <BreadcrumbComponent :current="isEditMode ? 'Update Role' : 'Create Role'" :links="[{ name: 'Dashboard', route: 'dashboard' }, { name: 'Roles', route: 'roles' }]"/>
+    <header class="lk-page-head">
+        <div>
+            <h1 class="lk-page-title">{{ isEditMode ? 'Update role' : 'Create role' }}</h1>
+            <p class="lk-page-subtitle">
+                {{ isEditMode ? 'Adjust the role name and the permissions it grants.' : 'Name a role and choose the capabilities it should grant.' }}
+            </p>
+        </div>
+    </header>
 
     <!-- Loader -->
     <div v-if="isLoading" class="flex justify-center items-center py-12">

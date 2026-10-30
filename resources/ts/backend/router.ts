@@ -43,6 +43,10 @@ const routes = [
     setRoute("/management/permission/edit/:id", "edit-permission", "Permission/Permission", "edit-permission"),
     setRoute("/management/permission/details/:id", "show-permission", "Permission/PermissionShow", "show-permission"),
 
+    // Operations
+    setRoute("/activity", "activity", "activity/ActivityLog", "activity-list"),
+    setRoute("/reports", "reports", "reports/Reports", "reports-list"),
+
     // Settings
     setRoute("/settings/user-account", "user-account", "account/Account", null),
     setRoute("/settings/app-config", "app-config", "Settings/AppConfig", null),

@@ -1,3 +1,6 @@
+/* Design tokens and portal shell */
+@import './tokens.css';
+
 /* @tailwind base; */
 /* @tailwind components;
 @tailwind utilities; */
