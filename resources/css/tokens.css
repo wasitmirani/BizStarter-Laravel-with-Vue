@@ -1190,6 +1190,10 @@ a:hover {
   gap: 16px;
 }
 
+.lk-kpi-grid--three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .lk-kpi {
   position: relative;
   padding: 18px;

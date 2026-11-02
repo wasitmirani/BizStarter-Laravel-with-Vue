@@ -18,6 +18,9 @@ class DatabaseSeeder extends Seeder
             TimeZoneSeeder::class,
             RolePermissionSeeder::class,
             AdminUserSeeder::class,
+            PlanSeeder::class,
+            WorkspaceSeeder::class,
+            CrmSeeder::class,
         ]);
     }
 }

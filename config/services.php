@@ -35,4 +35,12 @@ return [
         ],
     ],
 
+    'whatsapp' => [
+        // Meta app secret used to verify X-Hub-Signature-256 on webhooks.
+        'app_secret' => env('WHATSAPP_APP_SECRET'),
+        'api_version' => env('WHATSAPP_API_VERSION', 'v21.0'),
+        // Optional shared verify token when a workspace has none configured.
+        'verify_token' => env('WHATSAPP_VERIFY_TOKEN'),
+    ],
+
 ];

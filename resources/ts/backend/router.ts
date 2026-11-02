@@ -23,7 +23,7 @@ const routes = [
     },
 
     setRoute("/unauthorized/user", "401", "errors/401", null),
-    setRoute("/dashboard", "dashboard", "Dashboard/Dashboard", null),
+    setRoute("/dashboard", "dashboard", "dashboard/Dashboard", null),
 
     // Users
     setRoute("/management/users", "users", "User/Users", "users-list"),
@@ -43,12 +43,25 @@ const routes = [
     setRoute("/management/permission/edit/:id", "edit-permission", "Permission/Permission", "edit-permission"),
     setRoute("/management/permission/details/:id", "show-permission", "Permission/PermissionShow", "show-permission"),
 
+    // WhatsApp CRM
+    setRoute("/crm/inbox", "crm-inbox", "whatsapp/Inbox", null),
+    setRoute("/crm/contacts", "crm-contacts", "whatsapp/Contacts", null),
+    setRoute("/crm/templates", "crm-templates", "whatsapp/Templates", null),
+    setRoute("/crm/campaigns", "crm-campaigns", "whatsapp/Campaigns", null),
+
     // Operations
     setRoute("/activity", "activity", "activity/ActivityLog", "activity-list"),
     setRoute("/reports", "reports", "reports/Reports", "reports-list"),
 
     // Settings
     setRoute("/settings/user-account", "user-account", "account/Account", null),
+    setRoute("/settings/team", "team", "workspace/Team", null),
+    setRoute("/settings/whatsapp", "whatsapp-settings", "Settings/WhatsApp", null),
+    setRoute("/settings/billing", "billing", "billing/Billing", null),
+    setRoute("/settings/api-tokens", "api-tokens", "Settings/ApiTokens", null),
+    setRoute("/settings/plans", "plans", "billing/Plans", "plans-manage"),
+    setRoute("/settings/billing/invoices/:id", "billing-invoice", "billing/Invoice", null),
+    setRoute("/invitations/:token", "accept-invitation", "workspace/AcceptInvitation", null),
     setRoute("/settings/app-config", "app-config", "Settings/AppConfig", null),
 
     // Catch-all

@@ -1,6 +1,7 @@
 ﻿<script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import DashboardService from '../../Services/Dashboard/DashboardService';
+import WorkspaceService, { type WorkspacePayload } from '../../Services/Workspace/WorkspaceService';
 import { Helpers } from '../../Utils/Helper';
 import { chartTheme, loadApexCharts } from '../../Utils/apex';
 import { useAuthStore } from '../../../shared/stores/authStore';
@@ -23,10 +24,15 @@ let roleInstance: { destroy: () => void } | null = null;
 
 const stats = computed(() => payload.value?.stats ?? null);
 const quickActions = computed(() => payload.value?.quick_actions ?? {});
+const workspace = ref<WorkspacePayload | null>(null);
+const seat = computed(() => workspace.value?.usage?.members ?? null);
+const subscription = computed(() => workspace.value?.subscription ?? null);
 const recentActivity = computed<any[]>(() => payload.value?.recent_activity ?? []);
 const recentUsers = computed<any[]>(() => payload.value?.recent_users ?? []);
 const roleDistribution = computed<any[]>(() => payload.value?.role_distribution ?? []);
 const hasActivity = computed(() => recentActivity.value.length > 0);
+const crm = computed<any>(() => payload.value?.crm ?? null);
+const recentConversations = computed<any[]>(() => crm.value?.recent_conversations ?? []);
 
 const firstName = computed(() => {
     const name = String(auth?.name ?? '').trim();
@@ -220,8 +226,17 @@ watch(range, () => {
     void load();
 });
 
+async function loadWorkspace() {
+    try {
+        workspace.value = (await WorkspaceService.show()).data.result;
+    } catch {
+        workspace.value = null;
+    }
+}
+
 onMounted(() => {
     void load();
+    void loadWorkspace();
 });
 
 onBeforeUnmount(() => {
@@ -312,6 +327,105 @@ const actions = computed(() => [
         </div>
 
         <template v-else-if="stats">
+            <section v-if="workspace" class="lk-card lk-sub-strip" aria-label="Your subscription">
+                <div class="lk-card__body lk-sub-strip__body">
+                    <div class="lk-sub-strip__plan">
+                        <p class="lk-label" style="margin-bottom: 4px">Current plan</p>
+                        <p class="lk-sub-strip__name">
+                            {{ workspace.plan?.name ?? 'No plan' }}
+                            <span
+                                class="lk-badge"
+                                :class="subscription?.is_trialing ? 'lk-badge--info' : 'lk-badge--success'"
+                            >
+                                {{ subscription?.is_trialing ? `Trial · ${subscription.trial_days_left}d left` : (subscription?.status ?? 'inactive') }}
+                            </span>
+                        </p>
+                        <p class="lk-hint">
+                            {{ workspace.stats.pending_invitations }} pending invite(s) ·
+                            {{ workspace.stats.open_invoices }} open invoice(s)
+                        </p>
+                    </div>
+                    <div v-if="seat" class="lk-sub-strip__usage">
+                        <div class="lk-usage__head">
+                            <span>Seats</span>
+                            <span>{{ seat.used }} / {{ seat.unlimited ? '∞' : seat.limit }}</span>
+                        </div>
+                        <div class="lk-usage__bar">
+                            <span :style="{ width: `${seat.percent}%` }"></span>
+                        </div>
+                    </div>
+                    <div class="lk-sub-strip__actions">
+                        <router-link :to="{ name: 'billing' }" class="lk-btn lk-btn--secondary lk-btn--sm">
+                            Manage billing
+                        </router-link>
+                        <router-link :to="{ name: 'team' }" class="lk-btn lk-btn--ghost lk-btn--sm">
+                            Invite team
+                        </router-link>
+                    </div>
+                </div>
+            </section>
+
+            <section v-if="crm" class="lk-card lk-crm-strip" aria-label="WhatsApp CRM overview">
+                <div class="lk-card__head">
+                    <div>
+                        <h2 class="lk-card__title">WhatsApp CRM</h2>
+                        <p class="lk-card__meta">Your shared inbox at a glance</p>
+                    </div>
+                    <div class="lk-page-actions">
+                        <router-link :to="{ name: 'crm-inbox' }" class="lk-btn lk-btn--secondary lk-btn--sm">
+                            Open inbox
+                        </router-link>
+                        <router-link :to="{ name: 'crm-contacts' }" class="lk-btn lk-btn--ghost lk-btn--sm">
+                            Contacts
+                        </router-link>
+                    </div>
+                </div>
+                <div class="lk-card__body lk-crm-strip__body">
+                    <div class="lk-crm-strip__stats">
+                        <div class="lk-crm-stat">
+                            <span class="lk-crm-stat__value">{{ formatNumber(crm.contacts) }}</span>
+                            <span class="lk-crm-stat__label">Contacts</span>
+                        </div>
+                        <div class="lk-crm-stat">
+                            <span class="lk-crm-stat__value">{{ formatNumber(crm.open_conversations) }}</span>
+                            <span class="lk-crm-stat__label">Open chats</span>
+                        </div>
+                        <div class="lk-crm-stat">
+                            <span class="lk-crm-stat__value">{{ formatNumber(crm.unread_messages) }}</span>
+                            <span class="lk-crm-stat__label">Unread</span>
+                        </div>
+                        <div class="lk-crm-stat">
+                            <span class="lk-crm-stat__value">{{ formatNumber(crm.messages_today) }}</span>
+                            <span class="lk-crm-stat__label">Messages today</span>
+                        </div>
+                        <div class="lk-crm-stat">
+                            <span class="lk-crm-stat__value">{{ formatNumber(crm.campaigns_sent) }} / {{ formatNumber(crm.campaigns) }}</span>
+                            <span class="lk-crm-stat__label">Campaigns sent</span>
+                        </div>
+                    </div>
+
+                    <div class="lk-crm-strip__recent">
+                        <p class="lk-label">Recent conversations</p>
+                        <ul v-if="recentConversations.length" class="lk-crm-recent">
+                            <li v-for="conversation in recentConversations" :key="conversation.id">
+                                <router-link :to="{ name: 'crm-inbox' }" class="lk-crm-recent__row">
+                                    <span class="lk-crm-recent__dot" :class="`is-${conversation.status}`" aria-hidden="true"></span>
+                                    <span class="lk-crm-recent__main">
+                                        <span class="lk-crm-recent__name">
+                                            {{ conversation.contact?.name ?? 'Unknown contact' }}
+                                            <span v-if="conversation.unread_count" class="lk-crm-recent__unread">{{ conversation.unread_count }}</span>
+                                        </span>
+                                        <span class="lk-crm-recent__preview">{{ conversation.preview ?? 'No messages yet' }}</span>
+                                    </span>
+                                    <span class="lk-crm-recent__time">{{ formatRelative(conversation.last_message_at) }}</span>
+                                </router-link>
+                            </li>
+                        </ul>
+                        <p v-else class="lk-state__text">No conversations yet. New WhatsApp messages will appear here.</p>
+                    </div>
+                </div>
+            </section>
+
             <section class="lk-kpi-grid" aria-label="Key metrics">
                 <article class="lk-kpi">
                     <div class="lk-kpi__top">
@@ -502,6 +616,195 @@ const actions = computed(() => [
 </template>
 
 <style scoped>
+.lk-sub-strip {
+    margin-bottom: 16px;
+}
+
+.lk-sub-strip__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(180px, 1fr) auto;
+    align-items: center;
+    gap: 22px;
+}
+
+.lk-sub-strip__name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 3px;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--lk-text);
+}
+
+.lk-sub-strip__actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.lk-usage__head {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--lk-text-secondary);
+    margin-bottom: 6px;
+}
+
+.lk-usage__bar {
+    height: 7px;
+    border-radius: 999px;
+    background: var(--lk-surface);
+    overflow: hidden;
+}
+
+.lk-usage__bar span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--lk-primary), #34d399);
+}
+
+@media (max-width: 900px) {
+    .lk-sub-strip__body {
+        grid-template-columns: minmax(0, 1fr);
+        align-items: start;
+    }
+
+    .lk-sub-strip__actions {
+        justify-content: flex-start;
+    }
+}
+
+.lk-crm-strip {
+    margin-bottom: 16px;
+}
+
+.lk-crm-strip__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 1fr);
+    gap: 22px;
+    align-items: start;
+}
+
+.lk-crm-strip__stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 14px;
+}
+
+.lk-crm-stat {
+    display: grid;
+    gap: 2px;
+    padding: 10px 12px;
+    border: 1px solid var(--lk-border);
+    border-radius: 10px;
+    background: var(--lk-surface);
+}
+
+.lk-crm-stat__value {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--lk-text);
+    line-height: 1.2;
+}
+
+.lk-crm-stat__label {
+    font-size: 11px;
+    color: var(--lk-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.lk-crm-recent {
+    list-style: none;
+    margin: 6px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 2px;
+}
+
+.lk-crm-recent__row {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 7px 8px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.lk-crm-recent__row:hover {
+    background: var(--lk-surface);
+}
+
+.lk-crm-recent__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex: 0 0 auto;
+    background: #94a3b8;
+}
+
+.lk-crm-recent__dot.is-open {
+    background: #059669;
+}
+
+.lk-crm-recent__dot.is-pending {
+    background: #f59e0b;
+}
+
+.lk-crm-recent__main {
+    min-width: 0;
+    flex: 1;
+    display: grid;
+    gap: 1px;
+}
+
+.lk-crm-recent__name {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--lk-text);
+}
+
+.lk-crm-recent__unread {
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    border-radius: 999px;
+    background: var(--lk-primary);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lk-crm-recent__preview {
+    font-size: 11.5px;
+    color: var(--lk-text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.lk-crm-recent__time {
+    font-size: 10.5px;
+    color: var(--lk-text-muted);
+    white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+    .lk-crm-strip__body {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
 .lk-dashboard__side {
     display: grid;
     gap: 16px;

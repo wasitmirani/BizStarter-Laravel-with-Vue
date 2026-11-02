@@ -7,6 +7,8 @@ use App\Models\DeviceHistory;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
+use App\Services\Crm\CrmService;
+use App\Services\WorkspaceService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\Models\Activity;
@@ -109,8 +111,12 @@ class DashboardController extends Controller
 
         $user = $request->user();
 
+        $workspace = app(WorkspaceService::class)->ensureForUser($user);
+        $crm = app(CrmService::class)->summary($workspace);
+
         return responseJson('Dashboard data fetched successfully', [
             'stats' => $stats,
+            'crm' => $crm,
             'recent_users' => $recentUsers,
             'recent_logins' => $recentLogins,
             'users_by_day' => $usersByDay,

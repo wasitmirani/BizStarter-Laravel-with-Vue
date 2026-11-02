@@ -142,6 +142,19 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(Country::class, 'country_id', 'id');
     }
 
+    public function workspaces()
+    {
+        return $this->belongsToMany(Workspace::class, 'workspace_members')
+            ->using(WorkspaceMember::class)
+            ->withPivot(['id', 'role', 'joined_at'])
+            ->withTimestamps();
+    }
+
+    public function ownedWorkspaces()
+    {
+        return $this->hasMany(Workspace::class, 'owner_id');
+    }
+
     public function getRoles(){
 
         return DB::table('roles')->orderBy('name', 'ASC')->get();

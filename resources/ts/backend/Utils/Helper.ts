@@ -6,7 +6,7 @@ import { useRoute } from "vue-router";
 import { ref, onMounted,inject, Ref, UnwrapRef, reactive, UnwrapNestedRefs, defineAsyncComponent,computed, watch,ComputedRef  } from "vue";
 import router from "../router"
 import Swal from 'sweetalert2'
-import * as moment from "moment";
+import moment from "moment";
 
 
 class Helper {

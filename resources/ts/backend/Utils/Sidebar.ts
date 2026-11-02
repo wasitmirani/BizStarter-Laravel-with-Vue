@@ -52,13 +52,26 @@ export default class SidebarMenu {
                 this.single('Permissions', 'key-round', '/management/permissions', 'permissions-list'),
             ]),
 
+            this.heading('WhatsApp CRM'),
+            this.single('Inbox', 'message-circle', '/crm/inbox'),
+            this.single('Contacts', 'contact', '/crm/contacts'),
+            this.single('Templates', 'file-text', '/crm/templates'),
+            this.single('Campaigns', 'megaphone', '/crm/campaigns'),
+
             this.heading('Operations'),
             this.single('Activity log', 'activity', '/activity', 'activity-list'),
             this.single('Reports', 'file-text', '/reports', 'reports-list'),
 
             this.heading('Workspace'),
+            this.single('Team', 'users-round', '/settings/team'),
+            this.single('WhatsApp', 'phone', '/settings/whatsapp'),
+            this.single('Billing & plans', 'credit-card', '/settings/billing'),
+            this.single('API tokens', 'key-round', '/settings/api-tokens'),
             this.single('My profile', 'user-circle', '/settings/user-account'),
             this.single('App config', 'sliders-horizontal', '/settings/app-config'),
+
+            this.heading('Platform'),
+            this.single('Plans', 'layers', '/settings/plans', 'plans-manage'),
         ];
     }
 }

@@ -12,6 +12,7 @@ class Permission extends SpatiePermission
 
     protected $prefix = 'PR00';
     protected $guarded = [];
+    protected $guard_name = 'web';
 
     public function scopeSearch($query, ?string $search)
     {

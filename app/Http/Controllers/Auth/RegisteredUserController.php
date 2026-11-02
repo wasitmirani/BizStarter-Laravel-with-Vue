@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\WorkspaceService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -31,6 +32,7 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'workspace_name' => ['nullable', 'string', 'max:120'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
@@ -40,6 +42,12 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        // Registered accounts start as regular members with their own workspace.
+        $user->assignRole('user');
+
+        // Every account starts with its own workspace on a trial plan.
+        app(WorkspaceService::class)->provision($user, $request->input('workspace_name'));
 
         event(new Registered($user));
 

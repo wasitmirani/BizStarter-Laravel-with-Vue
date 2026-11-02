@@ -13,6 +13,15 @@ class Role extends SpatieRole
     protected $guarded = [];
     protected $prefix = 'RL00';
 
+    /**
+     * Keep RBAC records on the session guard.
+     *
+     * Without this, Sanctum sets auth.defaults.guard to "sanctum" for API
+     * requests and Spatie creates/loads roles with a guard that has no
+     * configured provider, which breaks role relations (e.g. users()).
+     */
+    protected $guard_name = 'web';
+
     public function scopeSearch($query, ?string $search)
     {
         if (!$search) {
