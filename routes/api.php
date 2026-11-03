@@ -106,6 +106,8 @@ Route::prefix('/app')->middleware('auth:sanctum')->group(function () {
         Route::post('conversations/{conversation}/reply', [ConversationController::class, 'reply']);
         Route::post('conversations/{conversation}/read', [ConversationController::class, 'markRead']);
 
+        Route::get('messages/{message}/media', [ConversationController::class, 'media']);
+
         Route::get('templates', [TemplateController::class, 'index']);
         Route::post('templates', [TemplateController::class, 'store']);
         Route::post('templates/sync', [TemplateController::class, 'sync']);

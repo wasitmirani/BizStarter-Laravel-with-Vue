@@ -48,6 +48,34 @@ class CrmMessage extends Model
         return '[' . ucfirst($this->type) . '] ' . Str::limit((string) $this->body, 100);
     }
 
+    /**
+     * Media attached to an inbound webhook message, if any.
+     *
+     * @return array{type:string,mime_type:?string,filename:?string,download_url:string}|null
+     */
+    public function inboundMedia(): ?array
+    {
+        $payload = is_array($this->payload) ? $this->payload : [];
+        $type = (string) ($payload['type'] ?? $this->type);
+
+        if (! in_array($type, ['image', 'video', 'document', 'audio', 'sticker'], true)) {
+            return null;
+        }
+
+        $media = $payload[$type] ?? null;
+
+        if (! is_array($media) || blank($media['id'] ?? null)) {
+            return null;
+        }
+
+        return [
+            'type' => $type,
+            'mime_type' => $media['mime_type'] ?? $this->media_mime,
+            'filename' => $media['filename'] ?? $this->media_filename,
+            'download_url' => '/api/app/crm/messages/' . $this->id . '/media',
+        ];
+    }
+
     public function toMessageArray(): array
     {
         return [
@@ -59,6 +87,7 @@ class CrmMessage extends Model
             'media_url' => $this->media_url,
             'media_mime' => $this->media_mime,
             'media_filename' => $this->media_filename,
+            'media' => $this->inboundMedia(),
             'template_name' => $this->template_name,
             'status' => $this->status,
             'error' => $this->error,

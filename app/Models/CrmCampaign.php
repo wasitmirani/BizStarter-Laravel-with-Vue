@@ -58,6 +58,26 @@ class CrmCampaign extends Model
         return in_array($this->status, [self::STATUS_DRAFT, self::STATUS_FAILED, self::STATUS_SCHEDULED], true);
     }
 
+    public function isScheduled(): bool
+    {
+        return $this->status === self::STATUS_SCHEDULED;
+    }
+
+    /**
+     * Status to store for a campaign based on its schedule: a future
+     * scheduled_at queues it, anything else leaves it as a draft.
+     */
+    public static function statusForSchedule($scheduledAt): string
+    {
+        if (! $scheduledAt) {
+            return self::STATUS_DRAFT;
+        }
+
+        return \Illuminate\Support\Carbon::parse($scheduledAt)->isFuture()
+            ? self::STATUS_SCHEDULED
+            : self::STATUS_DRAFT;
+    }
+
     public function deliveryRate(): float
     {
         $sent = (int) $this->sent_count;
@@ -82,7 +102,9 @@ class CrmCampaign extends Model
             'sent_count' => $this->sent_count,
             'delivered_count' => $this->delivered_count,
             'failed_count' => $this->failed_count,
+            'error' => $this->error,
             'delivery_rate' => $this->deliveryRate(),
+            'is_scheduled' => $this->isScheduled(),
             'template' => $this->relationLoaded('template') && $this->template
                 ? $this->template->toTemplateArray()
                 : null,

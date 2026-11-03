@@ -27,6 +27,10 @@ const phoneNumber = ref<string | null>(null);
 const scroller = ref<HTMLElement | null>(null);
 const hasMore = ref(false);
 
+const mediaUrls = ref<Record<number, string>>({});
+const mediaLoading = ref<Record<number, boolean>>({});
+const mediaErrors = ref<Record<number, string>>({});
+
 let pollTimer: ReturnType<typeof setInterval> | null = null;
 
 const filtered = computed(() => conversations.value);
@@ -84,6 +88,65 @@ function initials(name?: string | null): string {
 
 function statusClass(status: string): string {
     return status === 'open' ? 'is-open' : status === 'pending' ? 'is-pending' : 'is-closed';
+}
+
+function isImageMedia(message: CrmMessage): boolean {
+    if (!message.media) return false;
+
+    return (
+        ['image', 'sticker'].includes(message.media.type) &&
+        (message.media.mime_type ?? '').startsWith('image/')
+    );
+}
+
+function mediaCaption(message: CrmMessage): string {
+    const body = (message.body ?? '').trim();
+
+    if (!message.media) return body;
+
+    const placeholder = `[${message.media.type.charAt(0).toUpperCase()}${message.media.type.slice(1)}]`;
+
+    return body === placeholder ? '' : body;
+}
+
+function clearMedia() {
+    Object.values(mediaUrls.value).forEach((url) => URL.revokeObjectURL(url));
+    mediaUrls.value = {};
+    mediaLoading.value = {};
+    mediaErrors.value = {};
+}
+
+async function loadMedia(message: CrmMessage) {
+    if (!message.media || mediaUrls.value[message.id] || mediaLoading.value[message.id]) return;
+
+    mediaLoading.value = { ...mediaLoading.value, [message.id]: true };
+    mediaErrors.value = { ...mediaErrors.value, [message.id]: '' };
+
+    try {
+        const response = await CrmService.messageMedia(message.id);
+        mediaUrls.value = { ...mediaUrls.value, [message.id]: URL.createObjectURL(response.data) };
+    } catch {
+        mediaErrors.value = { ...mediaErrors.value, [message.id]: 'Could not load this attachment.' };
+    } finally {
+        const next = { ...mediaLoading.value };
+        delete next[message.id];
+        mediaLoading.value = next;
+    }
+}
+
+async function downloadMedia(message: CrmMessage) {
+    await loadMedia(message);
+
+    const url = mediaUrls.value[message.id];
+
+    if (!url) return;
+
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = message.media?.filename ?? `whatsapp-${message.type}-${message.id}`;
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
 }
 
 function messageGroups(): Array<{ day: string; messages: CrmMessage[] }> {
@@ -144,6 +207,7 @@ async function loadList(silent = false) {
 async function selectConversation(id: number) {
     activeId.value = id;
     threadLoading.value = true;
+    clearMedia();
 
     try {
         const response = await CrmService.conversation(id);
@@ -286,6 +350,7 @@ onMounted(async () => {
 onBeforeUnmount(() => {
     if (pollTimer) clearInterval(pollTimer);
     if (searchTimer) clearTimeout(searchTimer);
+    clearMedia();
 });
 </script>
 
@@ -435,7 +500,37 @@ onBeforeUnmount(() => {
                                 class="lk-bubble"
                                 :class="message.direction === 'in' ? 'lk-bubble--in' : 'lk-bubble--out'"
                             >
-                                <p class="lk-bubble__body">{{ message.body }}</p>
+                                <div v-if="message.media" class="lk-bubble__media">
+                                    <template v-if="isImageMedia(message)">
+                                        <img
+                                            v-if="mediaUrls[message.id]"
+                                            :src="mediaUrls[message.id]"
+                                            :alt="message.media.filename ?? 'WhatsApp image'"
+                                            class="lk-bubble__image"
+                                        />
+                                        <button
+                                            v-else
+                                            type="button"
+                                            class="lk-btn lk-btn--secondary lk-btn--sm"
+                                            :disabled="mediaLoading[message.id]"
+                                            @click="loadMedia(message)"
+                                        >
+                                            {{ mediaLoading[message.id] ? 'Loading…' : 'View image' }}
+                                        </button>
+                                    </template>
+                                    <template v-else>
+                                        <button
+                                            type="button"
+                                            class="lk-btn lk-btn--secondary lk-btn--sm"
+                                            :disabled="mediaLoading[message.id]"
+                                            @click="downloadMedia(message)"
+                                        >
+                                            {{ mediaLoading[message.id] ? 'Downloading…' : `Download ${message.media.type}` }}
+                                        </button>
+                                    </template>
+                                    <p v-if="mediaErrors[message.id]" class="lk-bubble__error">{{ mediaErrors[message.id] }}</p>
+                                </div>
+                                <p v-if="mediaCaption(message)" class="lk-bubble__body">{{ mediaCaption(message) }}</p>
                                 <p class="lk-bubble__meta">
                                     <span v-if="message.agent">{{ message.agent.name }} · </span>
                                     <span v-if="message.template_name" class="lk-badge lk-badge--neutral">template</span>
@@ -793,6 +888,18 @@ onBeforeUnmount(() => {
     line-height: 1.5;
     color: var(--lk-text);
     white-space: pre-wrap;
+}
+
+.lk-bubble__media {
+    margin-bottom: 6px;
+}
+
+.lk-bubble__image {
+    display: block;
+    max-width: 240px;
+    max-height: 240px;
+    border-radius: 10px;
+    object-fit: cover;
 }
 
 .lk-bubble__meta {

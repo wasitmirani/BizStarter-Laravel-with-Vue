@@ -34,6 +34,12 @@ export type CrmMessage = {
     media_url: string | null;
     media_mime: string | null;
     media_filename: string | null;
+    media: {
+        type: string;
+        mime_type: string | null;
+        filename: string | null;
+        download_url: string;
+    } | null;
     template_name: string | null;
     status: string;
     error: string | null;
@@ -89,7 +95,9 @@ export type CrmCampaign = {
     sent_count: number;
     delivered_count: number;
     failed_count: number;
+    error: string | null;
     delivery_rate: number;
+    is_scheduled: boolean;
     template: CrmTemplate | null;
     audience_tag: CrmTag | null;
     created_at: string;
@@ -216,6 +224,10 @@ class CrmService {
         return AxiosService.post(`/crm/conversations/${id}/read`, {});
     }
 
+    messageMedia(id: number) {
+        return AxiosService.download(`/crm/messages/${id}/media`);
+    }
+
     startConversation(payload: { contact_id: number; body?: string }) {
         return AxiosService.post<{ result: { conversation: CrmConversation } }>('/crm/conversations', payload);
     }
@@ -248,7 +260,7 @@ class CrmService {
                 campaigns: CrmCampaign[];
                 templates: CrmTemplate[];
                 tags: CrmTag[];
-                stats: { total: number; sent: number; drafts: number; messages_sent: number };
+                stats: { total: number; sent: number; drafts: number; scheduled: number; messages_sent: number };
             };
         }>('/crm/campaigns', { params });
     }

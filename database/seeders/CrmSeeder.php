@@ -187,10 +187,18 @@ class CrmSeeder extends Seeder
         ]);
 
         $workspace->campaigns()->create([
-            'name' => 'Newsletter — product update',
+            'name' => 'Newsletter - product update',
             'template_id' => $templates->firstWhere('name', 'welcome_message')?->id,
             'audience_tag_id' => $tags['Newsletter']->id,
             'status' => CrmCampaign::STATUS_DRAFT,
+        ]);
+
+        $workspace->campaigns()->create([
+            'name' => 'Lead follow-up - tomorrow',
+            'template_id' => $templates->firstWhere('name', 'welcome_message')?->id,
+            'audience_tag_id' => $tags['Lead']->id,
+            'status' => CrmCampaign::STATUS_SCHEDULED,
+            'scheduled_at' => now()->addDay(),
         ]);
     }
 }

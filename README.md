@@ -141,10 +141,10 @@ Set `WHATSAPP_APP_SECRET` in `.env` to enforce `X-Hub-Signature-256` verificatio
 
 ### What the modules do
 
-- **Inbox** — shared conversations with status (open/pending/closed), assignment to workspace members, unread counts, search, and a message thread with delivery state. Inbound webhooks reopen closed chats. Replies are sent synchronously and stored even when delivery fails (`status=failed`), so nothing disappears silently.
+- **Inbox** — shared conversations with status (open/pending/closed), assignment to workspace members, unread counts, search, and a message thread with delivery state. Inbound webhooks reopen closed chats. Replies are sent synchronously and stored even when delivery fails (`status=failed`), so nothing disappears silently. Images and attachments received from customers can be previewed or downloaded through a token-safe proxy (`GET /api/app/crm/messages/{message}/media`).
 - **Contacts & tags** — CRUD, CSV import/export, opt-in flag, lead/customer/blocked status, notes and colour-coded tags used for campaign audiences.
 - **Templates** — local template library with category, language, header/footer and `{{1}}` variables. **Sync from WhatsApp** mirrors approved templates from the Meta account.
-- **Campaigns** — pick a template (or write custom text) and a tag audience; **Send** runs synchronously, creating one conversation message per recipient and tracking sent/failed/delivered counts.
+- **Campaigns** — pick a template (or write custom text) and a tag audience; **Send** runs synchronously, creating one conversation message per recipient and tracking sent/failed/delivered counts. Set a **schedule** to queue a campaign instead: `php artisan crm:send-scheduled-campaigns` (scheduled every minute) sends due campaigns, and failures are stored on the campaign so they stay visible.
 - **Dashboard** — the CRM strip shows contacts, open chats, unread, messages today and campaigns, plus the latest conversations.
 
 Inbound flow: Meta → `POST /api/whatsapp/webhook` → signature check → `phone_number_id` resolves the workspace account → contact upsert by phone → conversation upsert (one per contact per workspace) → message stored idempotently by `wa_message_id` → delivery/read receipts applied to the message and campaign recipient.
@@ -205,7 +205,7 @@ routes/
   web.php                     # Auth + SPA shell routes
   api.php                     # Sanctum-protected /api/app/* routes
   tenant.php                  # Tenant-domain routes
-  console.php                 # Scheduled billing lifecycle
+  console.php                 # Scheduled billing lifecycle + CRM campaigns
 database/
   migrations/                 # Central DB (users, tenants, workspaces, plans, …)
   migrations/tenant/          # Per-tenant DB migrations
@@ -234,6 +234,7 @@ npm run electron:dev    # Laravel + Vite + Electron together
 php artisan test        # Pest suite
 php artisan serve       # App server
 php artisan billing:sync # End trials / flag past-due (scheduled daily)
+php artisan crm:send-scheduled-campaigns # Send due campaigns (scheduled every minute)
 ```
 
 ## License

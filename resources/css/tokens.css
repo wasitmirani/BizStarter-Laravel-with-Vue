@@ -1194,6 +1194,10 @@ a:hover {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.lk-kpi-grid--five {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
 .lk-kpi {
   position: relative;
   padding: 18px;

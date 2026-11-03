@@ -52,6 +52,7 @@ class CampaignController extends Controller
                 'total' => $workspace->campaigns()->count(),
                 'sent' => $workspace->campaigns()->where('status', CrmCampaign::STATUS_SENT)->count(),
                 'drafts' => $workspace->campaigns()->where('status', CrmCampaign::STATUS_DRAFT)->count(),
+                'scheduled' => $workspace->campaigns()->where('status', CrmCampaign::STATUS_SCHEDULED)->count(),
                 'messages_sent' => (int) $workspace->campaigns()->sum('sent_count'),
             ],
         ], true);
@@ -63,6 +64,7 @@ class CampaignController extends Controller
         $this->authorizeManagement($request, $workspace);
 
         $data = $this->validated($request, $workspace);
+        $data['status'] = CrmCampaign::statusForSchedule($data['scheduled_at'] ?? null);
         $campaign = $workspace->campaigns()->create($data);
 
         return responseJson('Campaign created successfully', [
@@ -96,6 +98,8 @@ class CampaignController extends Controller
         }
 
         $data = $this->validated($request, $workspace);
+        $data['status'] = CrmCampaign::statusForSchedule($data['scheduled_at'] ?? null);
+        $data['error'] = null;
         $campaign->update($data);
 
         return responseJson('Campaign updated successfully', [
@@ -128,7 +132,10 @@ class CampaignController extends Controller
         try {
             $result = $this->campaigns->send($campaign->load(['template', 'workspace']), $request->user());
         } catch (Throwable $exception) {
-            $campaign->update(['status' => CrmCampaign::STATUS_FAILED]);
+            $campaign->update([
+                'status' => CrmCampaign::STATUS_FAILED,
+                'error' => $exception->getMessage(),
+            ]);
 
             return responseJson('Campaign could not be sent', ['error' => $exception->getMessage()], false, 422);
         }
@@ -163,7 +170,7 @@ class CampaignController extends Controller
                 'nullable', 'integer',
                 Rule::exists('crm_tags', 'id')->where('workspace_id', $workspace->id),
             ],
-            'scheduled_at' => ['nullable', 'date'],
+            'scheduled_at' => ['nullable', 'date', 'after:now'],
         ]);
     }
 }

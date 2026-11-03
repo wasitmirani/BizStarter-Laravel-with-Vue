@@ -9,7 +9,7 @@ const error = ref('');
 const campaigns = ref<CrmCampaign[]>([]);
 const templates = ref<CrmTemplate[]>([]);
 const tags = ref<CrmTag[]>([]);
-const stats = ref({ total: 0, sent: 0, drafts: 0, messages_sent: 0 });
+const stats = ref({ total: 0, sent: 0, drafts: 0, scheduled: 0, messages_sent: 0 });
 const statusFilter = ref('');
 const sendingId = ref<number | null>(null);
 
@@ -23,6 +23,7 @@ const form = reactive({
     template_id: '' as number | '',
     message_body: '',
     audience_tag_id: '' as number | '',
+    scheduled_at: '',
 });
 
 const filtered = computed(() =>
@@ -34,12 +35,32 @@ function formatDate(value?: string | null): string {
     return new Intl.DateTimeFormat(undefined, { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(value));
 }
 
+function formatDateTime(value?: string | null): string {
+    if (!value) return '—';
+    return new Intl.DateTimeFormat(undefined, {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+    }).format(new Date(value));
+}
+
+function toLocalInput(value?: string | null): string {
+    if (!value) return '';
+    const date = new Date(value);
+    const pad = (part: number) => String(part).padStart(2, '0');
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+const minSchedule = computed(() => toLocalInput(new Date(Date.now() + 60_000).toISOString()));
+
 function badgeClass(status: string): string {
     return status === 'sent'
         ? 'lk-badge--success'
         : status === 'failed'
           ? 'lk-badge--error'
-          : status === 'sending'
+          : status === 'sending' || status === 'scheduled'
             ? 'lk-badge--warning'
             : 'lk-badge--neutral';
 }
@@ -64,7 +85,7 @@ async function load() {
 function openCreate() {
     editing.value = null;
     preview.value = null;
-    Object.assign(form, { name: '', template_id: '', message_body: '', audience_tag_id: '' });
+    Object.assign(form, { name: '', template_id: '', message_body: '', audience_tag_id: '', scheduled_at: '' });
     modalOpen.value = true;
 }
 
@@ -76,6 +97,7 @@ function openEdit(campaign: CrmCampaign) {
         template_id: campaign.template?.id ?? '',
         message_body: campaign.message_body ?? '',
         audience_tag_id: campaign.audience_tag?.id ?? '',
+        scheduled_at: toLocalInput(campaign.scheduled_at),
     });
     modalOpen.value = true;
 }
@@ -89,6 +111,7 @@ async function save() {
         template_id: form.template_id || null,
         message_body: form.message_body.trim() || null,
         audience_tag_id: form.audience_tag_id || null,
+        scheduled_at: form.scheduled_at ? new Date(form.scheduled_at).toISOString() : null,
     };
 
     try {
@@ -159,6 +182,7 @@ onMounted(() => void load());
                 <select v-model="statusFilter" class="lk-select lk-select--sm" style="width: 160px" @change="load">
                     <option value="">All statuses</option>
                     <option value="draft">Draft</option>
+                    <option value="scheduled">Scheduled</option>
                     <option value="sent">Sent</option>
                     <option value="failed">Failed</option>
                 </select>
@@ -166,10 +190,14 @@ onMounted(() => void load());
             </div>
         </header>
 
-        <section class="lk-kpi-grid" aria-label="Campaign statistics">
+        <section class="lk-kpi-grid lk-kpi-grid--five" aria-label="Campaign statistics">
             <article class="lk-kpi">
                 <p class="lk-kpi__label">Campaigns</p>
                 <p class="lk-kpi__value">{{ stats.total }}</p>
+            </article>
+            <article class="lk-kpi">
+                <p class="lk-kpi__label">Scheduled</p>
+                <p class="lk-kpi__value">{{ stats.scheduled }}</p>
             </article>
             <article class="lk-kpi">
                 <p class="lk-kpi__label">Sent</p>
@@ -238,6 +266,12 @@ onMounted(() => void load());
                             </td>
                             <td>
                                 <span class="lk-badge" :class="badgeClass(campaign.status)">{{ campaign.status }}</span>
+                                <p v-if="campaign.status === 'scheduled' && campaign.scheduled_at" class="lk-muted lk-nowrap">
+                                    {{ formatDateTime(campaign.scheduled_at) }}
+                                </p>
+                                <p v-if="campaign.status === 'failed' && campaign.error" class="lk-muted lk-muted--error" :title="campaign.error">
+                                    {{ campaign.error }}
+                                </p>
                             </td>
                             <td class="lk-nowrap">
                                 {{ campaign.sent_count }} / {{ campaign.total_recipients }}
@@ -252,10 +286,10 @@ onMounted(() => void load());
                                     :disabled="sendingId === campaign.id"
                                     @click="send(campaign)"
                                 >
-                                    {{ sendingId === campaign.id ? 'Sending…' : 'Send' }}
+                                    {{ sendingId === campaign.id ? 'Sending…' : campaign.status === 'scheduled' ? 'Send now' : 'Send' }}
                                 </button>
                                 <button
-                                    v-if="['draft', 'failed'].includes(campaign.status)"
+                                    v-if="['draft', 'failed', 'scheduled'].includes(campaign.status)"
                                     type="button"
                                     class="lk-btn lk-btn--ghost lk-btn--sm"
                                     @click="openEdit(campaign)"
@@ -308,6 +342,17 @@ onMounted(() => void load());
                         <textarea v-model="form.message_body" class="lk-input" rows="4" maxlength="4096" placeholder="Write the message to send…"></textarea>
                     </label>
 
+                    <label class="lk-field" style="margin-top: 12px">
+                        <span class="lk-label">Schedule (optional)</span>
+                        <input
+                            v-model="form.scheduled_at"
+                            type="datetime-local"
+                            class="lk-input"
+                            :min="minSchedule"
+                        />
+                        <span class="lk-hint">Leave empty to save a draft. Scheduled campaigns send automatically within a minute of the chosen time.</span>
+                    </label>
+
                     <p v-if="preview" class="lk-inline-note" style="margin-top: 14px">
                         <strong>{{ preview.total }}</strong> contacts match this audience.
                         <template v-if="preview.sample.length">
@@ -349,6 +394,15 @@ onMounted(() => void load());
     margin: 2px 0 0;
     color: var(--lk-text-muted);
     font-size: 11.5px;
+}
+
+.lk-muted--error {
+    max-width: 220px;
+    color: var(--lk-error);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .lk-chip {

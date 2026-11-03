@@ -392,3 +392,217 @@ it('lets members work the inbox but not send campaigns', function () {
         ->postJson("/api/app/crm/campaigns/{$campaign->id}/send")
         ->assertForbidden();
 });
+
+it('stores a future scheduled time as a scheduled campaign', function () {
+    $owner = crmUser();
+    $workspace = crmWorkspace($owner);
+
+    $this->actingAs($owner, 'sanctum')
+        ->postJson('/api/app/crm/campaigns', [
+            'name' => 'Scheduled promo',
+            'message_body' => 'Hello there',
+            'scheduled_at' => now()->addHours(2)->toIso8601String(),
+        ])
+        ->assertCreated()
+        ->assertJsonPath('result.campaign.status', CrmCampaign::STATUS_SCHEDULED)
+        ->assertJsonPath('result.campaign.is_scheduled', true);
+
+    $campaign = CrmCampaign::firstOrFail();
+
+    expect($campaign->scheduled_at)->not->toBeNull()
+        ->and($campaign->status)->toBe(CrmCampaign::STATUS_SCHEDULED);
+});
+
+it('reschedules or cancels a campaign by editing its schedule', function () {
+    $owner = crmUser();
+    $workspace = crmWorkspace($owner);
+
+    $campaign = $workspace->campaigns()->create([
+        'name' => 'Reschedulable',
+        'message_body' => 'Hello',
+        'status' => CrmCampaign::STATUS_DRAFT,
+    ]);
+
+    $this->actingAs($owner, 'sanctum')
+        ->putJson("/api/app/crm/campaigns/{$campaign->id}", [
+            'name' => 'Reschedulable',
+            'message_body' => 'Hello',
+            'scheduled_at' => now()->addDay()->toIso8601String(),
+        ])
+        ->assertOk()
+        ->assertJsonPath('result.campaign.status', CrmCampaign::STATUS_SCHEDULED);
+
+    $this->actingAs($owner, 'sanctum')
+        ->putJson("/api/app/crm/campaigns/{$campaign->id}", [
+            'name' => 'Reschedulable',
+            'message_body' => 'Hello',
+            'scheduled_at' => null,
+        ])
+        ->assertOk()
+        ->assertJsonPath('result.campaign.status', CrmCampaign::STATUS_DRAFT);
+
+    expect($campaign->fresh()->scheduled_at)->toBeNull();
+
+    $this->actingAs($owner, 'sanctum')
+        ->putJson("/api/app/crm/campaigns/{$campaign->id}", [
+            'name' => 'Reschedulable',
+            'message_body' => 'Hello',
+            'scheduled_at' => now()->subHour()->toIso8601String(),
+        ])
+        ->assertStatus(422)
+        ->assertJsonValidationErrors('scheduled_at');
+});
+
+it('sends due scheduled campaigns and leaves future ones queued', function () {
+    Http::fake([
+        'graph.facebook.com/*' => Http::response(['messages' => [['id' => 'wamid.SCHEDULED1']]], 200),
+    ]);
+
+    $owner = crmUser();
+    $workspace = crmWorkspace($owner);
+    crmAccount($workspace);
+
+    $workspace->contacts()->create([
+        'name' => 'Scheduled Lead',
+        'phone' => '14155550123',
+        'opt_in' => true,
+    ]);
+
+    $due = $workspace->campaigns()->create([
+        'name' => 'Due campaign',
+        'message_body' => 'Sending now',
+        'status' => CrmCampaign::STATUS_SCHEDULED,
+        'scheduled_at' => now()->subMinute(),
+    ]);
+
+    $future = $workspace->campaigns()->create([
+        'name' => 'Future campaign',
+        'message_body' => 'Later',
+        'status' => CrmCampaign::STATUS_SCHEDULED,
+        'scheduled_at' => now()->addHour(),
+    ]);
+
+    $this->artisan('crm:send-scheduled-campaigns')->assertSuccessful();
+
+    expect($due->fresh()->status)->toBe(CrmCampaign::STATUS_SENT)
+        ->and($due->fresh()->sent_count)->toBe(1)
+        ->and($due->fresh()->error)->toBeNull()
+        ->and($future->fresh()->status)->toBe(CrmCampaign::STATUS_SCHEDULED);
+});
+
+it('flags a scheduled campaign that cannot reach WhatsApp', function () {
+    $owner = crmUser();
+    $workspace = crmWorkspace($owner);
+
+    $campaign = $workspace->campaigns()->create([
+        'name' => 'Unreachable campaign',
+        'message_body' => 'Hello',
+        'status' => CrmCampaign::STATUS_SCHEDULED,
+        'scheduled_at' => now()->subMinute(),
+    ]);
+
+    $this->artisan('crm:send-scheduled-campaigns')->assertSuccessful();
+
+    $campaign->refresh();
+
+    expect($campaign->status)->toBe(CrmCampaign::STATUS_FAILED)
+        ->and($campaign->error)->toContain('Connect WhatsApp');
+});
+
+it('streams inbound media for the workspace that owns the message', function () {
+    Http::fake([
+        'graph.facebook.com/*' => Http::response([
+            'url' => 'https://lookaside.fbsbx.com/whatsapp/media/media-1',
+            'mime_type' => 'image/jpeg',
+            'file_name' => 'photo.jpg',
+        ], 200),
+        'lookaside.fbsbx.com/*' => Http::response('binary-image-data', 200, ['Content-Type' => 'image/jpeg']),
+    ]);
+
+    $owner = crmUser();
+    $workspace = crmWorkspace($owner);
+    crmAccount($workspace);
+
+    $contact = $workspace->contacts()->create(['name' => 'Media Sender', 'phone' => '14155550555']);
+    $conversation = CrmConversation::create([
+        'workspace_id' => $workspace->id,
+        'contact_id' => $contact->id,
+        'status' => CrmConversation::STATUS_OPEN,
+    ]);
+
+    $message = CrmMessage::create([
+        'workspace_id' => $workspace->id,
+        'conversation_id' => $conversation->id,
+        'contact_id' => $contact->id,
+        'direction' => 'in',
+        'type' => 'image',
+        'body' => 'Look at this',
+        'status' => 'received',
+        'payload' => [
+            'type' => 'image',
+            'image' => ['id' => 'media-1', 'mime_type' => 'image/jpeg'],
+        ],
+    ]);
+
+    $this->actingAs($owner, 'sanctum')
+        ->get("/api/app/crm/messages/{$message->id}/media")
+        ->assertOk()
+        ->assertHeader('Content-Type', 'image/jpeg')
+        ->assertDownload('photo.jpg');
+
+    expect($message->toMessageArray()['media']['type'])->toBe('image')
+        ->and($message->toMessageArray()['media']['download_url'])->toContain("/crm/messages/{$message->id}/media");
+});
+
+it('guards media downloads by workspace and rejects messages without attachments', function () {
+    $owner = crmUser();
+    $workspace = crmWorkspace($owner);
+    $contact = $workspace->contacts()->create(['name' => 'No Media', 'phone' => '14155550666']);
+    $conversation = CrmConversation::create([
+        'workspace_id' => $workspace->id,
+        'contact_id' => $contact->id,
+        'status' => CrmConversation::STATUS_OPEN,
+    ]);
+
+    $mediaMessage = CrmMessage::create([
+        'workspace_id' => $workspace->id,
+        'conversation_id' => $conversation->id,
+        'contact_id' => $contact->id,
+        'direction' => 'in',
+        'type' => 'document',
+        'body' => 'invoice.pdf',
+        'status' => 'received',
+        'payload' => [
+            'type' => 'document',
+            'document' => ['id' => 'media-2', 'mime_type' => 'application/pdf', 'filename' => 'invoice.pdf'],
+        ],
+    ]);
+
+    $textMessage = CrmMessage::create([
+        'workspace_id' => $workspace->id,
+        'conversation_id' => $conversation->id,
+        'contact_id' => $contact->id,
+        'direction' => 'in',
+        'type' => 'text',
+        'body' => 'Just text',
+        'status' => 'received',
+    ]);
+
+    $this->actingAs($owner, 'sanctum')
+        ->get("/api/app/crm/messages/{$textMessage->id}/media")
+        ->assertStatus(422)
+        ->assertJsonPath('status', false);
+
+    // Without a connected account the proxy refuses instead of leaking the token.
+    $this->actingAs($owner, 'sanctum')
+        ->get("/api/app/crm/messages/{$mediaMessage->id}/media")
+        ->assertStatus(422)
+        ->assertJsonPath('result.error', 'WhatsApp is not connected for this workspace.');
+
+    $stranger = crmUser(['email' => 'stranger-media@example.com']);
+    crmWorkspace($stranger);
+
+    $this->actingAs($stranger, 'sanctum')
+        ->get("/api/app/crm/messages/{$mediaMessage->id}/media")
+        ->assertNotFound();
+});

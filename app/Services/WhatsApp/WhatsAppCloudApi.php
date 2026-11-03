@@ -145,6 +145,43 @@ class WhatsAppCloudApi
         return $response->json() ?? [];
     }
 
+    /**
+     * Resolve and download an inbound media object.
+     *
+     * @return array{body:string,mime_type:?string,filename:?string}
+     */
+    public function fetchMedia(string $mediaId): array
+    {
+        if (! $this->configured()) {
+            throw new RuntimeException('WhatsApp is not connected for this workspace.');
+        }
+
+        $response = Http::withToken($this->account->access_token)
+            ->acceptJson()
+            ->timeout(25)
+            ->get($this->url($mediaId));
+
+        $this->ensureOk($response);
+
+        $url = (string) $response->json('url');
+
+        if ($url === '') {
+            throw new RuntimeException('WhatsApp returned no media URL.');
+        }
+
+        $file = Http::withToken($this->account->access_token)
+            ->timeout(60)
+            ->get($url);
+
+        $this->ensureOk($file);
+
+        return [
+            'body' => $file->body(),
+            'mime_type' => $response->json('mime_type') ?? $file->header('Content-Type'),
+            'filename' => $response->json('file_name'),
+        ];
+    }
+
     public function verifySignature(string $payload, ?string $signature): bool
     {
         $secret = (string) config('services.whatsapp.app_secret');

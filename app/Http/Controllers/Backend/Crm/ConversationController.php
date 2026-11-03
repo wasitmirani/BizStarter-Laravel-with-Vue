@@ -10,6 +10,7 @@ use App\Models\CrmMessage;
 use App\Models\User;
 use App\Models\Workspace;
 use App\Services\Crm\CrmService;
+use App\Services\WhatsApp\WhatsAppCloudApi;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -17,8 +18,10 @@ class ConversationController extends Controller
 {
     use ResolvesWorkspace;
 
-    public function __construct(private readonly CrmService $crm)
-    {
+    public function __construct(
+        private readonly CrmService $crm,
+        private readonly WhatsAppCloudApi $api,
+    ) {
     }
 
     public function index(Request $request)
@@ -133,6 +136,62 @@ class ConversationController extends Controller
             'messages' => $messages->reverse()->values()->map(fn (CrmMessage $message) => $message->toMessageArray()),
             'has_more' => $messages->count() === 60,
         ], true);
+    }
+
+    /**
+     * Proxy an inbound attachment (images, documents, audio) through the API
+     * so the browser never needs the workspace's WhatsApp access token.
+     */
+    public function media(Request $request, CrmMessage $message)
+    {
+        $workspace = $this->workspace($request);
+        abort_unless((int) $message->workspace_id === (int) $workspace->id, 404);
+
+        $media = $message->inboundMedia();
+
+        if (! $media) {
+            return responseJson('This message has no media attached.', null, false, 422);
+        }
+
+        $payload = is_array($message->payload) ? $message->payload : [];
+        $type = (string) ($payload['type'] ?? $message->type);
+        $mediaId = (string) ($payload[$type]['id'] ?? '');
+
+        try {
+            $file = $this->api->for($workspace->whatsappAccount)->fetchMedia($mediaId);
+        } catch (\Throwable $exception) {
+            return responseJson('Media could not be downloaded.', ['error' => $exception->getMessage()], false, 422);
+        }
+
+        $mime = $file['mime_type'] ?: 'application/octet-stream';
+        $filename = $file['filename']
+            ?: ($media['filename'] ?: $type . '-' . $message->id . $this->mediaExtension($mime));
+
+        return response()->streamDownload(
+            function () use ($file) {
+                echo $file['body'];
+            },
+            $filename,
+            [
+                'Content-Type' => $mime,
+                'Cache-Control' => 'private, max-age=300',
+            ]
+        );
+    }
+
+    protected function mediaExtension(string $mime): string
+    {
+        return match ($mime) {
+            'image/jpeg' => '.jpg',
+            'image/png' => '.png',
+            'image/webp' => '.webp',
+            'image/gif' => '.gif',
+            'video/mp4' => '.mp4',
+            'audio/mpeg' => '.mp3',
+            'audio/ogg' => '.ogg',
+            'application/pdf' => '.pdf',
+            default => '',
+        };
     }
 
     public function reply(Request $request, CrmConversation $conversation)
