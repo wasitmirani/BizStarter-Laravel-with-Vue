@@ -48,7 +48,10 @@ class PermissionController extends Controller implements BaseFilterable
     public function show($uuid)
     {
         try {
-            $permission = app(PermissionService::class)->getPermissionByUuid($uuid, ['roles:id,name']);
+            $permission = app(PermissionService::class)->getPermissionByUuid(
+                $uuid,
+                ['roles:id,name', 'users:id,name,email,thumbnail'],
+            );
             return responseJson('Permission fetched successfully', ['permission' => $permission], true);
         } catch (\Exception $e) {
             return responseJson('Permission not found', null, false, 404);
@@ -61,6 +64,8 @@ class PermissionController extends Controller implements BaseFilterable
             $data = $request->validated();
             $permission = app(PermissionService::class)->updatePermission($id, $data);
             return responseJson('Permission updated successfully', ['permission' => $permission], true);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return responseJson('Permission not found', null, false, 404);
         } catch (\Exception $e) {
             return responseJson('Failed to update permission: ' . $e->getMessage(), null, false, 500);
         }
@@ -71,6 +76,8 @@ class PermissionController extends Controller implements BaseFilterable
         try {
             app(PermissionService::class)->deletePermission($id);
             return responseJson('Permission deleted successfully', null, true);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return responseJson('Permission not found', null, false, 404);
         } catch (\Exception $e) {
             return responseJson('Failed to delete permission', null, false, 500);
         }

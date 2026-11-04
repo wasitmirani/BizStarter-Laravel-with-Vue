@@ -95,7 +95,9 @@ class User extends Authenticatable implements MustVerifyEmail
         return $query->where(function ($q) use ($search, $id) {
             $q->where('name', 'LIKE', "%{$search}%")
               ->orWhere('first_name', 'LIKE', "%{$search}%")
-              ->orWhere('last_name', 'LIKE', "%{$search}%");
+              ->orWhere('last_name', 'LIKE', "%{$search}%")
+              ->orWhere('email', 'LIKE', "%{$search}%")
+              ->orWhere('phone', 'LIKE', "%{$search}%");
 
             if (is_numeric($id)) {
                 $q->orWhere('id', $id);

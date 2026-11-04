@@ -14,10 +14,14 @@ class UpdateRoleRequest extends FormRequest
 
     public function rules(): array
     {
-        $roleId = $this->route('role');
+        $roleKey = $this->route('role');
 
-        if (is_object($roleId)) {
-            $roleId = $roleId->id;
+        if (is_object($roleKey)) {
+            $roleId = $roleKey->id;
+        } elseif (is_numeric($roleKey)) {
+            $roleId = (int) $roleKey;
+        } else {
+            $roleId = \App\Models\Role::where('uuid', $roleKey)->value('id');
         }
 
         return [

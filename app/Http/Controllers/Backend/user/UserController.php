@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Backend\User;
 
 use App\Contracts\BaseFilterable;
-use App\Enums\UserEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Services\LoggerService;
 use App\Services\RoleService;
 use App\Services\UserService;
@@ -78,30 +78,37 @@ class UserController extends Controller implements BaseFilterable
 
     public function show($id)
     {
-        if($id){
-            $user = $this->userService->fetch(UserEnum::UUID->value,$id);
-            return responseJson('user fetched successfully',['user'=>$user],true);
-    }
+        $user = $this->userService->findByIdentifier($id);
+
+        if (!$user) {
+            return responseJson('User not found', null, false, 404);
         }
 
+        return responseJson('user fetched successfully', ['user' => $user], true);
+    }
 
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, $id)
     {
-        //     'phone'=> 'required|unique:users,phone,'.$id,
-        //     'thumbnail' => 'required',
-        //     'role'=>'required',
-        // ]);
-        $user = $this->userService->updateUser($id,$request->all());
+        try {
+            $user = $this->userService->updateUser($id, $request->validated());
 
-        return responseJson('user updated successfully',['user'=>$user],true);
+            return responseJson('user updated successfully', ['user' => $user], true);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return responseJson('User not found', null, false, 404);
+        }
     }
 
     public function destroy($uuid)
     {
+        $user = $this->userService->findByIdentifier($uuid);
 
-        $this->userService->delete($uuid,UserEnum::UUID->value);
+        if (!$user) {
+            return responseJson('User not found', null, false, 404);
+        }
 
-        return responseJson('user has been deleted successfully',null,true);
+        $user->delete();
+
+        return responseJson('user has been deleted successfully', null, true);
     }
 
     public function impersonate($uuid)

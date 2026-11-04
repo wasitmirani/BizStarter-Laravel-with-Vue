@@ -58,10 +58,27 @@ class RoleService extends BaseService
         });
     }
 
+    /**
+     * Resolve a role by uuid, falling back to its numeric id.
+     */
+    public function findByIdentifier(int|string $identifier): ?Role
+    {
+        if (is_numeric($identifier)) {
+            return $this->model->find((int) $identifier);
+        }
+
+        return $this->model->where('uuid', $identifier)->first();
+    }
+
     public function updateRole($id, $data)
     {
         return DB::transaction(function () use ($id, $data) {
-            $role = $this->model->findOrFail($id);
+            $role = $this->findByIdentifier($id);
+
+            if (!$role) {
+                throw new ModelNotFoundException('Role not found');
+            }
+
             $permissions = $data['permissions'] ?? null;
             $users = $data['users'] ?? null;
 
@@ -80,16 +97,25 @@ class RoleService extends BaseService
                 $role->users()->sync($users);
             }
 
-            return $role->fresh(['users', 'permissions']);
+            return $role->fresh(['users:id,name,email,thumbnail', 'permissions:id,name']);
         });
     }
 
     public function getRoleByUuid($uuid, $relations = [])
     {
-        try {
-            return $this->model->select('name', 'id', 'created_at')->with($relations)->where('uuid', $uuid)->first();
-        } catch (ModelNotFoundException $e) {
+        $role = $this->model
+            ->with($relations)
+            ->when(
+                is_numeric($uuid),
+                fn ($query) => $query->where('id', $uuid),
+                fn ($query) => $query->where('uuid', $uuid),
+            )
+            ->first();
+
+        if (!$role) {
             throw new \Exception('Role not found');
         }
+
+        return $role;
     }
 }

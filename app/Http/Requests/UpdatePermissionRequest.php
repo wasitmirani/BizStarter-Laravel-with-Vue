@@ -14,9 +14,14 @@ class UpdatePermissionRequest extends FormRequest
 
     public function rules(): array
     {
-        $permissionId = $this->route('permission');
-        if (is_object($permissionId)) {
-            $permissionId = $permissionId->id;
+        $permissionKey = $this->route('permission');
+
+        if (is_object($permissionKey)) {
+            $permissionId = $permissionKey->id;
+        } elseif (is_numeric($permissionKey)) {
+            $permissionId = (int) $permissionKey;
+        } else {
+            $permissionId = \App\Models\Permission::where('uuid', $permissionKey)->value('id');
         }
 
         return [

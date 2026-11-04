@@ -70,12 +70,23 @@ class UserService extends BaseService implements BaseFilterable
     public function saveUser(array $data = [])
     {
         $role = $data['role'] ?? null;
-        unset($data['role'], $data['password_confirmation']);
+        unset(
+            $data['role'],
+            $data['password_confirmation'],
+            $data['timezone_id'],
+            $data['language_id'],
+            $data['name'],
+        );
+
+        $firstName = trim((string) ($data['first_name'] ?? ''));
+        $lastName = trim((string) ($data['last_name'] ?? ''));
 
         $data = array_merge($data, [
-            'name' => trim(($data['first_name'] ?? '') . ' ' . ($data['last_name'] ?? '')),
-            'user_name' => $this->generateUsername($data['first_name'], $data['last_name']),
-            'slug' => mapFirstNameLastSlug($data['first_name'], $data['last_name']),
+            'first_name' => $firstName,
+            'last_name' => $lastName !== '' ? $lastName : null,
+            'name' => trim($firstName . ' ' . $lastName),
+            'user_name' => $this->generateUsername($firstName, $lastName),
+            'slug' => mapFirstNameLastSlug($firstName, $lastName),
             'uuid' => genUUID(),
         ]);
 
@@ -85,7 +96,21 @@ class UserService extends BaseService implements BaseFilterable
             $user->syncRoles([$role]);
         }
 
-        return $user->load('roles');
+        return $user->load('roles:id,name');
+    }
+
+    /**
+     * Resolve a user by uuid, falling back to their numeric id.
+     */
+    public function findByIdentifier(int|string $identifier): ?User
+    {
+        $query = $this->model->with('roles:id,name');
+
+        if (is_numeric($identifier)) {
+            return $query->find((int) $identifier);
+        }
+
+        return $query->where('uuid', $identifier)->first();
     }
 
     public function updatePassword(){
@@ -107,32 +132,70 @@ class UserService extends BaseService implements BaseFilterable
         return $this->model->with('roles:id,name')->filters([$column =>$val])->first();
     }
 
-    public function updateUser(int  $id, array $data){
-        $user = $this->model->find($id);
-        if(!$user){
-        return responseMessage('User not found',404);
+    public function updateUser(int|string $identifier, array $data)
+    {
+        $user = $this->findByIdentifier($identifier);
+
+        if (!$user) {
+            throw new \Illuminate\Database\Eloquent\ModelNotFoundException('User not found');
         }
 
         $role = $data['role'] ?? null;
 
-        $user->name = ($data['first_name'].' ' .$data['last_name']);
-        $user->first_name =$data['first_name'];
-        $user->last_name =$data['last_name'];
-        $imageUrl = !empty($data['thumbnail']) ?  $data['thumbnail'] : $user->thumbnail;
-        $thumbnail = basename($imageUrl);
+        unset(
+            $data['role'],
+            $data['password_confirmation'],
+            $data['id'],
+            $data['uuid'],
+            $data['user_name'],
+            $data['slug'],
+            $data['email_verified_at'],
+            $data['created_at'],
+            $data['updated_at'],
+            $data['roles'],
+            $data['timezone_id'],
+            $data['language_id'],
+        );
 
-        $user->address = $data['address'];
-        $user->dob = $data['dob'];
-        $user->gender = $data['gender'];
-        $user->marital_status = $data['marital_status'];
-        $user->thumbnail =$thumbnail;
-        $user->city = $data['city'];
-        $user->state = $data['state'];
-        $user->zip_code = $data['zip_code'];
-        $user->phone = $data['phone'];
-        $user->country_id = $data['country_id'] ?? null;
-        $user->timezone_id = $data['timezone_id'] ?? null;
-        $user->language_id = $data['language_id'] ?? null;
+        if (array_key_exists('first_name', $data) || array_key_exists('last_name', $data)) {
+            $firstName = trim((string) ($data['first_name'] ?? $user->first_name ?? ''));
+            $lastName = trim((string) ($data['last_name'] ?? $user->last_name ?? ''));
+
+            $user->first_name = $firstName;
+            $user->last_name = $lastName !== '' ? $lastName : null;
+            $user->name = trim($firstName . ' ' . $lastName);
+        }
+
+        $profileFields = [
+            'email',
+            'phone',
+            'address',
+            'city',
+            'state',
+            'zip_code',
+            'dob',
+            'gender',
+            'marital_status',
+            'country_id',
+            'is_active',
+        ];
+
+        foreach ($profileFields as $field) {
+            if (array_key_exists($field, $data)) {
+                $user->{$field} = $data[$field];
+            }
+        }
+
+        if (array_key_exists('thumbnail', $data)) {
+            $thumbnail = trim((string) ($data['thumbnail'] ?? ''));
+            $user->thumbnail = $thumbnail !== ''
+                ? basename(parse_url($thumbnail, PHP_URL_PATH) ?: $thumbnail)
+                : 'default.png';
+        }
+
+        if (!empty($data['password'])) {
+            $user->password = $data['password'];
+        }
 
         $user->save();
 
@@ -140,6 +203,6 @@ class UserService extends BaseService implements BaseFilterable
             $user->syncRoles([$role]);
         }
 
-      return $user->load('roles');
+        return $user->load('roles:id,name');
     }
 }

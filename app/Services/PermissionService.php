@@ -66,14 +66,30 @@ class PermissionService extends BaseService
         });
     }
 
+    /**
+     * Resolve a permission by uuid, falling back to its numeric id.
+     */
+    public function findByIdentifier(int|string $identifier): ?Permission
+    {
+        if (is_numeric($identifier)) {
+            return $this->model->find((int) $identifier);
+        }
+
+        return $this->model->where('uuid', $identifier)->first();
+    }
+
     public function updatePermission($id, $data)
     {
         return DB::transaction(function () use ($id, $data) {
-            $permission = $this->model->findOrFail($id);
+            $permission = $this->findByIdentifier($id);
+
+            if (!$permission) {
+                throw new ModelNotFoundException('Permission not found');
+            }
 
             $existingPermission = $this->model->where('name', $data['name'])
                 ->where('guard_name', $data['guard_name'] ?? $permission->guard_name)
-                ->where('id', '!=', $id)
+                ->where('id', '!=', $permission->id)
                 ->first();
 
             if ($existingPermission) {
@@ -103,7 +119,14 @@ class PermissionService extends BaseService
     public function getPermissionByUuid($uuid, $relations = [])
     {
         try {
-            $permission = $this->model->with($relations)->where('uuid', $uuid)->first();
+            $permission = $this->model
+                ->with($relations)
+                ->when(
+                    is_numeric($uuid),
+                    fn ($query) => $query->where('id', $uuid),
+                    fn ($query) => $query->where('uuid', $uuid),
+                )
+                ->first();
 
             if (!$permission) {
                 throw new ModelNotFoundException('Permission not found');
@@ -119,7 +142,12 @@ class PermissionService extends BaseService
     public function deletePermission($id)
     {
         return DB::transaction(function () use ($id) {
-            $permission = $this->model->findOrFail($id);
+            $permission = $this->findByIdentifier($id);
+
+            if (!$permission) {
+                throw new ModelNotFoundException('Permission not found');
+            }
+
             $permission->roles()->detach();
 
             if (method_exists($permission, 'users')) {

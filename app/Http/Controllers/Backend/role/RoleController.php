@@ -6,7 +6,6 @@ use App\Contracts\BaseFilterable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
-use App\Models\Role;
 use App\Services\DropdownService;
 use App\Services\RoleService;
 use Illuminate\Http\Request;
@@ -40,7 +39,7 @@ class RoleController extends Controller implements BaseFilterable
     public function show($uuid)
     {
         try {
-            $role = app(RoleService::class)->getRoleByUuid($uuid, ['users:id,name,thumbnail', 'permissions:id,name']);
+            $role = app(RoleService::class)->getRoleByUuid($uuid, ['users:id,name,email,thumbnail', 'permissions:id,name']);
             return responseJson('Role fetched successfully', ['role' => $role], true);
         } catch (\Exception $e) {
             return responseJson('Role not found', null, false, 404);
@@ -52,6 +51,8 @@ class RoleController extends Controller implements BaseFilterable
             $data = $request->validated();
             $role = app(RoleService::class)->updateRole($id, $data);
             return responseJson('Role updated successfully', ['role' => $role], true);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return responseJson('Role not found', null, false, 404);
         } catch (\Exception $e) {
             return responseJson('Failed to update role: ' . $e->getMessage(), null, false, 500);
         }
@@ -60,7 +61,11 @@ class RoleController extends Controller implements BaseFilterable
     public function destroy($id)
     {
         try {
-            $role = Role::findOrFail($id);
+            $role = app(RoleService::class)->findByIdentifier($id);
+
+            if (!$role) {
+                return responseJson('Role not found', null, false, 404);
+            }
 
             // Prevent deletion of super-admin
             if (strtolower($role->name) === 'super-admin') {
