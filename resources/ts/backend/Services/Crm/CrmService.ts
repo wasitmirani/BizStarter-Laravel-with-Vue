@@ -10,7 +10,11 @@ export type CrmTag = {
 export type CrmContact = {
     id: number;
     name: string;
-    phone: string;
+    channel: 'whatsapp' | 'instagram';
+    external_id: string | null;
+    username: string | null;
+    handle: string | null;
+    phone: string | null;
     display_phone: string;
     email: string | null;
     company: string | null;
@@ -38,6 +42,7 @@ export type CrmMessage = {
         type: string;
         mime_type: string | null;
         filename: string | null;
+        direct_url: string | null;
         download_url: string;
     } | null;
     template_name: string | null;
@@ -52,6 +57,8 @@ export type CrmMessage = {
 
 export type CrmConversation = {
     id: number;
+    channel: 'whatsapp' | 'instagram';
+    channel_label: string;
     status: 'open' | 'pending' | 'closed';
     priority: 'low' | 'normal' | 'high' | 'urgent';
     subject: string | null;
@@ -63,6 +70,14 @@ export type CrmConversation = {
     assigned_to: number | null;
     contact: CrmContact | null;
     assignee: { id: number; name: string } | null;
+    account?: {
+        id: number;
+        name: string;
+        channel: string;
+        username: string | null;
+        phone_number: string | null;
+        configured: boolean;
+    } | null;
     latest_message?: CrmMessage | null;
 };
 
@@ -109,6 +124,23 @@ export type WhatsAppAccount = {
     phone_number: string | null;
     phone_number_id: string | null;
     business_account_id: string | null;
+    verify_token: string | null;
+    api_version: string;
+    is_active: boolean;
+    configured: boolean;
+    connected_at: string | null;
+    last_error: string | null;
+    token_preview: string | null;
+    has_token: boolean;
+};
+
+export type InstagramAccount = {
+    id: number;
+    channel: string;
+    name: string;
+    instagram_user_id: string | null;
+    instagram_username: string | null;
+    page_id: string | null;
     verify_token: string | null;
     api_version: string;
     is_active: boolean;
@@ -189,7 +221,7 @@ class CrmService {
             result: {
                 conversations: CrmConversation[];
                 meta: PaginationMeta;
-                counts: { open: number; pending: number; closed: number; unread: number };
+                counts: { open: number; pending: number; closed: number; unread: number; whatsapp: number; instagram: number };
                 assignables: Array<{ id: number; name: string; email: string }>;
             };
         }>('/crm/conversations', { params });
@@ -201,7 +233,14 @@ class CrmService {
                 conversation: CrmConversation;
                 messages: CrmMessage[];
                 assignables: Array<{ id: number; name: string; email: string }>;
-                account: { connected: boolean; phone_number: string | null };
+                account: {
+                    connected: boolean;
+                    channel: 'whatsapp' | 'instagram';
+                    label: string;
+                    name: string | null;
+                    phone_number: string | null;
+                    username: string | null;
+                };
             };
         }>(`/crm/conversations/${id}`);
     }
@@ -301,6 +340,25 @@ class CrmService {
 
     rotateVerifyToken() {
         return AxiosService.post<{ result: { account: WhatsAppAccount } }>('/crm/whatsapp/rotate-verify-token', {});
+    }
+
+    // Instagram account
+    instagram() {
+        return AxiosService.get<{
+            result: { account: InstagramAccount; webhook_url: string; api_version: string; configured: boolean };
+        }>('/crm/instagram');
+    }
+
+    saveInstagram(payload: Record<string, any>) {
+        return AxiosService.put<{ result: { account: InstagramAccount; configured: boolean } }>('/crm/instagram', payload);
+    }
+
+    testInstagram() {
+        return AxiosService.post<{ result: { account: InstagramAccount; remote: any } }>('/crm/instagram/test', {});
+    }
+
+    rotateInstagramVerifyToken() {
+        return AxiosService.post<{ result: { account: InstagramAccount } }>('/crm/instagram/rotate-verify-token', {});
     }
 }
 

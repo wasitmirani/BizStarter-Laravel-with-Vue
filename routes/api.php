@@ -6,6 +6,8 @@ use App\Http\Controllers\Backend\Billing\PlanController;
 use App\Http\Controllers\Backend\Crm\CampaignController;
 use App\Http\Controllers\Backend\Crm\ContactController;
 use App\Http\Controllers\Backend\Crm\ConversationController;
+use App\Http\Controllers\Backend\Crm\InstagramAccountController;
+use App\Http\Controllers\Backend\Crm\InstagramWebhookController;
 use App\Http\Controllers\Backend\Crm\TagController;
 use App\Http\Controllers\Backend\Crm\TemplateController;
 use App\Http\Controllers\Backend\Crm\WhatsAppAccountController;
@@ -126,6 +128,11 @@ Route::prefix('/app')->middleware('auth:sanctum')->group(function () {
         Route::put('whatsapp', [WhatsAppAccountController::class, 'update']);
         Route::post('whatsapp/test', [WhatsAppAccountController::class, 'test']);
         Route::post('whatsapp/rotate-verify-token', [WhatsAppAccountController::class, 'rotateVerifyToken']);
+
+        Route::get('instagram', [InstagramAccountController::class, 'show']);
+        Route::put('instagram', [InstagramAccountController::class, 'update']);
+        Route::post('instagram/test', [InstagramAccountController::class, 'test']);
+        Route::post('instagram/rotate-verify-token', [InstagramAccountController::class, 'rotateVerifyToken']);
     });
 
     // Users
@@ -174,4 +181,9 @@ Route::prefix('/app')->middleware('auth:sanctum')->group(function () {
 // Meta WhatsApp Cloud API webhook (public, signature-verified).
 Route::get('/whatsapp/webhook', [WhatsAppWebhookController::class, 'verify']);
 Route::post('/whatsapp/webhook', [WhatsAppWebhookController::class, 'receive'])
+    ->middleware('throttle:120,1');
+
+// Meta Instagram Messaging webhook (public, signature-verified).
+Route::get('/instagram/webhook', [InstagramWebhookController::class, 'verify']);
+Route::post('/instagram/webhook', [InstagramWebhookController::class, 'receive'])
     ->middleware('throttle:120,1');

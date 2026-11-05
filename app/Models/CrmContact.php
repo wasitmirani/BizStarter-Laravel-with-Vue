@@ -12,6 +12,9 @@ class CrmContact extends Model
 {
     protected $table = 'crm_contacts';
 
+    public const CHANNEL_WHATSAPP = 'whatsapp';
+    public const CHANNEL_INSTAGRAM = 'instagram';
+
     protected $guarded = [];
 
     protected $casts = [
@@ -50,7 +53,16 @@ class CrmContact extends Model
 
     public function displayPhone(): string
     {
-        return $this->phone ? '+' . $this->phone : '';
+        if ($this->phone) {
+            return '+' . $this->phone;
+        }
+
+        return $this->username ? '@' . $this->username : '';
+    }
+
+    public function isInstagram(): bool
+    {
+        return $this->channel === self::CHANNEL_INSTAGRAM;
     }
 
     public function initials(): string
@@ -68,6 +80,10 @@ class CrmContact extends Model
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'channel' => $this->channel ?: self::CHANNEL_WHATSAPP,
+            'external_id' => $this->external_id,
+            'username' => $this->username,
+            'handle' => $this->username ? '@' . $this->username : null,
             'phone' => $this->phone,
             'display_phone' => $this->displayPhone(),
             'email' => $this->email,

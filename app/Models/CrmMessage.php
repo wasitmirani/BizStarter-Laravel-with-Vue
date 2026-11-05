@@ -56,6 +56,28 @@ class CrmMessage extends Model
     public function inboundMedia(): ?array
     {
         $payload = is_array($this->payload) ? $this->payload : [];
+
+        // Instagram messaging webhooks carry attachments on message.attachments.
+        $instagramAttachments = $payload['message']['attachments'] ?? null;
+
+        if (is_array($instagramAttachments) && $instagramAttachments !== []) {
+            $attachment = $instagramAttachments[0];
+            $type = (string) ($attachment['type'] ?? 'file');
+            $url = $attachment['payload']['url'] ?? null;
+
+            if (blank($url)) {
+                return null;
+            }
+
+            return [
+                'type' => $type,
+                'mime_type' => $this->media_mime,
+                'filename' => $attachment['payload']['title'] ?? $this->media_filename,
+                'direct_url' => $url,
+                'download_url' => $url,
+            ];
+        }
+
         $type = (string) ($payload['type'] ?? $this->type);
 
         if (! in_array($type, ['image', 'video', 'document', 'audio', 'sticker'], true)) {
@@ -72,6 +94,7 @@ class CrmMessage extends Model
             'type' => $type,
             'mime_type' => $media['mime_type'] ?? $this->media_mime,
             'filename' => $media['filename'] ?? $this->media_filename,
+            'direct_url' => null,
             'download_url' => '/api/app/crm/messages/' . $this->id . '/media',
         ];
     }

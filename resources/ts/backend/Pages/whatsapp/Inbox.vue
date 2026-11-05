@@ -9,10 +9,11 @@ const router = useRouter();
 const loading = ref(true);
 const error = ref('');
 const conversations = ref<CrmConversation[]>([]);
-const counts = ref({ open: 0, pending: 0, closed: 0, unread: 0 });
+const counts = ref({ open: 0, pending: 0, closed: 0, unread: 0, whatsapp: 0, instagram: 0 });
 const assignables = ref<Array<{ id: number; name: string; email: string }>>([]);
 
 const activeStatus = ref<'open' | 'pending' | 'closed' | 'all'>('open');
+const activeChannel = ref<'all' | 'whatsapp' | 'instagram'>('all');
 const search = ref('');
 const unreadOnly = ref(false);
 
@@ -35,6 +36,12 @@ let pollTimer: ReturnType<typeof setInterval> | null = null;
 
 const filtered = computed(() => conversations.value);
 const activeContact = computed(() => conversation.value?.contact ?? null);
+const activeChannelLabel = computed(() => (conversation.value?.channel === 'instagram' ? 'Instagram' : 'WhatsApp'));
+const channelTabs = computed(() => [
+    { key: 'all', label: 'All', count: counts.value.whatsapp + counts.value.instagram },
+    { key: 'whatsapp', label: 'WhatsApp', count: counts.value.whatsapp },
+    { key: 'instagram', label: 'Instagram', count: counts.value.instagram },
+]);
 const tabs = computed(() => [
     { key: 'open', label: 'Open', count: counts.value.open },
     { key: 'pending', label: 'Pending', count: counts.value.pending },
@@ -44,6 +51,19 @@ const tabs = computed(() => [
 
 function setTab(key: string) {
     activeStatus.value = key as typeof activeStatus.value;
+}
+
+function setChannel(key: string) {
+    activeChannel.value = key as typeof activeChannel.value;
+}
+
+function isImageMedia(message: CrmMessage): boolean {
+    if (!message.media) return false;
+
+    return (
+        message.media.type === 'image' ||
+        (message.media.mime_type ?? '').startsWith('image/')
+    );
 }
 
 function relative(value?: string | null): string {
@@ -90,15 +110,6 @@ function statusClass(status: string): string {
     return status === 'open' ? 'is-open' : status === 'pending' ? 'is-pending' : 'is-closed';
 }
 
-function isImageMedia(message: CrmMessage): boolean {
-    if (!message.media) return false;
-
-    return (
-        ['image', 'sticker'].includes(message.media.type) &&
-        (message.media.mime_type ?? '').startsWith('image/')
-    );
-}
-
 function mediaCaption(message: CrmMessage): string {
     const body = (message.body ?? '').trim();
 
@@ -118,6 +129,11 @@ function clearMedia() {
 
 async function loadMedia(message: CrmMessage) {
     if (!message.media || mediaUrls.value[message.id] || mediaLoading.value[message.id]) return;
+
+    if (message.media.direct_url) {
+        mediaUrls.value = { ...mediaUrls.value, [message.id]: message.media.direct_url };
+        return;
+    }
 
     mediaLoading.value = { ...mediaLoading.value, [message.id]: true };
     mediaErrors.value = { ...mediaErrors.value, [message.id]: '' };
@@ -143,7 +159,7 @@ async function downloadMedia(message: CrmMessage) {
 
     const anchor = document.createElement('a');
     anchor.href = url;
-    anchor.download = message.media?.filename ?? `whatsapp-${message.type}-${message.id}`;
+    anchor.download = message.media?.filename ?? `${message.media?.type ?? message.type}-${message.id}`;
     document.body.appendChild(anchor);
     anchor.click();
     anchor.remove();
@@ -183,6 +199,7 @@ async function loadList(silent = false) {
     try {
         const response = await CrmService.conversations({
             status: activeStatus.value,
+            channel: activeChannel.value === 'all' ? undefined : activeChannel.value,
             search: search.value || undefined,
             unread: unreadOnly.value ? 1 : undefined,
             per_page: 50,
@@ -334,6 +351,13 @@ watch(activeStatus, () => {
     void loadList();
 });
 
+watch(activeChannel, () => {
+    activeId.value = null;
+    conversation.value = null;
+    messages.value = [];
+    void loadList();
+});
+
 let searchTimer: ReturnType<typeof setTimeout> | null = null;
 watch(search, () => {
     if (searchTimer) clearTimeout(searchTimer);
@@ -359,7 +383,7 @@ onBeforeUnmount(() => {
         <header class="lk-page-head">
             <div>
                 <h1 class="lk-page-title">Inbox</h1>
-                <p class="lk-page-subtitle">Every WhatsApp conversation in one shared team inbox.</p>
+                <p class="lk-page-subtitle">Every WhatsApp and Instagram conversation in one shared team inbox.</p>
             </div>
             <div class="lk-page-actions">
                 <span class="lk-badge" :class="connected ? 'lk-badge--success' : 'lk-badge--warning'">
@@ -368,17 +392,40 @@ onBeforeUnmount(() => {
                 <router-link :to="{ name: 'whatsapp-settings' }" class="lk-btn lk-btn--secondary lk-btn--sm">
                     WhatsApp settings
                 </router-link>
+                <router-link :to="{ name: 'instagram-settings' }" class="lk-btn lk-btn--ghost lk-btn--sm">
+                    Instagram settings
+                </router-link>
             </div>
         </header>
 
         <div v-if="!connected" class="lk-inline-note lk-inline-note--warning" role="status">
-            WhatsApp is not connected yet. Messages you send are still recorded, but nothing leaves the app.
-            <router-link :to="{ name: 'whatsapp-settings' }" class="lk-inline-note__link">Connect a number</router-link>
+            This channel is not connected yet. Messages you send are still recorded, but nothing leaves the app.
+            <router-link :to="{ name: 'whatsapp-settings' }" class="lk-inline-note__link">Connect a channel</router-link>
         </div>
 
         <section class="lk-inbox__shell">
             <aside class="lk-inbox__list">
                 <div class="lk-inbox__list-head">
+                    <div class="lk-inbox__channels" role="tablist" aria-label="Channel">
+                        <button
+                            v-for="tab in channelTabs"
+                            :key="tab.key"
+                            type="button"
+                            role="tab"
+                            :aria-selected="activeChannel === tab.key"
+                            :class="[`is-${tab.key}`, { 'is-active': activeChannel === tab.key }]"
+                            @click="setChannel(tab.key)"
+                        >
+                            <span class="lk-inbox__channel-icon" aria-hidden="true">
+                                <svg v-if="tab.key === 'whatsapp'" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                                <svg v-else-if="tab.key === 'instagram'" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+                                <svg v-else xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                            </span>
+                            {{ tab.label }}
+                            <span class="lk-inbox__tab-count">{{ tab.count }}</span>
+                        </button>
+                    </div>
+
                     <div class="lk-inbox__tabs" role="tablist" aria-label="Conversation status">
                         <button
                             v-for="tab in tabs"
@@ -413,7 +460,7 @@ onBeforeUnmount(() => {
 
                 <div v-else-if="!filtered.length" class="lk-state">
                     <p class="lk-state__title">No conversations</p>
-                    <p class="lk-state__text">New WhatsApp messages will appear here automatically.</p>
+                    <p class="lk-state__text">New WhatsApp or Instagram messages will appear here automatically.</p>
                 </div>
 
                 <ul v-else class="lk-inbox__items">
@@ -424,7 +471,10 @@ onBeforeUnmount(() => {
                             :class="{ 'is-active': activeId === item.id }"
                             @click="selectConversation(item.id)"
                         >
-                            <span class="lk-avatar lk-avatar--sm">{{ initials(item.contact?.name) }}</span>
+                            <span class="lk-inbox__avatar" :class="`is-${item.channel}`">
+                                <span class="lk-avatar lk-avatar--sm">{{ initials(item.contact?.name) }}</span>
+                                <span class="lk-inbox__avatar-channel" aria-hidden="true"></span>
+                            </span>
                             <span class="lk-inbox__item-main">
                                 <span class="lk-inbox__item-top">
                                     <strong>{{ item.contact?.name ?? item.contact?.display_phone }}</strong>
@@ -437,6 +487,7 @@ onBeforeUnmount(() => {
                                 <span class="lk-inbox__item-meta">
                                     <span class="lk-dot" :class="statusClass(item.status)"></span>
                                     {{ item.status }}
+                                    <span class="lk-inbox__channel-tag" :class="`is-${item.channel}`">{{ item.channel }}</span>
                                     <template v-if="item.assignee"> · {{ item.assignee.name }}</template>
                                 </span>
                             </span>
@@ -453,10 +504,13 @@ onBeforeUnmount(() => {
                             <div>
                                 <strong>{{ activeContact?.name }}</strong>
                                 <p class="lk-muted">
-                                    {{ activeContact?.display_phone }}
+                                    {{ activeContact?.display_phone || 'Instagram direct message' }}
                                     <template v-if="activeContact?.company"> · {{ activeContact.company }}</template>
                                 </p>
                             </div>
+                            <span class="lk-inbox__channel-pill" :class="`is-${conversation.channel}`">
+                                {{ activeChannelLabel }}
+                            </span>
                         </div>
                         <div class="lk-inbox__thread-actions">
                             <select class="lk-select lk-select--sm" :value="conversation.assigned_to ?? ''" @change="setAssignee">
@@ -551,7 +605,7 @@ onBeforeUnmount(() => {
                             v-model="replyBody"
                             class="lk-input lk-inbox__textarea"
                             rows="2"
-                            placeholder="Write a reply…  (Enter to send, Shift+Enter for a new line)"
+                            :placeholder="`Reply on ${activeChannelLabel}…  (Enter to send, Shift+Enter for a new line)`"
                             @keydown="onComposerKeydown"
                         ></textarea>
                         <button type="button" class="lk-btn lk-btn--primary" :disabled="sending || !replyBody.trim()" @click="send">
@@ -583,6 +637,18 @@ onBeforeUnmount(() => {
                     </div>
 
                     <dl class="lk-inbox__facts">
+                        <div>
+                            <dt>Channel</dt>
+                            <dd style="text-transform: capitalize">{{ conversation.channel }}</dd>
+                        </div>
+                        <div v-if="activeContact.username">
+                            <dt>Instagram</dt>
+                            <dd>{{ activeContact.handle }}</dd>
+                        </div>
+                        <div v-if="activeContact.phone">
+                            <dt>Phone</dt>
+                            <dd>+{{ activeContact.phone }}</dd>
+                        </div>
                         <div>
                             <dt>Email</dt>
                             <dd>{{ activeContact.email ?? '—' }}</dd>
@@ -663,6 +729,101 @@ onBeforeUnmount(() => {
     border: 1px solid var(--lk-border);
     border-radius: 9px;
     padding: 3px;
+}
+
+.lk-inbox__channels {
+    display: flex;
+    gap: 4px;
+}
+
+.lk-inbox__channels button {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    border: 1px solid var(--lk-border);
+    background: var(--lk-card);
+    border-radius: 8px;
+    padding: 6px 6px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--lk-text-secondary);
+    cursor: pointer;
+    transition: border-color 120ms ease, background 120ms ease, color 120ms ease;
+}
+
+.lk-inbox__channels button:hover {
+    border-color: var(--lk-primary);
+}
+
+.lk-inbox__channels button.is-active {
+    border-color: var(--lk-primary);
+    background: var(--lk-primary-subtle);
+    color: var(--lk-primary-active);
+}
+
+.lk-inbox__channels button.is-instagram.is-active {
+    border-color: #d946ef;
+    background: color-mix(in srgb, #d946ef 10%, transparent);
+    color: #a21caf;
+}
+
+.lk-inbox__channel-icon {
+    display: inline-flex;
+    align-items: center;
+}
+
+.lk-inbox__avatar {
+    position: relative;
+    flex: 0 0 auto;
+}
+
+.lk-inbox__avatar-channel {
+    position: absolute;
+    right: -1px;
+    bottom: -1px;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    border: 2px solid var(--lk-card);
+    background: #25d366;
+}
+
+.lk-inbox__avatar.is-instagram .lk-inbox__avatar-channel {
+    background: linear-gradient(135deg, #f58529, #dd2a7b 55%, #8134af);
+}
+
+.lk-inbox__channel-tag {
+    padding: 1px 6px;
+    border-radius: 999px;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: capitalize;
+    background: color-mix(in srgb, #25d366 14%, transparent);
+    color: #128c4b;
+}
+
+.lk-inbox__channel-tag.is-instagram {
+    background: color-mix(in srgb, #d946ef 14%, transparent);
+    color: #a21caf;
+}
+
+.lk-inbox__channel-pill {
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: color-mix(in srgb, #25d366 14%, transparent);
+    color: #128c4b;
+}
+
+.lk-inbox__channel-pill.is-instagram {
+    background: color-mix(in srgb, #d946ef 14%, transparent);
+    color: #a21caf;
 }
 
 .lk-inbox__tabs button {

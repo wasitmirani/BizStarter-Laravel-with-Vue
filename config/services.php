@@ -43,4 +43,12 @@ return [
         'verify_token' => env('WHATSAPP_VERIFY_TOKEN'),
     ],
 
+    'instagram' => [
+        // Same Meta app secret unless the Instagram product lives in another app.
+        'app_secret' => env('INSTAGRAM_APP_SECRET', env('WHATSAPP_APP_SECRET')),
+        'api_version' => env('INSTAGRAM_API_VERSION', env('WHATSAPP_API_VERSION', 'v21.0')),
+        // Optional shared verify token when a workspace has none configured.
+        'verify_token' => env('INSTAGRAM_VERIFY_TOKEN'),
+    ],
+
 ];

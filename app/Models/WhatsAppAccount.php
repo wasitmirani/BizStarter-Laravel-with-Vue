@@ -10,6 +10,9 @@ class WhatsAppAccount extends Model
 {
     protected $table = 'whatsapp_accounts';
 
+    public const CHANNEL_WHATSAPP = 'whatsapp';
+    public const CHANNEL_INSTAGRAM = 'instagram';
+
     protected $guarded = [];
 
     protected $casts = [
@@ -30,9 +33,23 @@ class WhatsAppAccount extends Model
         return $this->hasMany(CrmConversation::class);
     }
 
+    public function isInstagram(): bool
+    {
+        return $this->channel === self::CHANNEL_INSTAGRAM;
+    }
+
     public function isConfigured(): bool
     {
+        if ($this->isInstagram()) {
+            return filled($this->instagram_user_id) && filled($this->access_token);
+        }
+
         return filled($this->phone_number_id) && filled($this->access_token);
+    }
+
+    public function channelLabel(): string
+    {
+        return $this->isInstagram() ? 'Instagram' : 'WhatsApp';
     }
 
     public function maskedToken(): ?string

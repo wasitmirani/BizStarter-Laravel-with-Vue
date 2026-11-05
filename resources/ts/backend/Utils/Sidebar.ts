@@ -52,7 +52,7 @@ export default class SidebarMenu {
                 this.single('Permissions', 'key-round', '/management/permissions', 'permissions-list'),
             ]),
 
-            this.heading('WhatsApp CRM'),
+            this.heading('Messaging'),
             this.single('Inbox', 'message-circle', '/crm/inbox'),
             this.single('Contacts', 'contact', '/crm/contacts'),
             this.single('Templates', 'file-text', '/crm/templates'),
@@ -65,6 +65,7 @@ export default class SidebarMenu {
             this.heading('Workspace'),
             this.single('Team', 'users-round', '/settings/team'),
             this.single('WhatsApp', 'phone', '/settings/whatsapp'),
+            this.single('Instagram', 'instagram', '/settings/instagram'),
             this.single('Billing & plans', 'credit-card', '/settings/billing'),
             this.single('API tokens', 'key-round', '/settings/api-tokens'),
             this.single('My profile', 'user-circle', '/settings/user-account'),

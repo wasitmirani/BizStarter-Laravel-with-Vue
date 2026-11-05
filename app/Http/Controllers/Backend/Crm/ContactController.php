@@ -24,10 +24,17 @@ class ContactController extends Controller
             $needle = '%' . mb_strtolower($search) . '%';
             $query->where(function ($builder) use ($needle) {
                 $builder->whereRaw('LOWER(name) LIKE ?', [$needle])
-                    ->orWhereRaw('LOWER(phone) LIKE ?', [$needle])
+                    ->orWhereRaw('LOWER(COALESCE(phone, \'\')) LIKE ?', [$needle])
+                    ->orWhereRaw('LOWER(COALESCE(username, \'\')) LIKE ?', [$needle])
                     ->orWhereRaw('LOWER(COALESCE(email, \'\')) LIKE ?', [$needle])
                     ->orWhereRaw('LOWER(COALESCE(company, \'\')) LIKE ?', [$needle]);
             });
+        }
+
+        if ($channel = $request->query('channel')) {
+            if (in_array($channel, [CrmContact::CHANNEL_WHATSAPP, CrmContact::CHANNEL_INSTAGRAM], true)) {
+                $query->where('channel', $channel);
+            }
         }
 
         if ($status = $request->query('status')) {
@@ -60,7 +67,9 @@ class ContactController extends Controller
         $workspace = $this->workspace($request);
 
         $data = $this->validated($request, $workspace);
-        $data['phone'] = CrmContact::normalizePhone($data['phone']);
+        $data['channel'] = $data['channel'] ?? CrmContact::CHANNEL_WHATSAPP;
+        $data['phone'] = filled($data['phone'] ?? null) ? CrmContact::normalizePhone($data['phone']) : null;
+        $data['external_id'] = $data['external_id'] ?? $data['phone'];
         unset($data['tags']);
 
         $contact = $workspace->contacts()->create($data);
@@ -94,7 +103,7 @@ class ContactController extends Controller
         abort_unless((int) $contact->workspace_id === (int) $workspace->id, 404);
 
         $data = $this->validated($request, $workspace, $contact);
-        $data['phone'] = CrmContact::normalizePhone($data['phone']);
+        $data['phone'] = filled($data['phone'] ?? null) ? CrmContact::normalizePhone($data['phone']) : null;
         unset($data['tags']);
 
         $contact->update($data);
@@ -206,8 +215,11 @@ class ContactController extends Controller
     {
         return $request->validate([
             'name' => ['required', 'string', 'max:120'],
+            'channel' => ['nullable', Rule::in([CrmContact::CHANNEL_WHATSAPP, CrmContact::CHANNEL_INSTAGRAM])],
+            'external_id' => ['nullable', 'string', 'max:128'],
+            'username' => ['nullable', 'string', 'max:120'],
             'phone' => [
-                'required', 'string', 'max:32',
+                'nullable', 'string', 'max:32',
                 Rule::unique('crm_contacts', 'phone')
                     ->where('workspace_id', $workspace->id)
                     ->ignore($contact?->id),

@@ -61,9 +61,24 @@ class Workspace extends Model
         return $this->subscription?->plan;
     }
 
+    public function accounts(): HasMany
+    {
+        return $this->hasMany(WhatsAppAccount::class);
+    }
+
     public function whatsappAccount(): HasOne
     {
-        return $this->hasOne(WhatsAppAccount::class);
+        return $this->hasOne(WhatsAppAccount::class)->where('channel', WhatsAppAccount::CHANNEL_WHATSAPP);
+    }
+
+    public function instagramAccount(): HasOne
+    {
+        return $this->hasOne(WhatsAppAccount::class)->where('channel', WhatsAppAccount::CHANNEL_INSTAGRAM);
+    }
+
+    public function accountFor(string $channel): ?WhatsAppAccount
+    {
+        return $this->accounts()->where('channel', $channel)->first();
     }
 
     public function contacts(): HasMany

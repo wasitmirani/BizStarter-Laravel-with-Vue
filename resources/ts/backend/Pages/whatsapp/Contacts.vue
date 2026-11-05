@@ -12,6 +12,7 @@ const meta = ref({ current_page: 1, last_page: 1, per_page: 15, total: 0 });
 
 const search = ref('');
 const statusFilter = ref('');
+const channelFilter = ref('');
 const tagFilter = ref('');
 const importing = ref(false);
 const exporting = ref(false);
@@ -61,6 +62,7 @@ async function load(page = 1) {
             page,
             search: search.value || undefined,
             status: statusFilter.value || undefined,
+            channel: channelFilter.value || undefined,
             tag: tagFilter.value || undefined,
         });
         contacts.value = response.data.result.contacts;
@@ -92,7 +94,7 @@ function openEdit(contact: CrmContact) {
     editing.value = contact;
     Object.assign(form, {
         name: contact.name,
-        phone: contact.phone,
+        phone: contact.phone ?? '',
         email: contact.email ?? '',
         company: contact.company ?? '',
         status: contact.status,
@@ -104,12 +106,14 @@ function openEdit(contact: CrmContact) {
 }
 
 async function save() {
-    if (!form.name.trim() || !form.phone.trim()) return;
+    const phoneRequired = !editing.value || editing.value.channel !== 'instagram';
+
+    if (!form.name.trim() || (phoneRequired && !form.phone.trim())) return;
     saving.value = true;
 
     const payload = {
         name: form.name.trim(),
-        phone: form.phone.trim(),
+        phone: form.phone.trim() || null,
         email: form.email.trim() || null,
         company: form.company.trim() || null,
         status: form.status,
@@ -234,7 +238,7 @@ onMounted(() => void load());
         <header class="lk-page-head">
             <div>
                 <h1 class="lk-page-title">Contacts</h1>
-                <p class="lk-page-subtitle">{{ meta.total }} people in your WhatsApp CRM.</p>
+                <p class="lk-page-subtitle">{{ meta.total }} people across WhatsApp and Instagram.</p>
             </div>
             <div class="lk-page-actions">
                 <input ref="fileInput" type="file" accept=".csv,text/csv" hidden @change="onImport" />
@@ -255,13 +259,18 @@ onMounted(() => void load());
                         v-model="search"
                         type="search"
                         class="lk-input"
-                        placeholder="Search name, phone, email or company…"
+                        placeholder="Search contacts…"
                         @input="onSearch"
                     />
                     <select v-model="statusFilter" class="lk-select" @change="load(1)">
                         <option v-for="option in statusOptions" :key="option.value" :value="option.value">
                             {{ option.label }}
                         </option>
+                    </select>
+                    <select v-model="channelFilter" class="lk-select" @change="load(1)">
+                        <option value="">All channels</option>
+                        <option value="whatsapp">WhatsApp</option>
+                        <option value="instagram">Instagram</option>
                     </select>
                     <select v-model="tagFilter" class="lk-select" @change="load(1)">
                         <option value="">All tags</option>
@@ -304,7 +313,10 @@ onMounted(() => void load());
                                             <span class="lk-avatar lk-avatar--sm">{{ initials(contact.name) }}</span>
                                             <div>
                                                 <strong>{{ contact.name }}</strong>
-                                                <p class="lk-muted">{{ contact.display_phone }}</p>
+                                                <p class="lk-muted">
+                                                    {{ contact.display_phone || 'No phone number' }}
+                                                    <span class="lk-contact-channel" :class="`is-${contact.channel}`">{{ contact.channel }}</span>
+                                                </p>
                                             </div>
                                         </div>
                                     </td>
@@ -391,8 +403,11 @@ onMounted(() => void load());
                             <input v-model="form.name" class="lk-input" required maxlength="120" />
                         </label>
                         <label class="lk-field">
-                            <span class="lk-label">WhatsApp number</span>
-                            <input v-model="form.phone" class="lk-input" required placeholder="14155550123" maxlength="32" />
+                            <span class="lk-label">Phone number</span>
+                            <input v-model="form.phone" class="lk-input" placeholder="14155550123" maxlength="32" />
+                            <span v-if="editing?.channel === 'instagram'" class="lk-hint">
+                                Instagram contacts are identified by their Instagram account, so a phone number is optional.
+                            </span>
                         </label>
                         <label class="lk-field">
                             <span class="lk-label">Email</span>
@@ -461,7 +476,7 @@ onMounted(() => void load());
 
 .lk-contacts__filters {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 160px 160px;
+    grid-template-columns: minmax(0, 1fr) 150px 150px 150px;
     gap: 10px;
     border-bottom: 1px solid var(--lk-border);
 }
@@ -475,6 +490,25 @@ onMounted(() => void load());
 .lk-contact-cell p {
     margin: 1px 0 0;
     font-size: 11.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.lk-contact-channel {
+    padding: 1px 6px;
+    border-radius: 999px;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: capitalize;
+    background: color-mix(in srgb, #25d366 14%, transparent);
+    color: #128c4b;
+}
+
+.lk-contact-channel.is-instagram {
+    background: color-mix(in srgb, #d946ef 14%, transparent);
+    color: #a21caf;
 }
 
 .lk-contact-actions {

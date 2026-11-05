@@ -57,6 +57,7 @@ const routes = [
     setRoute("/settings/user-account", "user-account", "account/Account", null),
     setRoute("/settings/team", "team", "workspace/Team", null),
     setRoute("/settings/whatsapp", "whatsapp-settings", "Settings/WhatsApp", null),
+    setRoute("/settings/instagram", "instagram-settings", "Settings/Instagram", null),
     setRoute("/settings/billing", "billing", "billing/Billing", null),
     setRoute("/settings/api-tokens", "api-tokens", "Settings/ApiTokens", null),
     setRoute("/settings/plans", "plans", "billing/Plans", "plans-manage"),

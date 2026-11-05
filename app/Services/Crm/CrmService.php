@@ -10,6 +10,7 @@ use App\Models\CrmTemplate;
 use App\Models\User;
 use App\Models\WhatsAppAccount;
 use App\Models\Workspace;
+use App\Services\Instagram\InstagramApi;
 use App\Services\WhatsApp\WhatsAppCloudApi;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -19,40 +20,82 @@ use RuntimeException;
 
 class CrmService
 {
-    public function __construct(private readonly WhatsAppCloudApi $api)
-    {
+    public function __construct(
+        private readonly WhatsAppCloudApi $api,
+        private readonly InstagramApi $instagram,
+    ) {
     }
 
-    public function account(Workspace $workspace): WhatsAppAccount
+    public function account(Workspace $workspace, string $channel = WhatsAppAccount::CHANNEL_WHATSAPP): WhatsAppAccount
     {
-        return $workspace->whatsappAccount()->firstOrCreate([], [
-            'name' => $workspace->name . ' WhatsApp',
-            'api_version' => config('services.whatsapp.api_version', 'v21.0'),
-            'verify_token' => Str::random(32),
-            'is_active' => true,
-        ]);
+        $isInstagram = $channel === WhatsAppAccount::CHANNEL_INSTAGRAM;
+
+        return $workspace->accounts()->firstOrCreate(
+            ['channel' => $channel],
+            [
+                'name' => $workspace->name . ' ' . ($isInstagram ? 'Instagram' : 'WhatsApp'),
+                'api_version' => $isInstagram
+                    ? config('services.instagram.api_version', config('services.whatsapp.api_version', 'v21.0'))
+                    : config('services.whatsapp.api_version', 'v21.0'),
+                'verify_token' => Str::random(32),
+                'is_active' => true,
+            ]
+        );
     }
 
     /**
-     * Find a contact by phone or create one, then open its conversation.
+     * Find a contact by channel identifier or create one, then open its conversation.
+     *
+     * WhatsApp identifiers are phone numbers; Instagram identifiers are IGSIDs.
      */
-    public function contactFor(Workspace $workspace, string $phone, ?string $name = null, string $source = 'whatsapp'): CrmContact
-    {
-        $normalized = CrmContact::normalizePhone($phone);
+    public function contactFor(
+        Workspace $workspace,
+        string $identifier,
+        ?string $name = null,
+        string $source = 'whatsapp',
+        string $channel = CrmContact::CHANNEL_WHATSAPP,
+        ?string $username = null
+    ): CrmContact {
+        $isInstagram = $channel === CrmContact::CHANNEL_INSTAGRAM;
+        $normalized = $isInstagram ? trim($identifier) : CrmContact::normalizePhone($identifier);
 
-        $contact = $workspace->contacts()->where('phone', $normalized)->first();
+        $contact = $workspace->contacts()
+            ->where('channel', $channel)
+            ->when($normalized !== '', fn ($query) => $query->where('external_id', $normalized))
+            ->first();
+
+        if (! $contact && ! $isInstagram) {
+            $contact = $workspace->contacts()->where('phone', $normalized)->first();
+
+            if ($contact && blank($contact->external_id)) {
+                $contact->forceFill(['external_id' => $normalized])->save();
+            }
+        }
 
         if ($contact) {
+            $changes = [];
+
             if ($name && $contact->name !== $name) {
-                $contact->update(['name' => $name]);
+                $changes['name'] = $name;
+            }
+
+            if ($username && $contact->username !== $username) {
+                $changes['username'] = $username;
+            }
+
+            if ($changes !== []) {
+                $contact->update($changes);
             }
 
             return $contact;
         }
 
         return $workspace->contacts()->create([
-            'name' => $name ?: '+' . $normalized,
-            'phone' => $normalized,
+            'name' => $name ?: ($isInstagram ? 'Instagram user' : '+' . $normalized),
+            'channel' => $channel,
+            'external_id' => $normalized !== '' ? $normalized : null,
+            'username' => $username,
+            'phone' => $isInstagram ? null : $normalized,
             'source' => $source,
             'status' => 'lead',
             'opt_in' => true,
@@ -61,10 +104,14 @@ class CrmService
 
     public function conversationFor(Workspace $workspace, CrmContact $contact, ?WhatsAppAccount $account = null): CrmConversation
     {
+        $channel = $contact->channel ?: CrmContact::CHANNEL_WHATSAPP;
+        $account ??= $workspace->accountFor($channel);
+
         return CrmConversation::firstOrCreate(
             ['workspace_id' => $workspace->id, 'contact_id' => $contact->id],
             [
-                'whatsapp_account_id' => $account?->id ?? $workspace->whatsappAccount?->id,
+                'channel' => $channel,
+                'whatsapp_account_id' => $account?->id,
                 'status' => CrmConversation::STATUS_OPEN,
                 'priority' => 'normal',
                 'unread_count' => 0,
@@ -100,7 +147,13 @@ class CrmService
             return null;
         }
 
-        $contact = $this->contactFor($workspace, $from, $name);
+        $contact = $this->contactFor(
+            $workspace,
+            $from,
+            $name,
+            'whatsapp',
+            CrmContact::CHANNEL_WHATSAPP
+        );
         $conversation = $this->conversationFor($workspace, $contact, $account);
 
         [$type, $body, $extra] = $this->parseInbound($message);
@@ -179,12 +232,155 @@ class CrmService
     }
 
     /**
+     * Store an inbound Instagram webhook event idempotently.
+     *
+     * @param  array<string, mixed>  $entry
+     * @param  array<string, mixed>  $event
+     */
+    public function receiveInstagram(WhatsAppAccount $account, array $entry, array $event): ?CrmMessage
+    {
+        $workspace = $account->workspace;
+
+        if (! $workspace) {
+            return null;
+        }
+
+        $message = $event['message'] ?? null;
+
+        if (! is_array($message) || ! empty($message['is_echo'])) {
+            return null;
+        }
+
+        $senderId = (string) ($event['sender']['id'] ?? '');
+
+        if ($senderId === '' || $senderId === (string) $account->instagram_user_id) {
+            return null;
+        }
+
+        $mid = (string) ($message['mid'] ?? '');
+
+        if ($mid !== '' && CrmMessage::where('workspace_id', $workspace->id)->where('wa_message_id', $mid)->exists()) {
+            return null;
+        }
+
+        $profile = [];
+        $name = null;
+        $username = null;
+
+        $contact = $workspace->contacts()
+            ->where('channel', CrmContact::CHANNEL_INSTAGRAM)
+            ->where('external_id', $senderId)
+            ->first();
+
+        if (! $contact) {
+            $profile = $this->instagram->for($account)->fetchProfile($senderId);
+            $name = $profile['name'] ?? $profile['username'] ?? null;
+            $username = $profile['username'] ?? null;
+        }
+
+        $contact = $this->contactFor(
+            $workspace,
+            $senderId,
+            $name,
+            'instagram',
+            CrmContact::CHANNEL_INSTAGRAM,
+            $username
+        );
+
+        $conversation = $this->conversationFor($workspace, $contact, $account);
+
+        [$type, $body, $extra] = $this->parseInstagram($message);
+
+        $sentAt = isset($event['timestamp'])
+            ? Carbon::createFromTimestampMs((int) $event['timestamp'])
+            : now();
+
+        return DB::transaction(function () use ($workspace, $contact, $conversation, $event, $message, $mid, $type, $body, $extra, $sentAt) {
+            $record = CrmMessage::create(array_merge([
+                'workspace_id' => $workspace->id,
+                'conversation_id' => $conversation->id,
+                'contact_id' => $contact->id,
+                'wa_message_id' => $mid ?: null,
+                'direction' => 'in',
+                'type' => $type,
+                'body' => $body,
+                'status' => 'received',
+                'payload' => $event,
+                'sent_at' => $sentAt,
+            ], $extra));
+
+            $conversation->touchActivity($record);
+
+            if ($conversation->status === CrmConversation::STATUS_CLOSED) {
+                $conversation->forceFill([
+                    'status' => CrmConversation::STATUS_OPEN,
+                    'closed_at' => null,
+                ])->save();
+            }
+
+            $contact->forceFill(['last_message_at' => $record->created_at])->save();
+
+            return $record;
+        });
+    }
+
+    /**
+     * @param  array<string, mixed>  $message
+     * @return array{0:string,1:?string,2:array<string,mixed>}
+     */
+    protected function parseInstagram(array $message): array
+    {
+        $extra = ['media_url' => null, 'media_mime' => null, 'media_filename' => null];
+        $attachments = $message['attachments'] ?? [];
+
+        if (is_array($attachments) && $attachments !== []) {
+            $attachment = $attachments[0];
+            $type = $this->instagramAttachmentType((string) ($attachment['type'] ?? 'file'));
+            $url = $attachment['payload']['url'] ?? null;
+
+            $extra['media_url'] = $url;
+            $extra['media_filename'] = $attachment['payload']['title'] ?? ('instagram-' . $type);
+
+            return [$type, $message['text'] ?? '[' . ucfirst($type) . ']', $extra];
+        }
+
+        if (isset($message['text'])) {
+            return ['text', (string) $message['text'], $extra];
+        }
+
+        if (isset($message['reaction'])) {
+            return ['reaction', $message['reaction']['emoji'] ?? '[Reaction]', $extra];
+        }
+
+        if (isset($message['share'])) {
+            return ['text', $message['share']['link'] ?? '[Shared post]', $extra];
+        }
+
+        if (isset($message['story_mention'])) {
+            return ['image', '[Story mention]', array_merge($extra, ['media_url' => $message['story_mention']['url'] ?? null])];
+        }
+
+        return ['text', '[Instagram message]', $extra];
+    }
+
+    protected function instagramAttachmentType(string $type): string
+    {
+        return match ($type) {
+            'image', 'sticker' => 'image',
+            'video', 'reel', 'story' => 'video',
+            'audio' => 'audio',
+            default => 'document',
+        };
+    }
+
+    /**
      * Send a text reply and keep the thread in sync.
      */
     public function reply(CrmConversation $conversation, ?User $agent, string $body): CrmMessage
     {
         $workspace = $conversation->workspace;
-        $account = $conversation->account ?? $this->account($workspace);
+        $channel = $conversation->channel ?: CrmConversation::CHANNEL_WHATSAPP;
+        $account = $conversation->account ?? $this->account($workspace, $channel);
 
         $message = CrmMessage::create([
             'workspace_id' => $workspace->id,
@@ -197,15 +393,43 @@ class CrmService
             'status' => 'queued',
         ]);
 
-        return $this->deliverText($message, $account);
+        return $conversation->isInstagram()
+            ? $this->deliverInstagramText($message, $account)
+            : $this->deliverText($message, $account);
     }
 
     protected function deliverText(CrmMessage $message, WhatsAppAccount $account): CrmMessage
     {
         try {
-            $waId = $this->api->for($account)->sendText($message->contact->phone, (string) $message->body);
+            $waId = $this->api->for($account)->sendText((string) $message->contact->phone, (string) $message->body);
             $message->update([
                 'wa_message_id' => $waId,
+                'status' => 'sent',
+                'sent_at' => now(),
+            ]);
+        } catch (\Throwable $exception) {
+            $message->update([
+                'status' => 'failed',
+                'error' => $exception->getMessage(),
+            ]);
+        }
+
+        $message->conversation->touchActivity($message);
+        $message->contact->forceFill(['last_message_at' => now()])->save();
+
+        return $message->fresh();
+    }
+
+    protected function deliverInstagramText(CrmMessage $message, WhatsAppAccount $account): CrmMessage
+    {
+        try {
+            $mid = $this->instagram->for($account)->sendText(
+                (string) $message->contact->external_id,
+                (string) $message->body
+            );
+
+            $message->update([
+                'wa_message_id' => $mid,
                 'status' => 'sent',
                 'sent_at' => now(),
             ]);
@@ -271,7 +495,7 @@ class CrmService
         CrmMessage::whereIn('id', $unread->pluck('id'))->update(['read_at' => now()]);
         $conversation->forceFill(['unread_count' => 0])->save();
 
-        if ($conversation->account) {
+        if ($conversation->account && ! $conversation->isInstagram()) {
             foreach ($unread as $message) {
                 if ($message->wa_message_id) {
                     $this->api->for($conversation->account)->markRead($message->wa_message_id);
@@ -367,6 +591,7 @@ class CrmService
     public function audienceFor(?int $tagId, Workspace $workspace): Collection
     {
         $query = $workspace->contacts()
+            ->where('channel', CrmContact::CHANNEL_WHATSAPP)
             ->where('opt_in', true)
             ->where('status', '!=', 'blocked');
 
@@ -380,7 +605,9 @@ class CrmService
     public function assertReady(WhatsAppAccount $account): void
     {
         if (! $account->isConfigured()) {
-            throw new RuntimeException('Connect WhatsApp in settings before sending messages.');
+            $channel = $account->isInstagram() ? 'Instagram' : 'WhatsApp';
+
+            throw new RuntimeException('Connect ' . $channel . ' in settings before sending messages.');
         }
     }
 }

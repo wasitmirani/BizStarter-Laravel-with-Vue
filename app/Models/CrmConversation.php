@@ -14,6 +14,9 @@ class CrmConversation extends Model
     public const STATUS_PENDING = 'pending';
     public const STATUS_CLOSED = 'closed';
 
+    public const CHANNEL_WHATSAPP = 'whatsapp';
+    public const CHANNEL_INSTAGRAM = 'instagram';
+
     protected $guarded = [];
 
     protected $casts = [
@@ -63,6 +66,16 @@ class CrmConversation extends Model
         return $this->status === self::STATUS_CLOSED;
     }
 
+    public function isInstagram(): bool
+    {
+        return $this->channel === self::CHANNEL_INSTAGRAM;
+    }
+
+    public function channelLabel(): string
+    {
+        return $this->isInstagram() ? 'Instagram' : 'WhatsApp';
+    }
+
     public function touchActivity(CrmMessage $message): void
     {
         $this->forceFill([
@@ -78,6 +91,8 @@ class CrmConversation extends Model
     {
         return [
             'id' => $this->id,
+            'channel' => $this->channel ?: self::CHANNEL_WHATSAPP,
+            'channel_label' => $this->channelLabel(),
             'status' => $this->status,
             'priority' => $this->priority,
             'subject' => $this->subject,
@@ -92,6 +107,16 @@ class CrmConversation extends Model
                 : null,
             'assignee' => $this->relationLoaded('assignee') && $this->assignee
                 ? ['id' => $this->assignee->id, 'name' => $this->assignee->name]
+                : null,
+            'account' => $this->relationLoaded('account') && $this->account
+                ? [
+                    'id' => $this->account->id,
+                    'name' => $this->account->name,
+                    'channel' => $this->account->channel,
+                    'username' => $this->account->instagram_username,
+                    'phone_number' => $this->account->phone_number,
+                    'configured' => $this->account->isConfigured(),
+                ]
                 : null,
             'latest_message' => $this->relationLoaded('latestMessage') && $this->latestMessage->first()
                 ? $this->latestMessage->first()->toMessageArray()

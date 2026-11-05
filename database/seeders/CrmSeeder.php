@@ -17,7 +17,13 @@ class CrmSeeder extends Seeder
     {
         $workspace = Workspace::orderBy('id')->first();
 
-        if (! $workspace || $workspace->contacts()->exists()) {
+        if (! $workspace) {
+            return;
+        }
+
+        $this->seedInstagram($workspace);
+
+        if ($workspace->contacts()->where('channel', CrmContact::CHANNEL_WHATSAPP)->exists()) {
             return;
         }
 
@@ -199,6 +205,79 @@ class CrmSeeder extends Seeder
             'audience_tag_id' => $tags['Lead']->id,
             'status' => CrmCampaign::STATUS_SCHEDULED,
             'scheduled_at' => now()->addDay(),
+        ]);
+    }
+
+    /**
+     * Seed a demo Instagram direct-message thread so the shared inbox shows
+     * both channels out of the box.
+     */
+    protected function seedInstagram(Workspace $workspace): void
+    {
+        if ($workspace->contacts()->where('channel', CrmContact::CHANNEL_INSTAGRAM)->exists()) {
+            return;
+        }
+
+        $workspace->accounts()->firstOrCreate(
+            ['channel' => CrmContact::CHANNEL_INSTAGRAM],
+            [
+                'name' => $workspace->name . ' Instagram',
+                'instagram_user_id' => '17841400000000000',
+                'instagram_username' => 'larakit.app',
+                'page_id' => '102290129340398',
+                'api_version' => 'v21.0',
+                'verify_token' => 'larakit-demo-instagram-verify-token',
+                'is_active' => true,
+            ]
+        );
+
+        $contact = $workspace->contacts()->create([
+            'name' => 'Camila Torres',
+            'channel' => CrmContact::CHANNEL_INSTAGRAM,
+            'external_id' => 'igsid-demo-camila',
+            'username' => 'camila.torres',
+            'source' => 'instagram',
+            'status' => 'lead',
+            'opt_in' => true,
+            'last_message_at' => now()->subMinutes(25),
+        ]);
+
+        $conversation = $workspace->conversations()->create([
+            'contact_id' => $contact->id,
+            'channel' => CrmConversation::CHANNEL_INSTAGRAM,
+            'status' => CrmConversation::STATUS_OPEN,
+            'priority' => 'normal',
+            'unread_count' => 1,
+            'last_message_at' => now()->subMinutes(25),
+        ]);
+
+        $thread = [
+            ['in', 'Hey! I saw your launch post — is the starter kit available for agencies?', 40],
+            ['out', 'Hi Camila! Yes, agencies get multi-workspace support. Want a quick walkthrough?', 38],
+            ['in', 'That would be great. Does it include Instagram DMs too?', 25],
+        ];
+
+        foreach ($thread as [$direction, $body, $minutesAgo]) {
+            CrmMessage::create([
+                'workspace_id' => $workspace->id,
+                'conversation_id' => $conversation->id,
+                'contact_id' => $contact->id,
+                'user_id' => $direction === 'out' ? $workspace->owner_id : null,
+                'direction' => $direction,
+                'type' => 'text',
+                'body' => $body,
+                'status' => $direction === 'in' ? 'received' : 'delivered',
+                'sent_at' => now()->subMinutes($minutesAgo),
+                'created_at' => now()->subMinutes($minutesAgo),
+                'updated_at' => now()->subMinutes($minutesAgo),
+            ]);
+        }
+
+        $last = $conversation->messages()->latest('id')->first();
+
+        $conversation->update([
+            'last_message_at' => $last?->created_at,
+            'last_message_preview' => $last?->preview(),
         ]);
     }
 }

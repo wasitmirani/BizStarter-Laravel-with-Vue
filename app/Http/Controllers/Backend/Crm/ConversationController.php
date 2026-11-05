@@ -29,7 +29,13 @@ class ConversationController extends Controller
         $workspace = $this->workspace($request);
 
         $query = $workspace->conversations()
-            ->with(['contact.tags', 'assignee:id,name']);
+            ->with(['contact.tags', 'assignee:id,name', 'account']);
+
+        if ($channel = $request->query('channel')) {
+            if (in_array($channel, [CrmConversation::CHANNEL_WHATSAPP, CrmConversation::CHANNEL_INSTAGRAM], true)) {
+                $query->where('channel', $channel);
+            }
+        }
 
         if ($status = $request->query('status')) {
             if ($status !== 'all') {
@@ -69,6 +75,11 @@ class ConversationController extends Controller
             ->groupBy('status')
             ->pluck('aggregate', 'status');
 
+        $channelCounts = $workspace->conversations()
+            ->selectRaw('channel, count(*) as aggregate')
+            ->groupBy('channel')
+            ->pluck('aggregate', 'channel');
+
         return responseJson('Conversations fetched successfully', [
             'conversations' => collect($paginator->items())
                 ->map(fn (CrmConversation $conversation) => $conversation->toConversationArray())
@@ -83,6 +94,8 @@ class ConversationController extends Controller
                 'pending' => (int) ($counts['pending'] ?? 0),
                 'closed' => (int) ($counts['closed'] ?? 0),
                 'unread' => (int) $workspace->conversations()->sum('unread_count'),
+                'whatsapp' => (int) ($channelCounts[CrmConversation::CHANNEL_WHATSAPP] ?? 0),
+                'instagram' => (int) ($channelCounts[CrmConversation::CHANNEL_INSTAGRAM] ?? 0),
             ],
             'assignables' => $this->assignables($workspace),
             'statuses' => ['open', 'pending', 'closed'],
@@ -110,7 +123,11 @@ class ConversationController extends Controller
             'assignables' => $this->assignables($workspace),
             'account' => [
                 'connected' => (bool) $conversation->account?->isConfigured(),
+                'channel' => $conversation->channel ?: CrmConversation::CHANNEL_WHATSAPP,
+                'label' => $conversation->channelLabel(),
+                'name' => $conversation->account?->name,
                 'phone_number' => $conversation->account?->phone_number,
+                'username' => $conversation->account?->instagram_username,
             ],
         ], true);
     }
@@ -151,6 +168,10 @@ class ConversationController extends Controller
 
         if (! $media) {
             return responseJson('This message has no media attached.', null, false, 422);
+        }
+
+        if (! empty($media['direct_url'])) {
+            return redirect()->away($media['direct_url']);
         }
 
         $payload = is_array($message->payload) ? $message->payload : [];

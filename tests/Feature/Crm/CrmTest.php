@@ -606,3 +606,176 @@ it('guards media downloads by workspace and rejects messages without attachments
         ->get("/api/app/crm/messages/{$mediaMessage->id}/media")
         ->assertNotFound();
 });
+
+function crmInstagramAccount(Workspace $workspace, array $attributes = []): WhatsAppAccount
+{
+    return $workspace->accounts()->create(array_merge([
+        'channel' => WhatsAppAccount::CHANNEL_INSTAGRAM,
+        'name' => 'Instagram support',
+        'instagram_user_id' => '17841400000000001',
+        'instagram_username' => 'larakit.app',
+        'page_id' => '102290129340399',
+        'access_token' => 'IGAA-test-token',
+        'verify_token' => 'instagram-verify-token',
+        'api_version' => 'v21.0',
+        'is_active' => true,
+    ], $attributes));
+}
+
+function instagramWebhookPayload(string $mid, string $senderId = 'igsid-1001'): array
+{
+    return [
+        'object' => 'instagram',
+        'entry' => [[
+            'id' => '17841400000000001',
+            'time' => 1730000000000,
+            'messaging' => [[
+                'sender' => ['id' => $senderId],
+                'recipient' => ['id' => '17841400000000001'],
+                'timestamp' => 1730000000000,
+                'message' => [
+                    'mid' => $mid,
+                    'text' => 'Hi from Instagram',
+                ],
+            ]],
+        ]],
+    ];
+}
+
+it('stores an inbound Instagram message once and creates a contact by IGSID', function () {
+    Http::fake([
+        'graph.facebook.com/*' => Http::response([
+            'name' => 'Instagram Sender',
+            'username' => 'sender.ig',
+        ], 200),
+    ]);
+
+    $owner = crmUser();
+    $workspace = crmWorkspace($owner);
+    crmInstagramAccount($workspace);
+
+    $payload = instagramWebhookPayload('mid-1001');
+
+    $this->postJson('/api/instagram/webhook', $payload)->assertOk();
+
+    $contact = $workspace->contacts()->where('channel', CrmContact::CHANNEL_INSTAGRAM)->first();
+    $conversation = $workspace->conversations()->where('channel', CrmConversation::CHANNEL_INSTAGRAM)->first();
+
+    expect($contact)->not->toBeNull()
+        ->and($contact->external_id)->toBe('igsid-1001')
+        ->and($contact->username)->toBe('sender.ig')
+        ->and($contact->phone)->toBeNull()
+        ->and($conversation)->not->toBeNull()
+        ->and($conversation->contact_id)->toBe($contact->id);
+
+    expect(CrmMessage::where('wa_message_id', 'mid-1001')->count())->toBe(1);
+
+    // Replaying the same webhook must not duplicate the message.
+    $this->postJson('/api/instagram/webhook', $payload)->assertOk();
+
+    expect(CrmMessage::where('wa_message_id', 'mid-1001')->count())->toBe(1);
+});
+
+it('replies on Instagram through the Graph API', function () {
+    Http::fake([
+        'graph.facebook.com/*' => Http::response(['message_id' => 'mid-out-2001'], 200),
+    ]);
+
+    $owner = crmUser();
+    $workspace = crmWorkspace($owner);
+    crmInstagramAccount($workspace);
+
+    $contact = $workspace->contacts()->create([
+        'name' => 'Instagram Contact',
+        'channel' => CrmContact::CHANNEL_INSTAGRAM,
+        'external_id' => 'igsid-2001',
+        'username' => 'contact.ig',
+        'source' => 'instagram',
+        'status' => 'lead',
+        'opt_in' => true,
+    ]);
+
+    $conversation = CrmConversation::create([
+        'workspace_id' => $workspace->id,
+        'contact_id' => $contact->id,
+        'channel' => CrmConversation::CHANNEL_INSTAGRAM,
+        'status' => CrmConversation::STATUS_OPEN,
+    ]);
+
+    $this->actingAs($owner, 'sanctum')
+        ->postJson("/api/app/crm/conversations/{$conversation->id}/reply", [
+            'body' => 'Thanks for the DM!',
+        ])
+        ->assertOk();
+
+    $message = CrmMessage::where('conversation_id', $conversation->id)
+        ->where('direction', 'out')
+        ->first();
+
+    expect($message)->not->toBeNull()
+        ->and($message->status)->toBe('sent')
+        ->and($message->wa_message_id)->toBe('mid-out-2001');
+
+    Http::assertSent(function ($request) {
+        return str_contains($request->url(), '17841400000000001/messages')
+            && $request['recipient']['id'] === 'igsid-2001'
+            && $request['message']['text'] === 'Thanks for the DM!';
+    });
+});
+
+it('splits the shared inbox by channel and keeps Instagram out of campaign audiences', function () {
+    $owner = crmUser();
+    $workspace = crmWorkspace($owner);
+    crmAccount($workspace);
+    crmInstagramAccount($workspace);
+
+    $waContact = $workspace->contacts()->create(['name' => 'WhatsApp Lead', 'phone' => '14155550222']);
+    $igContact = $workspace->contacts()->create([
+        'name' => 'Instagram Lead',
+        'channel' => CrmContact::CHANNEL_INSTAGRAM,
+        'external_id' => 'igsid-3001',
+        'source' => 'instagram',
+        'status' => 'lead',
+        'opt_in' => true,
+    ]);
+
+    $waConversation = CrmConversation::create([
+        'workspace_id' => $workspace->id,
+        'contact_id' => $waContact->id,
+        'channel' => CrmConversation::CHANNEL_WHATSAPP,
+        'status' => CrmConversation::STATUS_OPEN,
+    ]);
+
+    $igConversation = CrmConversation::create([
+        'workspace_id' => $workspace->id,
+        'contact_id' => $igContact->id,
+        'channel' => CrmConversation::CHANNEL_INSTAGRAM,
+        'status' => CrmConversation::STATUS_OPEN,
+    ]);
+
+    $response = $this->actingAs($owner, 'sanctum')
+        ->getJson('/api/app/crm/conversations?channel=instagram&status=open')
+        ->assertOk();
+
+    $ids = collect($response->json('result.conversations'))->pluck('id');
+
+    expect($ids)->toContain($igConversation->id)
+        ->and($ids)->not->toContain($waConversation->id)
+        ->and($response->json('result.counts.instagram'))->toBe(1)
+        ->and($response->json('result.counts.whatsapp'))->toBe(1);
+
+    expect($workspace->contacts()->where('channel', CrmContact::CHANNEL_WHATSAPP)->count())->toBe(1);
+});
+
+it('verifies the Instagram webhook subscription challenge with a workspace token', function () {
+    $owner = crmUser();
+    $workspace = crmWorkspace($owner);
+    crmInstagramAccount($workspace);
+
+    $this->get('/api/instagram/webhook?hub.mode=subscribe&hub.verify_token=instagram-verify-token&hub.challenge=challenge-42')
+        ->assertOk()
+        ->assertSee('challenge-42');
+
+    $this->get('/api/instagram/webhook?hub.mode=subscribe&hub.verify_token=wrong-token&hub.challenge=challenge-42')
+        ->assertForbidden();
+});
