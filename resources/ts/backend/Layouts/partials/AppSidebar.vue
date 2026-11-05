@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router';
 import SidebarMenu, { type PortalMenuItem } from '../../Utils/Sidebar';
 import { usePermissionsStore } from '../../../shared/stores/permissionsStore';
 import { useAuthStore } from '../../../shared/stores/authStore';
+import WorkspaceSwitcher from './WorkspaceSwitcher.vue';
 
 const props = defineProps<{
     collapsed: boolean;
@@ -108,15 +109,7 @@ function doLogout() {
             </span>
         </router-link>
 
-        <div class="lk-sidebar__workspace">
-            <span class="lk-sidebar__workspace-mark" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg>
-            </span>
-            <span class="lk-sidebar__workspace-text">
-                <span class="lk-sidebar__workspace-name">Workspace</span>
-                <span class="lk-sidebar__workspace-meta">Operations &amp; access</span>
-            </span>
-        </div>
+        <WorkspaceSwitcher />
 
         <button type="button" class="lk-sidebar__collapse" aria-label="Toggle sidebar width" @click="emit('toggle-collapse')">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>

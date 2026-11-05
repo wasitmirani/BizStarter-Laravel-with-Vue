@@ -57,6 +57,11 @@ Route::prefix('/app')->middleware('auth:sanctum')->group(function () {
     Route::get('/reports/users', [ReportController::class, 'users'])
         ->middleware('permission:reports-list');
 
+    // Workspaces the signed-in user can switch between
+    Route::get('/workspaces', [WorkspaceController::class, 'index']);
+    Route::post('/workspaces', [WorkspaceController::class, 'store']);
+    Route::post('/workspaces/switch', [WorkspaceController::class, 'switchCurrent']);
+
     // Workspace (SaaS account)
     Route::get('/workspace', [WorkspaceController::class, 'show']);
     Route::patch('/workspace', [WorkspaceController::class, 'update']);

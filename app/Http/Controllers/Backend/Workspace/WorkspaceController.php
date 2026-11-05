@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Backend\Workspace;
 
 use App\Http\Controllers\Backend\Workspace\Concerns\ResolvesWorkspace;
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Models\Workspace;
 use App\Models\WorkspaceInvitation;
 use App\Models\WorkspaceMember;
 use App\Services\WorkspaceService;
@@ -16,6 +18,47 @@ class WorkspaceController extends Controller
 
     public function __construct(private readonly WorkspaceService $workspaces)
     {
+    }
+
+    public function index(Request $request)
+    {
+        $user = $request->user();
+        $current = $this->workspaces->forUser($user);
+
+        return responseJson('Workspaces fetched successfully', [
+            'current_id' => $current?->id,
+            'workspaces' => $this->workspaces->availableFor($user)
+                ->map(fn (Workspace $workspace) => $this->workspaceCard($workspace, $user, $current?->id))
+                ->values(),
+        ], true);
+    }
+
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:120'],
+        ]);
+
+        $workspace = $this->workspaces->provision($request->user(), $data['name']);
+
+        return responseJson('Workspace created successfully', [
+            'workspace' => $this->workspaceCard($workspace, $request->user()),
+        ], true, 201);
+    }
+
+    public function switchCurrent(Request $request)
+    {
+        $data = $request->validate([
+            'workspace_id' => ['required', 'integer'],
+        ]);
+
+        $workspace = Workspace::findOrFail($data['workspace_id']);
+        $this->workspaces->switchTo($request->user(), $workspace);
+
+        return responseJson('Workspace switched successfully', array_merge(
+            $this->workspaces->summary($workspace),
+            ['current_id' => $workspace->id]
+        ), true);
     }
 
     public function show(Request $request)
@@ -150,5 +193,28 @@ class WorkspaceController extends Controller
         $this->workspaces->removeMember($workspace, $member);
 
         return responseJson('Member removed successfully', null, true);
+    }
+
+    /**
+     * Small workspace payload for the switcher menu.
+     */
+    protected function workspaceCard(Workspace $workspace, User $user, ?int $currentId = null): array
+    {
+        $role = (int) $workspace->owner_id === (int) $user->id
+            ? 'owner'
+            : ($workspace->memberRecords()->where('user_id', $user->id)->value('role') ?? 'member');
+
+        $currentId ??= $user->current_workspace_id;
+
+        return [
+            'id' => $workspace->id,
+            'name' => $workspace->name,
+            'slug' => $workspace->slug,
+            'role' => $role,
+            'plan' => $workspace->plan()?->name,
+            'members_count' => $workspace->memberRecords()->count(),
+            'is_current' => (int) $currentId === (int) $workspace->id,
+            'created_at' => $workspace->created_at,
+        ];
     }
 }

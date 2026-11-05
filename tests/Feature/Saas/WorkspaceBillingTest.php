@@ -199,3 +199,87 @@ it('keeps the owner role when an owner accepts another invitation', function () 
 
     expect($workspace->memberRecords()->where('user_id', $owner->id)->value('role'))->toBe('owner');
 });
+
+it('lists workspaces and switches the active workspace', function () {
+    makePlan();
+    $owner = makeUser();
+    $first = makeWorkspace($owner);
+    $second = makeWorkspace($owner);
+
+    $owner->forceFill(['current_workspace_id' => $first->id])->save();
+
+    $this->actingAs($owner, 'sanctum')
+        ->getJson('/api/app/workspaces')
+        ->assertOk()
+        ->assertJsonPath('result.current_id', $first->id)
+        ->assertJsonCount(2, 'result.workspaces');
+
+    $this->actingAs($owner, 'sanctum')
+        ->postJson('/api/app/workspaces/switch', ['workspace_id' => $second->id])
+        ->assertOk()
+        ->assertJsonPath('result.current_id', $second->id);
+
+    expect($owner->fresh()->current_workspace_id)->toBe($second->id);
+
+    // Every tenant endpoint now resolves the newly selected workspace.
+    $this->actingAs($owner, 'sanctum')
+        ->getJson('/api/app/workspace')
+        ->assertOk()
+        ->assertJsonPath('result.workspace.id', $second->id);
+});
+
+it('lets a member switch into a shared workspace but blocks strangers', function () {
+    makePlan();
+    $member = makeUser();
+    $own = makeWorkspace($member);
+
+    $otherOwner = makeUser();
+    $shared = makeWorkspace($otherOwner);
+
+    WorkspaceMember::create([
+        'workspace_id' => $shared->id,
+        'user_id' => $member->id,
+        'role' => 'member',
+        'joined_at' => now(),
+    ]);
+
+    $stranger = makeUser();
+    $foreign = makeWorkspace($stranger);
+
+    $this->actingAs($member, 'sanctum')
+        ->getJson('/api/app/workspaces')
+        ->assertOk()
+        ->assertJsonCount(2, 'result.workspaces');
+
+    $this->actingAs($member, 'sanctum')
+        ->postJson('/api/app/workspaces/switch', ['workspace_id' => $shared->id])
+        ->assertOk();
+
+    expect($member->fresh()->current_workspace_id)->toBe($shared->id);
+
+    $this->actingAs($member, 'sanctum')
+        ->postJson('/api/app/workspaces/switch', ['workspace_id' => $foreign->id])
+        ->assertForbidden();
+
+    expect($member->fresh()->current_workspace_id)->toBe($shared->id)
+        ->and($own->owner_id)->toBe($member->id);
+});
+
+it('creates a workspace and provisions the owner as current', function () {
+    makePlan();
+    $owner = makeUser();
+    makeWorkspace($owner);
+
+    $this->actingAs($owner, 'sanctum')
+        ->postJson('/api/app/workspaces', ['name' => 'Second Studio'])
+        ->assertCreated()
+        ->assertJsonPath('result.workspace.name', 'Second Studio')
+        ->assertJsonPath('result.workspace.role', 'owner');
+
+    $created = Workspace::where('slug', 'second-studio')->firstOrFail();
+
+    expect($created->owner_id)->toBe($owner->id)
+        ->and($created->memberRecords()->where('user_id', $owner->id)->value('role'))->toBe('owner')
+        ->and($owner->fresh()->current_workspace_id)->toBe($created->id)
+        ->and($created->subscription)->not->toBeNull();
+});

@@ -157,6 +157,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Workspace::class, 'owner_id');
     }
 
+    public function currentWorkspace()
+    {
+        return $this->belongsTo(Workspace::class, 'current_workspace_id');
+    }
+
     public function getRoles(){
 
         return DB::table('roles')->orderBy('name', 'ASC')->get();

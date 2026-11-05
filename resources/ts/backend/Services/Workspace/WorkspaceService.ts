@@ -53,7 +53,35 @@ export type WorkspacePayload = {
     roles: Array<{ value: string; label: string; description: string }>;
 };
 
+export type WorkspaceCard = {
+    id: number;
+    name: string;
+    slug: string;
+    role: WorkspaceRole;
+    plan: string | null;
+    members_count: number;
+    is_current: boolean;
+    created_at: string | null;
+};
+
+export type WorkspaceListPayload = {
+    current_id: number | null;
+    workspaces: WorkspaceCard[];
+};
+
 class WorkspaceService {
+    list() {
+        return AxiosService.get<{ result: WorkspaceListPayload }>('/workspaces');
+    }
+
+    create(name: string) {
+        return AxiosService.post<{ result: { workspace: WorkspaceCard } }>('/workspaces', { name });
+    }
+
+    switch(id: number) {
+        return AxiosService.post('/workspaces/switch', { workspace_id: id });
+    }
+
     show() {
         return AxiosService.get<{ result: WorkspacePayload }>('/workspace');
     }

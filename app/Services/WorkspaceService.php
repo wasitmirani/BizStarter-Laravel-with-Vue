@@ -10,16 +10,32 @@ use App\Models\WorkspaceInvitation;
 use App\Models\WorkspaceMember;
 use App\Mail\WorkspaceInvitationMail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class WorkspaceService
 {
     /**
-     * Resolve the workspace a user should land in: owned first, then membership.
+     * Resolve the workspace a user should land in: their selected workspace
+     * first, then an owned workspace, then any membership.
      */
     public function forUser(User $user): ?Workspace
     {
+        if ($user->current_workspace_id) {
+            $current = Workspace::query()
+                ->whereKey($user->current_workspace_id)
+                ->where(function ($query) use ($user) {
+                    $query->where('owner_id', $user->id)
+                        ->orWhereHas('memberRecords', fn ($members) => $members->where('user_id', $user->id));
+                })
+                ->first();
+
+            if ($current) {
+                return $current;
+            }
+        }
+
         $workspace = Workspace::query()
             ->where('owner_id', $user->id)
             ->orderBy('id')
@@ -30,6 +46,37 @@ class WorkspaceService
         }
 
         return $user->workspaces()->orderBy('workspaces.id')->first();
+    }
+
+    /**
+     * Every workspace the user can open, with the role they hold there.
+     *
+     * @return Collection<int, Workspace>
+     */
+    public function availableFor(User $user): Collection
+    {
+        return Workspace::query()
+            ->where(function ($query) use ($user) {
+                $query->where('owner_id', $user->id)
+                    ->orWhereHas('memberRecords', fn ($members) => $members->where('user_id', $user->id));
+            })
+            ->with(['subscription.plan:id,name,slug'])
+            ->orderBy('name')
+            ->get();
+    }
+
+    /**
+     * Remember the workspace a user is currently working in.
+     */
+    public function switchTo(User $user, Workspace $workspace): Workspace
+    {
+        $allowed = $this->availableFor($user)->contains(fn (Workspace $candidate) => (int) $candidate->id === (int) $workspace->id);
+
+        abort_unless($allowed, 403, 'You do not have access to that workspace.');
+
+        $user->forceFill(['current_workspace_id' => $workspace->id])->save();
+
+        return $workspace;
     }
 
     public function ensureForUser(User $user): Workspace
@@ -64,6 +111,8 @@ class WorkspaceService
             'role' => 'owner',
             'joined_at' => now(),
         ]);
+
+        $user->forceFill(['current_workspace_id' => $workspace->id])->save();
 
         $plan = Plan::active()->public()->ordered()->first();
 
