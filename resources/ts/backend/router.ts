@@ -43,7 +43,7 @@ const routes = [
     setRoute("/management/permission/edit/:id", "edit-permission", "Permission/Permission", "edit-permission"),
     setRoute("/management/permission/details/:id", "show-permission", "Permission/PermissionShow", "show-permission"),
 
-    // WhatsApp CRM
+    // Shared inbox (WhatsApp + Instagram)
     setRoute("/crm/inbox", "crm-inbox", "whatsapp/Inbox", null),
     setRoute("/crm/contacts", "crm-contacts", "whatsapp/Contacts", null),
     setRoute("/crm/templates", "crm-templates", "whatsapp/Templates", null),

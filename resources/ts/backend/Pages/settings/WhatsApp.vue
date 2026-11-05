@@ -344,7 +344,9 @@ onMounted(() => void load());
 
 .lk-field--inline {
     display: flex;
+    flex-direction: row;
     align-items: center;
+    justify-content: flex-start;
     gap: 8px;
     font-size: 12.5px;
     color: var(--lk-text-secondary);

@@ -365,11 +365,11 @@ const actions = computed(() => [
                 </div>
             </section>
 
-            <section v-if="crm" class="lk-card lk-crm-strip" aria-label="WhatsApp CRM overview">
+            <section v-if="crm" class="lk-card lk-crm-strip" aria-label="Shared inbox overview">
                 <div class="lk-card__head">
                     <div>
-                        <h2 class="lk-card__title">WhatsApp CRM</h2>
-                        <p class="lk-card__meta">Your shared inbox at a glance</p>
+                        <h2 class="lk-card__title">Shared inbox</h2>
+                        <p class="lk-card__meta">WhatsApp and Instagram at a glance</p>
                     </div>
                     <div class="lk-page-actions">
                         <router-link :to="{ name: 'crm-inbox' }" class="lk-btn lk-btn--secondary lk-btn--sm">
@@ -417,11 +417,12 @@ const actions = computed(() => [
                                         </span>
                                         <span class="lk-crm-recent__preview">{{ conversation.preview ?? 'No messages yet' }}</span>
                                     </span>
+                                    <span class="lk-crm-recent__channel" :class="`is-${conversation.channel}`">{{ conversation.channel }}</span>
                                     <span class="lk-crm-recent__time">{{ formatRelative(conversation.last_message_at) }}</span>
                                 </router-link>
                             </li>
                         </ul>
-                        <p v-else class="lk-state__text">No conversations yet. New WhatsApp messages will appear here.</p>
+                        <p v-else class="lk-state__text">No conversations yet. New WhatsApp and Instagram messages will appear here.</p>
                     </div>
                 </div>
             </section>
@@ -591,7 +592,7 @@ const actions = computed(() => [
                                 </span>
                                 <span class="lk-list__main">
                                     <router-link
-                                        v-if="quickActions?.view_user"
+                                        v-if="quickActions?.view_user && user.uuid"
                                         :to="{ name: 'show-user', params: { uuid: user.uuid } }"
                                         class="lk-list__title"
                                     >
@@ -791,6 +792,23 @@ const actions = computed(() => [
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.lk-crm-recent__channel {
+    padding: 1px 6px;
+    border-radius: 999px;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: capitalize;
+    white-space: nowrap;
+    background: color-mix(in srgb, #25d366 14%, transparent);
+    color: #128c4b;
+}
+
+.lk-crm-recent__channel.is-instagram {
+    background: color-mix(in srgb, #d946ef 14%, transparent);
+    color: #a21caf;
 }
 
 .lk-crm-recent__time {

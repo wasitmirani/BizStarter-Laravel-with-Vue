@@ -576,6 +576,7 @@ class CrmService
                 ->get()
                 ->map(fn (CrmConversation $conversation) => [
                     'id' => $conversation->id,
+                    'channel' => $conversation->channel ?: CrmConversation::CHANNEL_WHATSAPP,
                     'status' => $conversation->status,
                     'preview' => $conversation->last_message_preview,
                     'last_message_at' => $conversation->last_message_at,
