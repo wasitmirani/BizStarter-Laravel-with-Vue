@@ -7,6 +7,7 @@ use App\Models\DeviceHistory;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Workspace;
 use App\Services\Crm\CrmService;
 use App\Services\WorkspaceService;
 use Illuminate\Http\Request;
@@ -117,6 +118,7 @@ class DashboardController extends Controller
         return responseJson('Dashboard data fetched successfully', [
             'stats' => $stats,
             'crm' => $crm,
+            'onboarding' => $this->onboarding($workspace),
             'recent_users' => $recentUsers,
             'recent_logins' => $recentLogins,
             'users_by_day' => $usersByDay,
@@ -132,6 +134,74 @@ class DashboardController extends Controller
                 'view_activity' => (bool) $user?->can('activity-list'),
             ],
         ], true);
+    }
+
+    /**
+     * A short, workspace-aware setup checklist so every new tenant has a
+     * clear path from an empty workspace to a working shared inbox.
+     */
+    private function onboarding(Workspace $workspace): array
+    {
+        $owner = $workspace->owner_id;
+
+        $steps = [
+            [
+                'key' => 'whatsapp',
+                'label' => 'Connect WhatsApp',
+                'description' => 'Link a WhatsApp Cloud API number to start receiving messages.',
+                'done' => $workspace->whatsappAccount()->where('is_active', true)->exists(),
+                'cta' => 'Connect',
+                'route' => 'whatsapp-settings',
+            ],
+            [
+                'key' => 'instagram',
+                'label' => 'Connect Instagram',
+                'description' => 'Add Instagram DMs to the same shared inbox.',
+                'done' => $workspace->instagramAccount()->where('is_active', true)->exists(),
+                'cta' => 'Connect',
+                'route' => 'instagram-settings',
+            ],
+            [
+                'key' => 'team',
+                'label' => 'Invite your team',
+                'description' => 'Add a teammate or send an invite link.',
+                'done' => $workspace->memberRecords()->where('user_id', '!=', $owner)->exists()
+                    || $workspace->invitations()
+                        ->whereNull('accepted_at')
+                        ->where('expires_at', '>', now())
+                        ->exists(),
+                'cta' => 'Invite',
+                'route' => 'team',
+            ],
+            [
+                'key' => 'contact',
+                'label' => 'Add your first contact',
+                'description' => 'Create a contact or wait for the first inbound message.',
+                'done' => $workspace->contacts()->exists(),
+                'cta' => 'Add contact',
+                'route' => 'crm-contacts',
+            ],
+            [
+                'key' => 'template',
+                'label' => 'Create a message template',
+                'description' => 'Templates are required for campaigns and quick replies.',
+                'done' => $workspace->crmTemplates()->exists(),
+                'cta' => 'Create template',
+                'route' => 'crm-templates',
+            ],
+        ];
+
+        $completed = count(array_filter($steps, fn (array $step) => $step['done']));
+        $total = count($steps);
+
+        return [
+            'workspace_id' => $workspace->id,
+            'completed' => $completed,
+            'total' => $total,
+            'percent' => $total > 0 ? (int) round($completed / $total * 100) : 100,
+            'is_complete' => $completed === $total,
+            'steps' => $steps,
+        ];
     }
 
     /**

@@ -283,3 +283,81 @@ it('creates a workspace and provisions the owner as current', function () {
         ->and($owner->fresh()->current_workspace_id)->toBe($created->id)
         ->and($created->subscription)->not->toBeNull();
 });
+
+it('lets a member leave a shared workspace and moves them to another one', function () {
+    makePlan();
+    $owner = makeUser();
+    $shared = makeWorkspace($owner);
+    $member = makeUser();
+    $own = makeWorkspace($member);
+
+    WorkspaceMember::create([
+        'workspace_id' => $shared->id,
+        'user_id' => $member->id,
+        'role' => 'member',
+        'joined_at' => now(),
+    ]);
+
+    $member->forceFill(['current_workspace_id' => $shared->id])->save();
+
+    $this->actingAs($member, 'sanctum')
+        ->postJson('/api/app/workspace/leave')
+        ->assertOk();
+
+    expect(WorkspaceMember::where('workspace_id', $shared->id)->where('user_id', $member->id)->exists())->toBeFalse()
+        ->and($member->fresh()->current_workspace_id)->toBe($own->id);
+});
+
+it('does not let an owner leave their own workspace', function () {
+    makePlan();
+    $owner = makeUser();
+    makeWorkspace($owner);
+
+    $this->actingAs($owner, 'sanctum')
+        ->postJson('/api/app/workspace/leave')
+        ->assertStatus(422)
+        ->assertJsonValidationErrors('workspace');
+});
+
+it('deletes a workspace only when the owner types its name', function () {
+    makePlan();
+    $owner = makeUser();
+    $workspace = makeWorkspace($owner);
+    $next = makeWorkspace($owner);
+    $owner->forceFill(['current_workspace_id' => $workspace->id])->save();
+
+    $this->actingAs($owner, 'sanctum')
+        ->deleteJson('/api/app/workspace', ['name' => 'wrong name'])
+        ->assertStatus(422)
+        ->assertJsonValidationErrors('name');
+
+    expect(Workspace::whereKey($workspace->id)->exists())->toBeTrue();
+
+    $this->actingAs($owner, 'sanctum')
+        ->deleteJson('/api/app/workspace', ['name' => $workspace->name])
+        ->assertOk();
+
+    expect(Workspace::whereKey($workspace->id)->exists())->toBeFalse()
+        ->and($owner->fresh()->current_workspace_id)->toBe($next->id);
+});
+
+it('blocks non-owners from deleting a workspace', function () {
+    makePlan();
+    $owner = makeUser();
+    $workspace = makeWorkspace($owner);
+    $admin = makeUser();
+
+    WorkspaceMember::create([
+        'workspace_id' => $workspace->id,
+        'user_id' => $admin->id,
+        'role' => 'admin',
+        'joined_at' => now(),
+    ]);
+
+    $this->actingAs($admin, 'sanctum')
+        ->deleteJson('/api/app/workspace', ['name' => $workspace->name])
+        ->assertStatus(422)
+        ->assertJsonValidationErrors('workspace');
+
+    expect(Workspace::whereKey($workspace->id)->exists())->toBeTrue();
+});

@@ -109,6 +109,14 @@ class WorkspaceService {
     removeMember(id: number) {
         return AxiosService.delete(`/workspace/members/${id}`);
     }
+
+    leave() {
+        return AxiosService.post('/workspace/leave', {});
+    }
+
+    destroy(name: string) {
+        return AxiosService.delete('/workspace', { data: { name } });
+    }
 }
 
 export default new WorkspaceService();

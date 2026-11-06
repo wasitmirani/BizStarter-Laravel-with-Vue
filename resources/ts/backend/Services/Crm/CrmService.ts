@@ -81,6 +81,13 @@ export type CrmConversation = {
     latest_message?: CrmMessage | null;
 };
 
+export type CrmTemplateButton = {
+    type?: 'quick_reply' | 'url' | 'phone_number';
+    text?: string;
+    url?: string;
+    phone_number?: string;
+};
+
 export type CrmTemplate = {
     id: number;
     name: string;
@@ -90,7 +97,7 @@ export type CrmTemplate = {
     header_text: string | null;
     body: string;
     footer: string | null;
-    buttons: any[];
+    buttons: CrmTemplateButton[];
     variables: any[];
     variable_count: number;
     status: 'draft' | 'pending' | 'approved' | 'rejected' | 'paused';

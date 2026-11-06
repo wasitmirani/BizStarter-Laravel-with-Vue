@@ -70,6 +70,8 @@ Route::prefix('/app')->middleware('auth:sanctum')->group(function () {
     Route::post('/workspace/invitations/{token}/accept', [WorkspaceController::class, 'acceptInvitation']);
     Route::patch('/workspace/members/{member}', [WorkspaceController::class, 'updateMember']);
     Route::delete('/workspace/members/{member}', [WorkspaceController::class, 'removeMember']);
+    Route::post('/workspace/leave', [WorkspaceController::class, 'leave']);
+    Route::delete('/workspace', [WorkspaceController::class, 'destroy']);
 
     // Billing & subscriptions
     Route::get('/billing', [BillingController::class, 'index']);

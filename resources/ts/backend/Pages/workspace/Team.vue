@@ -18,6 +18,10 @@ const savingWorkspace = ref(false);
 const inviting = ref(false);
 const busyMember = ref<number | null>(null);
 const createdInvite = ref<{ url: string; email: string } | null>(null);
+const leaving = ref(false);
+const deleting = ref(false);
+const showDelete = ref(false);
+const deleteName = ref('');
 
 const settings = reactive({ name: '', currency: 'USD', timezone: 'UTC' });
 const inviteForm = reactive({ email: '', role: 'member' });
@@ -41,6 +45,17 @@ const canManage = computed(() => {
 });
 
 const seatUsage = computed(() => data.value?.usage?.members ?? { used: 0, limit: 0, unlimited: false, percent: 0 });
+
+const isOwner = computed(() => {
+    if (!data.value) return false;
+    return Number(data.value.workspace.owner?.id) === Number(authStore.user?.id);
+});
+
+const myMembership = computed<WorkspaceMember | null>(() => {
+    const me = authStore.user;
+    if (!me) return null;
+    return members.value.find((member) => Number(member.user?.id) === Number(me.id)) ?? null;
+});
 
 function formatDate(value?: string | null): string {
     if (!value) return '—';
@@ -190,6 +205,47 @@ async function remove(member: WorkspaceMember) {
         });
     } finally {
         busyMember.value = null;
+    }
+}
+
+async function leaveWorkspace() {
+    if (!window.confirm('Leave this workspace? You will need a new invitation to return.')) {
+        return;
+    }
+
+    leaving.value = true;
+
+    try {
+        await WorkspaceService.leave();
+        window.location.assign('/app/dashboard');
+    } catch (requestError: any) {
+        toast.value?.showToast(requestError?.response?.status ?? 500, 'Could not leave workspace', {
+            message: requestError?.response?.data?.message ?? 'Try again.',
+        });
+        leaving.value = false;
+    }
+}
+
+async function deleteWorkspace() {
+    if (!data.value) return;
+
+    if (deleteName.value.trim() !== data.value.workspace.name) {
+        toast.value?.showToast(422, 'Name does not match', {
+            message: 'Type the workspace name exactly to confirm deletion.',
+        });
+        return;
+    }
+
+    deleting.value = true;
+
+    try {
+        await WorkspaceService.destroy(deleteName.value.trim());
+        window.location.assign('/app/dashboard');
+    } catch (requestError: any) {
+        toast.value?.showToast(requestError?.response?.status ?? 500, 'Could not delete workspace', {
+            message: requestError?.response?.data?.message ?? 'Try again.',
+        });
+        deleting.value = false;
     }
 }
 
@@ -408,6 +464,60 @@ onMounted(() => {
                             </form>
                         </div>
                     </section>
+
+                    <section v-if="isOwner || myMembership" class="lk-card lk-danger-zone">
+                        <div class="lk-card__head">
+                            <div>
+                                <h2 class="lk-card__title">Danger zone</h2>
+                                <p class="lk-card__meta">These actions change your access permanently</p>
+                            </div>
+                        </div>
+                        <div class="lk-card__body">
+                            <template v-if="isOwner">
+                                <p class="lk-danger-zone__title">Delete this workspace</p>
+                                <p class="lk-danger-zone__text">
+                                    Permanently removes contacts, conversations, campaigns, templates, billing history and every member.
+                                    This cannot be undone.
+                                </p>
+
+                                <div v-if="showDelete" class="lk-danger-zone__confirm">
+                                    <label class="lk-field">
+                                        <span class="lk-label">
+                                            Type <strong>{{ data.workspace.name }}</strong> to confirm
+                                        </span>
+                                        <input v-model="deleteName" class="lk-input" :placeholder="data.workspace.name" autocomplete="off" />
+                                    </label>
+                                    <div class="lk-danger-zone__actions">
+                                        <button type="button" class="lk-btn lk-btn--ghost lk-btn--sm" @click="showDelete = false; deleteName = ''">
+                                            Cancel
+                                        </button>
+                                        <button
+                                            type="button"
+                                            class="lk-btn lk-btn--danger lk-btn--sm"
+                                            :disabled="deleting || deleteName.trim() !== data.workspace.name"
+                                            @click="deleteWorkspace"
+                                        >
+                                            {{ deleting ? 'Deleting…' : 'Delete workspace' }}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <button v-else type="button" class="lk-btn lk-btn--danger lk-btn--sm" @click="showDelete = true">
+                                    Delete workspace
+                                </button>
+                            </template>
+
+                            <template v-else>
+                                <p class="lk-danger-zone__title">Leave this workspace</p>
+                                <p class="lk-danger-zone__text">
+                                    You will lose access to its inbox, contacts and campaigns until you are invited again.
+                                </p>
+                                <button type="button" class="lk-btn lk-btn--danger lk-btn--sm" :disabled="leaving" @click="leaveWorkspace">
+                                    {{ leaving ? 'Leaving…' : 'Leave workspace' }}
+                                </button>
+                            </template>
+                        </div>
+                    </section>
                 </div>
             </div>
 
@@ -554,5 +664,34 @@ onMounted(() => {
     .lk-team-grid {
         grid-template-columns: minmax(0, 1fr);
     }
+}
+
+.lk-danger-zone {
+    border-color: color-mix(in srgb, var(--lk-error) 35%, var(--lk-border));
+}
+
+.lk-danger-zone__title {
+    margin: 0 0 4px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--lk-error);
+}
+
+.lk-danger-zone__text {
+    margin: 0 0 12px;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--lk-text-muted);
+}
+
+.lk-danger-zone__confirm {
+    display: grid;
+    gap: 10px;
+}
+
+.lk-danger-zone__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
 }
 </style>

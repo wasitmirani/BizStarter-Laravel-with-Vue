@@ -779,3 +779,55 @@ it('verifies the Instagram webhook subscription challenge with a workspace token
     $this->get('/api/instagram/webhook?hub.mode=subscribe&hub.verify_token=wrong-token&hub.challenge=challenge-42')
         ->assertForbidden();
 });
+
+it('creates a template with a media header and typed buttons', function () {
+    $owner = crmUser();
+    $workspace = crmWorkspace($owner);
+
+    $response = $this->actingAs($owner, 'sanctum')
+        ->postJson('/api/app/crm/templates', [
+            'name' => 'order_update',
+            'category' => 'utility',
+            'language' => 'en_US',
+            'header_type' => 'image',
+            'header_text' => 'ignored for media headers',
+            'body' => 'Hi {{1}}, order {{2}} is on the way.',
+            'footer' => 'Reply STOP to opt out',
+            'status' => 'draft',
+            'buttons' => [
+                ['type' => 'quick_reply', 'text' => 'Track order'],
+                ['type' => 'url', 'text' => 'Visit site', 'url' => 'https://example.com/orders'],
+                ['type' => 'phone_number', 'text' => 'Call us', 'phone_number' => '+14155550123'],
+            ],
+        ])
+        ->assertCreated()
+        ->assertJsonPath('result.template.header_type', 'image')
+        ->assertJsonPath('result.template.buttons.0.text', 'Track order')
+        ->assertJsonPath('result.template.buttons.1.url', 'https://example.com/orders');
+
+    expect($response->json('result.template.header_text'))->toBeNull();
+
+    $template = CrmTemplate::where('workspace_id', $workspace->id)->firstOrFail();
+
+    expect($template->variableCount())->toBe(2)
+        ->and($template->buttons)->toHaveCount(3)
+        ->and($template->buttons[2]['type'])->toBe('phone_number');
+});
+
+it('rejects template buttons that are missing their destination', function () {
+    $owner = crmUser();
+    crmWorkspace($owner);
+
+    $this->actingAs($owner, 'sanctum')
+        ->postJson('/api/app/crm/templates', [
+            'name' => 'bad_button',
+            'category' => 'marketing',
+            'language' => 'en_US',
+            'body' => 'Hello',
+            'buttons' => [
+                ['type' => 'url', 'text' => 'Open site'],
+            ],
+        ])
+        ->assertStatus(422)
+        ->assertJsonValidationErrors('buttons.0.url');
+});

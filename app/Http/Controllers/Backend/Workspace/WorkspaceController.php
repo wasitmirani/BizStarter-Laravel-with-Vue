@@ -61,6 +61,27 @@ class WorkspaceController extends Controller
         ), true);
     }
 
+    public function leave(Request $request)
+    {
+        $workspace = $this->workspace($request);
+        $this->workspaces->leave($workspace, $request->user());
+
+        return responseJson('You left the workspace', null, true);
+    }
+
+    public function destroy(Request $request)
+    {
+        $workspace = $this->workspace($request);
+
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:120'],
+        ]);
+
+        $this->workspaces->delete($workspace, $request->user(), $data['name']);
+
+        return responseJson('Workspace deleted successfully', null, true);
+    }
+
     public function show(Request $request)
     {
         $workspace = $this->workspace($request);

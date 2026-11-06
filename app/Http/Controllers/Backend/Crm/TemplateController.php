@@ -10,6 +10,7 @@ use App\Services\Crm\CrmService;
 use App\Services\WhatsApp\WhatsAppCloudApi;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class TemplateController extends Controller
@@ -148,12 +149,71 @@ class TemplateController extends Controller
             'header_text' => ['nullable', 'string', 'max:255'],
             'body' => ['required', 'string', 'max:1024'],
             'footer' => ['nullable', 'string', 'max:255'],
-            'buttons' => ['nullable', 'array'],
+            'buttons' => ['nullable', 'array', 'max:3'],
+            'buttons.*.type' => ['nullable', Rule::in(['quick_reply', 'url', 'phone_number'])],
+            'buttons.*.text' => ['nullable', 'string', 'max:60'],
+            'buttons.*.url' => ['nullable', 'string', 'max:2048'],
+            'buttons.*.phone_number' => ['nullable', 'string', 'max:32'],
             'status' => ['nullable', Rule::in(CrmTemplate::STATUSES)],
         ]);
 
         $data['status'] = $data['status'] ?? $template?->status ?? 'draft';
+        $data['header_type'] = ($data['header_type'] ?? null) ?: null;
+        $data['header_text'] = $data['header_type'] === 'text' ? ($data['header_text'] ?? null) : null;
+        $data['body'] = trim($data['body']);
+        $data['footer'] = filled($data['footer'] ?? null) ? trim($data['footer']) : null;
+        $data['buttons'] = $this->normalizeButtons($data['buttons'] ?? []);
 
         return $data;
+    }
+
+    /**
+     * Keep only complete buttons and enforce the fields each type needs.
+     */
+    protected function normalizeButtons(array $buttons): array
+    {
+        $normalized = [];
+
+        foreach ($buttons as $index => $button) {
+            $text = trim((string) ($button['text'] ?? ''));
+
+            if ($text === '') {
+                continue;
+            }
+
+            $type = $button['type'] ?? 'quick_reply';
+            $item = [
+                'type' => $type,
+                'text' => $text,
+            ];
+
+            if ($type === 'url') {
+                $url = trim((string) ($button['url'] ?? ''));
+
+                if ($url === '') {
+                    throw ValidationException::withMessages([
+                        "buttons.$index.url" => 'A website button needs a URL.',
+                    ]);
+                }
+
+                $item['url'] = $url;
+            }
+
+            if ($type === 'phone_number') {
+                $phone = trim((string) ($button['phone_number'] ?? ''));
+
+                if ($phone === '') {
+                    throw ValidationException::withMessages([
+                        "buttons.$index.phone_number" => 'A call button needs a phone number.',
+                    ]);
+                }
+
+                $item['phone_number'] = $phone;
+            }
+
+            $normalized[] = $item;
+        }
+
+        return $normalized;
     }
 }

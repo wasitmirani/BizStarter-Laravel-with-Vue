@@ -968,6 +968,17 @@ a:hover {
   color: var(--lk-primary);
 }
 
+.lk-btn--danger {
+  background: var(--lk-error);
+  border-color: var(--lk-error);
+  color: #fff;
+}
+
+.lk-btn--danger:hover:not(:disabled) {
+  filter: brightness(0.92);
+  color: #fff;
+}
+
 .lk-btn--ghost {
   background: transparent;
   border-color: transparent;

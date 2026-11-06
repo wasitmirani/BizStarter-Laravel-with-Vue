@@ -261,6 +261,59 @@ class WorkspaceService
         $member->delete();
     }
 
+    /**
+     * Let a non-owner member leave a shared workspace.
+     */
+    public function leave(Workspace $workspace, User $user): void
+    {
+        if ((int) $workspace->owner_id === (int) $user->id) {
+            throw ValidationException::withMessages([
+                'workspace' => 'Owners cannot leave their own workspace. Delete it or transfer ownership instead.',
+            ]);
+        }
+
+        $workspace->memberRecords()->where('user_id', $user->id)->delete();
+
+        $this->reassignCurrentWorkspace($user, $workspace);
+    }
+
+    /**
+     * Permanently delete a workspace owned by the user. All tenant data
+     * cascades; the owner is moved to another workspace when one exists.
+     */
+    public function delete(Workspace $workspace, User $user, string $confirmation): void
+    {
+        if ((int) $workspace->owner_id !== (int) $user->id) {
+            throw ValidationException::withMessages([
+                'workspace' => 'Only the workspace owner can delete it.',
+            ]);
+        }
+
+        if (trim($confirmation) !== $workspace->name) {
+            throw ValidationException::withMessages([
+                'name' => 'Type the workspace name exactly to confirm deletion.',
+            ]);
+        }
+
+        $workspace->delete();
+
+        $this->reassignCurrentWorkspace($user, $workspace);
+    }
+
+    /**
+     * Move the user to another workspace after losing access to one.
+     */
+    private function reassignCurrentWorkspace(User $user, Workspace $removed): void
+    {
+        if ((int) $user->current_workspace_id !== (int) $removed->id) {
+            return;
+        }
+
+        $next = $this->availableFor($user)->first();
+
+        $user->forceFill(['current_workspace_id' => $next?->id])->save();
+    }
+
     public function changeRole(Workspace $workspace, WorkspaceMember $member, string $role): WorkspaceMember
     {
         abort_unless($member->workspace_id === $workspace->id, 404);

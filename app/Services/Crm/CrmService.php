@@ -557,6 +557,16 @@ class CrmService
     public function summary(Workspace $workspace): array
     {
         $today = now()->startOfDay();
+        $trendStart = now()->subDays(13)->startOfDay();
+
+        $messagesByDay = CrmMessage::where('workspace_id', $workspace->id)
+            ->where('created_at', '>=', $trendStart)
+            ->selectRaw('DATE(created_at) as date, COUNT(*) as total')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get()
+            ->map(fn ($row) => ['date' => (string) $row->date, 'total' => (int) $row->total])
+            ->all();
 
         return [
             'contacts' => $workspace->contacts()->count(),
@@ -569,6 +579,15 @@ class CrmService
                 ->count(),
             'campaigns' => $workspace->campaigns()->count(),
             'campaigns_sent' => $workspace->campaigns()->where('status', CrmCampaign::STATUS_SENT)->count(),
+            'campaigns_scheduled' => $workspace->campaigns()->where('status', CrmCampaign::STATUS_SCHEDULED)->count(),
+            'campaigns_draft' => $workspace->campaigns()->where('status', CrmCampaign::STATUS_DRAFT)->count(),
+            'whatsapp_conversations' => $workspace->conversations()
+                ->where('channel', CrmConversation::CHANNEL_WHATSAPP)
+                ->count(),
+            'instagram_conversations' => $workspace->conversations()
+                ->where('channel', CrmConversation::CHANNEL_INSTAGRAM)
+                ->count(),
+            'messages_by_day' => $messagesByDay,
             'recent_conversations' => $workspace->conversations()
                 ->with('contact:id,name,phone,avatar_url')
                 ->orderByDesc('last_message_at')

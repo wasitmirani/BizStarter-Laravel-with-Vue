@@ -9,7 +9,7 @@ A multi-tenant admin starter kit built with **Laravel 13** and **Vue 3**. Use it
 | Backend | Laravel 13, Sanctum, Spatie Permission, Activity Log |
 | Tenancy | stancl/tenancy (domain identification, separate tenant DBs) |
 | Auth | Laravel Breeze (Blade) + Sanctum tokens for the SPA |
-| Frontend | Vue 3, TypeScript, Vue Router, Pinia, Vite, Tailwind CSS |
+| Frontend | Vue 3, TypeScript, Vue Router, Pinia, Vite, custom `lk-*` design system |
 | Desktop (optional) | Electron |
 | Tests | Pest |
 
@@ -20,9 +20,11 @@ A multi-tenant admin starter kit built with **Laravel 13** and **Vue 3**. Use it
 - Users, Roles, and Permissions management
 - Spatie RBAC with `role` / `permission` middleware aliases
 - **Workspaces**: self-serve signup, members, invites, roles and seat limits
+- **Multi-workspace switching**: one login, many teams, remembered per user
 - **Plans & billing**: plan catalog, trials, subscribe/cancel/resume, invoices
 - **API tokens**: scoped Sanctum tokens with expiry, managed from the UI
 - **WhatsApp CRM**: shared inbox, contacts + tags, templates, campaigns, CRM KPIs
+- **Instagram CRM**: the same shared inbox over the official Meta Messaging API
 - Multi-tenancy: central app + per-tenant databases (domain-based)
 - Dropdown master data (countries, languages, currencies, timezones)
 - Admin impersonation
@@ -54,6 +56,8 @@ php artisan serve
 ```
 
 Open [http://localhost:8000](http://localhost:8000). The root route redirects to login or `/app/dashboard`.
+
+> Deploying this as a commercial product? Follow **[docs/PRODUCTION.md](docs/PRODUCTION.md)** for environment, queue/scheduler, storage, Meta webhook and security setup.
 
 ### Default admin
 
@@ -143,7 +147,7 @@ Set `WHATSAPP_APP_SECRET` in `.env` to enforce `X-Hub-Signature-256` verificatio
 
 - **Inbox** — shared conversations with status (open/pending/closed), assignment to workspace members, unread counts, search, and a message thread with delivery state. Inbound webhooks reopen closed chats. Replies are sent synchronously and stored even when delivery fails (`status=failed`), so nothing disappears silently. Images and attachments received from customers can be previewed or downloaded through a token-safe proxy (`GET /api/app/crm/messages/{message}/media`).
 - **Contacts & tags** — CRUD, CSV import/export, opt-in flag, lead/customer/blocked status, notes and colour-coded tags used for campaign audiences.
-- **Templates** — local template library with category, language, header/footer and `{{1}}` variables. **Sync from WhatsApp** mirrors approved templates from the Meta account.
+- **Templates** — local template library with category, language, text/media headers, footer, `{{1}}` variables and up to 3 typed buttons (quick reply, website, call). The editor includes a live WhatsApp preview and sample values. **Sync from WhatsApp** mirrors approved templates from the Meta account.
 - **Campaigns** — pick a template (or write custom text) and a tag audience; **Send** runs synchronously, creating one conversation message per recipient and tracking sent/failed/delivered counts. Set a **schedule** to queue a campaign instead: `php artisan crm:send-scheduled-campaigns` (scheduled every minute) sends due campaigns, and failures are stored on the campaign so they stay visible.
 - **Dashboard** — the CRM strip shows contacts, open chats, unread, messages today and campaigns, plus the latest conversations.
 
