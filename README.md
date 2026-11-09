@@ -1,34 +1,65 @@
-# LaraKit — Laravel + Vue Starter Kit
+# LaraKit — WhatsApp & Instagram CRM for Laravel + Vue
 
-A multi-tenant admin starter kit built with **Laravel 13** and **Vue 3**. Use it as a base for APIs and SPA admin panels with roles, permissions, reusable CRUD modules, and database-per-tenant tenancy via [stancl/tenancy](https://tenancyforlaravel.com).
+A production-ready, multi-tenant CRM built with **Laravel 13** and **Vue 3**. Run a shared WhatsApp and Instagram inbox, contacts, templates and campaigns for every customer workspace — with roles, plans, billing and a modern SaaS admin.
+
+Use it as a product you can sell, or as a starting point for your own Laravel + Vue SaaS.
 
 ## Stack
 
 | Layer | Tech |
 |--------|------|
 | Backend | Laravel 13, Sanctum, Spatie Permission, Activity Log |
-| Tenancy | stancl/tenancy (domain identification, separate tenant DBs) |
-| Auth | Laravel Breeze (Blade) + Sanctum tokens for the SPA |
+| Tenancy | Workspaces (SaaS teams) + optional stancl/tenancy database isolation |
+| Auth | Custom Blade auth screens (login, register, password reset, verification) + Sanctum tokens for the SPA |
 | Frontend | Vue 3, TypeScript, Vue Router, Pinia, Vite, custom `lk-*` design system |
 | Desktop (optional) | Electron |
 | Tests | Pest |
 
 ## Features
 
-- Blade auth flows (login, register, password reset, email verification)
+- **Modern auth** — split-screen login, signup, password reset, confirmation and verification screens with accessible forms, password visibility toggles and no dead social-login buttons
+- **CRM-first dashboard** — greeting hero, range selector, inbox KPIs, 14-day message sparkline, recent conversations, plan usage, channel mix, team snapshot, charts and activity
+- **Shared inbox** — WhatsApp + Instagram in one queue, channel/status/assignee filters, unread toggle, pinning, priority, contact drawer, delivery ticks, deep links and mobile list/chat switching
+- **Contacts & tags** — CRUD, CSV import/export, opt-in, lifecycle status, notes and colour-coded tags
+- **Templates** — text/image/video/document headers, footer, variables, up to 3 typed buttons, live WhatsApp preview and Meta sync
+- **Campaigns** — tag audiences, approved templates, scheduling, delivery tracking and per-recipient failure details
 - Vue SPA admin under `/app` with GenericTable CRUD modules
 - Users, Roles, and Permissions management
 - Spatie RBAC with `role` / `permission` middleware aliases
-- **Workspaces**: self-serve signup, members, invites, roles and seat limits
-- **Multi-workspace switching**: one login, many teams, remembered per user
-- **Plans & billing**: plan catalog, trials, subscribe/cancel/resume, invoices
-- **API tokens**: scoped Sanctum tokens with expiry, managed from the UI
-- **WhatsApp CRM**: shared inbox, contacts + tags, templates, campaigns, CRM KPIs
-- **Instagram CRM**: the same shared inbox over the official Meta Messaging API
+- **Workspaces** — self-serve signup, members, invites, roles and seat limits
+- **Multi-workspace switching** — one login, many teams, remembered per user
+- **Plans & billing** — plan catalog, trials, subscribe/cancel/resume, invoices
+- **API tokens** — scoped Sanctum tokens with expiry, managed from the UI
+- **Security headers** — `nosniff`, strict referrer policy and a restrictive permissions policy on every response
 - Multi-tenancy: central app + per-tenant databases (domain-based)
 - Dropdown master data (countries, languages, currencies, timezones)
 - Admin impersonation
 - Optional Electron desktop shell
+
+## UI & UX
+
+The admin is a Vue 3 SPA mounted at `/app`, styled with the in-repo `lk-*`
+design system. There is no Tailwind, Bootstrap or other CSS framework at
+runtime — the compiled CSS in `public/build` is all you need.
+
+| Area | What to expect |
+|------|----------------|
+| Auth | Self-contained split-screen pages (`resources/views/layouts/backend/auth-modern.blade.php`): brand panel, form card, inline validation, password visibility toggles, mobile-first collapse. No fake social-login buttons. |
+| Dashboard | Greeting hero, date-range selector, KPI cards, 14-day message chart, recent conversations, plan usage, channel mix, team snapshot and activity feed. |
+| Inbox | Channel segments (WhatsApp/Instagram), status pills, assignee and unread filters, pinning/priority, delivery ticks, contact drawer, deep links (`?conversation=id`) and mobile list/chat switching. |
+| Templates | Live WhatsApp preview, media headers, variable samples and typed buttons. |
+| Responsive | Sidebar collapses to a drawer on mobile; inbox and details panels stack at `1420px` and below. |
+
+Auth pages are Blade only and do not load the SPA bundle, so they stay fast and
+work even if a frontend chunk fails to load. The SPA shell and auth pages share
+the same brand name from `config('app.name')`.
+
+## Documentation
+
+| Document | Purpose |
+|----------|---------|
+| [README.md](README.md) | Product overview, install and local development |
+| [docs/PRODUCTION.md](docs/PRODUCTION.md) | Server requirements, env, queues, scheduler, Meta webhooks, security and go-live checks |
 
 ## Requirements
 
@@ -118,6 +149,16 @@ Users mint personal Sanctum tokens under **Workspace → API tokens**, with abil
 
 > Register/login routes are Blade pages; the SPA and SaaS panels authenticate with Sanctum bearer tokens. Workspace-scoped endpoints resolve the caller's workspace automatically.
 
+### Security defaults
+
+- Authentication uses Laravel's session guard with rate-limited login attempts.
+- Password reset links are single-use and expire after 60 minutes (`config/auth.php`).
+- Email verification is supported; enable the `verified` middleware on protected route groups when you require it.
+- `App\Http\Middleware\SecurityHeaders` adds `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, a restrictive `Permissions-Policy` and `X-Permitted-Cross-Domain-Policies: none` to every response.
+- `X-Frame-Options` is intentionally not set so local preview tooling (Herd, Storybook) can embed the app. Add it at your proxy/CDN in production if you do not need embedding.
+- Webhook signatures (`X-Hub-Signature-256`) are verified whenever `WHATSAPP_APP_SECRET` / `INSTAGRAM_APP_SECRET` is set.
+
+
 ## WhatsApp CRM
 
 LaraKit ships a workspace-scoped CRM on the **official Meta WhatsApp Business Cloud API** (no QR pairing, no unofficial gateways).
@@ -197,6 +238,7 @@ Put **tenant-only** schema in `database/migrations/tenant/`. Keep shared/central
 ```
 app/
   Http/Controllers/Backend/   # Admin API controllers (incl. Workspace + Billing)
+  Http/Middleware/            # SecurityHeaders and other global middleware
   Models/                     # Eloquent models (Tenant, Workspace, Plan, …)
   Mail/                       # Workspace invitation mail
   Providers/                  # App + Tenancy service providers
@@ -204,9 +246,11 @@ app/
 resources/
   ts/backend/                 # Vue admin SPA
   ts/frontend/                # Optional public SPA entry
-  views/layouts/backend/      # Blade shells for auth + SPA mount
+  views/auth/                 # Login, register, reset, confirm, verify screens
+  views/layouts/backend/      # SPA shell + auth-master / auth-modern layouts
 routes/
-  web.php                     # Auth + SPA shell routes
+  auth.php                    # Guest + verified auth routes
+  web.php                     # Auth redirects + SPA shell
   api.php                     # Sanctum-protected /api/app/* routes
   tenant.php                  # Tenant-domain routes
   console.php                 # Scheduled billing lifecycle + CRM campaigns
@@ -214,6 +258,8 @@ database/
   migrations/                 # Central DB (users, tenants, workspaces, plans, …)
   migrations/tenant/          # Per-tenant DB migrations
   seeders/                    # Master data + admin + RBAC + plans + workspace
+docs/
+  PRODUCTION.md               # Deployment and go-live guide
 config/
   tenancy.php                 # Tenancy configuration
   billing.php                 # Billing provider + currency
@@ -233,13 +279,18 @@ config/
 
 ```bash
 npm run dev             # Vite HMR
-npm run build           # Production assets
+npm run build           # Production assets (required on every deploy)
 npm run electron:dev    # Laravel + Vite + Electron together
 php artisan test        # Pest suite
 php artisan serve       # App server
 php artisan billing:sync # End trials / flag past-due (scheduled daily)
 php artisan crm:send-scheduled-campaigns # Send due campaigns (scheduled every minute)
 ```
+
+> Frontend changes are not live in production until `npm run build` finishes and
+> `public/build` is deployed. Auth screens are Blade and do not require a build,
+> but deploy the compiled assets anyway so the SPA and auth pages share the same
+> release.
 
 ## License
 

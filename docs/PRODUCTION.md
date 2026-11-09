@@ -249,7 +249,54 @@ Instagram contacts are excluded from WhatsApp campaign audiences.
 
 ---
 
-## 9. Security checklist
+## 9. Authentication, email and account security
+
+Auth screens are Blade pages rendered by
+`resources/views/layouts/backend/auth-modern.blade.php`: self-contained HTML/CSS
+with no SPA bundle, Bootstrap or template assets. They include inline
+validation, password-visibility toggles and accessible labels. Edit the layout
+once to change the brand panel, copy or shared styling.
+
+| Screen | View | Route |
+|--------|------|-------|
+| Sign in | `resources/views/auth/login.blade.php` | `GET /login` |
+| Register | `resources/views/auth/register.blade.php` | `GET /register` |
+| Forgot password | `resources/views/auth/forgot-password.blade.php` | `GET /forgot-password` |
+| Reset password | `resources/views/auth/reset-password.blade.php` | `GET /reset-password/{token}` |
+| Confirm password | `resources/views/auth/confirm-password.blade.php` | `GET /confirm-password` |
+| Verify email | `resources/views/auth/verify-email.blade.php` | `GET /verify-email` |
+
+Requirements:
+
+- **Mail must work.** Password resets, verification links and workspace
+  invitations are all emailed. Verify SPF/DKIM before launch.
+- **Password reset tokens** are single-use and expire after 60 minutes
+  (`config/auth.php` → `passwords.users.expire`). Keep the default unless you
+  have a documented reason to change it.
+- **Email verification** is available but not forced on the SPA shell by
+  default. To require it, uncomment the `verified` middleware on the `/app`
+  routes in `routes/web.php` and ensure the verification mailer is configured.
+- **Rate limiting** applies to login attempts through Laravel's auth
+  scaffolding. Tune it if many users share one IP (offices, NAT).
+- **No social login** is wired. The old placeholder buttons were removed; add a
+  real provider package before showing any social button.
+
+Security headers are added globally by `App\Http\Middleware\SecurityHeaders`:
+
+| Header | Value |
+|--------|-------|
+| `X-Content-Type-Options` | `nosniff` |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` |
+| `Permissions-Policy` | `camera=(), microphone=(), geolocation=(), payment=()` |
+| `X-Permitted-Cross-Domain-Policies` | `none` |
+
+`X-Frame-Options` is intentionally omitted so local preview tools (Herd,
+Storybook) can embed the app. Add `X-Frame-Options: DENY` (or `SAMEORIGIN`) and
+a CSP at your proxy/CDN in production unless you need embedding.
+
+---
+
+## 10. Security checklist
 
 Before going live:
 
@@ -264,28 +311,32 @@ Before going live:
 - [ ] Error tracking (Sentry, Flare, Bugsnag…) wired to `LOG_CHANNEL`
 - [ ] Webhook endpoints reachable over HTTPS and rate limited at the proxy
 - [ ] Mail domain verified (SPF/DKIM) so invitations and resets arrive
+- [ ] Password reset email received end-to-end from production
+- [ ] `X-Frame-Options` (and a CSP) added at the proxy/CDN if embedding is not needed
 - [ ] Meta app in **Live** mode with business verification completed
 
-Security headers are added globally by `App\Http\Middleware\SecurityHeaders`
-(`nosniff`, strict referrer policy, restrictive permissions policy). Add a CSP
-at the proxy/CDN once you have audited third-party scripts.
+Section 9 covers the headers the app sets itself. Add a CSP at the proxy/CDN
+once you have audited third-party scripts (Meta, analytics, support widgets).
 
 ---
 
-## 10. Smoke test after deploy
+## 11. Smoke test after deploy
 
 1. Register a new account → workspace, trial and owner membership are created.
-2. Switch between workspaces with the sidebar switcher; the choice persists.
-3. Invite a teammate → email arrives → accept link → member sees the workspace.
-4. Create a WhatsApp template and verify the live preview.
-5. Connect WhatsApp, send a test message, reply from the Inbox.
-6. Schedule a campaign one minute out and confirm the scheduler sends it.
-7. Open **Billing & plans** → subscribe/cancel → invoice renders.
-8. Confirm `php artisan about` shows the expected environment and cache state.
+2. Sign out and back in; confirm the login screen renders correctly on desktop
+   and mobile, and that the password toggle works.
+3. Request a password reset → email arrives → reset link opens → new password works.
+4. Switch between workspaces with the sidebar switcher; the choice persists.
+5. Invite a teammate → email arrives → accept link → member sees the workspace.
+6. Create a WhatsApp template and verify the live preview.
+7. Connect WhatsApp, send a test message, reply from the Inbox.
+8. Schedule a campaign one minute out and confirm the scheduler sends it.
+9. Open **Billing & plans** → subscribe/cancel → invoice renders.
+10. Confirm `php artisan about` shows the expected environment and cache state.
 
 ---
 
-## 11. Upgrades
+## 12. Upgrades
 
 ```bash
 git pull
@@ -301,7 +352,7 @@ Take a database backup before every migration.
 
 ---
 
-## 12. Troubleshooting
+## 13. Troubleshooting
 
 | Symptom | Check |
 |---------|-------|
@@ -309,6 +360,9 @@ Take a database backup before every migration.
 | Inbound messages ignored | `WHATSAPP_APP_SECRET` mismatch; account `phone_number_id` |
 | Campaigns stay `scheduled` | Scheduler running; `crm:send-scheduled-campaigns` in logs |
 | Invitations not delivered | SMTP credentials, `MAIL_FROM_ADDRESS`, spam folder |
+| Password reset email missing | SMTP credentials, SPF/DKIM, spam folder; check `MAIL_*` |
+| Login says "too many attempts" | Rate limiter; clear cache or wait for the window to reset |
+| Auth page looks unstyled | Deploy `public/build` or check that `auth-modern.blade.php` was deployed |
 | Assets 404 after deploy | `npm run build` ran and `public/build` was deployed |
 | Blank SPA page | `public/build/manifest.json` exists; browser console for chunk errors |
 | 419 / session errors | `APP_KEY`, `SESSION_DOMAIN`, secure cookie settings |
