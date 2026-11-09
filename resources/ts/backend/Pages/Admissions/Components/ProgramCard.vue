@@ -9,6 +9,8 @@ const emit = defineEmits<{
 }>();
 
 const assessment = () => props.program?.assessment ?? null;
+const nextCall = () => props.program?.next_call ?? null;
+const opensAt = () => props.program?.next_call?.opens_at ?? null;
 const deadline = () => props.program?.next_call?.deadline ?? null;
 const daysLeft = () => props.program?.next_call?.days_left ?? null;
 
@@ -60,17 +62,26 @@ const urgencyClass = (days: number | null) => {
                 <StatusBadge v-if="assessment()" :status="assessment().status" :label="assessment().status_label" />
             </div>
 
-            <div class="d-flex flex-wrap align-items-center gap-3 fs-15 text-muted">
+            <div class="d-flex flex-column gap-1 fs-15 text-muted">
                 <span><AppIcon name="cash" class="me-1" />{{ program.tuition?.label }}</span>
-                <span v-if="deadline()" :class="urgencyClass(daysLeft())">
+                <span v-if="nextCall()">
+                    <AppIcon name="calendar-plus" class="me-1" />
+                    <span class="text-body">Last date of admission (university deadline):</span>
+                    <template v-if="deadline()">
+                        <span :class="urgencyClass(daysLeft())">{{ formatDeadline(deadline()!) }}</span>
+                        <template v-if="daysLeft() !== null">
+                            <span :class="urgencyClass(daysLeft())">({{ daysLeft() }} days left)</span>
+                        </template>
+                    </template>
+                    <span v-else class="chip chip-warning ms-1"><AppIcon name="calendar-off" :size="13" />TBC</span>
+                </span>
+                <span v-if="nextCall()">
                     <AppIcon name="calendar-event" class="me-1" />
-                    {{ formatDeadline(deadline()!) }}
-                    <template v-if="daysLeft() !== null">({{ daysLeft() }} days)</template>
+                    <span class="text-body">Applications open:</span>
+                    <template v-if="opensAt()">{{ formatDeadline(opensAt()!) }}</template>
+                    <span v-else class="chip chip-warning ms-1"><AppIcon name="calendar-off" :size="13" />TBC</span>
                 </span>
-                <span v-else-if="program.next_call" class="chip chip-warning">
-                    <AppIcon name="calendar-off" :size="13" />Deadline TBC
-                </span>
-                <span v-else class="chip"><AppIcon name="calendar-off" :size="13" />No open call</span>
+                <span v-if="!nextCall()" class="chip"><AppIcon name="calendar-off" :size="13" />No open call</span>
             </div>
 
             <div class="d-flex align-items-center justify-content-between gap-2 mt-auto pt-2 border-top">

@@ -44,6 +44,13 @@ const facets = reactive<{ subject_areas: string[]; languages: string[]; countrie
 });
 const loading = ref(true);
 const error = ref('');
+const syncing = ref(false);
+const syncNotice = ref('');
+const catalog = ref<{ last_synced_at: string | null; sources: number; sources_checked: number }>({
+    last_synced_at: null,
+    sources: 0,
+    sources_checked: 0,
+});
 
 let debounce: number | undefined;
 
@@ -67,6 +74,7 @@ const load = async (page = filters.page) => {
 
         programs.value = result.programs ?? [];
         meta.value = result.meta ?? meta.value;
+        catalog.value = result.catalog ?? catalog.value;
         if (result.facets) {
             facets.subject_areas = result.facets.subject_areas ?? [];
             facets.languages = result.facets.languages ?? [];
@@ -119,6 +127,49 @@ const toggleBookmark = async (program: any) => {
     }
 };
 
+const syncCatalog = async () => {
+    if (syncing.value) return;
+
+    syncing.value = true;
+    syncNotice.value = '';
+    error.value = '';
+
+    try {
+        const result = await AdmissionsService.syncCatalog();
+        const checked = Number(result.checked ?? 0);
+        const ok = Number(result.ok ?? 0);
+        const failed = Number(result.failed ?? 0);
+        const remaining = Number(result.remaining ?? 0);
+        const changed = (result.sources ?? []).filter((source: any) => source.changed).length;
+
+        const parts = [`Checked ${checked} official source${checked === 1 ? '' : 's'}`, `${ok} reachable`];
+        if (failed) parts.push(`${failed} failed`);
+        if (changed) parts.push(`${changed} changed — review the official pages`);
+        if (remaining) parts.push(`${remaining} still queued — sync again`);
+
+        syncNotice.value = `${parts.join(' · ')}. Deadlines stay as published until a source is verified.`;
+        await load(filters.page);
+    } catch (exception: any) {
+        error.value = errorMessage(exception);
+    } finally {
+        syncing.value = false;
+    }
+};
+
+const formatChecked = (value?: string | null) => {
+    if (!value) return '';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return '';
+
+    return date.toLocaleString(undefined, {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+    });
+};
+
 watch(
     () => [filters.search, filters.subject_area, filters.language, filters.country, filters.sort, filters.has_open_call],
     scheduleLoad,
@@ -166,6 +217,11 @@ onBeforeUnmount(() => window.clearTimeout(debounce));
             subtitle="Search the shared European catalog by subject, language and country. Every record links back to its official source."
         >
             <template #actions>
+                <button type="button" class="btn btn-sm btn-light" :disabled="syncing" @click="syncCatalog">
+                    <span v-if="syncing" class="spinner-border spinner-border-sm me-1" role="status"></span>
+                    <AppIcon v-else name="refresh" class="me-1" />
+                    {{ syncing ? 'Syncing…' : 'Sync latest data' }}
+                </button>
                 <router-link :to="{ name: 'universities' }" class="btn btn-sm btn-light">
                     <AppIcon name="building" class="me-1" />Universities
                 </router-link>
@@ -178,6 +234,12 @@ onBeforeUnmount(() => window.clearTimeout(debounce));
         <div v-if="error" class="alert alert-danger py-2 d-flex align-items-start gap-2">
             <AppIcon name="alert-circle" :size="17" class="mt-1" />
             <span>{{ error }}</span>
+        </div>
+
+        <div v-if="syncNotice" class="alert alert-success py-2 d-flex align-items-start gap-2">
+            <AppIcon name="circle-check" :size="17" class="mt-1" />
+            <span class="flex-grow-1">{{ syncNotice }}</span>
+            <button type="button" class="btn-close" aria-label="Dismiss" @click="syncNotice = ''"></button>
         </div>
 
         <div class="card mb-4">
@@ -257,10 +319,20 @@ onBeforeUnmount(() => window.clearTimeout(debounce));
                     <button type="button" class="btn btn-link btn-sm p-0 ms-1 align-baseline" @click="clearUniversityFilter">clear</button>
                 </template>
             </p>
-            <p class="text-muted fs-14 mb-0 d-flex align-items-center gap-1">
-                <AppIcon name="info-circle" :size="14" />
-                Confirm requirements on the official source before applying.
-            </p>
+            <div class="text-muted fs-14 mb-0 d-flex flex-column align-items-sm-end gap-1">
+                <span class="d-flex align-items-center gap-1">
+                    <AppIcon name="info-circle" :size="14" />
+                    Confirm requirements on the official source before applying.
+                </span>
+                <span class="d-flex align-items-center gap-1">
+                    <AppIcon name="clock" :size="14" />
+                    <template v-if="catalog.last_synced_at">
+                        Catalog last synced {{ formatChecked(catalog.last_synced_at) }}
+                        <span v-if="catalog.sources">· {{ catalog.sources_checked }}/{{ catalog.sources }} sources checked</span>
+                    </template>
+                    <template v-else>Catalog not synced yet — run “Sync latest data”.</template>
+                </span>
+            </div>
         </div>
 
         <div v-if="loading && !programs.length" class="row g-4">

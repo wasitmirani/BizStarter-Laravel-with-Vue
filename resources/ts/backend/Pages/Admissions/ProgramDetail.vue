@@ -207,13 +207,16 @@ const openRelated = (item: any) => router.push({ name: 'program', params: { id: 
                         </div>
 
                         <div class="deadline-tile" :class="`deadline-${deadlineState.tone}`">
-                            <span class="deadline-label">Next deadline</span>
+                            <span class="deadline-label">Last date of admission</span>
                             <span class="deadline-value">{{ deadlineState.label }}</span>
                             <span v-if="program.next_call?.deadline && program.next_call?.days_left !== null" class="deadline-meta">
-                                {{ program.next_call.days_left }} days left
+                                {{ program.next_call.days_left }} days left · university deadline
                             </span>
                             <span v-else-if="program.next_call" class="deadline-meta">
                                 {{ program.next_call.intake_label }}
+                            </span>
+                            <span v-if="program.next_call?.opens_at" class="deadline-meta">
+                                Applications open {{ formatDate(program.next_call.opens_at) }}
                             </span>
                         </div>
                     </div>
@@ -373,6 +376,36 @@ const openRelated = (item: any) => router.push({ name: 'program', params: { id: 
                             <p class="text-muted fs-13 mb-0 mt-1">
                                 Links open the institution's own website in a new tab.
                             </p>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-header"><h5 class="card-title mb-0">Key dates</h5></div>
+                        <div class="card-body">
+                            <dl class="fact-list mb-0">
+                                <dt>University deadline</dt>
+                                <dd>
+                                    <template v-if="program.next_call?.deadline">
+                                        {{ formatDate(program.next_call.deadline) }}
+                                        <span class="text-muted fs-14">· last date of admission</span>
+                                    </template>
+                                    <span v-else class="text-muted">To be confirmed</span>
+                                </dd>
+                                <dt>Applications open</dt>
+                                <dd>
+                                    <template v-if="program.next_call?.opens_at">{{ formatDate(program.next_call.opens_at) }}</template>
+                                    <span v-else class="text-muted">To be confirmed</span>
+                                </dd>
+                                <dt>Intake</dt>
+                                <dd>{{ program.next_call?.intake_label || 'Not published' }}</dd>
+                                <dt>Source last checked</dt>
+                                <dd>
+                                    <template v-if="program.university?.last_checked_at">
+                                        {{ formatDate(program.university.last_checked_at) }}
+                                    </template>
+                                    <span v-else class="text-muted">Not checked yet — run a sync</span>
+                                </dd>
+                            </dl>
                         </div>
                     </div>
 

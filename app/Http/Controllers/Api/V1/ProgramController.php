@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProgramResource;
+use App\Models\OfficialSource;
 use App\Models\Program;
 use App\Models\University;
 use App\Support\CountryName;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class ProgramController extends Controller
 {
@@ -17,7 +19,7 @@ class ProgramController extends Controller
 
         $query = Program::query()
             ->with([
-                'university',
+                'university.officialSources',
                 'admissionCalls',
                 'assessments' => fn ($assessments) => $assessments->where('user_id', $user->id),
             ])
@@ -71,6 +73,7 @@ class ProgramController extends Controller
                 'from' => $programs->firstItem(),
                 'to' => $programs->lastItem(),
             ],
+            'catalog' => $this->catalogStatus(),
             'facets' => [
                 'subject_areas' => Program::query()
                     ->whereNotNull('subject_area')
@@ -105,7 +108,7 @@ class ProgramController extends Controller
     public function show(Request $request, Program $program)
     {
         $program->load([
-            'university',
+            'university.officialSources',
             'admissionCalls',
             'assessments' => fn ($assessments) => $assessments->where('user_id', $request->user()->id),
         ]);
@@ -122,7 +125,7 @@ class ProgramController extends Controller
                     ->orWhere('subject_area', $program->subject_area);
             })
             ->with([
-                'university',
+                'university.officialSources',
                 'admissionCalls',
                 'assessments' => fn ($assessments) => $assessments->where('user_id', $request->user()->id),
             ])
@@ -138,5 +141,22 @@ class ProgramController extends Controller
             'program' => (new ProgramResource($program))->resolve(),
             'related' => ProgramResource::collection($related)->resolve(),
         ]);
+    }
+
+    /**
+     * Freshness of the shared catalogue, shown next to the sync button.
+     * Nothing here is inferred: it reports the stored source checks.
+     */
+    private function catalogStatus(): array
+    {
+        $sources = OfficialSource::query();
+
+        $lastCheckedAt = (clone $sources)->max('last_checked_at');
+
+        return [
+            'last_synced_at' => $lastCheckedAt ? Carbon::parse($lastCheckedAt)->toIso8601String() : null,
+            'sources' => (clone $sources)->count(),
+            'sources_checked' => (clone $sources)->whereNotNull('last_checked_at')->count(),
+        ];
     }
 }
